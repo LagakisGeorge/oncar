@@ -5,10 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-
+using System.Data.SqlClient;
 using System.IO;
 using Mono.Data.Sqlite;
 namespace test4sql
+
+ 
+
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
@@ -45,6 +48,23 @@ namespace test4sql
         };
                 // Open the database connection and create table with data
                 connection.Open();
+
+
+
+                using (var c = connection.CreateCommand())
+                {
+                    c.CommandText = "CREATE TABLE IF NOT EXISTS ARITMISI (ID  INTEGER PRIMARY KEY  ," +
+                    "[ARITMISI] [int] ," +
+                    "[ONO] [nvarchar](55)  );";
+                    var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
+                }
+
+                
+
+
+
+
+
                 foreach (var command in commands)
                 {
                     using (var c = connection.CreateCommand())
@@ -108,16 +128,31 @@ namespace test4sql
                                       r["Symbol"].ToString());
                 }
             }
-            var listview = new ListView();
+         //   var listview = new ListView();
 
-            listview.ItemsSource  = ff;
+         //   listview.ItemsSource  = ff;
             
             
 
 
             connection.Close();
+            but1.Text = "TEST1";
 
-           // String c3 = morecomplex();
+            list1.ItemsSource = ff;
+ /* new string[]
+   {
+  "mono",
+  "monodroid",
+  "monotouch",
+  "monorail",
+  "monodevelop",
+  "monotone",
+  "monopoly",
+  "monomodal",
+  "mononucleosis"
+   };
+*/
+            // String c3 = morecomplex();
         }
 
 
@@ -148,6 +183,23 @@ namespace test4sql
         }
 
 
+        public void Execute()
+        {
+            SqlConnectionStringBuilder dbConString = new SqlConnectionStringBuilder();
+            dbConString.UserID = "My Username";
+            dbConString.Password = "My Password";
+            dbConString.DataSource = "My Server Address";
+
+            using (SqlConnection con = new SqlConnection(returnConnectionString().ConnectionString))
+            {
+                con.Open();
+                for (int i = 0; i < commands.Count; i++)
+                {
+                    SqlCommand cmd = new SqlCommand("UPDATE MyTable SET Name = 'New Name' WHERE ID = 1");
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+            }
 
 
 
@@ -156,6 +208,5 @@ namespace test4sql
 
 
 
-
-    }
+        }
 }
