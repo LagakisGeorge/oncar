@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Data.SqlClient;
+
+
+
+
 using System.IO;
 using Mono.Data.Sqlite;
 namespace test4sql
@@ -21,6 +25,7 @@ namespace test4sql
         public MainPage()
         {
             InitializeComponent();
+           // MainPage = new NavigationPage(new FirstContentPage());
         }
 
         public static SqliteConnection connection;
@@ -181,32 +186,45 @@ namespace test4sql
 
             return output;
         }
-
-
-        public void Execute()
+        private async void toPage1(object sender, EventArgs e)
         {
-            SqlConnectionStringBuilder dbConString = new SqlConnectionStringBuilder();
-            dbConString.UserID = "My Username";
-            dbConString.Password = "My Password";
-            dbConString.DataSource = "My Server Address";
+            Navigation.PushModalAsync (new Page1());
+        }
 
-            using (SqlConnection con = new SqlConnection(returnConnectionString().ConnectionString))
+        private async void connectBtn_Clicked(object sender, EventArgs e)
+        {
+            string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            using (SqlConnection con = new SqlConnection(constring))
             {
-                con.Open();
-                for (int i = 0; i < commands.Count; i++)
+                try
                 {
-                    SqlCommand cmd = new SqlCommand("UPDATE MyTable SET Name = 'New Name' WHERE ID = 1");
+                    con.Open();
+                    await DisplayAlert("OK", "OK i am Connected", "OK");
+
+                    SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=909 WHERE ID = 1");
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
+
+
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", ex.ToString(), "OK");
                 }
             }
-
-
-
-
-
-
-
-
         }
+
+
+
+
+
+
+
+
+    }
 }

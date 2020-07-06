@@ -12,11 +12,15 @@
         <Button Text="test sql"
                 Clicked="Runsql" />
         <Button x:Name="but1" 
-                Text="open query"
+                Text="Page1"
+                Clicked="toPage1"
                  />
+        <Button x:Name="but11" 
+                Text="open query"
+                Clicked="connectBtn_Clicked"
+                 /> 
 
-        
-<ListView x:Name="list1" >
+        <ListView x:Name="list1" >
     
   </ListView>
         
