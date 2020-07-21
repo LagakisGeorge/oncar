@@ -7,6 +7,20 @@
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+                 
+<Grid  x:Name="grid1" >
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+       
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+</Grid>
+            
+            
+            
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
