@@ -12,6 +12,8 @@ using System.Data.SqlClient;
 
 using System.IO;
 using Mono.Data.Sqlite;
+using System.Data;
+
 namespace test4sql
 
  
@@ -186,13 +188,60 @@ namespace test4sql
 
             return output;
         }
+
+        void on2(object sender, ItemTappedEventArgs  e)
+        {
+            but1.Text = "=="+e.Item.ToString();
+
+        }
+
+        void  OnListsel(object sender, SelectedItemChangedEventArgs  e)
+        {
+            but1.Text = e.SelectedItem.ToString ();
+
+        }
         private async void toPage1(object sender, EventArgs e)
         {
             Navigation.PushModalAsync (new Page1());
         }
 
+        public DataSet Execute(String query)
+        {
+            DataSet ds = new DataSet();
+
+            SqlConnectionStringBuilder dbConString = new SqlConnectionStringBuilder();
+            dbConString.UserID = "My Username";
+            dbConString.Password = "My Password";
+            dbConString.DataSource = "My Server Address";
+
+            using (SqlConnection con = new SqlConnection(dbConString.ConnectionString))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(query, con);
+
+                var adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(ds);
+
+            }
+            return ds;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         private async void connectBtn_Clicked(object sender, EventArgs e)
         {
+
+            but11.Text = "sss";
             string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             using (SqlConnection con = new SqlConnection(constring))
@@ -202,13 +251,36 @@ namespace test4sql
                     con.Open();
                     await DisplayAlert("OK", "OK i am Connected", "OK");
 
-                    SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=909 WHERE ID = 1");
+                    SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
 
 
+                  //  DataSet ds = new DataSet();
+
+                  //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
+
+                 //   var adapter = new SqlDataAdapter(cmd2);
+                 //   adapter.Fill(ds);
+                    //  string cc = ds.Tables[0].Rows[1]["EPO"];
 
 
+                    DataTable dt = new DataTable();
+
+                    SqlCommand cmd3 = new SqlCommand("select top 100 * FROM PEL", con);
+
+                    var adapter2 = new SqlDataAdapter(cmd3);
+                    adapter2.Fill(dt);
+                    List<string> MyList = new List<string>();
+                    for (int k = 0; k <= 99; k++)
+                    {
+                        String mF = dt.Rows[k]["EPO"].ToString();
+                        MyList.Add(mF);
+
+                    }
+                    list1.ItemsSource  = MyList;
+
+                    
 
 
                 }
@@ -218,13 +290,6 @@ namespace test4sql
                 }
             }
         }
-
-
-
-
-
-
-
 
     }
 }

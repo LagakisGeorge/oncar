@@ -18,9 +18,12 @@
         <Button x:Name="but11" 
                 Text="open query"
                 Clicked="connectBtn_Clicked"
-                 /> 
+                 />
 
-        <ListView x:Name="list1" >
+        <ListView x:Name="list1">
+          ItemSelected="OnListsel"
+            ItemTapped="on2"
+            
     
   </ListView>
         
