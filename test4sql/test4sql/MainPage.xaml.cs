@@ -24,6 +24,8 @@ namespace test4sql
     [DesignTimeVisible(true)]
     public partial class MainPage : ContentPage
     {
+
+        public IList<Monkey> Monkeys { get; private set; }
         public MainPage()
         {
             InitializeComponent();
@@ -145,7 +147,7 @@ namespace test4sql
             connection.Close();
             but1.Text = "TEST1";
 
-            list1.ItemsSource = ff;
+           // list1.ItemsSource = ff;
  /* new string[]
    {
   "mono",
@@ -195,7 +197,26 @@ namespace test4sql
 
         }
 
-        void  OnListsel(object sender, SelectedItemChangedEventArgs  e)
+
+        //        void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+        //      {
+        //        Monkey selectedItem = e.SelectedItem as Monkey;
+        //  }
+
+
+        void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            Monkey selectedItem = e.SelectedItem as Monkey;
+        }
+
+        void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Monkey tappedItem = e.Item as Monkey;
+        }
+
+
+
+        void OnListsel(object sender, SelectedItemChangedEventArgs  e)
         {
             but1.Text = e.SelectedItem.ToString ();
 
@@ -256,14 +277,15 @@ namespace test4sql
                     cmd.ExecuteNonQuery();
 
 
-                  //  DataSet ds = new DataSet();
+                    //  DataSet ds = new DataSet();
 
-                  //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
+                    //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
 
-                 //   var adapter = new SqlDataAdapter(cmd2);
-                 //   adapter.Fill(ds);
+                    //   var adapter = new SqlDataAdapter(cmd2);
+                    //   adapter.Fill(ds);
                     //  string cc = ds.Tables[0].Rows[1]["EPO"];
-
+                    Monkeys = new List<Monkey>();
+                    
 
                     DataTable dt = new DataTable();
 
@@ -277,10 +299,27 @@ namespace test4sql
                         String mF = dt.Rows[k]["EPO"].ToString();
                         MyList.Add(mF);
 
-                    }
-                    list1.ItemsSource  = MyList;
+                        Monkeys.Add(new Monkey
+                        {
+                            Name = mF,
+                            Location = dt.Rows[k]["DIE"].ToString(),
+                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
+                        });
 
-                    
+
+
+
+
+
+
+                    }
+
+                    BindingContext = this;
+
+
+                    // list1.ItemsSource  = MyList;
+
+
 
 
                 }
