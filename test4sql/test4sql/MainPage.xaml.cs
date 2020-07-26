@@ -26,11 +26,34 @@ namespace test4sql
     {
 
         public IList<Monkey> Monkeys { get; private set; }
+        public SqlConnection con;
+
         public MainPage()
         {
             InitializeComponent();
-           // MainPage = new NavigationPage(new FirstContentPage());
+            // MainPage = new NavigationPage(new FirstContentPage());
+
+
+            string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+             con = new SqlConnection(constring);
+            
+                try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
         }
+
+            
+
+
+
+
+                
 
         public static SqliteConnection connection;
         public static void DoSomeDataAccess()
@@ -207,6 +230,62 @@ namespace test4sql
         void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             Monkey selectedItem = e.SelectedItem as Monkey;
+
+            //
+
+
+            
+            
+                try
+                {
+                    //  con.Open();
+                    // await DisplayAlert("OK", "OK i am Connected", "OK");
+
+                    SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID = 1");
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+
+
+                cmd = new SqlCommand("UPDATE PEL  SET ARTIM=ISNULL(ARTIM,0)+1 WHERE ID = "+selectedItem.idPEL );
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+
+                /*
+                  Monkeys = new List<Monkey>();
+
+
+                  DataTable dt = new DataTable();
+
+                  SqlCommand cmd3 = new SqlCommand("select top 100 * FROM PEL", con);
+
+                  var adapter2 = new SqlDataAdapter(cmd3);
+                  adapter2.Fill(dt);
+                  List<string> MyList = new List<string>();
+                  for (int k = 0; k <= 99; k++)
+                  {
+                      String mF = dt.Rows[k]["EPO"].ToString();
+                      MyList.Add(mF);
+
+                      Monkeys.Add(new Monkey
+                      {
+                          Name = mF,
+
+                          Location = dt.Rows[k]["DIE"].ToString(),
+                          ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                          idPEL = dt.Rows[k]["ID"].ToString()
+                      });
+                  }
+                  BindingContext = this;
+
+                */
+            }
+                catch (Exception ex)
+                {
+                  //  await DisplayAlert("Error", ex.ToString(), "OK");
+                }
+                  
+
+
         }
 
         void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
@@ -263,14 +342,14 @@ namespace test4sql
         {
 
             but11.Text = "sss";
-            string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+          //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
-            using (SqlConnection con = new SqlConnection(constring))
-            {
+           // using (SqlConnection con = new SqlConnection(constring))
+           // {
                 try
                 {
-                    con.Open();
-                    await DisplayAlert("OK", "OK i am Connected", "OK");
+                  //  con.Open();
+                  //  await DisplayAlert("OK", "OK i am Connected", "OK");
 
                     SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
                     cmd.Connection = con;
@@ -302,9 +381,11 @@ namespace test4sql
                         Monkeys.Add(new Monkey
                         {
                             Name = mF,
+                            
                             Location = dt.Rows[k]["DIE"].ToString(),
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
-                        });
+                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                            idPEL = dt.Rows[k]["ID"].ToString() 
+                    });
 
 
 
@@ -327,7 +408,7 @@ namespace test4sql
                 {
                     await DisplayAlert("Error", ex.ToString(), "OK");
                 }
-            }
+           // }
         }
 
     }

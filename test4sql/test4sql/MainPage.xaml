@@ -49,6 +49,13 @@
                                    Grid.Column="1" 
                                    Text="{Binding Location}"
                                    VerticalOptions="End" />
+                            <!--       <Label Grid.Row="2" 
+                                   Grid.Column="1" 
+                                   Text="{Binding idPEL}"
+                                   VerticalOptions="End" />   -->
+                            
+                            
+                            
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
