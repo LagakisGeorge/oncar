@@ -1,0 +1,244 @@
+Cross-platform Local Folder
+ 
+In Xamarin.Form, the PCLStorage API will help us to retrieve all the platforms'  local folder names and paths, using the code given below. There is no need to write any platform-specific code to access the local folder.
+Using PCLStorage;  
+  
+IFolder folder = FileSystem.Current.LocalStorage;  
+Creating new folders
+ 
+To create a new subfolder in the local folder, call the CreateFolderAsync method.
+String folderName =”csharp” ;  
+IFolder folder = FileSystem.Current.LocalStorage;  
+folder = await folder.CreateFolderAsync(folderName, CreationCollisionOption.ReplaceExisting);  
+Create New file
+ 
+To create a new file in the local folder, call the CreateFileAsync method.
+String filename=”username.txt”;  
+IFolder folder = FileSystem.Current.LocalStorage;  
+IFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);  
+Check Folder Already Exists
+ 
+We can check for an existing folder in a particular folder, as shown below.
+public async static Task<bool> IsFolderExistAsync(this string folderName, IFolder rootFolder = null)  
+     {  
+         // get hold of the file system  
+         IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+         ExistenceCheckResult folderexist = await folder.CheckExistsAsync(folderName);  
+         // already run at least once, don't overwrite what's there  
+         if (folderexist == ExistenceCheckResult.FolderExists)  
+         {  
+             return true;  
+  
+         }  
+         return false;  
+     }  
+Check File Already Exists
+ 
+We can check for an existing file in a particular folder, as shown below.
+public async static Task<bool> IsFileExistAsync(this string fileName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            ExistenceCheckResult folderexist = await folder.CheckExistsAsync(fileName);  
+            // already run at least once, don't overwrite what's there  
+            if (folderexist == ExistenceCheckResult.FileExists)  
+            {  
+                return true;  
+  
+            }  
+            return false;  
+        }  
+Delete File
+ 
+We can use the DeleteAsync method to delete the file.
+public async static Task<bool> DeleteFile(this string  fileName, IFolder rootFolder = null)  
+      {  
+          IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+          bool exist = await fileName.IsFileExistAsync(folder);  
+          if (exist == true)  
+          {  
+              IFile file = await folder.GetFileAsync(fileName);  
+              await file.DeleteAsync();  
+              return true;  
+          }  
+          return false;  
+      }  
+Write File
+ 
+If you want to write any extension file document, just use the WriteAllTextAsync method for write.
+public async static Task<bool> WriteTextAllAsync(this string filename, string content = "", IFolder rootFolder = null)  
+      {  
+          IFile file = await filename.CreateFile(rootFolder);  
+          await file.WriteAllTextAsync(content);  
+          return true;  
+      }  
+Read File
+ 
+If you want to read any extension file document, just use the ReadAllTextAsync method for write.
+public async static Task<string> ReadAllTextAsync(this string fileName, IFolder rootFolder = null)  
+     {  
+         string content = "";  
+         IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+         bool exist = await fileName.IsFileExistAsync(folder);  
+         if (exist == true)  
+         {  
+             IFile file = await folder.GetFileAsync(fileName);  
+             content = await file.ReadAllTextAsync();  
+         }  
+         return content;  
+     }  
+Save Image
+ 
+We can save the image, using PCLStorage, as shown below.
+public async static Task SaveImage(this byte[] image,String fileName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+  
+            // create a file, overwriting any existing file  
+            IFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);  
+  
+            // populate the file with image data  
+            using (System.IO.Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))  
+            {  
+                stream.Write(image, 0, image.Length);  
+            }  
+        }  
+Get Image
+ 
+We can load an image, using PCLStorage, as shown below.
+public async static Task<byte[]> LoadImage(this byte[] image, String fileName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+  
+            //open file if exists  
+            IFile file = await folder.GetFileAsync(fileName);  
+            //load stream to buffer  
+            using (System.IO.Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))  
+            {  
+                long length = stream.Length;  
+                byte[] streamBuffer = new byte[length];  
+                stream.Read(streamBuffer, 0, (int)length);  
+                return streamBuffer;  
+            }  
+              
+        }  
+PCL Helper Class
+ 
+I have created a very simple PCLHelper class. You can refer to it and reuse it in your project.
+using PCLStorage;  
+using System;  
+using System.Threading.Tasks;  
+  
+namespace DevEnvExe_LocalStorage  
+{  
+    public static class PCLHelper  
+    {  
+      
+        public async static Task<bool> IsFileExistAsync(this string fileName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            ExistenceCheckResult folderexist = await folder.CheckExistsAsync(fileName);  
+            // already run at least once, don't overwrite what's there  
+            if (folderexist == ExistenceCheckResult.FileExists)  
+            {  
+                return true;  
+  
+            }  
+            return false;  
+        }  
+  
+        public async static Task<bool> IsFolderExistAsync(this string folderName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            ExistenceCheckResult folderexist = await folder.CheckExistsAsync(folderName);  
+            // already run at least once, don't overwrite what's there  
+            if (folderexist == ExistenceCheckResult.FolderExists)  
+            {  
+                return true;  
+  
+            }  
+            return false;  
+        }  
+  
+        public async static Task<IFolder> CreateFolder(this string folderName, IFolder rootFolder = null)  
+        {  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            folder = await folder.CreateFolderAsync(folderName, CreationCollisionOption.ReplaceExisting);  
+            return folder;  
+        }  
+  
+        public async static Task<IFile> CreateFile(this string filename, IFolder rootFolder = null)  
+        {  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            IFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);  
+            return file;  
+        }  
+        public async static Task<bool> WriteTextAllAsync(this string filename, string content = "", IFolder rootFolder = null)  
+        {  
+            IFile file = await filename.CreateFile(rootFolder);  
+            await file.WriteAllTextAsync(content);  
+            return true;  
+        }  
+  
+        public async static Task<string> ReadAllTextAsync(this string fileName, IFolder rootFolder = null)  
+        {  
+            string content = "";  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            bool exist = await fileName.IsFileExistAsync(folder);  
+            if (exist == true)  
+            {  
+                IFile file = await folder.GetFileAsync(fileName);  
+                content = await file.ReadAllTextAsync();  
+            }  
+            return content;  
+        }  
+        public async static Task<bool> DeleteFile(this string  fileName, IFolder rootFolder = null)  
+        {  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+            bool exist = await fileName.IsFileExistAsync(folder);  
+            if (exist == true)  
+            {  
+                IFile file = await folder.GetFileAsync(fileName);  
+                await file.DeleteAsync();  
+                return true;  
+            }  
+            return false;  
+        }  
+        public async static Task SaveImage(this byte[] image,String fileName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+  
+            // create a file, overwriting any existing file  
+            IFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);  
+  
+            // populate the file with image data  
+            using (System.IO.Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))  
+            {  
+                stream.Write(image, 0, image.Length);  
+            }  
+        }  
+  
+        public async static Task<byte[]> LoadImage(this byte[] image, String fileName, IFolder rootFolder = null)  
+        {  
+            // get hold of the file system  
+            IFolder folder = rootFolder ?? FileSystem.Current.LocalStorage;  
+  
+            //open file if exists  
+            IFile file = await folder.GetFileAsync(fileName);  
+            //load stream to buffer  
+            using (System.IO.Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))  
+            {  
+                long length = stream.Length;  
+                byte[] streamBuffer = new byte[length];  
+                stream.Read(streamBuffer, 0, (int)length);  
+                return streamBuffer;  
+            }  
+              
+        }  
+    }  
+}  
