@@ -41,8 +41,14 @@
                 
                  />
 
+            <Label x:Name="Lab1" 
+                Text="----------"
+                      
+                
+                 />
+
             <Button x:Name="but31" 
-                Text="readFile"
+                Text="read1File"
                        Clicked="ReadFile"
                 
                  />

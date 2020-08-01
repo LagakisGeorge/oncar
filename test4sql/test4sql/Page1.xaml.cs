@@ -38,14 +38,22 @@ namespace test4sql
           
         }
 
-         void Shared_Folder(object sender, EventArgs e)
+         async void Shared_Folder(object sender, EventArgs e)
         {
 
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
 
-            //Create file.
+            try
+            {
+ //Create file.
             file.CreateNewFile();
+            }
+            catch {
+                 await DisplayAlert("Error", "....", "OK");
+                return;
+            }
+           
 
             //Get writable stream.
             var writeStream = file.GetOutputStream();
@@ -63,28 +71,68 @@ namespace test4sql
         }
 
 
-        void ReadFile(object sender, EventArgs e)
+       async void ReadFile(object sender, EventArgs e)
         {
             bool f = ReadFiles();
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
             //Get target's SmbFile.
-           // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
+            // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
 
-            //Get readable stream.
-            var readStream = file.GetInputStream();
+            try
+            {
 
-            //Create reading buffer.
-            var memStream = new MemoryStream();
+                //Get readable stream.
+                var readStream = file.GetInputStream();
 
-            //Get bytes.
-            ((Stream)readStream).CopyTo(memStream);
+                //Create reading buffer.
+                var memStream = new MemoryStream();
 
-            //Dispose readable stream.
-            readStream.Dispose();
+                //Get bytes.
+                ((Stream)readStream).CopyTo(memStream);
 
-            Console.WriteLine(Encoding.UTF8.GetString(memStream.ToArray()));
+                //Dispose readable stream.
+                readStream.Dispose();
 
+                Console.WriteLine(Encoding.UTF8.GetString(memStream.ToArray()));
+
+                byte[] bytes = memStream.ToArray();
+
+
+                await DisplayAlert("Error", Encoding.UTF8.GetString(bytes), "OK");
+
+                String g = Encoding.UTF8.GetString(memStream.ToArray());
+
+                string[] lines = g.Split('\n');
+                Lab1.Text = lines[1] + "=" + lines[2] + "=" + lines[3];
+             
+//>? lines[1]
+//"ειμαι ο ΛΑΓΑΚΗΣ ΓΕΩΡΓΙΟΣ\r"
+//>? lines[2]
+//"αΥΤ
+
+
+                await DisplayAlert("Error", Encoding.UTF8.GetString(memStream.ToArray()), "OK");
+
+
+
+
+            }
+            catch
+            {
+                await DisplayAlert("Error", "....", "OK");
+                return;
+            }
+
+
+
+
+
+
+
+           
+
+           
         }
 
 
