@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 //using PCLStorage;
-using SharpCifs.Smb;
+using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using System.IO;
 
 namespace test4sql
@@ -65,7 +65,7 @@ namespace test4sql
 
         void ReadFile(object sender, EventArgs e)
         {
-
+            bool f = ReadFiles();
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
             //Get target's SmbFile.
@@ -88,10 +88,34 @@ namespace test4sql
         }
 
 
+       private bool  ReadFiles()
+        {
 
 
+            //   Get items in shared folder:            https://www.csharpcodi.com/csharp-examples/SharpCifs.Smb.SmbFile.GetUncPath0()/
+            //using System;
+            //using SharpCifs.Smb;
 
+            //Get SmbFile-Object of a folder.
+            var folder = new SmbFile("smb://User:1@192.168.1.5/backpel/");
 
+        //UnixTime
+        var epocDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+//List items
+        foreach (SmbFile item in folder.ListFiles())
+        {
+            var lastModDate = epocDate.AddMilliseconds(item.LastModified())
+                                .ToLocalTime();
+            var name = item.GetName();
+            var type = item.IsDirectory() ? "dir" : "file";
+            var date = lastModDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var msg = $"{name} ({type}) - LastMod: {date}";
+            Console.WriteLine(msg);
+        }
+
+            return true;
+        }
 
 
 

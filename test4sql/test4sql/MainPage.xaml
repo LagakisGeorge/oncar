@@ -12,15 +12,18 @@
         <Button Text="test sql"
                 Clicked="Runsql" />
         <Button x:Name="but1" 
-                Text="Page1"
-                Clicked="toPage1"
+                Text="Page2"
+                Clicked="toPage2"
                  />
         <Button x:Name="but11" 
                 Text="open query"
                 Clicked="connectBtn_Clicked"
                  />
+        <Button x:Name="but121" 
+                Text="Topage1"
+                Clicked="ToPage1"
+                 />
 
-       
         <ListView ItemsSource="{Binding Monkeys}"
                   HasUnevenRows="true"
                   ItemSelected="OnListViewItemSelected"

@@ -132,8 +132,6 @@ namespace test4sql
             connection.Close();
         }
 
-
-
         public void Runsql(object sender,EventArgs e)
         {
             DoSomeDataAccess();
@@ -189,9 +187,6 @@ namespace test4sql
 */
             // String c3 = morecomplex();
         }
-
-
-
 
         public static string morecomplex() // Opensql(object sender, EventArgs e)
         {
@@ -290,23 +285,34 @@ namespace test4sql
 
 
         }
-
         void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
             Monkey tappedItem = e.Item as Monkey;
         }
-
-
-
         void OnListsel(object sender, SelectedItemChangedEventArgs  e)
         {
             but1.Text = e.SelectedItem.ToString ();
 
         }
-        private async void toPage1(object sender, EventArgs e)
+        private async void ToPage1(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync (new Page1());
+
+            await Navigation.PushAsync(new Page1());
+            // await Navigation.PushAsync(new Page2 { });
+            // await NavigationPage (new Page2());
         }
+
+        private async void toPage2(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new Page2());
+            // await Navigation.PushAsync(new Page2 { });
+            // await NavigationPage (new Page2());
+        }
+
+
+
+
 
         public DataSet Execute(String query)
         {
@@ -328,19 +334,6 @@ namespace test4sql
             }
             return ds;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
         private async void connectBtn_Clicked(object sender, EventArgs e)
         {
 
