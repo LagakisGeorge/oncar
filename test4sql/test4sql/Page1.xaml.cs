@@ -105,34 +105,13 @@ namespace test4sql
 
                 string[] lines = g.Split('\n');
                 Lab1.Text = lines[1] + "=" + lines[2] + "=" + lines[3];
-             
-//>? lines[1]
-//"ειμαι ο ΛΑΓΑΚΗΣ ΓΕΩΡΓΙΟΣ\r"
-//>? lines[2]
-//"αΥΤ
-
-
                 await DisplayAlert("Error", Encoding.UTF8.GetString(memStream.ToArray()), "OK");
-
-
-
-
             }
             catch
             {
                 await DisplayAlert("Error", "....", "OK");
                 return;
-            }
-
-
-
-
-
-
-
-           
-
-           
+            }           
         }
 
 
@@ -166,16 +145,6 @@ namespace test4sql
         }
 
 
-
-
-
-
-
-
-
-
-
-
         async void Runsql(object sender, EventArgs e)
         {
             but21.Text = "==" ;
@@ -191,15 +160,6 @@ namespace test4sql
 
 
         }
-
-
-
-
-
-
-
-
-
 
     }
 }

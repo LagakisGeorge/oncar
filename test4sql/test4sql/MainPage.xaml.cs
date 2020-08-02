@@ -24,7 +24,7 @@ namespace test4sql
     [DesignTimeVisible(true)]
 
 
-   
+
     public partial class MainPage : ContentPage
     {
 
@@ -39,9 +39,9 @@ namespace test4sql
 
             string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
-             con = new SqlConnection(constring);
-            
-                try
+            con = new SqlConnection(constring);
+
+            try
             {
                 con.Open();
             }
@@ -51,12 +51,12 @@ namespace test4sql
             }
         }
 
-            
 
 
 
 
-                
+
+
 
         public static SqliteConnection connection;
         public static void DoSomeDataAccess()
@@ -73,6 +73,8 @@ namespace test4sql
                 Console.WriteLine("Creating database");
                 // Need to create the database before seeding it with some data
                 Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+
                 connection = new SqliteConnection("Data Source=" + dbPath);
 
                 var commands = new[] {
@@ -94,7 +96,7 @@ namespace test4sql
                     var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
                 }
 
-                
+
 
 
 
@@ -132,7 +134,22 @@ namespace test4sql
             connection.Close();
         }
 
-        public void Runsql(object sender,EventArgs e)
+
+        public async void PARAGG(object sender, EventArgs e)
+        {
+
+
+            //  MainPage = new NavigationPage(new FirstContentPage());
+
+           // await NavigationPage (new Page2()  );
+            await Navigation.PushAsync(new PARAGGELIES());
+
+
+        }
+
+
+
+        public void Runsql(object sender, EventArgs e)
         {
             DoSomeDataAccess();
 
@@ -143,8 +160,8 @@ namespace test4sql
                 var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
             }
 
-            String[] ff=new String[50];
-            int i=0;
+            String[] ff = new String[50];
+            int i = 0;
 
             // query the database to prove data was inserted!
             using (var contents = connection.CreateCommand())
@@ -161,30 +178,30 @@ namespace test4sql
                                       r["Symbol"].ToString());
                 }
             }
-         //   var listview = new ListView();
+            //   var listview = new ListView();
 
-         //   listview.ItemsSource  = ff;
-            
-            
+            //   listview.ItemsSource  = ff;
+
+
 
 
             connection.Close();
             but1.Text = "TEST1";
 
-           // list1.ItemsSource = ff;
- /* new string[]
-   {
-  "mono",
-  "monodroid",
-  "monotouch",
-  "monorail",
-  "monodevelop",
-  "monotone",
-  "monopoly",
-  "monomodal",
-  "mononucleosis"
-   };
-*/
+            // list1.ItemsSource = ff;
+            /* new string[]
+              {
+             "mono",
+             "monodroid",
+             "monotouch",
+             "monorail",
+             "monodevelop",
+             "monotone",
+             "monopoly",
+             "monomodal",
+             "mononucleosis"
+              };
+           */
             // String c3 = morecomplex();
         }
 
@@ -212,9 +229,9 @@ namespace test4sql
             return output;
         }
 
-        void on2(object sender, ItemTappedEventArgs  e)
+        void on2(object sender, ItemTappedEventArgs e)
         {
-            but1.Text = "=="+e.Item.ToString();
+            but1.Text = "==" + e.Item.ToString();
 
         }
 
@@ -232,19 +249,19 @@ namespace test4sql
             //
 
 
-            
-            
-                try
-                {
-                    //  con.Open();
-                    // await DisplayAlert("OK", "OK i am Connected", "OK");
-
-                    SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID = 1");
-                    cmd.Connection = con;
-                    cmd.ExecuteNonQuery();
 
 
-                cmd = new SqlCommand("UPDATE PEL  SET ARTIM=ISNULL(ARTIM,0)+1 WHERE ID = "+selectedItem.idPEL );
+            try
+            {
+                //  con.Open();
+                // await DisplayAlert("OK", "OK i am Connected", "OK");
+
+                SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID = 1");
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+
+
+                cmd = new SqlCommand("UPDATE PEL  SET ARTIM=ISNULL(ARTIM,0)+1 WHERE ID = " + selectedItem.idPEL);
                 cmd.Connection = con;
                 cmd.ExecuteNonQuery();
 
@@ -277,11 +294,11 @@ namespace test4sql
 
                 */
             }
-                catch (Exception ex)
-                {
-                  //  await DisplayAlert("Error", ex.ToString(), "OK");
-                }
-                  
+            catch (Exception ex)
+            {
+                //  await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
 
 
         }
@@ -289,9 +306,9 @@ namespace test4sql
         {
             Monkey tappedItem = e.Item as Monkey;
         }
-        void OnListsel(object sender, SelectedItemChangedEventArgs  e)
+        void OnListsel(object sender, SelectedItemChangedEventArgs e)
         {
-            but1.Text = e.SelectedItem.ToString ();
+            but1.Text = e.SelectedItem.ToString();
 
         }
         private async void ToPage1(object sender, EventArgs e)
@@ -309,10 +326,6 @@ namespace test4sql
             // await Navigation.PushAsync(new Page2 { });
             // await NavigationPage (new Page2());
         }
-
-
-
-
 
         public DataSet Execute(String query)
         {
@@ -338,49 +351,49 @@ namespace test4sql
         {
 
             but11.Text = "sss";
-          //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
-           // using (SqlConnection con = new SqlConnection(constring))
-           // {
-                try
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+                //  con.Open();
+                //  await DisplayAlert("OK", "OK i am Connected", "OK");
+
+                SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+
+
+                //  DataSet ds = new DataSet();
+
+                //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
+
+                //   var adapter = new SqlDataAdapter(cmd2);
+                //   adapter.Fill(ds);
+                //  string cc = ds.Tables[0].Rows[1]["EPO"];
+                Monkeys = new List<Monkey>();
+
+
+                DataTable dt = new DataTable();
+
+                SqlCommand cmd3 = new SqlCommand("select top 100 * FROM PEL", con);
+
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                List<string> MyList = new List<string>();
+                for (int k = 0; k <= 99; k++)
                 {
-                  //  con.Open();
-                  //  await DisplayAlert("OK", "OK i am Connected", "OK");
+                    String mF = dt.Rows[k]["EPO"].ToString();
+                    MyList.Add(mF);
 
-                    SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
-                    cmd.Connection = con;
-                    cmd.ExecuteNonQuery();
-
-
-                    //  DataSet ds = new DataSet();
-
-                    //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
-
-                    //   var adapter = new SqlDataAdapter(cmd2);
-                    //   adapter.Fill(ds);
-                    //  string cc = ds.Tables[0].Rows[1]["EPO"];
-                    Monkeys = new List<Monkey>();
-                    
-
-                    DataTable dt = new DataTable();
-
-                    SqlCommand cmd3 = new SqlCommand("select top 100 * FROM PEL", con);
-
-                    var adapter2 = new SqlDataAdapter(cmd3);
-                    adapter2.Fill(dt);
-                    List<string> MyList = new List<string>();
-                    for (int k = 0; k <= 99; k++)
+                    Monkeys.Add(new Monkey
                     {
-                        String mF = dt.Rows[k]["EPO"].ToString();
-                        MyList.Add(mF);
+                        Name = mF,
 
-                        Monkeys.Add(new Monkey
-                        {
-                            Name = mF,
-                            
-                            Location = dt.Rows[k]["DIE"].ToString(),
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
-                            idPEL = dt.Rows[k]["ID"].ToString() 
+                        Location = dt.Rows[k]["DIE"].ToString(),
+                        ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
                     });
 
 
@@ -389,23 +402,52 @@ namespace test4sql
 
 
 
-                    }
-
-                    BindingContext = this;
-
-
-                    // list1.ItemsSource  = MyList;
-
-
-
-
                 }
-                catch (Exception ex)
-                {
-                    await DisplayAlert("Error", ex.ToString(), "OK");
-                }
-           // }
+
+                BindingContext = this;
+
+
+                // list1.ItemsSource  = MyList;
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+            // }
         }
 
-    }
-}
+        public static int ExecuteSqlite(string Query)
+        {
+            // determine the path for the database file
+            string dbPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+                connection = new SqliteConnection("Data Source=" + dbPath);               
+                // Open the database connection and create table with data
+                connection.Open();
+            var c = connection.CreateCommand() ;
+            c.CommandText  = Query;
+
+            /*  c.CommandText = "CREATE TABLE IF NOT EXISTS ARITMISI (ID  INTEGER PRIMARY KEY  ," +
+                    "[ARITMISI] [int] ," +
+                    "[ONO] [nvarchar](55)  );";
+            */
+            var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
+            return rowcount;
+        }
+
+    }  // public partial class MainPage : ContentPage
+
+}  // namespace

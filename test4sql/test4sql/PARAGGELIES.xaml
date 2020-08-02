@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="test4sql.PARAGGELIES">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry x:Name="AFM"
+                   Placeholder="ΑΦΜ" 
+                   
+                   />
+
+            <Label  x:Name="LABPEL"  
+                Text="..................." 
+                     HorizontalOptions="Center"
+                  />
+            <Button x:Name="BRESafm" 
+                    Text="ΑΝΑΖΗΤΗΣΗ ΠΕΛΑΤΗ"
+                        Clicked="BRES_AFM" 
+                  />
+            <Button x:Name="but10" 
+                        Text="ΑΝΑΖΗΤΗΣΗ ΕΙΔΟΥΣ"
+                       Clicked="Click_Login" 
+               
+                 />
+            <Entry x:Name="BARCODE"
+                   Placeholder="BARCODE" 
+                   
+                   />
+            <Entry x:Name="POSOTHTA"
+                   Placeholder="ΠΟΣΟΤΗΤΑ" 
+                   
+                   />
+
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

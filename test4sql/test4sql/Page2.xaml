@@ -4,9 +4,30 @@
              x:Class="test4sql.Page2">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Page2 μεγαλε!"
+            
+
+
+
+            <Button  x:Name="IMPORTEID"  
+                Text="ImportEID"
+                        Clicked="ImportEID" 
+                  />
+            <Button x:Name="IMPORTPEL" 
+                      Text="import ΠΕΛΑΤΩΝ"
+                       Clicked="ImportPEL" 
+               
+                 />
+
+            <Button x:Name="CREATETABLES"
+                      Text="ΔΗΜΙΟΥΡΓΙΑ ΠΙΝΑΚΩΝ"
+                       Clicked="CreateTables" 
+               
+                 />
+<Label Text="Welcome to Page2 !"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

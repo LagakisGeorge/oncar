@@ -9,10 +9,14 @@
         <Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"
             />
+
+        <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
+                Clicked="PARAGG" />
+        
         <Button Text="test sql"
                 Clicked="Runsql" />
         <Button x:Name="but1" 
-                Text="Page2"
+                Text="Ενημερωση από Αρχεία"
                 Clicked="toPage2"
                  />
         <Button x:Name="but11" 
