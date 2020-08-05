@@ -4,9 +4,9 @@
              x:Class="test4sql.Page2">
     <ContentPage.Content>
         <StackLayout>
-            
 
 
+            <ProgressBar x:Name="PROG" ProgressColor="Orange" />
 
             <Button  x:Name="IMPORTEID"  
                 Text="ImportEID"

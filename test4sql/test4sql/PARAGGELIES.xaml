@@ -16,21 +16,28 @@
                 Text="..................." 
                      HorizontalOptions="Center"
                   />
-            <Button x:Name="BRESafm" 
+
+            <StackLayout Orientation="Horizontal" >
+
+                <Button x:Name="BRESafm" 
                     Text="ΑΝΑΖΗΤΗΣΗ ΠΕΛΑΤΗ"
                         Clicked="BRES_AFM" 
                   />
-            <Button x:Name="but10" 
+                <Button x:Name="but10" 
                         Text="ΑΝΑΖΗΤΗΣΗ ΕΙΔΟΥΣ"
                        Clicked="Click_Login" 
                
                  />
+
+            </StackLayout>
+            
             <Entry x:Name="BARCODE"
                    Placeholder="BARCODE" 
                    
                    />
             <Entry x:Name="POSOTHTA"
                    Placeholder="ΠΟΣΟΤΗΤΑ" 
+                   Completed="posothtaCompleted"
                    
                    />
 

@@ -40,8 +40,11 @@ namespace test4sql
 
 
 
+        async void posothtaCompleted(object sender, EventArgs e)
+        {
 
-
+        }
+        
 
         async void BRES_AFM(object sender, EventArgs e)
         {

@@ -53,6 +53,27 @@ namespace test4sql
 
             await DisplayAlert("ΠΕΛΑΤΕΣ ΟΚ", "ΠΕΛΑΤΕΣ ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
+            c = "CREATE TABLE IF NOT EXISTS EGGTIM (" +
+                    "[ATIM] [varchar](55)," +
+                    "[HME] [datetime] ," +
+                    "[IDPARAGG] [int] ," +
+                    "[KODE] [nvarchar](55) ," +
+                    "[POSO] [real] ," +
+                    "[TIMH] [real] ," +
+                    "[ONO] [varchar](55) ," +
+                    "[PROSUETA] [varchar](55) ," +
+                    "[CH1] [varchar](55) ," +
+                    "[CH2] [varchar](55) ," +
+                    "[NUM1] [int] ," +
+                    "[NUM2] [int] ," +
+                    "[ENERGOS] [int] ," +
+                    "[ID]  INTEGER PRIMARY KEY )";
+
+            l = MainPage.ExecuteSqlite(c);
+
+
+
+
 
 
 
@@ -119,6 +140,10 @@ namespace test4sql
 
         async void ImportEID(object sender, EventArgs e)
         {
+
+            // animate to 75% progress over 500 milliseconds with linear easing
+            await PROG.ProgressTo(1, 255500, Easing.Linear);
+
             // διαβαζω το αρχείο των ειδων
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://192.168.1.4/backpel/EID.txt");
@@ -156,7 +181,17 @@ namespace test4sql
                     cc = cc.Replace("'", "`");
                     n2 = MainPage.ExecuteSqlite("insert into EID (KOD,ONO,BARCODE) VALUES ('"+lines2[0]+ "','" + cc + "','"+lines2[7]+"');");
                     IMPORTEID.Text =  lines[n] ;
+                    if (n == 2000)
+                    {
+                        PROG.ProgressColor = Color.Red ;
+                        await PROG.ProgressTo(1, 255500, Easing.Linear);
+                    }
 
+                    if (n == 4000)
+                    {
+                        PROG.ProgressColor = Color.Blue ;
+                        await PROG.ProgressTo(1, 255500, Easing.Linear);
+                    }
 
                 }
 
