@@ -41,7 +41,19 @@
                    
                    />
 
+            <StackLayout Orientation="Horizontal" >
 
+                <Button x:Name="BRESafm2" 
+                    Text="ΑΝΑΖΗΤΗΣΗ ΠΕΛΑΤΗ"
+                        Clicked="BRES2_AFM" 
+                  />
+                <Button x:Name="but102" 
+                        Text="ΑΝΑΖΗΤΗΣΗ ΕΙΔΟΥΣ"
+                       Clicked="Click2_Login" 
+               
+                 />
+
+            </StackLayout>
 
 
 
