@@ -7,15 +7,82 @@
              x:Class="test4sql.PARAGGELIES">
     <ContentPage.Content>
         <StackLayout>
-            <Entry x:Name="AFM"
-                   Placeholder="ΑΦΜ" 
-                   
-                   />
+            <StackLayout Orientation="Horizontal" >
+              <Label  x:Name="LABPEL"  
+                Text="ΑΦΜ    " />                  
+                <Entry x:Name="AFM"
+                   Placeholder="ΑΦΜ"/>
+            </StackLayout>
 
-            <Label  x:Name="LABPEL"  
-                Text="..................." 
-                     HorizontalOptions="Center"
-                  />
+            <StackLayout Orientation="Horizontal" >
+                <Label    
+                Text="BARCODE"  />
+                <Entry x:Name="BARCODE"
+                   Placeholder="BARCODE" />
+            </StackLayout>
+            <Label    
+                Text="...."  />
+            <Label    
+                Text="...."  />
+
+
+
+
+            <StackLayout Orientation="Horizontal" >
+                <Label    
+                Text="ΠΟΣΟΤΗΤΑ"  />
+                <Entry x:Name="POSOTHTA"
+                   Placeholder="ΠΟΣΟΤΗΤΑ" 
+                   Completed="posothtaCompleted"/>
+
+                <Label    
+                Text="Συν.Παρ"  />
+                <Label    
+                Text="...."  />
+
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" >
+                <Label    
+                Text="ΤΙΜΗ"  />
+                <Entry x:Name="TIMH"
+                   Placeholder="ΤΙΜΗ" 
+                   Completed="posothtaCompleted"/>
+
+                <Label    
+                Text="ΑΞΙΑ"  />
+                <Label    
+                Text="...."  />
+
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" >
+                <Label    
+                Text="ΑΝΑΜ"  />
+                
+
+                <Label    
+                Text="....."  />
+                
+
+            </StackLayout>
+
+
+            <StackLayout Orientation="Horizontal" >
+                <Label    
+                Text="ΥΠΟΛ."  />
+                <Label    
+                Text="...."  />
+
+                <Label    
+                Text="ΔΕΣΜ"  />
+                <Label    
+                Text="...."  />
+
+            </StackLayout>
+
+
+
 
             <StackLayout Orientation="Horizontal" >
 
@@ -30,31 +97,6 @@
                  />
 
             </StackLayout>
-            
-            <Entry x:Name="BARCODE"
-                   Placeholder="BARCODE" 
-                   
-                   />
-            <Entry x:Name="POSOTHTA"
-                   Placeholder="ΠΟΣΟΤΗΤΑ" 
-                   Completed="posothtaCompleted"
-                   
-                   />
-
-            <StackLayout Orientation="Horizontal" >
-
-                <Button x:Name="BRESafm2" 
-                    Text="ΑΝΑΖΗΤΗΣΗ ΠΕΛΑΤΗ"
-                        Clicked="BRES2_AFM" 
-                  />
-                <Button x:Name="but102" 
-                        Text="ΑΝΑΖΗΤΗΣΗ ΕΙΔΟΥΣ"
-                       Clicked="Click2_Login" 
-               
-                 />
-
-            </StackLayout>
-
 
 
         </StackLayout>

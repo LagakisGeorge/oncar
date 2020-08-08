@@ -154,10 +154,24 @@ namespace test4sql
             {
 
                int n22 = MainPage.ExecuteSqlite("delete from EID;");
-               // Κωδικός0;       Περιγραφή1;                        ΕΝΑΛ.ΚΩΔΙΚΟΣ2; Χονδρικής3; Υπολ.1-4; Δεσμευμένα5; Αναμενόμενα6; Barcode 7   
-               //  12 - 01 - 30; ΛΑΜΠΑΔΑ ΚΕΡΙΝΗ KOKKINΗ ΚΑΛΛΑΣ/ ΤΡΙΑΝ; 12 - 01 - 30; 2,7000; ; 3; ; 5200001201306
-               //  12 - 01 - 31; ΛΑΜΠΑΔΑ ΚΕΡΙΝΗ ΚΙΤΡΙΝΗ ΚΑΛΛΑΣ/ ΤΡΙΑΝ; 12 - 01 - 31; 2,7000; ; 3; ; 5200001201313
-                
+                // Κωδικός0;       Περιγραφή1;                        ΕΝΑΛ.ΚΩΔΙΚΟΣ2; Χονδρικής3; Υπολ.1-4; Δεσμευμένα5; Αναμενόμενα6; Barcode 7   
+                //  12 - 01 - 30; ΛΑΜΠΑΔΑ ΚΕΡΙΝΗ KOKKINΗ ΚΑΛΛΑΣ/ ΤΡΙΑΝ; 12 - 01 - 30; 2,7000; ; 3; ; 5200001201306
+                //  12 - 01 - 31; ΛΑΜΠΑΔΑ ΚΕΡΙΝΗ ΚΙΤΡΙΝΗ ΚΑΛΛΑΣ/ ΤΡΙΑΝ; 12 - 01 - 31; 2,7000; ; 3; ; 5200001201313
+
+             /*   string c = "CREATE TABLE IF NOT EXISTS EID( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25)," +
+                   "[ONO] [nvarchar](255) ," +
+                    "[ENAL] [nvarchar](25) ," +
+                     "[YPOL] [real] ," +
+                      "[XONDR] [real] ," +
+                        "[DESM] [real] ," +
+                        "[ANAM] [real] ," +
+                      "[BARCODE] [nvarchar](15)  )  ";   */
+
+
+
+
+
+
                 //Get readable stream.
                 var readStream = file.GetInputStream();
                 //Create reading buffer.
@@ -179,7 +193,25 @@ namespace test4sql
                     string[] lines2 = lines[n].Split(';');
                     string cc = lines2[1];
                     cc = cc.Replace("'", "`");
-                    n2 = MainPage.ExecuteSqlite("insert into EID (KOD,ONO,BARCODE) VALUES ('"+lines2[0]+ "','" + cc + "','"+lines2[7]+"');");
+
+                    string enal = lines2[2];
+                    enal = enal.Replace(",", ".");
+
+                    string ypol = lines2[3];
+                    ypol = ypol.Replace(",", ".");
+
+                    string xondr = lines2[4];
+                    xondr = xondr.Replace(",", ".");
+
+                    string desm = lines2[5];
+                    desm = desm.Replace(",", ".");
+
+                    string anam = lines2[6];
+                    anam = anam.Replace(",", ".");
+
+
+                    // Κωδικός0;Περιγραφή1;ΕΝΑΛ.ΚΩΔΙΚΟΣ2;Χονδρικής3;Υπολ.1-4; Δεσμευμένα5; Αναμενόμενα6; Barcode 7   
+                    n2 = MainPage.ExecuteSqlite("insert into EID (KOD,ONO,ENAL,YPOL,DESM,ANAM,BARCODE) VALUES ('"+lines2[0]+ "','" + cc + "',"+enal+","+ypol+","+desm+","+anam+",'"+lines2[7]+"');");
                     IMPORTEID.Text =  lines[n] ;
                     if (n == 2000)
                     {
