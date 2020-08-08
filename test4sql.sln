@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test4sql.Android", "test4sq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test4sql.iOS", "test4sql\test4sql.iOS\test4sql.iOS.csproj", "{5CF46F61-7B8F-4FEB-B920-00575044AF4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test4sql", "test4sql\test4sql\test4sql.csproj", "{A761D44D-9092-498B-AACE-3834401FF4E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test4sql", "test4sql\test4sql\test4sql.csproj", "{A761D44D-9092-498B-AACE-3834401FF4E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

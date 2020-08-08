@@ -142,7 +142,7 @@ namespace test4sql
         {
 
             // animate to 75% progress over 500 milliseconds with linear easing
-            await PROG.ProgressTo(1, 255500, Easing.Linear);
+          //  await PROG.ProgressTo(1, 255500, Easing.Linear);
 
             // διαβαζω το αρχείο των ειδων
             //Get the SmbFile specifying the file name to be created.
@@ -195,18 +195,23 @@ namespace test4sql
                     cc = cc.Replace("'", "`");
 
                     string enal = lines2[2];
+                    if (enal.Length == 0) { enal = "0"; };
                     enal = enal.Replace(",", ".");
 
                     string ypol = lines2[3];
+                    if (ypol.Length == 0) { ypol = "0"; };
                     ypol = ypol.Replace(",", ".");
 
                     string xondr = lines2[4];
+                    if (xondr.Length == 0) { xondr = "0"; };
                     xondr = xondr.Replace(",", ".");
 
                     string desm = lines2[5];
+                    if (desm.Length == 0) { desm = "0"; };
                     desm = desm.Replace(",", ".");
 
                     string anam = lines2[6];
+                    if (anam.Length == 0) { anam = "0"; };
                     anam = anam.Replace(",", ".");
 
 
@@ -215,14 +220,14 @@ namespace test4sql
                     IMPORTEID.Text =  lines[n] ;
                     if (n == 2000)
                     {
-                        PROG.ProgressColor = Color.Red ;
-                        await PROG.ProgressTo(1, 255500, Easing.Linear);
+                       // PROG.ProgressColor = Color.Red ;
+                       // await PROG.ProgressTo(1, 255500, Easing.Linear);
                     }
 
                     if (n == 4000)
                     {
-                        PROG.ProgressColor = Color.Blue ;
-                        await PROG.ProgressTo(1, 255500, Easing.Linear);
+                       // PROG.ProgressColor = Color.Blue ;
+                       // await PROG.ProgressTo(1, 255500, Easing.Linear);
                     }
 
                 }
