@@ -11,18 +11,28 @@
               <Label  x:Name="LABPEL"  
                 Text="ΑΦΜ    " />                  
                 <Entry x:Name="AFM"
-                   Placeholder="ΑΦΜ"/>
+                   Placeholder="ΑΦΜ        "/>
+                <Button x:Name="BRESafm" 
+                    Text="ΑΝΑΖΗΤΗΣΗ"
+                        Clicked="BRES_AFM" 
+                  />
+
+                <Label  x:Name="laritmisi"  
+                Text="....   " />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" >
                 <Label    
                 Text="BARCODE"  />
                 <Entry x:Name="BARCODE"
-                   Placeholder="BARCODE" />
-            </StackLayout>
-            <Label    
+                   Placeholder="BARCODE      " />
+                <Button x:Name="but10" 
+                        Text="ΑΝΑΖΗΤΗΣΗ"
+                       Clicked="Click_Login"  />
+                </StackLayout>
+            <Label    x:Name="lper"
                 Text="...."  />
-            <Label    
+            <Label   x:Name="lbarcode" 
                 Text="...."  />
 
 
@@ -30,9 +40,11 @@
 
             <StackLayout Orientation="Horizontal" >
                 <Label    
+                    BackgroundColor="Azure"
                 Text="ΠΟΣΟΤΗΤΑ"  />
                 <Entry x:Name="POSOTHTA"
-                   Placeholder="ΠΟΣΟΤΗΤΑ" 
+                   Placeholder="....." 
+                    BackgroundColor="Azure"    
                    Completed="posothtaCompleted"/>
 
                 <Label    
@@ -40,14 +52,21 @@
                 <Label    
                 Text="...."  />
 
+                <Button x:Name="katax" 
+                        BackgroundColor="GreenYellow" 
+                        Text="ΚΑΤΑΧΩΡΗΣΗ"
+                       Clicked="kataxorisi"  />
+
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" >
                 <Label    
-                Text="ΤΙΜΗ"  />
-                <Entry x:Name="TIMH"
-                   Placeholder="ΤΙΜΗ" 
-                   Completed="posothtaCompleted"/>
+                Text="ΤΙΜΗ    " 
+                 TextColor="BlueViolet"    />
+                
+                <Label   x:Name="ltimh"
+                  Text="..........."  
+                   />
 
                 <Label    
                 Text="ΑΞΙΑ"  />
@@ -59,25 +78,27 @@
             <StackLayout Orientation="Horizontal" >
                 <Label    
                 Text="ΑΝΑΜ"  />
-                
 
-                <Label    
-                Text="....."  />
+
+                <Label x:Name="lanam"   
+                Text="..........."  />
                 
 
             </StackLayout>
 
 
             <StackLayout Orientation="Horizontal" >
-                <Label    
+                <Label 
+                    TextColor="Green" 
                 Text="ΥΠΟΛ."  />
-                <Label    
-                Text="...."  />
+                
+                <Label     x:Name="lypol"
+                Text="........."  />
 
                 <Label    
                 Text="ΔΕΣΜ"  />
-                <Label    
-                Text="...."  />
+                <Label  x:Name="ldesm"  
+                Text="........"  />
 
             </StackLayout>
 
@@ -86,15 +107,8 @@
 
             <StackLayout Orientation="Horizontal" >
 
-                <Button x:Name="BRESafm" 
-                    Text="ΑΝΑΖΗΤΗΣΗ ΠΕΛΑΤΗ"
-                        Clicked="BRES_AFM" 
-                  />
-                <Button x:Name="but10" 
-                        Text="ΑΝΑΖΗΤΗΣΗ ΕΙΔΟΥΣ"
-                       Clicked="Click_Login" 
-               
-                 />
+                
+                
 
             </StackLayout>
 

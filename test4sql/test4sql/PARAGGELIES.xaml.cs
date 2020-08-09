@@ -29,6 +29,8 @@ namespace test4sql
         public PARAGGELIES()
         {
             InitializeComponent();
+            laritmisi.Text = ReadSQL("select CAST(ARITMISI AS VARCHAR(10) ) FROM ARITMISI where ID=1");
+
         }
 
 
@@ -44,7 +46,13 @@ namespace test4sql
         {
 
         }
-        
+
+
+
+        async void kataxorisi(object sender, EventArgs e)
+        {
+
+        }
 
         async void BRES_AFM(object sender, EventArgs e)
         {
@@ -117,14 +125,37 @@ namespace test4sql
             c.CommandText = "Query";
             var rowcount = c.ExecuteNonQuery(); // rowcount will be 1    */
 
+            /*   string c = "CREATE TABLE IF NOT EXISTS EID( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25)," +
+                      "[ONO] [nvarchar](255) ," +
+                       "[ENAL] [nvarchar](25) ," +
+                        "[YPOL] [real] ," +
+                         "[XONDR] [real] ," +
+                           "[DESM] [real] ," +
+                           "[ANAM] [real] ," +
+                         "[BARCODE] [nvarchar](15)  )  ";   */
+
+
+
+
+
+
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  * from EID WHERE BARCODE like '%"+BARCODE.Text +"%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE from EID WHERE BARCODE like '%"+BARCODE.Text +"%' LIMIT 1 ; "; // +BARCODE.Text +"'";
                 var r = contents.ExecuteReader();
                 Console.WriteLine("Reading data");
             while (r.Read())
             {
-                but10.Text = r["ONO"].ToString();
+                lper.Text = r["ONO"].ToString();  // ****
+                ltimh.Text = r["XONDR"].ToString();
+                string ccc = r["XONDR"].ToString();
+                lanam.Text = r["ANAM"].ToString(); // ***
+                ldesm.Text = r["DESM"].ToString(); // ****
+                lypol.Text = r["YPOL"].ToString();
+                lbarcode.Text = r["BARCODE"].ToString();  // ***
+
+
+
             }
                // r["ONO"].ToString();
                    
@@ -152,10 +183,26 @@ namespace test4sql
         }
 
 
+        public string ReadSQL(string Query)
+        {
+            string dbPath = Path.Combine(
+                  Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                  "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            // query the database to prove data was inserted!
+            var contents = connection.CreateCommand();
+            contents.CommandText = Query ;
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            string cc="";
+            while (r.Read())
+            {cc = r[0].ToString();}
+            connection.Close();
+            return cc;
 
-
-
-
+        }
 
 
 

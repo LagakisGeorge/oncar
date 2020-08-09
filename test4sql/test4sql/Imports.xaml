@@ -18,11 +18,29 @@
                
                  />
 
+            <Button x:Name="test2"
+                      Text="test"
+                       Clicked="test" 
+            />
+
+            <Button x:Name="test22"
+                      Text="test2"
+                       
+            />
+
             <Button x:Name="CREATETABLES"
                       Text="ΔΗΜΙΟΥΡΓΙΑ ΠΙΝΑΚΩΝ"
                        Clicked="CreateTables" 
                
                  />
+            
+            
+            
+            
+            
+            
+            
+            
 <Label Text="Welcome to Page2 !"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
