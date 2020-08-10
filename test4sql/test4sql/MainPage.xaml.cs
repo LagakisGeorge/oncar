@@ -35,7 +35,16 @@ namespace test4sql
         {
             InitializeComponent();
             // MainPage = new NavigationPage(new FirstContentPage());
+            try
+            {
+               int i = StartSqlite("");
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
 
+           
 
             string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -52,6 +61,63 @@ namespace test4sql
         }
 
 
+        public static int StartSqlite(string Query)
+        {
+            // determine the path for the database file
+            string dbPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+            connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            var c = connection.CreateCommand();
+
+            Query  = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
+                   "[EPO] [nvarchar](255) ," +
+                    "[DIE] [nvarchar](35) ," +
+                      "[POL] [nvarchar](35) ," +
+                        "[THL] [nvarchar](35) ," +
+                      "[AFM] [nvarchar](15) )";
+          
+
+
+
+
+
+            c.CommandText = Query;
+
+            var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
+
+            string c2 = PARAGGELIES.ReadSQL("select CAST(count(*) AS VARCHAR(10) )  AS NN from MEM ");
+            int n = Int32.Parse(c2);
+            if (n==0)
+            {
+                c.CommandText = "INSERT INTO MEM (IP) VALUES ('*')";
+
+                rowcount = c.ExecuteNonQuery(); // rowcount will be 1
+
+
+
+            }
+
+
+            Globals.cIP= PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
+
+
+
+            // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
+
+
+            return rowcount;
+        }
 
 
 
@@ -449,10 +515,6 @@ namespace test4sql
             var c = connection.CreateCommand() ;
             c.CommandText  = Query;
 
-            /*  c.CommandText = "CREATE TABLE IF NOT EXISTS ARITMISI (ID  INTEGER PRIMARY KEY  ," +
-                    "[ARITMISI] [int] ," +
-                    "[ONO] [nvarchar](55)  );";
-            */
             var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
             return rowcount;
         }

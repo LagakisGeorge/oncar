@@ -28,22 +28,29 @@
                    Placeholder="BARCODE      " />
                 <Button x:Name="but10" 
                         Text="ΑΝΑΖΗΤΗΣΗ"
-                       Clicked="Click_Login"  />
+                       Clicked="BresEidos"  />
                 </StackLayout>
             <Label    x:Name="lper"
-                Text="...."  />
-            <Label   x:Name="lbarcode" 
-                Text="...."  />
-
-
+                Text="............................"  />
 
 
             <StackLayout Orientation="Horizontal" >
+                <Label   x:Name="lkode" 
+                Text=".............."  />
+                <Label   x:Name="lbarcode" 
+                Text="..............."  />
+            </StackLayout >
+
+
+
+
+                    <StackLayout Orientation="Horizontal" >
                 <Label    
                     BackgroundColor="Azure"
                 Text="ΠΟΣΟΤΗΤΑ"  />
                 <Entry x:Name="POSOTHTA"
-                   Placeholder="....." 
+                   Placeholder="0" 
+                       Text="00"
                     BackgroundColor="Azure"    
                    Completed="posothtaCompleted"/>
 
@@ -65,7 +72,7 @@
                  TextColor="BlueViolet"    />
                 
                 <Label   x:Name="ltimh"
-                  Text="..........."  
+                  Text="0"  
                    />
 
                 <Label    
@@ -102,8 +109,53 @@
                 <Button x:Name="bCloseOrder" 
                         BackgroundColor="GreenYellow" 
                         Text="Ολοκλ.παραγγ"
-                       Clicked="kataxorisi"  />
+                       Clicked="CloseOrder"  />
             </StackLayout>
+
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                  HasUnevenRows="true"
+                  ItemSelected="OnListViewItemSelected"
+                  ItemTapped="OnListViewItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2" 
+                                   Source="{Binding ImageUrl}" 
+                                   Aspect="AspectFill"
+                                   HeightRequest="60"
+                                   WidthRequest="60" />
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" />
+                                <Label Grid.Row="1" 
+                                   Grid.Column="1" 
+                                   Text="{Binding Location}"
+                                   VerticalOptions="End" />
+                                <!--       <Label Grid.Row="2" 
+                                   Grid.Column="1" 
+                                   Text="{Binding idPEL}"
+                                   VerticalOptions="End" />   -->
+
+
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
 
 
 

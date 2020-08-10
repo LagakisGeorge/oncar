@@ -26,11 +26,13 @@ namespace test4sql
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PARAGGELIES : ContentPage
     {
+        public IList<Monkey> Monkeys { get; private set; }
+
         public PARAGGELIES()
         {
             InitializeComponent();
             laritmisi.Text = ReadSQL("select CAST(ARITMISI AS VARCHAR(10) ) FROM ARITMISI where ID=1");
-
+            Monkeys = new List<Monkey>();
         }
 
 
@@ -53,9 +55,46 @@ namespace test4sql
             int n2 = MainPage.ExecuteSqlite("update ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID=1;");
 
         }
-        async void kataxorisi(object sender, EventArgs e)
-        {
-           //  int n2 = MainPage.ExecuteSqlite("INSERT INTO EGGTIM (A");
+        async void kataxorisi(object sender, EventArgs e) {
+
+            string cposo=POSOTHTA.Text ;
+            if (cposo.Length == 0) { cposo = "0"; };
+            cposo = cposo.Replace(",", ".");
+
+            string ctimh = ltimh.Text;
+            if (ctimh.Length == 0) { ctimh = "0"; };
+            ctimh = ctimh.Replace(",", ".");
+
+
+
+
+            string cc = "INSERT INTO EGGTIM (ATIM,KODE,POSO,TIMH) VALUES ('" + laritmisi.Text + "','" + lkode.Text + "'," + cposo + "," + ctimh + ")";
+        
+            int n2 = MainPage.ExecuteSqlite(cc);
+
+            Monkeys.Add(new Monkey
+            {
+                Name = lper.Text ,
+
+                Location = lkode.Text ,
+                ImageUrl = POSOTHTA.Text ,
+                idPEL =ltimh.Text
+            });
+
+
+            Monkeys.Add(new Monkey
+            {
+                Name = "=="+lper.Text,
+
+                Location = lkode.Text,
+                ImageUrl = POSOTHTA.Text,
+                idPEL = ltimh.Text
+            });
+
+            BindingContext = this;
+
+
+
         }
 
         async void BRES_AFM(object sender, EventArgs e)
@@ -106,7 +145,7 @@ namespace test4sql
         }
 
 
-        async void Click_Login(object sender, EventArgs e)
+        async void BresEidos(object sender, EventArgs e)
          {
             // determine the path for the database file
             string dbPath = Path.Combine(
@@ -145,7 +184,7 @@ namespace test4sql
 
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE from EID WHERE BARCODE like '%"+BARCODE.Text +"%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD from EID WHERE BARCODE like '%"+BARCODE.Text +"%' LIMIT 1 ; "; // +BARCODE.Text +"'";
                 var r = contents.ExecuteReader();
                 Console.WriteLine("Reading data");
             while (r.Read())
@@ -156,6 +195,7 @@ namespace test4sql
                 lanam.Text = r["ANAM"].ToString(); // ***
                 ldesm.Text = r["DESM"].ToString(); // ****
                 lypol.Text = r["YPOL"].ToString();
+                lkode.Text = r["KOD"].ToString();
                 lbarcode.Text = r["BARCODE"].ToString();  // ***
 
 
@@ -208,7 +248,16 @@ namespace test4sql
 
         }
 
-       
+        void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            Monkey selectedItem = e.SelectedItem as Monkey;
+        }
+
+        void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Monkey tappedItem = e.Item as Monkey;
+        }
+
 
 
 
@@ -217,4 +266,4 @@ namespace test4sql
 
 
     } //PARAGGELIES
-} //NAMESPACE 
+    } //NAMESPACE 

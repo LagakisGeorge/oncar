@@ -5,6 +5,16 @@ using System.Text;
 namespace test4sql
 {
 
+    static class Globals
+    {
+        public static string cIP ;
+
+
+
+    } 
+
+
+
     public class Monkey
     {
         public string Name { get; set; }

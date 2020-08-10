@@ -124,7 +124,12 @@ namespace test4sql
             // διαβαζω το αρχείο των ειδων  
             // διαβαζω το αρχείο των ειδων
             //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://DESKTOP-MPGU8SB/backpel/PEL.txt");
+
+
+           // var file = new SmbFile("smb://DESKTOP-MPGU8SB/backpel/PEL.txt");
+            var file = new SmbFile("smb://"+Globals.cIP +"/PEL.txt");
+           
+            
             //Get target's SmbFile.
             // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
             // ΧΩΡΙς ΚΩΔΙΚΟ :   var file = new SmbFile("smb://192.168.1.4/backpel/EID.txt");
@@ -237,7 +242,7 @@ namespace test4sql
             Thread.Sleep(500);
            
 
-            var file = new SmbFile("smb://DESKTOP-MPGU8SB/backpel/EID.txt");
+            var file = new SmbFile("smb://"+Globals.cIP +"/EID.txt");
             //Get target's SmbFile.
             // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
             // ΧΩΡΙς ΚΩΔΙΚΟ :   var file = new SmbFile("smb://192.168.1.4/backpel/EID.txt");
