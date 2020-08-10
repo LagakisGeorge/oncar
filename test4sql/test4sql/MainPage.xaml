@@ -27,6 +27,10 @@
                 Text="Topage1"
                 Clicked="ToPage1"
                  />
+        <Button x:Name="param" 
+                Text="ΠΑΡΑΜΕΤΡΟΙ"
+                Clicked="fparam"
+                 />
 
         <ListView ItemsSource="{Binding Monkeys}"
                   HasUnevenRows="true"

@@ -102,7 +102,8 @@ namespace test4sql
                        "[POL] [nvarchar](35) ," +
                          "[THL] [nvarchar](35) ," +
                        "[AFM] [nvarchar](15) )";
-
+            l = MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+            await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
             l = MainPage.ExecuteSqlite(c);
 
@@ -123,7 +124,7 @@ namespace test4sql
             // διαβαζω το αρχείο των ειδων  
             // διαβαζω το αρχείο των ειδων
             //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://192.168.1.5/backpel/PEL.txt");
+            var file = new SmbFile("smb://DESKTOP-MPGU8SB/backpel/PEL.txt");
             //Get target's SmbFile.
             // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
             // ΧΩΡΙς ΚΩΔΙΚΟ :   var file = new SmbFile("smb://192.168.1.4/backpel/EID.txt");
@@ -236,7 +237,7 @@ namespace test4sql
             Thread.Sleep(500);
            
 
-            var file = new SmbFile("smb://192.168.1.5/backpel/EID.txt");
+            var file = new SmbFile("smb://DESKTOP-MPGU8SB/backpel/EID.txt");
             //Get target's SmbFile.
             // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
             // ΧΩΡΙς ΚΩΔΙΚΟ :   var file = new SmbFile("smb://192.168.1.4/backpel/EID.txt");

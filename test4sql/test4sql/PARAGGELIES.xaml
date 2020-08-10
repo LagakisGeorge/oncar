@@ -98,8 +98,11 @@
                 <Label    
                 Text="ΔΕΣΜ"  />
                 <Label  x:Name="ldesm"  
-                Text="........"  />
-
+                Text=".................."  />
+                <Button x:Name="bCloseOrder" 
+                        BackgroundColor="GreenYellow" 
+                        Text="Ολοκλ.παραγγ"
+                       Clicked="kataxorisi"  />
             </StackLayout>
 
 

@@ -7,9 +7,20 @@
              x:Class="test4sql.param1">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
+            <Label Text="Κοινόχρηστος Φάκελος"
+                
                 HorizontalOptions="CenterAndExpand" />
+
+            <Entry x:Name="fakelos"
+                   Placeholder="....." 
+                    BackgroundColor="Azure"    
+                   />
+            <Button x:Name="katax" 
+                    Text="ΚΑΤΑΧΩΡΗΣΗ"
+                        Clicked="fkatax" 
+                  />
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

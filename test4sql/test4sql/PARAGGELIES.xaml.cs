@@ -47,11 +47,15 @@ namespace test4sql
 
         }
 
+        
+        async void CloseOrder(object sender, EventArgs e)
+        {
+            int n2 = MainPage.ExecuteSqlite("update ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID=1;");
 
-
+        }
         async void kataxorisi(object sender, EventArgs e)
         {
-
+           //  int n2 = MainPage.ExecuteSqlite("INSERT INTO EGGTIM (A");
         }
 
         async void BRES_AFM(object sender, EventArgs e)
@@ -183,7 +187,7 @@ namespace test4sql
         }
 
 
-        public string ReadSQL(string Query)
+        public static string ReadSQL(string Query)
         {
             string dbPath = Path.Combine(
                   Environment.GetFolderPath(Environment.SpecialFolder.Personal),
@@ -204,7 +208,7 @@ namespace test4sql
 
         }
 
-
+       
 
 
 

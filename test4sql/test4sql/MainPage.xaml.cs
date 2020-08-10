@@ -322,10 +322,19 @@ namespace test4sql
         private async void toPage2(object sender, EventArgs e)
         {
 
-            await Navigation.PushAsync(new Page2());
-            // await Navigation.PushAsync(new Page2 { });
-            // await NavigationPage (new Page2());
+            await Navigation.PushAsync(new Page2());  //imports
+           
         }
+
+        private async void fparam(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new param1());  //imports
+
+        }
+
+
+
 
         public DataSet Execute(String query)
         {
