@@ -114,26 +114,45 @@
 
 
             <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
                   HasUnevenRows="true"
                   ItemSelected="OnListViewItemSelected"
                   ItemTapped="OnListViewItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="10">
+                            <StackLayout Orientation="Horizontal" >
+
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" />
+                                <Label 
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    />
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    />
+
+
+                              <!--   <Grid Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />   
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
+                                  <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.RowSpan="2" 
+                                </Grid.ColumnDefinitions> 
+                                  <Image Grid.RowSpan="2" 
                                    Source="{Binding ImageUrl}" 
                                    Aspect="AspectFill"
                                    HeightRequest="60"
-                                   WidthRequest="60" />
+                                   WidthRequest="60" />  
                                 <Label Grid.Column="1" 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" />
@@ -141,14 +160,17 @@
                                    Grid.Column="1" 
                                    Text="{Binding Location}"
                                    VerticalOptions="End" />
-                                <!--       <Label Grid.Row="2" 
+                                      <Label Grid.Row="2" 
                                    Grid.Column="1" 
                                    Text="{Binding idPEL}"
-                                   VerticalOptions="End" />   -->
+                                   VerticalOptions="End" />   
 
 
 
-                            </Grid>
+                            </Grid>-->
+
+
+                          </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

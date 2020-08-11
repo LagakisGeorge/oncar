@@ -65,7 +65,7 @@ namespace test4sql
             if (ctimh.Length == 0) { ctimh = "0"; };
             ctimh = ctimh.Replace(",", ".");
 
-
+            BindingContext = null;
 
 
             string cc = "INSERT INTO EGGTIM (ATIM,KODE,POSO,TIMH) VALUES ('" + laritmisi.Text + "','" + lkode.Text + "'," + cposo + "," + ctimh + ")";
@@ -82,14 +82,7 @@ namespace test4sql
             });
 
 
-            Monkeys.Add(new Monkey
-            {
-                Name = "=="+lper.Text,
-
-                Location = lkode.Text,
-                ImageUrl = POSOTHTA.Text,
-                idPEL = ltimh.Text
-            });
+            
 
             BindingContext = this;
 
