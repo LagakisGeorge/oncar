@@ -124,7 +124,7 @@ namespace test4sql
             // διαβαζω το αρχείο των ειδων  
             // διαβαζω το αρχείο των ειδων
             //Get the SmbFile specifying the file name to be created.
-
+            CrossToastPopUp.Current.ShowToastMessage("loading...");
 
            // var file = new SmbFile("smb://DESKTOP-MPGU8SB/backpel/PEL.txt");
             var file = new SmbFile("smb://"+Globals.cIP +"/PEL.txt");

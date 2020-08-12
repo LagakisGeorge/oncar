@@ -10,7 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 
-
+using Plugin.Toast;
 using System.Data.SqlClient;
 
 
@@ -247,7 +247,7 @@ namespace test4sql
             }
             connection.Close();
             SaveFile(cc);
-
+            CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
 
         }
 
@@ -296,7 +296,7 @@ namespace test4sql
             }
             catch
             {
-               // await DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
+                DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
                 return;
             }
 

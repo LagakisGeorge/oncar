@@ -7,145 +7,174 @@
              x:Class="test4sql.PARAGGELIES">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Orientation="Horizontal" >
-              <Label  x:Name="LABPEL"  
-                Text="ΑΦΜ    " />                  
-                <Entry x:Name="AFM"
-                   Placeholder="ΑΦΜ        "/>
-                <Button x:Name="BRESafm" 
-                    Text="ΑΝΑΖΗΤΗΣΗ"
+
+            
+
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+           
+            
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label  x:Name="LABPEL"  
+                Text="ΑΦΜ    "
+                Grid.Row="0" Grid.Column="2"   Grid.ColumnSpan ="2"      />
+
+        <Entry x:Name="AFM"
+                   Placeholder="ΑΦΜ        "  Grid.Row="0" Grid.Column="1"   />
+        <Button x:Name="BRESafm" 
+                    Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="0" Grid.Column="0"   
                         Clicked="BRES_AFM" 
                   />
 
-                <Label  x:Name="laritmisi"  
+        <Label  x:Name="laritmisi"   Grid.Row="0" Grid.Column="4"   
                 Text="....   " />
-            </StackLayout>
 
-            <StackLayout Orientation="Horizontal" >
-                <Label    
-                Text="BARCODE"  />
-                <Entry x:Name="BARCODE"
-                   Placeholder="BARCODE      " />
-                <Button x:Name="but10" 
-                        Text="ΑΝΑΖΗΤΗΣΗ"
+
+        
+        
+
+        <Label    
+                Text="BARCODE"  Grid.Row="1" Grid.Column="0" />
+        
+        
+        <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1"
+                   Placeholder="BARCODE      "  />
+
+
+        <Button x:Name="but10" 
+                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="1" Grid.Column="2"
                        Clicked="BresEidos"  />
-                </StackLayout>
-            <Label    x:Name="lper"
+
+                <Label    x:Name="lper"   Grid.Row="1" Grid.Column="3" Grid.ColumnSpan ="3"
                 Text="............................"  />
 
 
-            <StackLayout Orientation="Horizontal" >
-                <Label   x:Name="lkode" 
+
+
+        <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
                 Text=".............."  />
-                <Label   x:Name="lbarcode" 
+        <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
                 Text="..............."  />
-            </StackLayout >
 
 
-
-
-                    <StackLayout Orientation="Horizontal" >
-                <Label    
+        <Label     Grid.Row="3" Grid.Column="0" 
                     BackgroundColor="Azure"
                 Text="ΠΟΣΟΤΗΤΑ"  />
-                <Entry x:Name="POSOTHTA"
+        <Entry x:Name="POSOTHTA"   Grid.Row="3" Grid.Column="1" 
                    Placeholder="0" 
                        Text="00"
                     BackgroundColor="Azure"    
                    Completed="posothtaCompleted"/>
 
-                <Label    
+        <Label     Grid.Row="3" Grid.Column="2" 
                 Text="Συν.Παρ"  />
-                <Label    
+        <Label     Grid.Row="3" Grid.Column="3" 
                 Text="...."  />
 
-                <Button x:Name="katax" 
+        <Button x:Name="katax"  Grid.Row="3" Grid.Column="4" 
                         BackgroundColor="GreenYellow" 
                         Text="ΚΑΤΑΧΩΡΗΣΗ"
                        Clicked="kataxorisi"  />
 
-            </StackLayout>
 
-            <StackLayout Orientation="Horizontal" >
-                <Label    
+
+
+        <Label     Grid.Row="4" Grid.Column="0" 
                 Text="ΤΙΜΗ    " 
                  TextColor="BlueViolet"    />
-                
-                <Label   x:Name="ltimh"
+
+        <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" 
                   Text="0"  
                    />
 
-                <Label    
+        <Label     Grid.Row="4" Grid.Column="2" 
                 Text="ΑΞΙΑ"  />
-                <Label    
+        <Label     Grid.Row="4" Grid.Column="3" 
                 Text="...."  />
 
-            </StackLayout>
 
-            <StackLayout Orientation="Horizontal" >
-                <Label    
+
+        <Label     Grid.Row="5" Grid.Column="0" 
                 Text="ΑΝΑΜ"  />
 
-
-                <Label x:Name="lanam"   
+        <Label x:Name="lanam"   Grid.Row="5" Grid.Column="1"
                 Text="................................."  />
 
-                <Button x:Name="WriteFiles" 
+        <Button x:Name="WriteFiles" Grid.Row="5" Grid.Column="2"
                         BackgroundColor="GreenYellow" 
                         Text="Αποστολή Παραγγ"
                        Clicked="WriteFile"  />
-                
-            </StackLayout>
 
 
-            <StackLayout Orientation="Horizontal" >
-                <Label 
+
+        <Label   Grid.Row="6" Grid.Column="0"
                     TextColor="Green" 
                 Text="ΥΠΟΛ."  />
-                
-                <Label     x:Name="lypol"
+
+        <Label     x:Name="lypol"  Grid.Row="4" Grid.Column="1"
                 Text="........."  />
 
-                <Label    
+        <Label    Grid.Row="6" Grid.Column="2"
                 Text="ΔΕΣΜ"  />
-                <Label  x:Name="ldesm"  
+        <Label  x:Name="ldesm"  Grid.Row="6" Grid.Column="3"
                 Text=".................."  />
-                <Button x:Name="bCloseOrder" 
+        <Button x:Name="bCloseOrder" Grid.Row="6" Grid.Column="4"
                         BackgroundColor="GreenYellow" 
+                        
                         Text="Ολοκλ.παραγγ"
                        Clicked="CloseOrder"  />
+  
 
-               
-            </StackLayout>
-            
 
-            <ListView ItemsSource="{Binding Monkeys}"
+
+
+    </Grid>
+
+<ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
                   HasUnevenRows="true"
                   ItemSelected="OnListViewItemSelected"
                   ItemTapped="OnListViewItemTapped">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal" >
 
-                                <Label Grid.Column="1" 
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal" >
+
+                        <Label Grid.Column="1" 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" />
-                                <Label 
+                        <Label 
                                     
                                    Text="{Binding Location}"
                                     />
 
-                                <Label                                    
+                        <Label                                    
                                    Text="{Binding idPEL}"
                                     />
-                                <Label                                    
+                        <Label                                    
                                    Text="{Binding ImageUrl}" 
                                     />
 
 
-                              <!--   <Grid Padding="10">
+                        <!--   <Grid Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />   
@@ -176,26 +205,20 @@
                             </Grid>-->
 
 
-                          </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+
+
+            
+                </StackLayout>
+</ContentPage.Content>
 
 
 
 
 
 
-
-            <StackLayout Orientation="Horizontal" >
-
-                
-                
-
-            </StackLayout>
-
-
-        </StackLayout>
-    </ContentPage.Content>
 </ContentPage>
