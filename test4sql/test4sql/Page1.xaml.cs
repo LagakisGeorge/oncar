@@ -32,7 +32,7 @@ namespace test4sql
         async void Click_Login(object sender, EventArgs e)
         {
             // To create a new subfolder in the local folder, call the CreateFolderAsync method.
-            String folderName = "csharp";
+           // String folderName = "csharp";
           //  IFolder folder = FileSystem.Current.LocalStorage;
           //  folder = await folder.CreateFolderAsync(folderName, CreationCollisionOption.ReplaceExisting);
           
@@ -42,24 +42,27 @@ namespace test4sql
         {
 
             //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
-
+            var file = new SmbFile("smb://"+Globals.cIP +"/New2FileName.txt");
+           // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
             try
             {
  //Create file.
             file.CreateNewFile();
             }
             catch {
-                 await DisplayAlert("Error", "....", "OK");
+                 await DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
                 return;
             }
            
 
             //Get writable stream.
             var writeStream = file.GetOutputStream();
+            string c = "1;2;3;4;5;6;7;8;\n";
+            c = c + "8;8;9;9;9;9;9;9\n";
+            c = c + "18;18;19;19;19;19;19;19\n";
 
             //Write bytes.
-            writeStream.Write(Encoding.UTF8.GetBytes("Hello!"));
+            writeStream.Write(Encoding.UTF8.GetBytes(c));
 
             //Dispose writable stream.
             writeStream.Dispose();
@@ -71,7 +74,12 @@ namespace test4sql
         }
 
 
-       async void ReadFile(object sender, EventArgs e)
+ 
+
+
+
+
+        async void ReadFile(object sender, EventArgs e)
         {
             bool f = ReadFiles();
             //Get the SmbFile specifying the file name to be created.
@@ -151,7 +159,7 @@ namespace test4sql
             // Create New file
 
             // To create a new file in the local folder, call the CreateFileAsync method.
-            String filename = "username.txt";
+            //String filename = "username.txt";
           //  IFolder folder = FileSystem.Current.LocalStorage;
           //  IFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 

@@ -7,19 +7,26 @@
              x:Class="test4sql.param1">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Κοινόχρηστος Φάκελος"
+            <Label Text="Κοινόχρηστος Φάκελος Π.Χ. HPSERVER/KOINOS "
                 
                 HorizontalOptions="CenterAndExpand" />
 
             <Entry x:Name="fakelos"
-                   Placeholder="....." 
+                   Placeholder="ΦΑΚΕΛΟΣ" 
+                    BackgroundColor="Azure"    
+                   />
+
+            <Label Text="SQLSERVER INSTANCE  Π.Χ. HPSERVER/SQLEXPRESS,51403"
+                
+                HorizontalOptions="CenterAndExpand" />
+            <Entry x:Name="sqlserver"
+                   Placeholder="SQLSERVER INSTANCE" 
                     BackgroundColor="Azure"    
                    />
             <Button x:Name="katax" 
                     Text="ΚΑΤΑΧΩΡΗΣΗ"
                         Clicked="fkatax" 
                   />
-
 
         </StackLayout>
     </ContentPage.Content>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 
 
 using System.Data.SqlClient;
@@ -220,6 +220,38 @@ namespace test4sql
         }
 
 
+
+        async void WriteFile(object sender, EventArgs e)
+        {
+
+
+            string dbPath = Path.Combine(
+                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                     "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            // query the database to prove data was inserted!
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT ATIM,KODE,POSO,TIMH FROM EGGTIM";
+            var r = contents.ExecuteReader();
+            // Console.WriteLine("Reading data");
+            string cc = "";
+            while (r.Read())
+            {
+                cc = cc + r["ATIM"].ToString() + ";";
+                cc = cc + r["KODE"].ToString() + ";";
+                cc = cc + r["POSO"].ToString() + ";";
+                cc = cc + r["TIMH"].ToString() + "\n";
+
+            }
+            connection.Close();
+            SaveFile(cc);
+
+
+        }
+
+
         public static string ReadSQL(string Query)
         {
             string dbPath = Path.Combine(
@@ -252,7 +284,35 @@ namespace test4sql
         }
 
 
+        void SaveFile(string text)
+        {
+            //Get the SmbFile specifying the file name to be created.
+            var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
+            // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+            try
+            {
+                //Create file.
+                file.CreateNewFile();
+            }
+            catch
+            {
+               // await DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
+                return;
+            }
 
+
+            //Get writable stream.
+            var writeStream = file.GetOutputStream();
+            string c = "1;2;3;4;5;6;7;8;\n";
+            c = c + "8;8;9;9;9;9;9;9\n";
+            c = c + "18;18;19;19;19;19;19;19\n";
+
+            //Write bytes.
+            writeStream.Write(Encoding.UTF8.GetBytes(text));
+
+            //Dispose writable stream.
+            writeStream.Dispose();
+        }
 
 
 

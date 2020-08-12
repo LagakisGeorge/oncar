@@ -27,7 +27,7 @@
                 <Label Text="Welcome to Xamarin.Forms!" 
                      HorizontalOptions="Center"
                   />
-                <Button Text="SharedFile"
+                <Button Text="ΑΠΟΘΗΚΕΥΣΗ ΤΕΧΤ ΑΡΧΕΙΟΥ ΣΕ ΚΟΙΝΟΧΡΗΣΤΟ ΦΑΚΕΛΟ"
                         Clicked="Shared_Folder" 
                   />
                 <Button x:Name="but10" 

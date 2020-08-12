@@ -27,7 +27,6 @@ namespace test4sql
 
     public partial class MainPage : ContentPage
     {
-
         public IList<Monkey> Monkeys { get; private set; }
         public SqlConnection con;
 
@@ -44,9 +43,11 @@ namespace test4sql
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
-           
 
-            string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            // DESKTOP-MPGU8SB\SQL17
+            string constring = @"Data Source="+Globals.cSQLSERVER +";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             con = new SqlConnection(constring);
 
@@ -111,7 +112,7 @@ namespace test4sql
 
             Globals.cIP= PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
 
-
+            Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
 
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
 
@@ -307,7 +308,7 @@ namespace test4sql
         //        Monkey selectedItem = e.SelectedItem as Monkey;
         //  }
 
-
+        // ΔΙΑΛΕΓΩ ΤΟΝ ΠΕΛΑΤΗ ΚΑΙ ΤΟΝ ΕΝΗΜΕΡΩΝΩ ΤΟ ARTIM=ARTIM+1
         void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             Monkey selectedItem = e.SelectedItem as Monkey;
@@ -422,7 +423,9 @@ namespace test4sql
             }
             return ds;
         }
-        private async void connectBtn_Clicked(object sender, EventArgs e)
+
+        // ΑΝΟΙΓΕΙ ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ ΠΕΛΑΤΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void SqlserverTableToListview (object sender, EventArgs e)
         {
 
             but11.Text = "sss";

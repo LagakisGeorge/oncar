@@ -336,7 +336,7 @@ namespace test4sql
 
                     if (n == 1000)
                     {
-                        int c1 = 0;
+                    //    int c1 = 0;
                        // PROG.ProgressColor = Color.Blue ;
                        // await PROG.ProgressTo(1, 255500, Easing.Linear);
                     }

@@ -8,7 +8,7 @@ namespace test4sql
     static class Globals
     {
         public static string cIP ;
-
+        public static string cSQLSERVER;
 
 
     } 

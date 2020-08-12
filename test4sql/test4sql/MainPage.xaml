@@ -20,8 +20,8 @@
                 Clicked="toPage2"
                  />
         <Button x:Name="but11" 
-                Text="open query"
-                Clicked="connectBtn_Clicked"
+                Text="SQLSERVER open query"
+                Clicked="SqlserverTableToListview"
                  />
         <Button x:Name="but121" 
                 Text="Topage1"

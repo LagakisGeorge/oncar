@@ -19,7 +19,7 @@
                  />
 
             <Button x:Name="test2"
-                      Text="test"
+                      Text="ASYNC IMPORT EID"
                        Clicked="test" 
             />
 

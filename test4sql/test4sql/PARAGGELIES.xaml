@@ -88,9 +88,13 @@
 
 
                 <Label x:Name="lanam"   
-                Text="..........."  />
-                
+                Text="................................."  />
 
+                <Button x:Name="WriteFiles" 
+                        BackgroundColor="GreenYellow" 
+                        Text="Αποστολή Παραγγ"
+                       Clicked="WriteFile"  />
+                
             </StackLayout>
 
 
@@ -110,8 +114,10 @@
                         BackgroundColor="GreenYellow" 
                         Text="Ολοκλ.παραγγ"
                        Clicked="CloseOrder"  />
-            </StackLayout>
 
+               
+            </StackLayout>
+            
 
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
