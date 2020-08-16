@@ -45,7 +45,7 @@ namespace test4sql
 
 
             // DESKTOP-MPGU8SB\SQL17
-            string constring = @"Data Source="+Globals.cSQLSERVER +";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            string constring = @"Data Source="+Globals.cSQLSERVER +";Initial Catalog=EMP;Uid=sa;Pwd=12345678";
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -428,6 +428,10 @@ namespace test4sql
         private async void SqlserverTableToListview (object sender, EventArgs e)
         {
 
+            MainPage.ExecuteSqlite("delete from PEL;");
+
+
+
             but11.Text = "sss";
             //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -438,11 +442,14 @@ namespace test4sql
                 //  con.Open();
                 //  await DisplayAlert("OK", "OK i am Connected", "OK");
 
-                SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
-                cmd.Connection = con;
-                cmd.ExecuteNonQuery();
 
 
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+               // SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
+               // cmd.Connection = con;
+               // cmd.ExecuteNonQuery();
+
+                
                 //  DataSet ds = new DataSet();
 
                 //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
@@ -455,32 +462,42 @@ namespace test4sql
 
                 DataTable dt = new DataTable();
 
-                SqlCommand cmd3 = new SqlCommand("select top 100 * FROM PEL", con);
+                SqlCommand cmd3 = new SqlCommand("select * FROM PEL WHERE EIDOS='e' and TYP<>0 order by TYP DESC", con);
 
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 List<string> MyList = new List<string>();
-                for (int k = 0; k <= 99; k++)
+                int k = 0;
+                for ( k = 0; k <= dt.Rows.Count -1; k++)
                 {
                     String mF = dt.Rows[k]["EPO"].ToString();
                     MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["TYP"].ToString();
+
 
                     Monkeys.Add(new Monkey
                     {
                         Name = mF,
 
                         Location = dt.Rows[k]["DIE"].ToString(),
-                        ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        ImageUrl = mTYP , // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
                         idPEL = dt.Rows[k]["ID"].ToString()
-                    });
+                    }); ;
+
+
+                    string mKOD = dt.Rows[k]["kod"].ToString();
+                    string mDIE = dt.Rows[k]["die"].ToString();
+                    string mAFM = dt.Rows[k]["afm"].ToString();
+                  
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into PEL (TYP,KOD,EPO,DIE,AFM) VALUES ("+mTYP+",'" + mKOD + "','" + mF + "','" +mDIE + "','"+mAFM+"');");
 
 
 
 
 
-
-
-                }
+                } // FOR
+                await DisplayAlert("ΠΕΛΑΤΕΣ",""+dt.Rows.Count, "OK");
 
                 BindingContext = this;
 

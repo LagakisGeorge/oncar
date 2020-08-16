@@ -33,17 +33,65 @@
                        Clicked="CreateTables" 
                
                  />
-            
-            
-            
-            
-            
-            
-            
-            
-<Label Text="Welcome to Page2 !"
-                VerticalOptions="CenterAndExpand" 
+
+            <ProgressBar />
+
+
+            <Entry x:Name="QUERY" Placeholder="" />
+
+            <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
+                <Button x:Name="SQLQUERY" Clicked="SQLQUERYF"
+                      Text="SQLQUERY"/>
+
+
+                <Button x:Name="SQLEXECUTE" Clicked="SQLEXECUTEF"
+                      Text="SQLEXECUTE" />
+
+
+            </StackLayout> 
+
+
+
+                <Label x:Name="RESULTS" Text="!"
+                
                 HorizontalOptions="CenterAndExpand" />
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                  HasUnevenRows="true"  >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                  ItemTapped="OnListViewItemTapped"   -->   
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" >
+
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" />
+                                <Label 
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    />
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    />
+
+
+                            
+
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
 
 
         </StackLayout>

@@ -27,7 +27,7 @@ namespace test4sql
     public partial class PARAGGELIES : ContentPage
     {
         public IList<Monkey> Monkeys { get; private set; }
-
+        int f_man_barcode = 0;
         public PARAGGELIES()
         {
             InitializeComponent();
@@ -42,7 +42,22 @@ namespace test4sql
             AFM.Focus();
         }
 
+        // 
+        async void CHANGEBARCODE(object sender, EventArgs e)
+        {
+            if (f_man_barcode == 1)
+            {
+                f_man_barcode = 0;
+                butbarcode.Text = "ΑΥΤ.BARCODE";
+            }
+            else
+            {
+                f_man_barcode = 1;
+                butbarcode.Text = "ΧΕΙΡ.BARCODE";
+            }
+           
 
+        }
 
         async void posothtaCompleted(object sender, EventArgs e)
         {
@@ -86,6 +101,8 @@ namespace test4sql
 
             BindingContext = this;
 
+            BARCODE.Text = "";
+            BARCODE.Focus();
 
 
         }
@@ -141,6 +158,10 @@ namespace test4sql
 
         async void barcfoc(object sender, EventArgs e)
         {
+            if (f_man_barcode == 1)
+            {
+                return;
+            }
 
             var scanPage = new ZXingScannerPage();
             // Navigate to our scanner page
