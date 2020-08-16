@@ -51,11 +51,11 @@
         
 
         <Label    
-                Text="BARCODE"  Grid.Row="1" Grid.Column="0" Focused="barcfoc"/>
+                Text="BARCODE"  Grid.Row="1" Grid.Column="0" />
         
         
         <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1"
-                   Placeholder="BARCODE      "  />
+                   Placeholder="BARCODE " Focused="barcfoc"      />
 
 
         <Button x:Name="but10" 
