@@ -12,7 +12,7 @@ using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 
 using Plugin.Toast;
 using System.Data.SqlClient;
-
+// using ZXing.Net.Mobile.Forms;
 
 
 
@@ -136,6 +136,35 @@ namespace test4sql
 
 
         }
+
+        // barcfoc
+
+        async void barcfoc(object sender, EventArgs e)
+        {
+
+          /*  var scanPage = new ZXingScannerPage();
+            // Navigate to our scanner page
+            await Navigation.PushAsync(scanPage);
+
+            scanPage.OnScanResult += (result) =>
+            {
+                // Stop scanning
+                scanPage.IsScanning = false;
+
+                // Pop the page and show the result
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopAsync();
+                    // await DisplayAlert("Scanned Barcode", result.Text, "OK");
+                    BARCODE.Text = result.Text;
+                });
+            };
+          */
+        }
+
+
+
+
 
 
         async void BresEidos(object sender, EventArgs e)

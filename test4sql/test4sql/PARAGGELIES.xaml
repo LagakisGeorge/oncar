@@ -51,7 +51,7 @@
         
 
         <Label    
-                Text="BARCODE"  Grid.Row="1" Grid.Column="0" />
+                Text="BARCODE"  Grid.Row="1" Grid.Column="0" Focused="barcfoc"/>
         
         
         <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1"
