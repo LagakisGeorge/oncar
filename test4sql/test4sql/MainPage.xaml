@@ -13,8 +13,12 @@
         <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
                 Clicked="PARAGG" />
         
-        <Button Text="test sql"
-                Clicked="Runsql" />
+        <Button Text="ΦΟΡΤΩΣΗ"
+               Clicked="Fortosh"
+                />
+                <!-- Clicked="Runsql"  -->
+                
+               
         <Button x:Name="but1" 
                 Text="Ενημερωση από Αρχεία"
                 Clicked="toPage2"

@@ -334,7 +334,7 @@ namespace test4sql
         }
 
 
-        void SaveFile(string text)
+       void SaveFile(string text)
         {
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
@@ -353,9 +353,9 @@ namespace test4sql
 
             //Get writable stream.
             var writeStream = file.GetOutputStream();
-            string c = "1;2;3;4;5;6;7;8;\n";
-            c = c + "8;8;9;9;9;9;9;9\n";
-            c = c + "18;18;19;19;19;19;19;19\n";
+           // string c = "1;2;3;4;5;6;7;8;\n";
+          //  c = c + "8;8;9;9;9;9;9;9\n";
+          //  c = c + "18;18;19;19;19;19;19;19\n";
 
             //Write bytes.
             writeStream.Write(Encoding.UTF8.GetBytes(text));

@@ -66,7 +66,7 @@ namespace test4sql
 
             l = MainPage.ExecuteSqlite(c);
 
-
+            // αν δεν υπαρχει το πεδιο "TYP" ΠΡΟΣΘΕΣΕ ΤΟ
             string nc=PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='TYP' ");
             if (Int16.Parse(nc) == 0)
             {
@@ -107,6 +107,14 @@ namespace test4sql
 
             l = MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
             await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
+
+
+
+
+            c = "CREATE TABLE IF NOT EXISTS PARALABES( ID  INTEGER PRIMARY KEY,ATIM [nvarchar](35),BARCODE [nvarchar](45) )";
+
+
+            l = MainPage.ExecuteSqlite(c);
 
 
 

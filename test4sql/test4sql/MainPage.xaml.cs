@@ -36,7 +36,7 @@ namespace test4sql
             // MainPage = new NavigationPage(new FirstContentPage());
             try
             {
-               int i = StartSqlite("");
+                int i = StartSqlite("");
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace test4sql
 
 
             // DESKTOP-MPGU8SB\SQL17
-            string constring = @"Data Source="+Globals.cSQLSERVER +";Initial Catalog=EMP;Uid=sa;Pwd=12345678";
+            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=EMP;Uid=sa;Pwd=12345678";
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -81,13 +81,13 @@ namespace test4sql
             connection.Open();
             var c = connection.CreateCommand();
 
-            Query  = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
+            Query = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
                    "[EPO] [nvarchar](255) ," +
                     "[DIE] [nvarchar](35) ," +
                       "[POL] [nvarchar](35) ," +
                         "[THL] [nvarchar](35) ," +
                       "[AFM] [nvarchar](15) )";
-          
+
 
 
 
@@ -99,7 +99,7 @@ namespace test4sql
 
             string c2 = PARAGGELIES.ReadSQL("select CAST(count(*) AS VARCHAR(10) )  AS NN from MEM ");
             int n = Int32.Parse(c2);
-            if (n==0)
+            if (n == 0)
             {
                 c.CommandText = "INSERT INTO MEM (IP) VALUES ('*')";
 
@@ -110,7 +110,7 @@ namespace test4sql
             }
 
 
-            Globals.cIP= PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
+            Globals.cIP = PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
 
@@ -126,6 +126,9 @@ namespace test4sql
 
 
         public static SqliteConnection connection;
+
+
+        // demo sqlite ========================
         public static void DoSomeDataAccess()
         {
             // determine the path for the database file
@@ -208,14 +211,14 @@ namespace test4sql
 
             //  MainPage = new NavigationPage(new FirstContentPage());
 
-           // await NavigationPage (new Page2()  );
+            // await NavigationPage (new Page2()  );
             await Navigation.PushAsync(new PARAGGELIES());
 
 
         }
 
 
-
+        // demo sqlite  ========================================
         public void Runsql(object sender, EventArgs e)
         {
             DoSomeDataAccess();
@@ -271,6 +274,16 @@ namespace test4sql
            */
             // String c3 = morecomplex();
         }
+
+        public async void Fortosh (object sender, EventArgs e){
+
+            await Navigation.PushAsync(new techn1 ());  //imports
+
+
+        }
+
+
+
 
         public static string morecomplex() // Opensql(object sender, EventArgs e)
         {
@@ -456,7 +469,7 @@ namespace test4sql
 
                 //   var adapter = new SqlDataAdapter(cmd2);
                 //   adapter.Fill(ds);
-                //  string cc = ds.Tables[0].Rows[1]["EPO"];
+                //  string cc = ds.Tables[0].Rows[1]["EPO"];  201712552030 0217
                 Monkeys = new List<Monkey>();
 
 
