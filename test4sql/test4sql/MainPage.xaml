@@ -24,9 +24,21 @@
                 Clicked="toPage2"
                  />
         <Button x:Name="but11" 
-                Text="SQLSERVER open query"
+                Text="SQLSERVER ΠΕΛΑΤΕΣ"
                 Clicked="SqlserverTableToListview"
                  />
+
+        <Button x:Name="but12" 
+                Text="SQLSERVER EIΔΗ"
+                Clicked="SqlserverTοSQLITE"
+                 />
+
+        <Button x:Name="but16" 
+                Text="ασυγχρονα SQLSERVER EIΔΗ"
+                Clicked="asSqlserverTοSQLITE"
+                 />
+
+
         <Button x:Name="but121" 
                 Text="Topage1"
                 Clicked="ToPage1"

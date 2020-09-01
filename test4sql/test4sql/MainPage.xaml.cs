@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Mono.Data.Sqlite;
 using System.Data;
+using System.Threading;
 
 namespace test4sql
 
@@ -527,6 +528,203 @@ namespace test4sql
             }
             // }
         }
+
+
+        // ΑΝΟΙΓΕΙ ασυγχρονα  ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void asSqlserverTοSQLITE(object sender, EventArgs e)
+        {
+
+            await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη  " , "OK");
+            Task<int> task = new Task<int>(Imp_EIDH);
+            // IMPORTEID.Text = "*** ΠΑΡΑΚΑΛΩ ΠΕΡΙΜΕΝΕΤΕ 3λεπτά*****";
+             task.Start();
+             int count = await task;
+
+             // IMPORTEID.Text = count.ToString();
+             await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη που περάσ "+count.ToString (), "OK");
+            BindingContext = this;
+
+        }
+
+        int Imp_EIDH()
+        {
+
+
+            // me to parakato loop δουλεευει το ασυγχρονο
+            /*
+            int k2;
+            for (k2 = 0; k2 <= 50 ; k2++)
+            {
+                Thread.Sleep(500);
+            }
+            return k2;
+            */
+            // ta epano einai debugging
+
+            Thread.Sleep(500);
+            int nc = 0;
+            MainPage.ExecuteSqlite("delete from EID;");
+
+          //  return 1; //debug
+
+         //   but11.Text = "sss";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select   ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5  FROM EID ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                   // Thread.Sleep(500);
+                    String mF = dt.Rows[k]["MONO"].ToString();
+                    mF = mF.Replace("'", "`");
+                    MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["MLTI5"].ToString();
+                    mTYP = mTYP.Replace(",", ".");
+                    Monkeys.Add(new Monkey
+                    {
+                        Name = mF,
+                        Location = dt.Rows[k]["MKOD"].ToString(),
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
+                    }); ;
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "');");
+
+
+
+
+
+                } // FOR
+                nc = dt.Rows.Count;
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+
+               // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+
+              //  BindingContext = this;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+               // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+            return nc;
+        }
+
+
+
+
+
+
+
+            // ΑΝΟΙΓΕΙ ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+            private async void SqlserverTοSQLITE(object sender, EventArgs e)
+        {
+            await DisplayAlert("Εκκίνηση..", "Περιμενετε..", "OK");
+            // await ShowAlert("Εκκινηση");
+
+            // var watch = System.Diagnostics.Stopwatch.StartNew();
+            // the code that you want to measure comes here
+
+           // Device.BeginInvokeOnMainThread(async () =>
+          //  {
+         //       await DisplayAlert("Alert", "No internet connection", "Ok");
+         //   });
+
+
+
+
+            MainPage.ExecuteSqlite("delete from EID;");
+
+
+
+            but11.Text = "sss";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5  FROM EID ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String mF = dt.Rows[k]["MONO"].ToString();
+                    mF = mF.Replace("'", "`");
+                    MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["MLTI5"].ToString();
+                    mTYP = mTYP.Replace(",", ".");
+                    Monkeys.Add(new Monkey
+                    {
+                        Name = mF,
+                        Location = dt.Rows[k]["MKOD"].ToString(),
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
+                    }); ;
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "');");
+
+
+
+
+
+                } // FOR
+
+               // watch.Stop();
+              //  var elapsedMs = watch.ElapsedMilliseconds;
+
+                await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+
+                BindingContext = this;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+           
+        }
+
 
         public static int ExecuteSqlite(string Query)
         {
