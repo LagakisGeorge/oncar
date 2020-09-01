@@ -118,6 +118,13 @@ namespace test4sql
 
 
 
+            c = "CREATE TABLE IF NOT EXISTS BARCODES( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25),BARCODE [nvarchar](15) )";
+
+
+            l = MainPage.ExecuteSqlite(c);
+
+
+
             c = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
                     "[EPO] [nvarchar](255) ," +
                      "[DIE] [nvarchar](35) ," +

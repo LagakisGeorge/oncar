@@ -39,6 +39,14 @@
                  />
 
 
+        <Button x:Name="but18" 
+                Text="SQLSERVER BARCODES"
+                Clicked="SqlserverTοBARCODES"
+                 />
+
+
+
+
         <Button x:Name="but121" 
                 Text="Topage1"
                 Clicked="ToPage1"

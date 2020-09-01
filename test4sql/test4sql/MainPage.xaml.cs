@@ -498,7 +498,7 @@ namespace test4sql
                         idPEL = dt.Rows[k]["ID"].ToString()
                     }); ;
 
-
+                       
                     string mKOD = dt.Rows[k]["kod"].ToString();
                     string mDIE = dt.Rows[k]["die"].ToString();
                     string mAFM = dt.Rows[k]["afm"].ToString();
@@ -544,7 +544,51 @@ namespace test4sql
              await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη που περάσ "+count.ToString (), "OK");
             BindingContext = this;
 
+
+
+
+
+
+
+
+            Task<int> task2 = new Task<int>(Imp_BARCODES);
+            task2.Start();
+
+            int count2 = await task2;
+
+            // IMPORTEID.Text = count.ToString();
+            await DisplayAlert("--Εναρξη μεταφοράς BARCODES", "    barcodes που περάστηκαν " + count2.ToString(), "OK");
+
         }
+
+
+        // ΑΝΟΙΓΕΙ ασυγχρονα  ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void SqlserverTοBARCODES(object sender, EventArgs e)
+        {
+
+
+
+
+          //  int count2= Imp_BARCODES();
+
+
+
+          Task<int> task = new Task<int>(Imp_BARCODES);
+          task.Start();
+
+              int count2 = await task;
+
+            // IMPORTEID.Text = count.ToString();
+               await DisplayAlert("--Εναρξη μεταφοράς BARCODES", "    barcodes που περάστηκαν " + count2.ToString(), "OK");
+
+        }
+
+
+
+
+
+
+
 
         int Imp_EIDH()
         {
@@ -636,13 +680,88 @@ namespace test4sql
         }
 
 
+        int Imp_BARCODES()
+        {
+
+
+            // me to parakato loop δουλεευει το ασυγχρονο
+            /*
+            int k2;
+            for (k2 = 0; k2 <= 50 ; k2++)
+            {
+                Thread.Sleep(500);
+            }
+            return k2;
+            */
+            // ta epano einai debugging
+
+            Thread.Sleep(500);
+            int nc = 0;
+            MainPage.ExecuteSqlite("delete from BARCODES;");
+
+            //  return 1; //debug
+
+            //   but11.Text = "sss";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+               
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select   isnull(KOD,'') AS MKOD,ISNULL(ERG,'') AS MERG  FROM BARCODES ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                //   List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                 
+                    int n2 = MainPage.ExecuteSqlite("insert into BARCODES (KOD,BARCODE) VALUES ('" + mKOD + "','" + mERG + "');");
 
 
 
 
 
-            // ΑΝΟΙΓΕΙ ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
-            private async void SqlserverTοSQLITE(object sender, EventArgs e)
+                } // FOR
+                nc = dt.Rows.Count;
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+
+                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+
+                //  BindingContext = this;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+            return nc;
+        }
+
+
+
+
+        // ΑΝΟΙΓΕΙ ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void SqlserverTοSQLITE(object sender, EventArgs e)
         {
             await DisplayAlert("Εκκίνηση..", "Περιμενετε..", "OK");
             // await ShowAlert("Εκκινηση");
