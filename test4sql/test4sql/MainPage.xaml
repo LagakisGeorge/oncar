@@ -56,6 +56,14 @@
                 Clicked="fparam"
                  />
 
+        <Button x:Name="SUPER" 
+                Text="ΕΛΕΓΧΟΣ BARCODE"
+                Clicked="FSEARCH"
+                 />
+
+
+
+
         <ListView ItemsSource="{Binding Monkeys}"
                   HasUnevenRows="true"
                   ItemSelected="OnListViewItemSelected"

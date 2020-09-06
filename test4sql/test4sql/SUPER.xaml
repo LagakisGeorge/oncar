@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="test4sql.SUPER">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="lab1" Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+
+
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+
+
+                <Button x:Name="butbarcode" 
+                Text="BARCODE"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
+
+
+                <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+                   Placeholder="BARCODE " Focused="barcfoc"      />
+
+
+                <Button x:Name="but10" 
+                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="BresEidos"  />
+
+                <Label    x:Name="lper"   Grid.Row="3" Grid.Column="1" Grid.ColumnSpan ="3"
+                Text="............................"  />
+
+
+
+
+                <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
+                Text=".............."  />
+                <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
+                Text="..............."  />
+
+
+
+
+                <Label     Grid.Row="4" Grid.Column="0" 
+                Text="ΤΙΜΗ    " 
+                 TextColor="BlueViolet"    />
+
+                <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" 
+                  Text="0"  
+                   />
+
+
+            </Grid>
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                  HasUnevenRows="true"
+                 
+                      >
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" >
+
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" />
+                                <Label 
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    />
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    />
+
+
+                                <!--   <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />   
+                                </Grid.RowDefinitions>
+                                  <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions> 
+                                  <Image Grid.RowSpan="2" 
+                                   Source="{Binding ImageUrl}" 
+                                   Aspect="AspectFill"
+                                   HeightRequest="60"
+                                   WidthRequest="60" />  
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" />
+                                <Label Grid.Row="1" 
+                                   Grid.Column="1" 
+                                   Text="{Binding Location}"
+                                   VerticalOptions="End" />
+                                      <Label Grid.Row="2" 
+                                   Grid.Column="1" 
+                                   Text="{Binding idPEL}"
+                                   VerticalOptions="End" />   
+
+
+
+                            </Grid>-->
+
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

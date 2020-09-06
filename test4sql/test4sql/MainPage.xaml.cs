@@ -407,6 +407,21 @@ namespace test4sql
            
         }
 
+
+        private async void FSEARCH(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new SUPER());  //imports
+
+        }
+
+
+
+
+
+
+
+
         private async void fparam(object sender, EventArgs e)
         {
 

@@ -28,6 +28,17 @@
                         Clicked="fkatax" 
                   />
 
+            <Button x:Name="bftest" 
+                    Text="ΔΟΚΙΜΗ ΣΥΝΔΕΣΗΣ SQLSERVER"
+                        Clicked="ftest" 
+                  />
+
+
+
+
+
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
