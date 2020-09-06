@@ -43,7 +43,7 @@ namespace test4sql
             if (f_man_barcode == 1)
             {
                 f_man_barcode = 0;
-                butbarcode.Text = "ΑΥΤ.BARCODE";
+                butbarcode.Text = "BARCODE ΜΕ ΦΩΤΟ";
             }
             else
             {
@@ -77,10 +77,12 @@ namespace test4sql
                     await Navigation.PopAsync();
                     // await DisplayAlert("Scanned Barcode", result.Text, "OK");
                     BARCODE.Text = result.Text;
+                   // Completed = "posothtaCompleted"
+                    find_eid();
                 });
             };
 
-            find_eid();
+           
 
         }
 
@@ -112,19 +114,7 @@ namespace test4sql
             // Open the database connection and create table with data
             connection.Open();
 
-            /* var c = connection.CreateCommand();           
-            c.CommandText = "Query";
-            var rowcount = c.ExecuteNonQuery(); // rowcount will be 1    */
-
-            /*   string c = "CREATE TABLE IF NOT EXISTS EID( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25)," +
-                      "[ONO] [nvarchar](255) ," +
-                       "[ENAL] [nvarchar](25) ," +
-                        "[YPOL] [real] ," +
-                         "[XONDR] [real] ," +
-                           "[DESM] [real] ," +
-                           "[ANAM] [real] ," +
-                         "[BARCODE] [nvarchar](15)  )  ";   */
-
+           
 
 
 
@@ -132,7 +122,15 @@ namespace test4sql
 
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD from EID WHERE KOD like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+            if (Globals.useBarcodes=="1") {
+                //contents.CommandText = "SELECT  E.ONO,E.XONDR,E.YPOL,E.BARCODE,E.KOD from EID E inner JOIN BARCODES B ON E.KOD=B.KOD   WHERE B.BARCODE like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
+            }
+            else
+            {             
+            contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE KOD like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+            }
+            
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
@@ -140,9 +138,7 @@ namespace test4sql
                 lper.Text = r["ONO"].ToString();  // ****
                 ltimh.Text = r["XONDR"].ToString();
                 string ccc = r["XONDR"].ToString();
-                //lanam.Text = r["ANAM"].ToString(); // ***
-               // ldesm.Text = r["DESM"].ToString(); // ****
-              //  lypol.Text = r["YPOL"].ToString();
+               
                 lkode.Text = r["KOD"].ToString();
                 lbarcode.Text = r["BARCODE"].ToString();  // ***
 
@@ -156,17 +152,7 @@ namespace test4sql
             connection.Close();
 
 
-            /*    var r = contents.ExecuteReader();
-                Console.WriteLine("Reading data");
-                while (r.Read())
-                {
-                    i = i + 1;
-                    ff[i] = r["Symbol"].ToString();
-                    Console.WriteLine("\tKey={0}; Value={1}",
-                                      r["_id"].ToString(),
-                                      r["Symbol"].ToString());
-                }  */
-
+           
 
 
 

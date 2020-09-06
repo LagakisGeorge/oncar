@@ -114,7 +114,7 @@ namespace test4sql
             Globals.cIP = PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
-
+            Globals.useBarcodes  = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=1");
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
 
 
@@ -410,7 +410,7 @@ namespace test4sql
 
         private async void FSEARCH(object sender, EventArgs e)
         {
-
+            but11.IsVisible = false;
             await Navigation.PushAsync(new SUPER());  //imports
 
         }

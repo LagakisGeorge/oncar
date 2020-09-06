@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using ZXing;
 
 namespace test4sql
 {
@@ -27,7 +27,8 @@ namespace test4sql
             Globals.cSQLSERVER  = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
             sqlserver.Text = Globals.cSQLSERVER ;
 
-
+            Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=1");
+            BARCODES.Text = Globals.useBarcodes;
 
         }
 
@@ -36,9 +37,12 @@ namespace test4sql
             string C = sqlserver.Text;
             C = C.Replace("/", "\\");
             MainPage.ExecuteSqlite("update MEM SET EPO='"+ C+ "', IP='" + fakelos.Text + "' WHERE ID=1");
+            MainPage.ExecuteSqlite("update MEM SET DIE='"  + BARCODES .Text + "' WHERE ID=1");
+
+
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
             Globals.cIP = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=1");
-
+            Globals.useBarcodes  = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=1");
         }
 
         async void ftest(object sender, EventArgs e)

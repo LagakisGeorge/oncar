@@ -32,7 +32,7 @@ namespace test4sql
             return cc;
 
         }
-
+        public static string useBarcodes="0";
 
     } 
 
