@@ -7,7 +7,7 @@
              x:Class="test4sql.param1">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Κοινόχρηστος Φάκελος Π.Χ. HPSERVER/KOINOS "
+            <Label Text="ΑΠΟ ΠINAKA BARCODES=1"
                 
                 HorizontalOptions="CenterAndExpand" />
 
@@ -17,8 +17,8 @@
                    />
 
 
-
-
+            <Label Text="User και Φάκελος π.χ. User:passw@HPSERVER/KOINOS "
+                      HorizontalOptions="CenterAndExpand" />
             <Entry x:Name="fakelos"
                    Placeholder="ΦΑΚΕΛΟΣ" 
                     BackgroundColor="Azure"    
