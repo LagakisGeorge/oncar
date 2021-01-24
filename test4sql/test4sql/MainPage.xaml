@@ -82,7 +82,10 @@
                 Clicked="FSEARCH"
                  />
 
-
+        <Button x:Name="PRINT" 
+                Text="ΕΛΕΓΧΟΣ BARCODE"
+                Clicked="printing"
+                 />
 
 
         <ListView ItemsSource="{Binding Monkeys}"

@@ -74,6 +74,12 @@
                   Text="0"  
                    />
 
+            <Button x:Name="but20" 
+                        Text="αποθηκευση"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="savecodes"  />
+
+
 
         </StackLayout>
     </ContentPage.Content>

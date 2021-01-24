@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Data.SqlClient;
 
-
+using Base2Base.Printers;
+using ESCPOS_NET.Emitters;
 
 
 using System.IO;
 using Mono.Data.Sqlite;
 using System.Data;
 using System.Threading;
+
 
 namespace test4sql
 
@@ -31,6 +33,12 @@ namespace test4sql
         public IList<Monkey> Monkeys { get; private set; }
         public SqlConnection con;
 
+
+        private static ESCPOS_NET.BasePrinter printer;
+        private static ICommandEmitter e;
+
+
+
         public MainPage()
         {
             InitializeComponent();
@@ -46,7 +54,7 @@ namespace test4sql
 
 
             // DESKTOP-MPGU8SB\SQL17
-            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=EMP;Uid=sa;Pwd=12345678";
+            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -403,7 +411,11 @@ namespace test4sql
         private async void ToPage1(object sender, EventArgs e)
         {
 
-            await Navigation.PushAsync(new Page1());
+       
+
+             await Navigation.PushAsync(new Page1());
+
+
             // await Navigation.PushAsync(new Page2 { });
             // await NavigationPage (new Page2());
         }
@@ -551,6 +563,73 @@ namespace test4sql
             }
             // }
         }
+
+
+
+        private async void printing(object sender, EventArgs e)
+        {
+
+
+            // Ethernet or WiFi
+        //    var printer = new NetworkPrinter(ipAddress: "192.168.1.80", port: 9000, reconnectOnTimeout: true);
+
+            /*
+            var e = new EPSON();
+            printer.Write(
+              ByteSplicer.Combine(
+                e.CenterAlign(),
+                e.PrintImage(File.ReadAllBytes("images/pd-logo-300.png"), true),
+NewMethod(e),
+                e.SetBarcodeHeightInDots(360),
+                e.SetBarWidth(BarWidth.Default),
+                e.SetBarLabelPosition(BarLabelPrintPosition.None),
+                e.PrintBarcode(BarcodeType.ITF, "0123456789"),
+                e.PrintLine(),
+                e.PrintLine("B&H PHOTO & VIDEO"),
+                e.PrintLine("420 NINTH AVE."),
+                e.PrintLine("NEW YORK, NY 10001"),
+                e.PrintLine("(212) 502-6380 - (800)947-9975"),
+                e.SetStyles(PrintStyle.Underline),
+                e.PrintLine("www.bhphotovideo.com"),
+                e.SetStyles(PrintStyle.None),
+                e.PrintLine(),
+                e.LeftAlign(),
+                e.PrintLine("Order: 123456789        Date: 02/01/19"),
+                e.PrintLine(),
+                e.PrintLine(),
+                e.SetStyles(PrintStyle.FontB),
+                e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
+                e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
+                e.PrintLine("----------------------------------------------------------------"),
+                e.RightAlign(),
+                e.PrintLine("SUBTOTAL         89.95"),
+                e.PrintLine("Total Order:         89.95"),
+                e.PrintLine("Total Payment:         89.95"),
+                e.PrintLine(),
+                e.LeftAlign(),
+                e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
+                e.PrintLine("SOLD TO:                        SHIP TO:"),
+                e.SetStyles(PrintStyle.FontB),
+                e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
+                e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
+                e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
+                e.PrintLine("  (123)456-7890                   (123)456-7890"),
+                e.PrintLine("  CUST: 87654321"),
+                e.PrintLine(),
+                e.PrintLine()
+              )
+            );
+
+            */
+
+
+        }
+
+
+
+
+
+
 
 
         // ΑΝΟΙΓΕΙ ασυγχρονα  ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW

@@ -7,7 +7,9 @@
              x:Class="test4sql.param1">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="ΑΠΟ ΠINAKA BARCODES=1"
+
+            <Label Text="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES=1 ΕΙΔΩΝ=0 "
+
                 
                 HorizontalOptions="CenterAndExpand" />
 
@@ -17,14 +19,18 @@
                    />
 
 
+
             <Label Text="User και Φάκελος π.χ. User:passw@HPSERVER/KOINOS "
                       HorizontalOptions="CenterAndExpand" />
+
+
+
             <Entry x:Name="fakelos"
                    Placeholder="ΦΑΚΕΛΟΣ" 
                     BackgroundColor="Azure"    
                    />
 
-            <Label Text="SQLSERVER INSTANCE  Π.Χ. HPSERVER/SQLEXPRESS,51403"
+            <Label Text="ΒΑΣΗ=MERCURY sa,12345678 βαλτε το instance,PORT Π.Χ. HPSERVER/SQL5,9403  ή   IP/SQL17,51403"
                 
                 HorizontalOptions="CenterAndExpand" />
             <Entry x:Name="sqlserver"
@@ -41,6 +47,10 @@
                         Clicked="ftest" 
                   />
 
+            <Button x:Name="ListServers" 
+                    Text="ΛΙΣΤΑ ΣΥΝΔΕΜΕΝΩΝ SERVER"
+                        Clicked="fLISTSERVER" 
+                  />
 
 
 

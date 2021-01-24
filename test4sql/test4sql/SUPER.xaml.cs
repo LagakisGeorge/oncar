@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
+using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 
 namespace test4sql
 {
@@ -17,7 +18,7 @@ namespace test4sql
     {
         public IList<Monkey> Monkeys { get; private set; }
         int f_man_barcode = 0;
-
+        string cc = "";
 
 
 
@@ -34,7 +35,53 @@ namespace test4sql
         protected override void OnAppearing()
         {
             base.OnAppearing();
-           // BARCODE.Focus();
+            // BARCODE.Focus();
+
+
+
+            string dbPath = Path.Combine(
+               Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+               "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+
+
+
+            var contents = connection.CreateCommand();
+           
+                contents.CommandText = "SELECT  count(*) as d from EID  ; "; // +BARCODE.Text +"'";
+            
+
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            while (r.Read())
+            {
+                if (Globals.useBarcodes == "1")
+                {
+                    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. BARCODES";  // ****
+                } else
+                {
+                    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
+                }
+            }
+           
+            connection.Close();
+
+
+
+
+
         }
 
         // 
@@ -53,7 +100,7 @@ namespace test4sql
 
 
         }
-
+        
 
         async void barcfoc(object sender, EventArgs e)
         {
@@ -61,7 +108,7 @@ namespace test4sql
             {
                 return;
             }
-
+            System.Threading.Thread.Sleep(3000);
             var scanPage = new ZXingScannerPage();
             // Navigate to our scanner page
             await Navigation.PushAsync(scanPage);
@@ -87,6 +134,82 @@ namespace test4sql
         }
 
 
+        async void savecodes(object sender, EventArgs e)
+        
+        {
+
+         string   text = cc;
+            //Get the SmbFile specifying the file name to be created.
+            var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
+            // fine var file = new SmbFile("smb://User:1@192.168.2.7/backpel/New2FileName.txt");
+
+
+
+
+
+
+
+            try { 
+
+            if (file.Exists()) {
+                var answer = await DisplayAlert("Το αρχείο υπάρχει", "Να διαγραφεί;", "Ναι", "Οχι");
+                if (answer)
+                {
+                    file.Delete();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+
+
+           
+               
+             
+            }
+            catch
+            {
+                DisplayAlert("δεν υπαρχει ο φακελος", "....", "OK");
+                return;
+            }
+
+
+
+
+
+
+
+            try
+            {
+                //Create file.
+                file.CreateNewFile();
+            }
+            catch
+            {
+                DisplayAlert("Αδυναμία δημιουργίας αρχείου ", "....", "OK");
+                return;
+            }
+
+
+            //Get writable stream.
+            var writeStream = file.GetOutputStream();
+            // string c = "1;2;3;4;5;6;7;8;\n";
+            //  c = c + "8;8;9;9;9;9;9;9\n";
+            //  c = c + "18;18;19;19;19;19;19;19\n";
+
+            //Write bytes.
+            writeStream.Write(Encoding.UTF8.GetBytes(text));
+
+            //Dispose writable stream.
+            writeStream.Dispose();
+            DisplayAlert("Εγινε η δημιουργία του αρχείου ", "....", "OK");
+
+            cc = "";
+        }
+
+
 
 
 
@@ -94,6 +217,7 @@ namespace test4sql
         async void BresEidos(object sender, EventArgs e)
         {
             find_eid();
+
                 }
 
         void find_eid() { 
@@ -142,20 +266,21 @@ namespace test4sql
                 lkode.Text = r["KOD"].ToString();
                 lbarcode.Text = r["BARCODE"].ToString();  // ***
 
-
+                 cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
 
             }
             // r["ONO"].ToString();
 
-
+           
 
             connection.Close();
 
+           // System.Threading.Thread.Sleep(1000);
+          
+
+            BARCODE.Focus();
 
            
-
-
-
 
 
         }
