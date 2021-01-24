@@ -11,6 +11,7 @@ using Xamarin.Forms.Xaml;
 using System.IO;
 using Plugin.Toast;
 using SharpCifs.Smb;
+using System.Data.SqlClient;
 
 namespace test4sql
 {
@@ -19,6 +20,8 @@ namespace test4sql
     { 
         public IList<Monkey> Monkeys { get; private set; }
         public string f_cid = "";
+        public SqlConnection con;
+
         public View1()
         {
             InitializeComponent();
@@ -52,6 +55,8 @@ namespace test4sql
 
 
         }
+
+        /*
         async void delete_all(object sender, EventArgs e)
         {
             var action = await DisplayAlert("Να διαγραφoύν όλα τα τιμολόγια?", "Εισαι σίγουρος?", "Ναι", "Οχι");
@@ -63,10 +68,37 @@ namespace test4sql
                 show_list();
             }
         }
+        */
 
-        void SaveFile(string text)
+
+
+        async void SaveFile(string text)
         {
 
+            // DESKTOP-MPGU8SB\SQL17
+            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            con = new SqlConnection(constring);
+
+            try
+            {
+                con.Open();
+                
+               // await DisplayAlert("Συνδεθηκε", "οκ", "OK");
+
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                 SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)"   );
+                 cmd.Connection = con;
+                 cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+            return;
 
             try
             {

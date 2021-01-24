@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:test4sql"
-            
+            NavigationPage.HasNavigationBar="False" 
              x:Class="test4sql.MainPage">
  
     
@@ -37,24 +37,28 @@
         
         <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
                 Clicked="PARAGG" />
-        
-     
+
+
 
         <Button x:Name="but1" 
                 Text="Ενημερωση από Αρχεία"
-                Clicked="toPage2"
-                 />
-        <Button x:Name="but11" 
+                Clicked="toPage2"/>
+
+        <StackLayout Orientation="Horizontal" >
+            
+            <Button x:Name="but11" 
                 Text="SQLSERVER ΠΕΛΑΤΕΣ"
                 Clicked="SqlserverTableToListview"
                  />
 
-        <Button x:Name="but12" 
+            <Button x:Name="but12" 
                 Text="SQLSERVER EIΔΗ"
                 Clicked="SqlserverTοSQLITE"
                  />
+         </StackLayout>
+            
 
-        <Button x:Name="but16" 
+    <Button x:Name="but16" 
                 Text="ασυγχρονα SQLSERVER EIΔΗ"
                 Clicked="asSqlserverTοSQLITE"
                  />
@@ -76,17 +80,18 @@
                 Text="ΠΑΡΑΜΕΤΡΟΙ"
                 Clicked="fparam"
                  />
-
-        <Button x:Name="SUPER" 
+        <StackLayout Orientation="Horizontal" >
+            <Button x:Name="SUPER" 
                 Text="ΕΛΕΓΧΟΣ BARCODE"
                 Clicked="FSEARCH"
                  />
 
-        <Button x:Name="PRINT" 
-                Text="ΕΛΕΓΧΟΣ BARCODE"
+            <Button x:Name="PRINT" 
+                Text="print"
                 Clicked="printing"
                  />
-
+        </StackLayout>
+        
 
         <ListView ItemsSource="{Binding Monkeys}"
                   HasUnevenRows="true"

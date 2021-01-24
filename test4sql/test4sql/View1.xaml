@@ -21,7 +21,7 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal" >
                 <Label Text="---------------- "/>
-                <Button Text="Διαγραφή όλων" Clicked="delete_all"/>
+              
             </StackLayout>
             <StackLayout Orientation="Horizontal" >
                 <Label Text="Παλέτα "/>
@@ -31,15 +31,19 @@
                        TextChanged="PaletaChanged"/>
             </StackLayout>
 
+            
 
 
             <StackLayout Orientation="Horizontal" >
 
-                <Button Text="Κλείσιμο Τιμολογίου" Clicked="CloseInvoice"/>
-                <Button Text="Διαγραφή" Clicked="diag_barcode" />
-                <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
+               
+               
+               
             </StackLayout>
+              <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
+               <Button Text="Eξοδος" Clicked="CloseInvoice"/>
 
+            <Button Text="Διαγραφή" Clicked="diag_barcode" />
 
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
