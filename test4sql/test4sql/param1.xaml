@@ -11,6 +11,14 @@
                 
                 HorizontalOptions="CenterAndExpand" />
 
+            <Entry x:Name="BARCODES"
+                   Placeholder="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES" 
+                    BackgroundColor="Azure"    
+                   />
+
+
+
+
             <Entry x:Name="fakelos"
                    Placeholder="ΦΑΚΕΛΟΣ" 
                     BackgroundColor="Azure"    
@@ -27,6 +35,17 @@
                     Text="ΚΑΤΑΧΩΡΗΣΗ"
                         Clicked="fkatax" 
                   />
+
+            <Button x:Name="bftest" 
+                    Text="ΔΟΚΙΜΗ ΣΥΝΔΕΣΗΣ SQLSERVER"
+                        Clicked="ftest" 
+                  />
+
+
+
+
+
+
 
         </StackLayout>
     </ContentPage.Content>

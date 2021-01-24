@@ -47,15 +47,15 @@
                 Text="....   " />
 
 
-        
-        
 
-        <Label    
-                Text="BARCODE"  Grid.Row="1" Grid.Column="0" Focused="barcfoc"/>
+
+
+                <Button x:Name="butbarcode" 
+                Text="BARCODE"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
         
         
-        <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1"
-                   Placeholder="BARCODE      "  />
+        <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+                   Placeholder="BARCODE " Focused="barcfoc"      />
 
 
         <Button x:Name="but10" 

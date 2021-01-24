@@ -17,6 +17,8 @@ namespace test4sql
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Page2 : ContentPage
     {
+
+        public IList<Monkey> Monkeys { get; private set; }
         public Page2()
         {
             InitializeComponent();
@@ -64,6 +66,18 @@ namespace test4sql
 
             l = MainPage.ExecuteSqlite(c);
 
+            // αν δεν υπαρχει το πεδιο "TYP" ΠΡΟΣΘΕΣΕ ΤΟ
+            string nc=PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='TYP' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table PEL ADD TYP REAL");
+            }
+
+
+
+
+
+
             await DisplayAlert("ΠΕΛΑΤΕΣ ΟΚ", "ΠΕΛΑΤΕΣ ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
             c = "CREATE TABLE IF NOT EXISTS EGGTIM (" +
@@ -96,6 +110,21 @@ namespace test4sql
 
 
 
+
+            c = "CREATE TABLE IF NOT EXISTS PARALABES( ID  INTEGER PRIMARY KEY,ATIM [nvarchar](35),BARCODE [nvarchar](45) )";
+
+
+            l = MainPage.ExecuteSqlite(c);
+
+
+
+            c = "CREATE TABLE IF NOT EXISTS BARCODES( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25),BARCODE [nvarchar](15) )";
+
+
+            l = MainPage.ExecuteSqlite(c);
+
+
+
             c = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
                     "[EPO] [nvarchar](255) ," +
                      "[DIE] [nvarchar](35) ," +
@@ -118,7 +147,8 @@ namespace test4sql
         {
 
             await DisplayAlert("Εναρξη μεταφοράς πελατών 3-5λεπτά", "Πελάτες  ", "OK");
-
+            BindingContext = null;
+            Monkeys = new List<Monkey>();
             // await Navigation.PushAsync(new param1());
 
             // διαβαζω το αρχείο των ειδων  
@@ -162,12 +192,27 @@ namespace test4sql
                     string[] lines2 = lines[n].Split(';');
                     string cc = lines2[2];
                     cc = cc.Replace("'", "`");
+
+                    if (n < 1000)
+                    {
+                        Monkeys.Add(new Monkey
+                        {
+                            Name = lines2[0],
+
+                            Location = cc,
+                            ImageUrl = lines2[1],
+                            idPEL = ""
+                        });
+                    }
+
+
+
                     n2 = MainPage.ExecuteSqlite("insert into PEL (KOD,EPO,AFM) VALUES ('" + lines2[0] + "','" + cc + "','"+lines2[1]+"');");
                     IMPORTEID.Text = lines[n];
 
 
                 }
-
+                BindingContext = this;
                 await DisplayAlert("τελος μεταφοράς", "ΠΕΛΑΤΕΣ που περάστηκαν " + (lines.Length - 1).ToString(), "OK"); ;
 
 
@@ -177,11 +222,27 @@ namespace test4sql
             }
             catch
             {
+                BindingContext = this;
                 await DisplayAlert("ΔΕΝ ΔΙΑΒΑΖΕΙ ΤΟ ΑΡΧΕΙΟ EID.txt", "....", "OK");
                 return;
             }
         }
 
+
+
+        // SQLQUERYF
+        async void SQLQUERYF(object sender, EventArgs e)
+        {
+            RESULTS.Text=PARAGGELIES.ReadSQL(QUERY.Text );
+
+        }
+
+        async void SQLEXECUTEF(object sender, EventArgs e)
+        {
+            //RESULTS.Text = PARAGGELIES.ReadSQL(QUERY.Text);
+            MainPage.ExecuteSqlite(QUERY.Text);
+
+        }
 
         async void test(object sender, EventArgs e)
         {
@@ -236,11 +297,13 @@ namespace test4sql
 
 
          int Imp_EIDH() {
-           
+
+            BindingContext = null;
+            Monkeys = new List<Monkey>();
             IMPORTEID.Text = "*** ΠΑΡΑΚΑΛΩ ΠΕΡΙΜΕΝΕΤΕ 3λεπτά*****";
             // Task.Delay(1000).Wait();
             Thread.Sleep(500);
-           
+            int n = 0;
 
             var file = new SmbFile("smb://"+Globals.cIP +"/EID.txt");
             //Get target's SmbFile.
@@ -288,8 +351,9 @@ namespace test4sql
 
                 
 
-               
-                for (int n=0;n<lines.Length-1;n++ )
+               // ξεκιναει απο 1 για να αποφυγει την επικεφαλιδα
+
+                for (n=1;n<lines.Length-1;n++ )
                 {
                     string[] lines2 = lines[n].Split(';');
                     string cc = lines2[1];
@@ -314,6 +378,25 @@ namespace test4sql
                     string anam = lines2[6];
                     if (anam.Length == 0) { anam = "0"; };
                     anam = anam.Replace(",", ".");
+
+                    if (n < 1000)
+                    {
+                        Monkeys.Add(new Monkey
+                        {
+                            Name = lines2[0],
+
+                            Location = cc,
+                            ImageUrl = ypol,
+                            idPEL = xondr
+                        });
+                    }
+
+
+
+                 
+
+
+
 
 
                     // Κωδικός0;Περιγραφή1;ΕΝΑΛ.ΚΩΔΙΚΟΣ2;Χονδρικής3;Υπολ.1-4; Δεσμευμένα5; Αναμενόμενα6; Barcode 7   
@@ -347,14 +430,14 @@ namespace test4sql
 
 
 
-                    }  // for 
+                }  // for 
 
+                     BindingContext = this;
 
+                //  return true; // runs again, or false to stop
+                // });
 
-                  //  return true; // runs again, or false to stop
-               // });
-
-               // await DisplayAlert("τελος μεταφοράς","Είδη που περάστηκαν "+ (lines.Length - 1).ToString(), "OK"); ;
+                // await DisplayAlert("τελος μεταφοράς","Είδη που περάστηκαν "+ (lines.Length - 1).ToString(), "OK"); ;
 
                 return lines.Length;
 
@@ -364,8 +447,9 @@ namespace test4sql
             }
             catch
             {
-              //  await DisplayAlert("ΔΕΝ ΔΙΑΒΑΖΕΙ ΤΟ ΑΡΧΕΙΟ EID.txt", "....", "OK");
-                return 0;
+                BindingContext = this;
+                //  await DisplayAlert("ΔΕΝ ΔΙΑΒΑΖΕΙ ΤΟ ΑΡΧΕΙΟ EID.txt", "....", "OK");
+                return n;
             }
 
 

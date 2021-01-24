@@ -12,7 +12,11 @@ using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 
 using Plugin.Toast;
 using System.Data.SqlClient;
-  using ZXing.Net.Mobile.Forms;
+//<<<<<<< HEAD
+// ' using ZXing.Net.Mobile.Forms;
+//'=======
+using ZXing.Net.Mobile.Forms;
+//>>>>>>> 846966aea3c06d66db1f7d414f0bbcdce34bb4a5
 
 
 
@@ -27,7 +31,7 @@ namespace test4sql
     public partial class PARAGGELIES : ContentPage
     {
         public IList<Monkey> Monkeys { get; private set; }
-
+        int f_man_barcode = 0;
         public PARAGGELIES()
         {
             InitializeComponent();
@@ -42,7 +46,22 @@ namespace test4sql
             AFM.Focus();
         }
 
+        // 
+        async void CHANGEBARCODE(object sender, EventArgs e)
+        {
+            if (f_man_barcode == 1)
+            {
+                f_man_barcode = 0;
+                butbarcode.Text = "ΑΥΤ.BARCODE";
+            }
+            else
+            {
+                f_man_barcode = 1;
+                butbarcode.Text = "ΧΕΙΡ.BARCODE";
+            }
+           
 
+        }
 
         async void posothtaCompleted(object sender, EventArgs e)
         {
@@ -86,6 +105,8 @@ namespace test4sql
 
             BindingContext = this;
 
+            BARCODE.Text = "";
+            BARCODE.Focus();
 
 
         }
@@ -141,6 +162,10 @@ namespace test4sql
 
         async void barcfoc(object sender, EventArgs e)
         {
+            if (f_man_barcode == 1)
+            {
+                return;
+            }
 
             var scanPage = new ZXingScannerPage();
             // Navigate to our scanner page
@@ -313,7 +338,7 @@ namespace test4sql
         }
 
 
-        void SaveFile(string text)
+       void SaveFile(string text)
         {
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
@@ -332,9 +357,9 @@ namespace test4sql
 
             //Get writable stream.
             var writeStream = file.GetOutputStream();
-            string c = "1;2;3;4;5;6;7;8;\n";
-            c = c + "8;8;9;9;9;9;9;9\n";
-            c = c + "18;18;19;19;19;19;19;19\n";
+           // string c = "1;2;3;4;5;6;7;8;\n";
+          //  c = c + "8;8;9;9;9;9;9;9\n";
+          //  c = c + "18;18;19;19;19;19;19;19\n";
 
             //Write bytes.
             writeStream.Write(Encoding.UTF8.GetBytes(text));

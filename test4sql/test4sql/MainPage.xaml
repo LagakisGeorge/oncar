@@ -2,9 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:test4sql"
+            
              x:Class="test4sql.MainPage">
-
+ 
+    
     <StackLayout>
+
+
+        <!--   <Image Source="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg" Opacity="0.3"
+                RelativeLayout.WidthConstraint=
+                  "{ConstraintExpression Type=RelativeToParent, Property=Width}"
+                RelativeLayout.HeightConstraint=
+                  "{ConstraintExpression Type=RelativeToParent, Property=Height}"/>
+          -->
+    
+   
+
         <!-- Place new controls here -->
         <Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"
@@ -13,16 +26,40 @@
         <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
                 Clicked="PARAGG" />
         
-        <Button Text="test sql"
-                Clicked="Runsql" />
+        <Button Text="ΦΟΡΤΩΣΗ"
+               Clicked="Fortosh"
+                />
+                <!-- Clicked="Runsql"  -->
+                
+               
         <Button x:Name="but1" 
                 Text="Ενημερωση από Αρχεία"
                 Clicked="toPage2"
                  />
         <Button x:Name="but11" 
-                Text="SQLSERVER open query"
+                Text="SQLSERVER ΠΕΛΑΤΕΣ"
                 Clicked="SqlserverTableToListview"
                  />
+
+        <Button x:Name="but12" 
+                Text="SQLSERVER EIΔΗ"
+                Clicked="SqlserverTοSQLITE"
+                 />
+
+        <Button x:Name="but16" 
+                Text="ασυγχρονα SQLSERVER EIΔΗ"
+                Clicked="asSqlserverTοSQLITE"
+                 />
+
+
+        <Button x:Name="but18" 
+                Text="SQLSERVER BARCODES"
+                Clicked="SqlserverTοBARCODES"
+                 />
+
+
+
+
         <Button x:Name="but121" 
                 Text="Topage1"
                 Clicked="ToPage1"
@@ -31,6 +68,14 @@
                 Text="ΠΑΡΑΜΕΤΡΟΙ"
                 Clicked="fparam"
                  />
+
+        <Button x:Name="SUPER" 
+                Text="ΕΛΕΓΧΟΣ BARCODE"
+                Clicked="FSEARCH"
+                 />
+
+
+
 
         <ListView ItemsSource="{Binding Monkeys}"
                   HasUnevenRows="true"
@@ -48,14 +93,22 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Image Grid.RowSpan="2" 
+                          <!--  <Image Grid.RowSpan="2" 
                                    Source="{Binding ImageUrl}" 
                                    Aspect="AspectFill"
                                    HeightRequest="60"
-                                   WidthRequest="60" />
+                                   WidthRequest="60" /> -->
+
+                            <Label Grid.Column="0" 
+                                   Text="{Binding ImageUrl}"
+                                   FontAttributes="Bold" />
+
+
                             <Label Grid.Column="1" 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" />
+                            
+                            
                             <Label Grid.Row="1" 
                                    Grid.Column="1" 
                                    Text="{Binding Location}"
@@ -72,11 +125,11 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-    </StackLayout>
 
 
-    
-    
-    
+        </StackLayout>
+
+
+
+
 </ContentPage>

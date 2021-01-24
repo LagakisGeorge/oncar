@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Mono.Data.Sqlite;
 using System.Data;
+using System.Threading;
 
 namespace test4sql
 
@@ -36,7 +37,7 @@ namespace test4sql
             // MainPage = new NavigationPage(new FirstContentPage());
             try
             {
-               int i = StartSqlite("");
+                int i = StartSqlite("");
             }
             catch (Exception ex)
             {
@@ -45,7 +46,7 @@ namespace test4sql
 
 
             // DESKTOP-MPGU8SB\SQL17
-            string constring = @"Data Source="+Globals.cSQLSERVER +";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=EMP;Uid=sa;Pwd=12345678";
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -81,13 +82,13 @@ namespace test4sql
             connection.Open();
             var c = connection.CreateCommand();
 
-            Query  = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
+            Query = "CREATE TABLE IF NOT EXISTS MEM( ID  INTEGER PRIMARY KEY,IP [nvarchar](45)," +
                    "[EPO] [nvarchar](255) ," +
                     "[DIE] [nvarchar](35) ," +
                       "[POL] [nvarchar](35) ," +
                         "[THL] [nvarchar](35) ," +
                       "[AFM] [nvarchar](15) )";
-          
+
 
 
 
@@ -99,7 +100,7 @@ namespace test4sql
 
             string c2 = PARAGGELIES.ReadSQL("select CAST(count(*) AS VARCHAR(10) )  AS NN from MEM ");
             int n = Int32.Parse(c2);
-            if (n==0)
+            if (n == 0)
             {
                 c.CommandText = "INSERT INTO MEM (IP) VALUES ('*')";
 
@@ -110,10 +111,10 @@ namespace test4sql
             }
 
 
-            Globals.cIP= PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
+            Globals.cIP = PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
-
+            Globals.useBarcodes  = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=1");
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
 
 
@@ -126,6 +127,9 @@ namespace test4sql
 
 
         public static SqliteConnection connection;
+
+
+        // demo sqlite ========================
         public static void DoSomeDataAccess()
         {
             // determine the path for the database file
@@ -208,14 +212,14 @@ namespace test4sql
 
             //  MainPage = new NavigationPage(new FirstContentPage());
 
-           // await NavigationPage (new Page2()  );
+            // await NavigationPage (new Page2()  );
             await Navigation.PushAsync(new PARAGGELIES());
 
 
         }
 
 
-
+        // demo sqlite  ========================================
         public void Runsql(object sender, EventArgs e)
         {
             DoSomeDataAccess();
@@ -271,6 +275,16 @@ namespace test4sql
            */
             // String c3 = morecomplex();
         }
+
+        public async void Fortosh (object sender, EventArgs e){
+
+            await Navigation.PushAsync(new techn1 ());  //imports
+
+
+        }
+
+
+
 
         public static string morecomplex() // Opensql(object sender, EventArgs e)
         {
@@ -393,6 +407,21 @@ namespace test4sql
            
         }
 
+
+        private async void FSEARCH(object sender, EventArgs e)
+        {
+            but11.IsVisible = false;
+            await Navigation.PushAsync(new SUPER());  //imports
+
+        }
+
+
+
+
+
+
+
+
         private async void fparam(object sender, EventArgs e)
         {
 
@@ -428,6 +457,10 @@ namespace test4sql
         private async void SqlserverTableToListview (object sender, EventArgs e)
         {
 
+            MainPage.ExecuteSqlite("delete from PEL;");
+
+
+
             but11.Text = "sss";
             //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -438,49 +471,62 @@ namespace test4sql
                 //  con.Open();
                 //  await DisplayAlert("OK", "OK i am Connected", "OK");
 
-                SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
-                cmd.Connection = con;
-                cmd.ExecuteNonQuery();
 
 
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+               // SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
+               // cmd.Connection = con;
+               // cmd.ExecuteNonQuery();
+
+                
                 //  DataSet ds = new DataSet();
 
                 //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
 
                 //   var adapter = new SqlDataAdapter(cmd2);
                 //   adapter.Fill(ds);
-                //  string cc = ds.Tables[0].Rows[1]["EPO"];
+                //  string cc = ds.Tables[0].Rows[1]["EPO"];  201712552030 0217
                 Monkeys = new List<Monkey>();
 
 
                 DataTable dt = new DataTable();
 
-                SqlCommand cmd3 = new SqlCommand("select top 100 * FROM PEL", con);
+                SqlCommand cmd3 = new SqlCommand("select * FROM PEL WHERE EIDOS='e' and TYP<>0 order by TYP DESC", con);
 
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 List<string> MyList = new List<string>();
-                for (int k = 0; k <= 99; k++)
+                int k = 0;
+                for ( k = 0; k <= dt.Rows.Count -1; k++)
                 {
                     String mF = dt.Rows[k]["EPO"].ToString();
                     MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["TYP"].ToString();
+
 
                     Monkeys.Add(new Monkey
                     {
                         Name = mF,
 
                         Location = dt.Rows[k]["DIE"].ToString(),
-                        ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        ImageUrl = mTYP , // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
                         idPEL = dt.Rows[k]["ID"].ToString()
-                    });
+                    }); ;
+
+                       
+                    string mKOD = dt.Rows[k]["kod"].ToString();
+                    string mDIE = dt.Rows[k]["die"].ToString();
+                    string mAFM = dt.Rows[k]["afm"].ToString();
+                  
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into PEL (TYP,KOD,EPO,DIE,AFM) VALUES ("+mTYP+",'" + mKOD + "','" + mF + "','" +mDIE + "','"+mAFM+"');");
 
 
 
 
 
-
-
-                }
+                } // FOR
+                await DisplayAlert("ΠΕΛΑΤΕΣ",""+dt.Rows.Count, "OK");
 
                 BindingContext = this;
 
@@ -497,6 +543,322 @@ namespace test4sql
             }
             // }
         }
+
+
+        // ΑΝΟΙΓΕΙ ασυγχρονα  ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void asSqlserverTοSQLITE(object sender, EventArgs e)
+        {
+
+            await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη  " , "OK");
+            Task<int> task = new Task<int>(Imp_EIDH);
+            // IMPORTEID.Text = "*** ΠΑΡΑΚΑΛΩ ΠΕΡΙΜΕΝΕΤΕ 3λεπτά*****";
+             task.Start();
+             int count = await task;
+
+             // IMPORTEID.Text = count.ToString();
+             await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη που περάσ "+count.ToString (), "OK");
+            BindingContext = this;
+
+
+
+
+
+
+
+
+            Task<int> task2 = new Task<int>(Imp_BARCODES);
+            task2.Start();
+
+            int count2 = await task2;
+
+            // IMPORTEID.Text = count.ToString();
+            await DisplayAlert("--Εναρξη μεταφοράς BARCODES", "    barcodes που περάστηκαν " + count2.ToString(), "OK");
+
+        }
+
+
+        // ΑΝΟΙΓΕΙ ασυγχρονα  ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void SqlserverTοBARCODES(object sender, EventArgs e)
+        {
+
+
+
+
+          //  int count2= Imp_BARCODES();
+
+
+
+          Task<int> task = new Task<int>(Imp_BARCODES);
+          task.Start();
+
+              int count2 = await task;
+
+            // IMPORTEID.Text = count.ToString();
+               await DisplayAlert("--Εναρξη μεταφοράς BARCODES", "    barcodes που περάστηκαν " + count2.ToString(), "OK");
+
+        }
+
+
+
+
+
+
+
+
+        int Imp_EIDH()
+        {
+
+
+            // me to parakato loop δουλεευει το ασυγχρονο
+            /*
+            int k2;
+            for (k2 = 0; k2 <= 50 ; k2++)
+            {
+                Thread.Sleep(500);
+            }
+            return k2;
+            */
+            // ta epano einai debugging
+
+            Thread.Sleep(500);
+            int nc = 0;
+            MainPage.ExecuteSqlite("delete from EID;");
+
+          //  return 1; //debug
+
+         //   but11.Text = "sss";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select   ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5  FROM EID ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                   // Thread.Sleep(500);
+                    String mF = dt.Rows[k]["MONO"].ToString();
+                    mF = mF.Replace("'", "`");
+                    MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["MLTI5"].ToString();
+                    mTYP = mTYP.Replace(",", ".");
+                    Monkeys.Add(new Monkey
+                    {
+                        Name = mF,
+                        Location = dt.Rows[k]["MKOD"].ToString(),
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
+                    }); ;
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "');");
+
+
+
+
+
+                } // FOR
+                nc = dt.Rows.Count;
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+
+               // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+
+              //  BindingContext = this;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+               // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+            return nc;
+        }
+
+
+        int Imp_BARCODES()
+        {
+
+
+            // me to parakato loop δουλεευει το ασυγχρονο
+            /*
+            int k2;
+            for (k2 = 0; k2 <= 50 ; k2++)
+            {
+                Thread.Sleep(500);
+            }
+            return k2;
+            */
+            // ta epano einai debugging
+
+            Thread.Sleep(500);
+            int nc = 0;
+            MainPage.ExecuteSqlite("delete from BARCODES;");
+
+            //  return 1; //debug
+
+            //   but11.Text = "sss";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+               
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select   isnull(KOD,'') AS MKOD,ISNULL(ERG,'') AS MERG  FROM BARCODES ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                //   List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                 
+                    int n2 = MainPage.ExecuteSqlite("insert into BARCODES (KOD,BARCODE) VALUES ('" + mKOD + "','" + mERG + "');");
+
+
+
+
+
+                } // FOR
+                nc = dt.Rows.Count;
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+
+                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+
+                //  BindingContext = this;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+            return nc;
+        }
+
+
+
+
+        // ΑΝΟΙΓΕΙ ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ EIDΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
+        private async void SqlserverTοSQLITE(object sender, EventArgs e)
+        {
+            await DisplayAlert("Εκκίνηση..", "Περιμενετε..", "OK");
+            // await ShowAlert("Εκκινηση");
+
+            // var watch = System.Diagnostics.Stopwatch.StartNew();
+            // the code that you want to measure comes here
+
+           // Device.BeginInvokeOnMainThread(async () =>
+          //  {
+         //       await DisplayAlert("Alert", "No internet connection", "Ok");
+         //   });
+
+
+
+
+            MainPage.ExecuteSqlite("delete from EID;");
+
+
+
+            but11.Text = "sss";
+            //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // using (SqlConnection con = new SqlConnection(constring))
+            // {
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5  FROM EID ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String mF = dt.Rows[k]["MONO"].ToString();
+                    mF = mF.Replace("'", "`");
+                    MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["MLTI5"].ToString();
+                    mTYP = mTYP.Replace(",", ".");
+                    Monkeys.Add(new Monkey
+                    {
+                        Name = mF,
+                        Location = dt.Rows[k]["MKOD"].ToString(),
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
+                    }); ;
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "');");
+
+
+
+
+
+                } // FOR
+
+               // watch.Stop();
+              //  var elapsedMs = watch.ElapsedMilliseconds;
+
+                await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+
+                BindingContext = this;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+           
+        }
+
 
         public static int ExecuteSqlite(string Query)
         {
