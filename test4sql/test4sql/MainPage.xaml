@@ -23,15 +23,23 @@
            HorizontalOptions="Center"
             />
 
-        <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
-                Clicked="PARAGG" />
-        
-        <Button Text="ΦΟΡΤΩΣΗ"
+        <StackLayout Orientation="Horizontal" >
+           <Button Text="ΦΟΡΤΩΣΗ           "
                Clicked="Fortosh"
                 />
                 <!-- Clicked="Runsql"  -->
-                
-               
+        <Button Text="ΧΤΙΣΙΜΟ ΠΑΛΕΤΑΣ"
+                     Clicked="xtisimo"       
+                />
+           
+        </StackLayout>
+        
+        
+        <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
+                Clicked="PARAGG" />
+        
+     
+
         <Button x:Name="but1" 
                 Text="Ενημερωση από Αρχεία"
                 Clicked="toPage2"

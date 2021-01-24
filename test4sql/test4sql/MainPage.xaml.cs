@@ -284,6 +284,14 @@ namespace test4sql
         }
 
 
+        public async void xtisimo(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new View1());  //imports
+
+
+        }
+
 
 
         public static string morecomplex() // Opensql(object sender, EventArgs e)
