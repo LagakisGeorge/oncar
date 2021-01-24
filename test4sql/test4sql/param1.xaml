@@ -7,7 +7,7 @@
              x:Class="test4sql.param1">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Κοινόχρηστος Φάκελος Π.Χ. HPSERVER/KOINOS "
+            <Label Text="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES=1 ΕΙΔΩΝ=0 "
                 
                 HorizontalOptions="CenterAndExpand" />
 
@@ -16,7 +16,7 @@
                     BackgroundColor="Azure"    
                    />
 
-
+            <Label Text="Κοινόχρηστος Φάκελος Π.Χ. HPSERVER/KOINOS "></Label>
 
 
             <Entry x:Name="fakelos"
@@ -24,7 +24,7 @@
                     BackgroundColor="Azure"    
                    />
 
-            <Label Text="SQLSERVER INSTANCE  Π.Χ. HPSERVER/SQLEXPRESS,51403"
+            <Label Text="ΒΑΣΗ=MERCURY sa,12345678 βαλτε το instance,PORT Π.Χ. HPSERVER/SQL5,9403  ή   IP/SQL17,51403"
                 
                 HorizontalOptions="CenterAndExpand" />
             <Entry x:Name="sqlserver"
@@ -41,6 +41,10 @@
                         Clicked="ftest" 
                   />
 
+            <Button x:Name="ListServers" 
+                    Text="ΛΙΣΤΑ ΣΥΝΔΕΜΕΝΩΝ SERVER"
+                        Clicked="fLISTSERVER" 
+                  />
 
 
 
