@@ -17,7 +17,7 @@ namespace test4sql
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class View1 : ContentPage
-    { 
+    {
         public IList<Monkey> Monkeys { get; private set; }
         public string f_cid = "";
         public SqlConnection con;
@@ -39,7 +39,7 @@ namespace test4sql
             /*  
             */
         }
-        async void diag_barcode(object sender, EventArgs e)
+        async void Diag_barcode(object sender, EventArgs e)
         {
 
             var action = await DisplayAlert("Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
@@ -48,7 +48,7 @@ namespace test4sql
                 //  Navigate to first page
                 MainPage.ExecuteSqlite("delete from PARALABES WHERE ID=" + f_cid);
                 await DisplayAlert("διαγραφτηκε", "", "OK");
-                show_list();
+                Show_list();
             }
 
 
@@ -85,13 +85,13 @@ namespace test4sql
             try
             {
                 con.Open();
-                
-               // await DisplayAlert("Συνδεθηκε", "οκ", "OK");
+
+                // await DisplayAlert("Συνδεθηκε", "οκ", "OK");
 
                 // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
-                 SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)"   );
-                 cmd.Connection = con;
-                 cmd.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -106,47 +106,47 @@ namespace test4sql
 
                 //Get the SmbFile specifying the file name to be created.
                 var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
-            // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+                // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
 
-            if (file.Exists())
-            {
-                DisplayAlert("Θα διαγραφει το παλιό αρχειο", "....", "OK");
-                file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
-            }
-           // else
-            {
-                //Create file.
-                file.CreateNewFile();
-            }
+                if (file.Exists())
+                {
+                    DisplayAlert("Θα διαγραφει το παλιό αρχειο", "....", "OK");
+                    file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
+                }
+                // else
+                {
+                    //Create file.
+                    file.CreateNewFile();
+                }
 
 
-            /*            try
-                        {
-                            //Create file.
-                            file.CreateNewFile();
-                        }
-                        catch
-                        {
-                            DisplayAlert("Θα διαγραφει το ηδη το αρχειο", "....", "OK");
-                            file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
-                        }
-            */
+                /*            try
+                            {
+                                //Create file.
+                                file.CreateNewFile();
+                            }
+                            catch
+                            {
+                                DisplayAlert("Θα διαγραφει το ηδη το αρχειο", "....", "OK");
+                                file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
+                            }
+                */
 
-               //Get writable stream.
-               var writeStream = file.GetOutputStream();
+                //Get writable stream.
+                var writeStream = file.GetOutputStream();
 
-               //Write bytes.
-               writeStream.Write(Encoding.UTF8.GetBytes(text));
+                //Write bytes.
+                writeStream.Write(Encoding.UTF8.GetBytes(text));
 
-               //Dispose writable stream.
-               writeStream.Dispose();
+                //Dispose writable stream.
+                writeStream.Dispose();
 
 
             }
             catch
             {
                 DisplayAlert("Δεν γράφτηκε το αρχειο", "....", "OK");
-               // file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
+                // file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
             }
 
 
@@ -163,7 +163,7 @@ namespace test4sql
 
         }
 
-        void show_list()
+        void Show_list()
         {
             Monkeys = new List<Monkey>();
             BindingContext = null;
@@ -219,6 +219,86 @@ namespace test4sql
         {
 
 
+            // DIABAZO sqlite database KAI TA SOZO :
+            // se sqlserver
+            // KAI SE KOINO FAKELO SAN ARXEIO  EGGTIM2.TXT
+
+
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+            //  -----------------SQLSERVER ---------------------------------------
+
+
+
+
+
+            /*
+            // '=====================  EGGTIM2.TXT  ======================================================'
+            try
+            {
+                //Get the SmbFile specifying the file name to be created.
+                var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
+            // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+            if (file.Exists())
+            {
+                DisplayAlert("Θα διαγραφει το παλιό αρχειο", "....", "OK");
+                file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
+            }
+           // else
+            {
+                //Create file.
+                file.CreateNewFile();
+            }
+                       //try
+                       // {
+                       //     //Create file.
+                       //     file.CreateNewFile();
+                       // }
+                       // catch
+                       // {
+                       //     DisplayAlert("Θα διαγραφει το ηδη το αρχειο", "....", "OK");
+                       //     file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
+                       // }
+           
+
+               //Get writable stream.
+               var writeStream = file.GetOutputStream();
+
+               //Write bytes.
+               writeStream.Write(Encoding.UTF8.GetBytes(text));
+
+               //Dispose writable stream.
+               writeStream.Dispose();
+
+
+            }
+            catch
+            {
+                DisplayAlert("Δεν γράφτηκε το αρχειο", "....", "OK");
+               // file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
+            }
+            // '=====================  EGGTIM2.TXT  ======================================================'
+            */
+
+
+
+
+
+
+
             string dbPath = Path.Combine(
                      Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                      "adodemo.db3");
@@ -230,25 +310,77 @@ namespace test4sql
             contents.CommandText = "SELECT ATIM,BARCODE FROM PARALABES";
             var r = contents.ExecuteReader();
             // Console.WriteLine("Reading data");
+
+            String cPal, cPart, cPos, cKod;
             string cc = "";
-            while (r.Read())
+
+
+            try
             {
-                cc = cc + r["ATIM"].ToString() + ";";
-                cc = cc + r["BARCODE"].ToString() + "\n";
-                //cc = cc + r["POSO"].ToString() + ";";
-                // cc = cc + r["TIMH"].ToString() + "\n";
+
+
+                while (r.Read())
+                {
+                    cc = cc + r["ATIM"].ToString() + ";";
+                    cc = cc + r["BARCODE"].ToString() + "\n";
+                    //cc = cc + r["POSO"].ToString() + ";";
+                    // cc = cc + r["TIMH"].ToString() + "\n";  11  12->  21,5
+
+
+                   
+
+                    cPal = r["ATIM"].ToString();
+                    cPal = cPal.Substring(12, 7);
+
+
+                    cKod = r["BARCODE"].ToString();
+                    cKod = "00" + cKod.Substring(11, 4);
+
+                    cPos = r["BARCODE"].ToString();
+                    cPos = cPos.Substring(20, 5);
+
+                    cPart = r["BARCODE"].ToString();
+                    cPart = cPart.Substring(28, 7);
+
+
+
+                    SqlCommand cmd = new SqlCommand("insert into PALETES(PALET,[KOD],[PARTIDA],[POSO]) values ('" + cPal + "','" + cKod + "','" + cPart + "'," + cPos + ")");
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+
+
+
+
+                }
+                connection.Close();
+
+
+
+                CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+                //  SaveFile(cc);
+
+                MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
+
 
             }
-            connection.Close();
-            SaveFile(cc);
-            CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
 
         }
+
+
+
+
+
+    
+
 
         async void PaletaChanged(object sender, EventArgs e)
         {
 
-            if (Paleta.Text.Length == 0) return;
+            if (Paleta.Text.Length < 34) return;
 
             BindingContext = null;
             Monkeys.Add(new Monkey
@@ -262,9 +394,11 @@ namespace test4sql
 
             BindingContext = this;
 
+            
+
             Paleta.Text = ""; // to ekana etsi gia na mporei na pairnei 2 fores tin idia paleta
             MainPage.ExecuteSqlite("INSERT INTO PARALABES (ATIM,BARCODE) VALUES ('" + cATIM.Text + "','" + Paleta.Text + "')");
-            show_list();
+            Show_list();
             Paleta.Focus();
 
         }
@@ -331,7 +465,7 @@ namespace test4sql
 
         void ViewPalet(object sender, EventArgs e)
         {
-            show_list();
+            Show_list();
             paletfoc();
 
           //  Paleta.Focus();

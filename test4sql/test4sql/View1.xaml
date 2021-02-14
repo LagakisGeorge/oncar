@@ -43,7 +43,7 @@
               <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
                <Button Text="Eξοδος" Clicked="CloseInvoice"/>
 
-            <Button Text="Διαγραφή" Clicked="diag_barcode" />
+            <Button Text="Διαγραφή" Clicked="Diag_barcode" />
 
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"

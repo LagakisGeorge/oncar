@@ -11,6 +11,8 @@ using Xamarin.Forms.Xaml;
 using System.IO;
 using Plugin.Toast;
 using SharpCifs.Smb;
+using System.Data.SqlClient;
+
 
 namespace test4sql
 {
@@ -19,6 +21,9 @@ namespace test4sql
 
 
     {
+
+
+        public SqlConnection con;
         public IList<Monkey> Monkeys { get; private set; }
         public string f_cid="" ;
         public techn1()
@@ -170,6 +175,36 @@ namespace test4sql
         {
 
 
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+            //  -----------------SQLSERVER ---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // ΑΠΟΘΗΚΕΥΣΗ ΣΕ ΑΡΧΕΙΟ
             string dbPath = Path.Combine(
                      Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                      "adodemo.db3");
@@ -182,16 +217,36 @@ namespace test4sql
             var r = contents.ExecuteReader();
             // Console.WriteLine("Reading data");
             string cc = "";
+
             while (r.Read())
             {
                 cc = cc + r["ATIM"].ToString() + ";";
                 cc = cc + r["BARCODE"].ToString() + "\n";
                 //cc = cc + r["POSO"].ToString() + ";";
-               // cc = cc + r["TIMH"].ToString() + "\n";
+                // cc = cc + r["TIMH"].ToString() + "\n";
+
+
+
+                SqlCommand cmd = new SqlCommand("insert into PALETTIM(SCAN,ATIM) values ('" + r["BARCODE"].ToString() + "','" + r["ATIM"].ToString() + "')");
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+
+
+
 
             }
             connection.Close();
-            SaveFile(cc);
+           // SaveFile(cc);
+
+
+
+
+
+
+
+
+
+
             CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
 
         }
@@ -267,7 +322,7 @@ namespace test4sql
 
         void KataxTimol(object sender, EventArgs e)
         {
-            show_list();
+           // show_list();
             Paleta.Focus();
 
 

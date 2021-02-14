@@ -6,16 +6,23 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal" >
 
-                <Label Text="Aρ.Τιμολογιου "/>
-            <Entry x:Name="cATIM" Placeholder=".................." />
+                <Label Text="Aρ.Παραστ "
+                        VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="End"
+                       WidthRequest="140"/>
+            <Entry x:Name="cATIM"
+                   VerticalTextAlignment="Center"
+                   Placeholder="............" />
                 
-                <Button Text="Kαταχ.Τιμολ" Clicked="KataxTimol"/>
-                <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
+                <Button Text="Kαταχ" Clicked="KataxTimol"/>
+               
 
             </StackLayout>
             <StackLayout Orientation="Horizontal" >
                 <Label Text="---------------- "/>
-                <Button Text="Διαγραφή όλων" Clicked="delete_all"/>
+                <Button Text="Διαγραφή όλων"
+                        Clicked="delete_all"/>
+                <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
             </StackLayout> 
             <StackLayout Orientation="Horizontal" >
                 <Label Text="Παλέτα "/>
