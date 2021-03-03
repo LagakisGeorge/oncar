@@ -12,7 +12,10 @@ namespace test4sql.Droid
 {
     [Activity(Label = "test4sql", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+
     {
+
+        public string GetDocumentsFolder() => (string)Android.OS.Environment.GetExternalStoragePublicDirectory("Documents");
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;

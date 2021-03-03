@@ -42,7 +42,7 @@ namespace test4sql
         {
 
             //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://"+Globals.cIP +"/New2FileName.txt");
+            var file = new SmbFile("smb://"+Globals.cIP +"/EGGTIM2.TXT");
            // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
             try
             {
@@ -83,7 +83,7 @@ namespace test4sql
         {
             bool f = ReadFiles();
             //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+            var file = new SmbFile("smb://" + Globals.cIP + "/EIDH.TXT"); // "smb://User:1@192.168.1.5/backpel/New2FileName.txt");
             //Get target's SmbFile.
             // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
 
@@ -112,8 +112,19 @@ namespace test4sql
                 String g = Encoding.UTF8.GetString(memStream.ToArray());
 
                 string[] lines = g.Split('\n');
+                //for (int i=0;0;lines.count )
+                    for (int k = 0; k <= lines.Length  - 1; k++)
+                    {
+
+
+
+                    }
+
+
+
+
                 Lab1.Text = lines[1] + "=" + lines[2] + "=" + lines[3];
-                await DisplayAlert("Error", Encoding.UTF8.GetString(memStream.ToArray()), "OK");
+               // ΤΟ ΔΕΙΧΝΕΙ ΣΕ MSGBOX :     await DisplayAlert("Error", Encoding.UTF8.GetString(memStream.ToArray()), "OK");
             }
             catch
             {
@@ -132,7 +143,7 @@ namespace test4sql
             //using SharpCifs.Smb;
 
             //Get SmbFile-Object of a folder.
-            var folder = new SmbFile("smb://User:1@192.168.1.5/backpel/");
+            var folder = new SmbFile("smb://" + Globals.cIP + "/"); // "smb://User:1@192.168.1.5/backpel/");
 
         //UnixTime
         var epocDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

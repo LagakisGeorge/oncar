@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PCLStorage;  
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,12 +12,15 @@ using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using System.IO;
 using Plugin.Toast;
 using System.Threading;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace test4sql
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Page2 : ContentPage
     {
+
+
 
         public IList<Monkey> Monkeys { get; private set; }
         public Page2()
@@ -34,7 +38,17 @@ namespace test4sql
 
 
 
+        async void MIDAPOG(object sender, EventArgs e)
+        {
 
+
+            int l = MainPage.ExecuteSqlite("delete FROM EGGTIM");
+
+            await DisplayAlert("ΔΙΑΓΡΑΦΗΚΕ ΟΚ", "ΔΙΑΓΡΑΦΗΚΕ Η ΑΠΟΓΡΑΦΗ", "OK");
+
+
+
+        }
 
 
         async void CreateTables(object sender, EventArgs e)
@@ -254,10 +268,10 @@ namespace test4sql
 
             await DisplayAlert("Εναρξη μεταφοράς ειδών ", "Είδη  ", "OK");
             CrossToastPopUp.Current.ShowToastMessage("loading ειδη");
-            Imp_EIDH();
+           // Imp_EIDH();
             IMPORTEID.Text = "*** ΠΑΡΑΚΑΛΩ ΠΕΡΙΜΕΝΕΤΕ 133λεπτά*****";
             await DisplayAlert("2h-Εναρξη μεταφοράς ειδών", "Είδη  ", "OK");
-            Imp_EIDH();
+         //   Imp_EIDH();
             await DisplayAlert("Telos--Εναρξη μεταφοράς ειδών", "Είδη  " , "OK");
 
 
@@ -272,15 +286,62 @@ namespace test4sql
 
         }
 
+        async void LImportEID(object sender, EventArgs e)
+        {
+           
+
+            string path = "/storage/emulated/0/lagakis2";  // Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments  );  // "/data/lagakis2";  // 
 
 
-        async void ImportEID(object sender, EventArgs e)
+            string filename = Path.Combine(path, "lagakis.txt");
+
+            using (var streamWriter = new StreamWriter(filename, true))
+            {
+                streamWriter.WriteLine(DateTime.UtcNow);
+            }
+
+            using (var streamReader = new StreamReader(filename))
+            {
+                string content = streamReader.ReadToEnd();
+                System.Diagnostics.Debug.WriteLine(content);
+            }
+
+
+
+            /*
+
+            String filename2 ="eidh.txt";
+            IFolder folder = FileSystem.Current.LocalStorage;
+            IFile file = await folder.CreateFileAsync(filename2, CreationCollisionOption.ReplaceExisting);
+
+          //  string fileName = "eidh2.txt";
+            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp.txt");
+            string text = "1234567890  αβγδεζη thue";
+            File.WriteAllText(fileName, text);
+
+
+            bool doesExist = File.Exists(fileName);
+            if (doesExist)
+            {
+                string text2 = File.ReadAllText(fileName);
+            }
+            else
+            {
+               await DisplayAlert("ΔΕΝ υπαρχει ΤΟ ΑΡΧΕΙΟ EID.txt", "....", "OK");
+            }
+              */
+
+
+
+        }
+
+         async  void ImportEID(object sender, EventArgs e)
         {
 
-            await DisplayAlert("Εναρξη μεταφοράς ειδών 3-5λεπτά", "Είδη  ", "OK");
-            CrossToastPopUp.Current.ShowToastMessage("loading ειδη");
-            int count = Imp_EIDH();
-            await DisplayAlert("Εναρξη μεταφοράς ειδών ", "Είδη  "+count.ToString(), "OK");
+           await DisplayAlert("Εναρξη μεταφοράς ειδών 3-5λεπτά", "Είδη  ", "OK");
+         //   CrossToastPopUp.Current.ShowToastMessage("loading ειδη");
+          //  int count = Imp_EIDH();
+         //   await DisplayAlert("ok ", "Είδη  "+count.ToString(), "OK");
 
 
 
@@ -293,10 +354,10 @@ namespace test4sql
               await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη που περάσ "+count.ToString (), "OK");
             */
 
-        }
+        //  }
 
 
-         int Imp_EIDH() {
+         //  int  Imp_EIDH() {
 
             BindingContext = null;
             Monkeys = new List<Monkey>();
@@ -304,7 +365,7 @@ namespace test4sql
             // Task.Delay(1000).Wait();
             Thread.Sleep(500);
             int n = 0;
-
+           
             var file = new SmbFile("smb://"+Globals.cIP +"/EID.txt");
             //Get target's SmbFile.
             // var file = new SmbFile("smb://UserName:Password@ServerIP/ShareName/Folder/FileName.txt");
@@ -345,7 +406,9 @@ namespace test4sql
              //   await DisplayAlert("Error", Encoding.UTF8.GetString(bytes), "OK");
                 String g = Encoding.UTF8.GetString(memStream.ToArray());
                 string[] lines = g.Split('\n');
-                IMPORTEID.Text=  lines[1] + "=" + lines[2] + "=" + lines[3];
+               // IMPORTEID.Text=  lines[1] + "=" + lines[2] + "=" + lines[3];
+
+
                 //  await DisplayAlert("Error", Encoding.UTF8.GetString(memStream.ToArray()), "OK");
                 int n2;// = MainPage.ExecuteSqlite("dd");
 
@@ -354,7 +417,16 @@ namespace test4sql
                // ξεκιναει απο 1 για να αποφυγει την επικεφαλιδα
 
                 for (n=1;n<lines.Length-1;n++ )
+
+
+
                 {
+
+
+                    try
+                    { 
+
+
                     string[] lines2 = lines[n].Split(';');
                     string cc = lines2[1];
                     cc = cc.Replace("'", "`");
@@ -400,22 +472,28 @@ namespace test4sql
 
 
                     // Κωδικός0;Περιγραφή1;ΕΝΑΛ.ΚΩΔΙΚΟΣ2;Χονδρικής3;Υπολ.1-4; Δεσμευμένα5; Αναμενόμενα6; Barcode 7   
-                    n2 = MainPage.ExecuteSqlite("insert into EID (KOD,ONO,XONDR,ENAL,YPOL,DESM,ANAM,BARCODE) VALUES ('"+lines2[0]+ "','" + cc + "',"+xondr +",'"+enal+"',"+ypol+","+desm+","+anam+",'"+lines2[7]+"');");
-                    IMPORTEID.Text =  lines[n] ;
-
+                    n2 = MainPage.ExecuteSqlite("insert into EID (KOD,ONO,BARCODE) VALUES ('"+lines2[0]+ "','" + lines2[1] + "','"+lines2[0]+"');");
+                    //    IMPORTEID.Text = lines[n] ;
+                    }
+                    catch
+                    {
+                       // BindingContext = this;
+                        //  await DisplayAlert("ΔΕΝ ΔΙΑΒΑΖΕΙ ΤΟ ΑΡΧΕΙΟ EID.txt", "....", "OK");
+                       // return n;
+                    }
 
                     // do something every 60 seconds
                     // IMPORTEID.Text = lines[n];
-                  //  IMPORTEID.Text = lines[n];
-                  //  Device.BeginInvokeOnMainThread(() =>
-                  //  {
-                        // interact with UI elements
-                        // IMPORTEID.Text = lines[n];
-                   //     IMPORTEID.Text = lines[n];
-                  //  });
-                 //   return true; // runs again, or false to stop
+                    //  IMPORTEID.Text = lines[n];
+                    //  Device.BeginInvokeOnMainThread(() =>
+                    //  {
+                    // interact with UI elements
+                    // IMPORTEID.Text = lines[n];
+                    //     IMPORTEID.Text = lines[n];
+                    //  });
+                    //   return true; // runs again, or false to stop
 
-                  
+
 
                     if (n == 1000)
                     {
@@ -432,14 +510,16 @@ namespace test4sql
 
                 }  // for 
 
-                     BindingContext = this;
+
+                Thread.Sleep(3500);
+              //  BindingContext = this;
 
                 //  return true; // runs again, or false to stop
                 // });
 
-                // await DisplayAlert("τελος μεταφοράς","Είδη που περάστηκαν "+ (lines.Length - 1).ToString(), "OK"); ;
+                 await DisplayAlert("τελος μεταφοράς","Είδη που περάστηκαν "+ (lines.Length - 1).ToString(), "OK"); ;
 
-                return lines.Length;
+            //    return lines.Length;
 
 
 
@@ -447,9 +527,9 @@ namespace test4sql
             }
             catch
             {
-                BindingContext = this;
+              //  BindingContext = this;
                 //  await DisplayAlert("ΔΕΝ ΔΙΑΒΑΖΕΙ ΤΟ ΑΡΧΕΙΟ EID.txt", "....", "OK");
-                return n;
+              //  return n;
             }
 
 

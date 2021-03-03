@@ -44,14 +44,36 @@ namespace test4sql
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
             Globals.cIP = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=1");
             Globals.useBarcodes = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=1");
+
+
+
+           // string[] lines = Globals.cSQLSERVER.Split(';');
+
+           // IMPORTEID.Text = lines[1] + "=" + lines[2] + "=" + lines[3];
+
+
+           
+
+
         }
 
         async void ftest(object sender, EventArgs e)
         {
 
 
+            // string[] lines = Globals.cSQLSERVER.Split(';');
+
+            // IMPORTEID.Text = lines[1] + "=" + lines[2] + "=" + lines[3];
+
+            Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
+
             // DESKTOP-MPGU8SB\SQL17
-            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            //  string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678"; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog="+lines[1]+";Uid=sa;Pwd="+lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+
+
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 

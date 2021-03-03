@@ -30,7 +30,7 @@
                     BackgroundColor="Azure"    
                    />
 
-            <Label Text="ΒΑΣΗ=MERCURY sa,12345678 βαλτε το instance,PORT Π.Χ. HPSERVER/SQL5,9403  ή   IP/SQL17,51403"
+            <Label Text="βαλτε το instance,PORT;ΒΑΣΗ;ΚΩΔ.sa Π.Χ.IP/SQL17,51403;MERCURY;12345678"
                 
                 HorizontalOptions="CenterAndExpand" />
             <Entry x:Name="sqlserver"

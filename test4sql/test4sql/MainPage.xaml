@@ -42,20 +42,26 @@
 
         <Button x:Name="but1" 
                 Text="Ενημερωση από Αρχεία"
+                 BackgroundColor="Green"
                 Clicked="toPage2"/>
 
         <StackLayout Orientation="Horizontal" >
             
             <Button x:Name="but11" 
-                Text="SQLSERVER ΠΕΛΑΤΕΣ"
+                Text="SQL ΠΕΛΑΤΕΣ"
                 Clicked="SqlserverTableToListview"
                  />
 
             <Button x:Name="but12" 
-                Text="SQLSERVER EIΔΗ"
+                Text="SQL EIΔΗ"
                 Clicked="SqlserverTοSQLITE"
                  />
-         </StackLayout>
+            <Button x:Name="SUPER2" 
+                Text="ΑΠΟΘΗΚΗ ΚΙΝΗΤΩΝ"
+                    BackgroundColor="Green" 
+                Clicked="FSEARCH2"
+                 />
+        </StackLayout>
             
 
     <Button x:Name="but16" 
@@ -90,6 +96,8 @@
                 Text="print"
                 Clicked="printing"
                  />
+
+           
         </StackLayout>
         
 

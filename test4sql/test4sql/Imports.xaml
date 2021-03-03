@@ -8,10 +8,25 @@
 
             <ProgressBar x:Name="PROG" ProgressColor="Orange" />
 
-            <Button  x:Name="IMPORTEID"  
+
+            <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
+                <Button  x:Name="IMPORTEID"  
                 Text="ImportEID"
+                     BackgroundColor="Green"
                         Clicked="ImportEID" 
                   />
+
+                <Button  x:Name="EidhL"  
+                Text="Ειδη Τοπικά"
+                     BackgroundColor="Green"
+                        Clicked="LImportEID" 
+                  />
+
+            </StackLayout>
+            
+            
+            
+            
             <Button x:Name="IMPORTPEL" 
                       Text="import ΠΕΛΑΤΩΝ"
                        Clicked="ImportPEL" 
@@ -33,6 +48,17 @@
                        Clicked="CreateTables" 
                
                  />
+
+            <Button x:Name="BMIDAPOG"
+                      Text="ΜΗΔΕΝΙΣΜΟΣ ΑΠΟΓΡΑΦΗΣ"
+                       Clicked="MIDAPOG" 
+                     BackgroundColor="Green"
+               
+                 />
+
+
+
+
 
             <ProgressBar />
 

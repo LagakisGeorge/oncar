@@ -15,13 +15,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="beep.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="beep.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Base2Base.Printers" Version="1.1.0" />
     <PackageReference Include="ESCPOS_NET" Version="1.4.0" />
     <PackageReference Include="LinkOS_Xamarin_SDK" Version="1.2.0" />
     <PackageReference Include="Mono.Data.Sqlite.Portable" Version="1.0.3.5" />
+    <PackageReference Include="PCLStorage" Version="1.0.2" />
     <PackageReference Include="Plugin.Toast" Version="2.1.2" />
     <PackageReference Include="SharpCifs.Std" Version="0.2.13" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.4.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />
     <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.3.2" />
@@ -30,6 +40,9 @@
   <ItemGroup>
     <Compile Update="Imports.xaml.cs">
       <DependentUpon>Imports.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SUPER - Copy.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 

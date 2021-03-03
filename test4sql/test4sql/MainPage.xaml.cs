@@ -52,16 +52,19 @@ namespace test4sql
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
-
+ try
+            {
             // DESKTOP-MPGU8SB\SQL17
-            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+       //     string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
             // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             con = new SqlConnection(constring);
 
-            try
-            {
+           
                 con.Open();
             }
             catch (Exception ex)
@@ -432,6 +435,13 @@ namespace test4sql
         {
             but11.IsVisible = false;
             await Navigation.PushAsync(new SUPER());  //imports
+
+        }
+
+        private async void FSEARCH2(object sender, EventArgs e)
+        {
+            but11.IsVisible = false;
+            await Navigation.PushAsync(new SUPER2());  //imports
 
         }
 
