@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="test4sql.SUPER2">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label x:Name="lab1" Text=".."             
+                HorizontalOptions="Start" />
+
+
+                <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" Completed="BarcodeComplete"
+                   Placeholder="BARCODE " Focused="barcfoc"      />
+
+
+
+
+
+
+            </StackLayout  >
+
+
+                    <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+
+
+               
+
+            </Grid>
+
+
+            
+
+
+
+
+
+            <Button x:Name="but10" 
+                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="BresEidos"  />
+
+            <Label    x:Name="lper"   Grid.Row="3" FontSize="Small" Grid.Column="1" Grid.ColumnSpan ="3"
+                Text="............................"  />
+
+
+
+
+                <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
+                Text=".............."  />
+                <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
+                Text="..............."  />
+
+
+
+
+                <Label     Grid.Row="4" Grid.Column="0" 
+                Text="ΤΙΜΗ    " 
+                 TextColor="BlueViolet"    />
+
+            <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
+                  Text="0"  
+                   />
+
+            <Button x:Name="but20" 
+                        Text="αποθηκευση"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="savecodes"  />
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
