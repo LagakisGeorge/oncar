@@ -64,6 +64,9 @@
     <PackageReference Include="Mono.Data.Sqlite.Portable">
       <Version>1.0.3.5</Version>
     </PackageReference>
+    <PackageReference Include="Plugin.BLE">
+      <Version>2.2.0-pre2</Version>
+    </PackageReference>
     <PackageReference Include="Plugin.Toast">
       <Version>2.1.2</Version>
     </PackageReference>
@@ -87,6 +90,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyServices\AndroidBlueToothService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,9 +126,9 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\test4sql\test4sql.csproj">
-      <Project>{7823DB4D-66E7-4C06-A262-7245EF9D75AC}</Project>
-      <Name>test4sql</Name>
+    <ProjectReference Include="..\test4sql\oncar.csproj">
+      <Project>{A761D44D-9092-498B-AACE-3834401FF4E1}</Project>
+      <Name>oncar</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

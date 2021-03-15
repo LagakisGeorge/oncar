@@ -24,18 +24,18 @@
             />
 
         <StackLayout Orientation="Horizontal" >
-           <Button Text="ΦΟΡΤΩΣΗ           "
+           <Button Text="ΦΟΡΤΩΣΗ ΑΠΟ PC          "
                Clicked="Fortosh"
                 />
                 <!-- Clicked="Runsql"  -->
-        <Button Text="ΧΤΙΣΙΜΟ ΠΑΛΕΤΑΣ"
+        <Button Text="ΕΠΙΣΤΡΟΦΗ ΦΟΡΤΗΓΟΥ"
                      Clicked="xtisimo"       
                 />
            
         </StackLayout>
         
         
-        <Button Text="ΠΑΡΑΓΓΕΛΙΕΣ"
+        <Button Text="ΤΙΜΟΛΟΓΗΣΗ"
                 Clicked="PARAGG" />
 
 
@@ -57,7 +57,7 @@
                 Clicked="SqlserverTοSQLITE"
                  />
             <Button x:Name="SUPER2" 
-                Text="ΑΠΟΘΗΚΗ ΚΙΝΗΤΩΝ"
+                Text="Παράμετροι Παραστατικών"
                     BackgroundColor="Green" 
                 Clicked="FSEARCH2"
                  />

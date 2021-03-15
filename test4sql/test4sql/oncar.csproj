@@ -15,6 +15,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DEPEDENCYSERVICES\**" />
+    <EmbeddedResource Remove="DEPEDENCYSERVICES\**" />
+    <None Remove="DEPEDENCYSERVICES\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="printingBT.xaml.cs" />
+    <Compile Remove="ViewModels\PrintPageViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="printingBT.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="beep.mp3" />
   </ItemGroup>
 
@@ -28,6 +43,7 @@
     <PackageReference Include="LinkOS_Xamarin_SDK" Version="1.2.0" />
     <PackageReference Include="Mono.Data.Sqlite.Portable" Version="1.0.3.5" />
     <PackageReference Include="PCLStorage" Version="1.0.2" />
+    <PackageReference Include="Plugin.BLE" Version="2.2.0-pre2" />
     <PackageReference Include="Plugin.Toast" Version="2.1.2" />
     <PackageReference Include="SharpCifs.Std" Version="0.2.13" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
@@ -68,5 +84,9 @@
     <EmbeddedResource Update="View1.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 </Project>

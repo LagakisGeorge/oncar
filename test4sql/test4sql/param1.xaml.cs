@@ -45,16 +45,6 @@ namespace test4sql
             Globals.cIP = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=1");
             Globals.useBarcodes = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=1");
 
-
-
-           // string[] lines = Globals.cSQLSERVER.Split(';');
-
-           // IMPORTEID.Text = lines[1] + "=" + lines[2] + "=" + lines[3];
-
-
-           
-
-
         }
 
         async void ftest(object sender, EventArgs e)

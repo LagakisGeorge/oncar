@@ -9,19 +9,58 @@
     <ContentPage.Content>
       <StackLayout>
 
-             
+
+            <StackLayout Orientation="Horizontal">
+                
+               <Label  x:Name="PAR2"  
+                Text="Παρ/κό:        . "
+                 WidthRequest="150"  VerticalTextAlignment="Center"   />
+
+                <Label  x:Name="ATIM"   VerticalTextAlignment="Center" 
+                Text="0000" WidthRequest="50"
+                 />
+
+                <Button x:Name="BRESPREV" 
+                    Text="&lt;"    WidthRequest="50"
+                        HeightRequest="40"
+                       Clicked="FBRESPREV"  />
+
+                <Button x:Name="BRESNEXT"  HeightRequest="40"
+                    Text=">"   WidthRequest="50"
+                        Clicked="FBRESNEXT" />
+
+            </StackLayout>
 
 
-        <Grid>
+
+            <StackLayout Orientation="Horizontal">
+               
+               
+
+            <Entry x:Name="AFM"
+                   Placeholder="ΚΩΔΙΚΟΣ    "   />
+            <Button x:Name="BRESafm" 
+                    Text="ΑΝΑΖ"    
+                        Clicked="BRES_AFM" 
+                  />
+
+            <Label  x:Name="EPO"  
+                Text="ΕΠΩΝΥΜΙΑ..    " VerticalOptions="Center" 
+                 />
+
+                </StackLayout>
+
+            <Label  
+                Text="----------------------------------------------------"
+                 />
+
+
+            <Grid>
 
           <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="60*" />
+           
            
             
 
@@ -33,188 +72,121 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label  x:Name="LABPEL"  
-                Text="ΑΦΜ    "
-                Grid.Row="0" Grid.Column="2"   Grid.ColumnSpan ="2"      />
-
-        <Entry x:Name="AFM"
-                   Placeholder="ΑΦΜ        "  Grid.Row="0" Grid.Column="1"   />
-        <Button x:Name="BRESafm" 
-                    Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="0" Grid.Column="0"   
-                        Clicked="BRES_AFM" 
-                  />
-
-        <Label  x:Name="laritmisi"   Grid.Row="0" Grid.Column="4"   
-                Text="....   " />
 
 
-
-
-
-                <Button x:Name="butbarcode" 
-                Text="BARCODE"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
-        
-        
-        <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
-                   Placeholder="BARCODE " Focused="barcfoc"      />
-
-
-        <Button x:Name="but10" 
-                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="1" Grid.Column="2"
-                       Clicked="BresEidos"  />
-
-                <Label    x:Name="lper"   Grid.Row="1" Grid.Column="3" Grid.ColumnSpan ="3"
-                Text="............................"  />
-
-
-
-
-        <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
-                Text=".............."  />
-        <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
-                Text="..............."  />
-
-
-        <Label     Grid.Row="3" Grid.Column="0" 
+                <Label     Grid.Row="0" Grid.Column="0" 
                     BackgroundColor="Azure"
-                Text="ΠΟΣΟΤΗΤΑ"  />
-        <Entry x:Name="POSOTHTA"   Grid.Row="3" Grid.Column="1" 
-                   Placeholder="0" 
-                       Text="00"
+                Text="ΚΩΔΙΚΟΣ" HorizontalOptions="Center"  />
+
+                <Label     Grid.Row="0" Grid.Column="1" 
+                    BackgroundColor="Azure"
+                Text="ΠΟΣΟΤΗΤΑ" HorizontalOptions="Center"  />
+
+                <Label     Grid.Row="0" Grid.Column="2" 
+                    BackgroundColor="Azure"
+                Text="ΤΙΜΗ" HorizontalOptions="Center"  />
+
+                <Label     Grid.Row="0" Grid.Column="3" 
+                    BackgroundColor="Azure"
+                Text="ΕΚΠΤ" HorizontalOptions="Start"   />
+
+
+
+                <Entry x:Name="CKODE"   Grid.Row="1" Grid.Column="0" 
+                   Placeholder="          " 
+                       Text=""
+                        HorizontalOptions="Center"  
                     BackgroundColor="Azure"    
+                   Completed="KODECompleted"/>
+
+                <Entry x:Name="CPOSO"   Grid.Row="1" Grid.Column="1" 
+                   Placeholder="          "   Text=""
+                   HorizontalOptions="Center"  BackgroundColor="Azure"    
                    Completed="posothtaCompleted"/>
 
-        <Label     Grid.Row="3" Grid.Column="2" 
-                Text="Συν.Παρ"  />
-        <Label     Grid.Row="3" Grid.Column="3" 
-                Text="...."  />
+                <Entry x:Name="CTIMH"   Grid.Row="1" Grid.Column="2" 
+                   Placeholder="          "   Text=""
+                   HorizontalOptions="Center"  BackgroundColor="Azure"    
+                   Completed="posothtaCompleted"/>
 
-        <Button x:Name="katax"  Grid.Row="3" Grid.Column="4" 
-                        BackgroundColor="GreenYellow" 
+                <Entry x:Name="CEKPT"   Grid.Row="1" Grid.Column="3" 
+                   Placeholder="          "   Text=""
+                   HorizontalOptions="Start"   BackgroundColor="Azure"    
+                   Completed="posothtaCompleted"/>
+
+
+
+
+
+
+
+
+
+
+
+
+            </Grid>
+
+            <Label  x:Name="LPER" 
+         
+                Text="ΕΠΩΝΥΜΙΑ..    " HorizontalOptions="Center"   />
+
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="katax"  Grid.Row="3" Grid.Column="4" 
+                     BackgroundColor="GreenYellow" 
                         Text="ΚΑΤΑΧΩΡΗΣΗ"
                        Clicked="kataxorisi"  />
 
+                
 
 
 
-        <Label     Grid.Row="4" Grid.Column="0" 
-                Text="ΤΙΜΗ    " 
-                 TextColor="BlueViolet"    />
+            </StackLayout> 
 
-        <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" 
-                  Text="0"  
-                   />
+         
 
-        <Label     Grid.Row="4" Grid.Column="2" 
-                Text="ΑΞΙΑ"  />
-        <Label     Grid.Row="4" Grid.Column="3" 
-                Text="...."  />
-
-
-
-        <Label     Grid.Row="5" Grid.Column="0" 
-                Text="ΑΝΑΜ"  />
-
-        <Label x:Name="lanam"   Grid.Row="5" Grid.Column="1"
-                Text="................................."  />
-
-        <Button x:Name="WriteFiles" Grid.Row="5" Grid.Column="2"
-                        BackgroundColor="GreenYellow" 
-                        Text="Αποστολή Παραγγ"
-                       Clicked="WriteFile"  />
-
-
-
-        <Label   Grid.Row="6" Grid.Column="0"
-                    TextColor="Green" 
-                Text="ΥΠΟΛ."  />
-
-        <Label     x:Name="lypol"  Grid.Row="4" Grid.Column="1"
-                Text="........."  />
-
-        <Label    Grid.Row="6" Grid.Column="2"
-                Text="ΔΕΣΜ"  />
-        <Label  x:Name="ldesm"  Grid.Row="6" Grid.Column="3"
-                Text=".................."  />
-        <Button x:Name="bCloseOrder" Grid.Row="6" Grid.Column="4"
-                        BackgroundColor="GreenYellow" 
-                        
-                        Text="Ολοκλ.παραγγ"
-                       Clicked="CloseOrder"  />
-  
-
-
-
-
-    </Grid>
-
-<ListView ItemsSource="{Binding Monkeys}"
+            <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
-                  HasUnevenRows="true"
-                  ItemSelected="OnListViewItemSelected"
-                  ItemTapped="OnListViewItemTapped">
+                      HeightRequest="80"
+                  HasUnevenRows="true"  >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                  ItemTapped="OnListViewItemTapped"   -->
 
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout Orientation="Horizontal" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" >
 
-                        <Label Grid.Column="1" 
+                                <Label Grid.Column="1" 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" />
-                        <Label 
+                                <Label 
                                     
                                    Text="{Binding Location}"
                                     />
 
-                        <Label                                    
+                                <Label                                    
                                    Text="{Binding idPEL}"
                                     />
-                        <Label                                    
+                                <Label                                    
                                    Text="{Binding ImageUrl}" 
                                     />
 
 
-                        <!--   <Grid Padding="10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />   
-                                </Grid.RowDefinitions>
-                                  <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions> 
-                                  <Image Grid.RowSpan="2" 
-                                   Source="{Binding ImageUrl}" 
-                                   Aspect="AspectFill"
-                                   HeightRequest="60"
-                                   WidthRequest="60" />  
-                                <Label Grid.Column="1" 
-                                   Text="{Binding Name}"
-                                   FontAttributes="Bold" />
-                                <Label Grid.Row="1" 
-                                   Grid.Column="1" 
-                                   Text="{Binding Location}"
-                                   VerticalOptions="End" />
-                                      <Label Grid.Row="2" 
-                                   Grid.Column="1" 
-                                   Text="{Binding idPEL}"
-                                   VerticalOptions="End" />   
 
 
 
-                            </Grid>-->
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
 
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+          
 
 
-            
-                </StackLayout>
+        </StackLayout>
 </ContentPage.Content>
 
 

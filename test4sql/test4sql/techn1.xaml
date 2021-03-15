@@ -6,110 +6,23 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal" >
 
-                <Label Text="Aρ.Παραστ "
-                        VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="End"
-                       WidthRequest="140"/>
-            <Entry x:Name="cATIM"
-                   VerticalTextAlignment="Center"
-                   Placeholder="............" />
-                
-                <Button Text="Kαταχ" Clicked="KataxTimol"/>
                
 
             </StackLayout>
-            <StackLayout Orientation="Horizontal" >
-                <Label Text="---------------- "/>
-                <Button Text="Διαγραφή όλων"
-                        Clicked="delete_all"/>
-                <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
+            <StackLayout >
+               
+                <Button Text="Aποστ.Αρχ απο pc" Clicked="WriteFile"/>
+
+                <Button x:Name="EID" Text="ΕΙΔΗ" />
+                <Button x:Name="PEL" Text="ΠΕΛΑΤΕΣ" />
+                <Button x:Name="TIMOKAT" Text="ΤΙΜΟΚΑΤΑΛΟΓΟΙ" />
             </StackLayout> 
-            <StackLayout Orientation="Horizontal" >
-                <Label Text="Παλέτα "/>
-            <Label Text=".... "/>
-                <Entry x:Name="Paleta" Placeholder=".........................."  
-                       Focused="barcfoc"
-                       TextChanged="PaletaChanged"/>
-            </StackLayout>
-
             
-
-            <StackLayout Orientation="Horizontal" >
-
-                    <Button Text="Κλείσιμο Τιμολογίου" Clicked="CloseInvoice"/>
-                    <Button Text="Διαγραφή" Clicked="diag_barcode" />
-                </StackLayout>
-
-
-                <ListView ItemsSource="{Binding Monkeys}"
-                       x:Name="listview"
-                  HasUnevenRows="true"
-                  ItemSelected="OnListViewItemSelected"
-                 >
-                <!--  ItemTapped="OnListViewItemTapped"  -->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal" >
-
-                                <Label Grid.Column="1" 
-                                   Text="{Binding Name}"
-                                   FontAttributes="Bold" FontSize="Large" />
-                                <Label 
-                                    
-                                   Text="{Binding Location}"
-                                    />
-
-                                <Label                                    
-                                   Text="{Binding idPEL}"
-                                    />
-                                <Label                                    
-                                   Text="{Binding ImageUrl}" 
-                                    />
-
-
-                                <!--   <Grid Padding="10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />   
-                                </Grid.RowDefinitions>
-                                  <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions> 
-                                  <Image Grid.RowSpan="2" 
-                                   Source="{Binding ImageUrl}" 
-                                   Aspect="AspectFill"
-                                   HeightRequest="60"
-                                   WidthRequest="60" />  
-                                <Label Grid.Column="1" 
-                                   Text="{Binding Name}"
-                                   FontAttributes="Bold" />
-                                <Label Grid.Row="1" 
-                                   Grid.Column="1" 
-                                   Text="{Binding Location}"
-                                   VerticalOptions="End" />
-                                      <Label Grid.Row="2" 
-                                   Grid.Column="1" 
-                                   Text="{Binding idPEL}"
-                                   VerticalOptions="End" />   
-
-
-
-                            </Grid>-->
-
-
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-
-
-
-
-      
+           
         </StackLayout>
+
+
+
+        
     </ContentPage.Content>
 </ContentPage>

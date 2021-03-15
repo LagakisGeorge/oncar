@@ -56,19 +56,19 @@ namespace test4sql
 
         }
 
-        /*
+        
         async void delete_all(object sender, EventArgs e)
         {
-            var action = await DisplayAlert("Να διαγραφoύν όλα τα τιμολόγια?", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            var action = await DisplayAlert("Να διαγραφoύν όλα τα σκαναρισματα?", "Εισαι σίγουρος?", "Ναι", "Οχι");
             if (action)
             {
                 //  Navigate to first page
                 MainPage.ExecuteSqlite("delete from PARALABES ");
                 await DisplayAlert("διαγραφτηκε", "", "OK");
-                show_list();
+               // show_list();
             }
         }
-        */
+        
 
 
 
@@ -228,6 +228,9 @@ namespace test4sql
 
 
             //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+
+          
+
             string[] lines = Globals.cSQLSERVER.Split(';');
             string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -235,11 +238,16 @@ namespace test4sql
             con = new SqlConnection(constring);
             try
             {
+
+
+
+
+
+
+
+
                 con.Open();
-                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
-                SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
-                cmd.Connection = con;
-                cmd.ExecuteNonQuery();
+                
             }
             catch (Exception ex)
             {
@@ -299,7 +307,10 @@ namespace test4sql
             // '=====================  EGGTIM2.TXT  ======================================================'
             */
 
-
+            // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+          //  SqlCommand cmd = new SqlCommand("insert into PALETES(PALET,KOD,PARTIDA,POSO) values (1)");
+          //  cmd.Connection = con;
+          //  cmd.ExecuteNonQuery();
 
 
 
@@ -343,10 +354,10 @@ namespace test4sql
                     cKod = "00" + cKod.Substring(11, 4);
 
                     cPos = r["BARCODE"].ToString();
-                    cPos = cPos.Substring(20, 5);
+                    cPos = cPos.Substring(19, 5);
 
                     cPart = r["BARCODE"].ToString();
-                    cPart = cPart.Substring(28, 7);
+                    cPart = cPart.Substring(27, 7);
 
 
 

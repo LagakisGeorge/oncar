@@ -4,23 +4,30 @@
              x:Class="test4sql.SUPER2">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Orientation="Horizontal" >
-                <Label x:Name="lab1" Text=".."             
+            <StackLayout  />
+            <Label x:Name="lab1" Text=".."             
                 HorizontalOptions="Start" />
 
+            <Label     Grid.Row="4" Grid.Column="0" 
+                Text="ΠΑΡΑΜΕΤΡΟΙ ΠΑΡΑΣΤΑΤΙΚΩΝ" 
+                 TextColor="BlueViolet"    />
 
-                <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" Completed="BarcodeComplete"
-                   Placeholder="BARCODE " Focused="barcfoc"      />
+            <Entry x:Name="TITLOS"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+                   Placeholder="ΤΙΤΛΟΣ ΠΑΡΑΣΤΑΤΙΚΟΥ "      />
+
+            <Entry x:Name="EIDOS"  Grid.Row="1" Grid.Column="1" FontSize="Small"
+                   Placeholder="ΚΩΔΙΚΟΣ"      />
+
+            
+            <Entry x:Name="ARITMISI"  Grid.Row="1" Grid.Column="1" FontSize="Small"
+                   Placeholder="ΑΡΙΘΜΗΣΗ"      />
 
 
 
 
 
 
-            </StackLayout  >
-
-
-                    <Grid>
+            <Grid>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -38,51 +45,35 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-
-
-
-               
-
+              
             </Grid>
 
 
-            
 
 
 
 
 
-            <Button x:Name="but10" 
-                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="3" Grid.Column="0"
-                         TextColor="Purple" 
-                       Clicked="BresEidos"  />
-
-            <Label    x:Name="lper"   Grid.Row="3" FontSize="Small" Grid.Column="1" Grid.ColumnSpan ="3"
-                Text="............................"  />
 
 
+            <StackLayout Orientation="Horizontal">
 
+                <Button x:Name="PREV" 
+                        Text="ΠΡΟΗΓΟΥΜΕΝΟ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" Clicked="fPREV"
+                         />
+                <Button x:Name="NEXT" 
+                        Text="ΕΠΟΜΕΝΟ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" Clicked="fNEXT"
+                         />
 
-                <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
-                Text=".............."  />
-                <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
-                Text="..............."  />
+            </StackLayout>
 
-
-
-
-                <Label     Grid.Row="4" Grid.Column="0" 
-                Text="ΤΙΜΗ    " 
-                 TextColor="BlueViolet"    />
-
-            <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
-                  Text="0"  
-                   />
 
             <Button x:Name="but20" 
                         Text="αποθηκευση"  Grid.Row="3" Grid.Column="0"
-                         TextColor="Purple" 
-                       Clicked="savecodes"  />
+                         TextColor="Purple"  Clicked="fkatax" 
+                       />
 
 
 

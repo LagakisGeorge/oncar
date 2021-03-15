@@ -85,6 +85,9 @@ namespace test4sql
             if (Int16.Parse(nc) == 0)
             {
                 MainPage.ExecuteSqlite("alter table PEL ADD TYP REAL");
+                MainPage.ExecuteSqlite("alter table PEL ADD DOY [varchar](20)");
+                MainPage.ExecuteSqlite("alter table PEL ADD PEK [INT] ");
+
             }
 
 
@@ -149,6 +152,29 @@ namespace test4sql
             await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
             l = MainPage.ExecuteSqlite(c);
+
+            c = " CREATE TABLE  IF NOT EXISTS TIMOKAT ( [KOD] [nvarchar](14) NOT NULL,"+
+                "[EKPT] [decimal](5, 2) NOT NULL, [TIMOK] [int] NOT NULL,[ONO] [nvarchar](35) NULL,"+
+                "[TIMOKPEL] [varchar](5) NULL,[TIMOKEID] [varchar](5) NULL,	[TIMH] [decimal](18, 0) NULL,"+
+                "[TIMOKID] [int] NOT NULL) ";
+            l = MainPage.ExecuteSqlite(c);
+
+             c = "CREATE TABLE IF NOT EXISTS PARASTAT( ID  INTEGER PRIMARY KEY,EIDOS [nvarchar](5)," +
+                    "[TITLOS] [nvarchar](30) ," +
+                     
+                      "[ARITMISI] [INT] ," +
+                       "[N1] [real] ," +
+                         "[N2] [real] ," +
+                         "[N3] [real] ," +
+                       "[C1] [nvarchar](15) ,[C2] [nvarchar](15) , [C3] [nvarchar](15) )  ";
+
+            l = MainPage.ExecuteSqlite(c);
+
+            if (PARAGGELIES.NReadSQL("select count(*) from PARASTAT") < 2)
+            {
+                l = MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΤΙΜΟΛΟΓΙΟ ΠΩΛΗΣΗΣ-Δ.Α.','T')");
+                l = MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΔΕΛΤΙΟ ΑΠΟΣΤΟΛΗΣ','A')");
+            }
 
 
 

@@ -41,9 +41,12 @@
                
             </StackLayout>
               <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
+            
+            
                <Button Text="Eξοδος" Clicked="CloseInvoice"/>
 
             <Button Text="Διαγραφή" Clicked="Diag_barcode" />
+            <Button Text="Διαγραφή Ολων των σκαναρισματων" Clicked="delete_all" />
 
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
