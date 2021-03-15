@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Data.SqlClient;
 
-using Base2Base.Printers;
-using ESCPOS_NET.Emitters;
+
 
 
 using System.IO;
@@ -34,8 +33,6 @@ namespace test4sql
         public SqlConnection con;
 
 
-        private static ESCPOS_NET.BasePrinter printer;
-        private static ICommandEmitter e;
 
 
 
