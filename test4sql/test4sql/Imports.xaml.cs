@@ -42,7 +42,7 @@ namespace test4sql
         {
 
 
-            int l = MainPage.ExecuteSqlite("delete FROM EGGTIM");
+             MainPage.ExecuteSqlite("delete FROM EGGTIM");
 
             await DisplayAlert("ΔΙΑΓΡΑΦΗΚΕ ΟΚ", "ΔΙΑΓΡΑΦΗΚΕ Η ΑΠΟΓΡΑΦΗ", "OK");
 
@@ -64,7 +64,7 @@ namespace test4sql
                          "[ANAM] [real] ," +
                        "[BARCODE] [nvarchar](15)  )  " ;
 
-            int l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
             await DisplayAlert("ΕΙΔΗ ΟΚ", "ΕΙΔΗ ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
@@ -78,7 +78,7 @@ namespace test4sql
                        "[AFM] [nvarchar](15) )";
 
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
             // αν δεν υπαρχει το πεδιο "TYP" ΠΡΟΣΘΕΣΕ ΤΟ
             string nc=PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='TYP' ");
@@ -113,16 +113,29 @@ namespace test4sql
                     "[ENERGOS] [int] ," +
                     "[ID]  INTEGER PRIMARY KEY )";
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
+
+
+            // αν δεν υπαρχει το πεδιο "TYP" ΠΡΟΣΘΕΣΕ ΤΟ
+             nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EGGTIM') WHERE name='EKPT' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table EGGTIM ADD EKPT REAL");
+                MainPage.ExecuteSqlite("alter table EGGTIM ADD KAU_AJ REAL");
+                MainPage.ExecuteSqlite("alter table EGGTIM ADD MIK_AJ REAL");
+
+            }
+
+
 
 
 
             c = "CREATE TABLE IF NOT EXISTS ARITMISI( ID  INTEGER PRIMARY KEY,ARITMISI [int] )";
                 
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
-            l = MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+            MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
             await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
 
@@ -131,14 +144,14 @@ namespace test4sql
             c = "CREATE TABLE IF NOT EXISTS PARALABES( ID  INTEGER PRIMARY KEY,ATIM [nvarchar](35),BARCODE [nvarchar](45) )";
 
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
 
 
             c = "CREATE TABLE IF NOT EXISTS BARCODES( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25),BARCODE [nvarchar](15) )";
 
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
 
 
@@ -148,16 +161,16 @@ namespace test4sql
                        "[POL] [nvarchar](35) ," +
                          "[THL] [nvarchar](35) ," +
                        "[AFM] [nvarchar](15) )";
-            l = MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+             MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
             await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
             c = " CREATE TABLE  IF NOT EXISTS TIMOKAT ( [KOD] [nvarchar](14) NOT NULL,"+
                 "[EKPT] [decimal](5, 2) NOT NULL, [TIMOK] [int] NOT NULL,[ONO] [nvarchar](35) NULL,"+
                 "[TIMOKPEL] [varchar](5) NULL,[TIMOKEID] [varchar](5) NULL,	[TIMH] [decimal](18, 0) NULL,"+
                 "[TIMOKID] [int] NOT NULL) ";
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
              c = "CREATE TABLE IF NOT EXISTS PARASTAT( ID  INTEGER PRIMARY KEY,EIDOS [nvarchar](5)," +
                     "[TITLOS] [nvarchar](30) ," +
@@ -168,12 +181,12 @@ namespace test4sql
                          "[N3] [real] ," +
                        "[C1] [nvarchar](15) ,[C2] [nvarchar](15) , [C3] [nvarchar](15) )  ";
 
-            l = MainPage.ExecuteSqlite(c);
+             MainPage.ExecuteSqlite(c);
 
             if (PARAGGELIES.NReadSQL("select count(*) from PARASTAT") < 2)
             {
-                l = MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΤΙΜΟΛΟΓΙΟ ΠΩΛΗΣΗΣ-Δ.Α.','T')");
-                l = MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΔΕΛΤΙΟ ΑΠΟΣΤΟΛΗΣ','A')");
+                 MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΤΙΜΟΛΟΓΙΟ ΠΩΛΗΣΗΣ-Δ.Α.','T')");
+                 MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΔΕΛΤΙΟ ΑΠΟΣΤΟΛΗΣ','A')");
             }
 
 

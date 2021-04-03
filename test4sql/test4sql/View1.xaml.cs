@@ -324,12 +324,12 @@ namespace test4sql
             connection.Open();
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT ATIM,BARCODE FROM PARALABES";
+            contents.CommandText = "SELECT* FROM EGGTIM";
             var r = contents.ExecuteReader();
             // Console.WriteLine("Reading data");
 
             String cPal, cPart, cPos, cKod;
-            string cc = "";
+            string cc;//= "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES (";
 
 
             try
@@ -338,30 +338,22 @@ namespace test4sql
 
                 while (r.Read())
                 {
-                    cc = cc + r["ATIM"].ToString() + ";";
-                    cc = cc + r["BARCODE"].ToString() + "\n";
-                    //cc = cc + r["POSO"].ToString() + ";";
+                    string[] lines2 = r["HME"].ToString().Split('/');
+                    cc = "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES ('";
+                    cc +=  r["ATIM"].ToString() + "','";
+                    cc +=  lines2[1]+"/"+lines2[0]+"/"+lines2[2].Substring(0,4) + "','";
+                    cc +=  r["KODE"].ToString() + "',";
+                    cc +=  r["POSO"].ToString().Replace(",",".") + ",";
+                    cc += r["TIMH"].ToString().Replace(",", ".") + ")";
                     // cc = cc + r["TIMH"].ToString() + "\n";  11  12->  21,5
+
+
 
 
                    
 
-                    cPal = r["ATIM"].ToString();
-                    cPal = cPal.Substring(12, 7);
 
-
-                    cKod = r["BARCODE"].ToString();
-                    cKod = "00" + cKod.Substring(11, 4);
-
-                    cPos = r["BARCODE"].ToString();
-                    cPos = cPos.Substring(19, 5);
-
-                    cPart = r["BARCODE"].ToString();
-                    cPart = cPart.Substring(27, 7);
-
-
-
-                    SqlCommand cmd = new SqlCommand("insert into PALETES(PALET,[KOD],[PARTIDA],[POSO]) values ('" + cPal + "','" + cKod + "','" + cPart + "'," + cPos + ")");
+                    SqlCommand cmd = new SqlCommand(cc);
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
 
@@ -369,14 +361,14 @@ namespace test4sql
 
 
                 }
-                connection.Close();
+               
 
 
 
                 CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
                 //  SaveFile(cc);
 
-                MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
+              //  MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
 
 
             }
@@ -385,13 +377,51 @@ namespace test4sql
                 await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
             }
 
+
+
+
+
+             contents = connection.CreateCommand();
+            contents.CommandText = "SELECT* FROM EGGTIM";
+            r = contents.ExecuteReader();
+            try
+            {
+                while (r.Read())
+                {
+                    string[] lines2 = r["HME"].ToString().Split('/');
+                    cc = "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES ('";
+                    cc += r["ATIM"].ToString() + "','";
+                    cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
+                    cc += r["KODE"].ToString() + "',";
+                    cc += r["POSO"].ToString().Replace(",", ".") + ",";
+                    cc += r["TIMH"].ToString().Replace(",", ".") + ")";
+
+                    SqlCommand cmd = new SqlCommand(cc);
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+                connection.Close();
+
+
+
+                CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+                //  SaveFile(cc);
+
+                //  MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
+
+
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
         }
 
 
 
 
 
-    
+
 
 
         async void PaletaChanged(object sender, EventArgs e)

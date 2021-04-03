@@ -14,6 +14,7 @@
                 
                <Label  x:Name="PAR2"  
                 Text="Παρ/κό:        . "
+                       TextColor="Brown"
                  WidthRequest="150"  VerticalTextAlignment="Center"   />
 
                 <Label  x:Name="ATIM"   VerticalTextAlignment="Center" 
@@ -32,6 +33,7 @@
             </StackLayout>
 
 
+          
 
             <StackLayout Orientation="Horizontal">
                
@@ -59,7 +61,7 @@
 
           <Grid.RowDefinitions>
             <RowDefinition Height="30*" />
-            <RowDefinition Height="60*" />
+            <RowDefinition Height="40*" />
            
            
             
@@ -67,27 +69,35 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
 
 
-                <Label     Grid.Row="0" Grid.Column="0" 
+               <!-- <Label     Grid.Row="0" Grid.Column="0" 
                     BackgroundColor="Azure"
-                Text="ΚΩΔΙΚΟΣ" HorizontalOptions="Center"  />
+                Text="ΚΩΔΙΚΟΣ" HorizontalOptions="Center"  />   -->
+
+
+                <Button x:Name="bkodikos"  Grid.Row="0" Grid.Column="0" 
+                      
+                        Text="ΚΩΔΙΚΟΣ"
+                       Clicked="BRESEIDOS"  />
+
+
 
                 <Label     Grid.Row="0" Grid.Column="1" 
-                    BackgroundColor="Azure"
+                  
                 Text="ΠΟΣΟΤΗΤΑ" HorizontalOptions="Center"  />
 
                 <Label     Grid.Row="0" Grid.Column="2" 
-                    BackgroundColor="Azure"
+                   
                 Text="ΤΙΜΗ" HorizontalOptions="Center"  />
 
                 <Label     Grid.Row="0" Grid.Column="3" 
-                    BackgroundColor="Azure"
+                    
                 Text="ΕΚΠΤ" HorizontalOptions="Start"   />
 
 
@@ -107,7 +117,7 @@
                 <Entry x:Name="CTIMH"   Grid.Row="1" Grid.Column="2" 
                    Placeholder="          "   Text=""
                    HorizontalOptions="Center"  BackgroundColor="Azure"    
-                   Completed="posothtaCompleted"/>
+                   Completed="TimhCompleted"/>
 
                 <Entry x:Name="CEKPT"   Grid.Row="1" Grid.Column="3" 
                    Placeholder="          "   Text=""
@@ -129,7 +139,7 @@
 
             <Label  x:Name="LPER" 
          
-                Text="ΕΠΩΝΥΜΙΑ..    " HorizontalOptions="Center"   />
+                Text="ONOMA EIΔΟΥΣ..    " HorizontalOptions="Center"   />
 
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="katax"  Grid.Row="3" Grid.Column="4" 
@@ -137,9 +147,15 @@
                         Text="ΚΑΤΑΧΩΡΗΣΗ"
                        Clicked="kataxorisi"  />
 
-                
+                <Button x:Name="CloseInvoice" 
+                     BackgroundColor="RosyBrown" 
+                        Text="ΚΛΕΙΣΙΜΟ ΠΑΡ."
+                       Clicked="CloseInvoice_Clicked"  />
 
-
+                <Button x:Name="btnScan" 
+                     BackgroundColor="GreenYellow" 
+                        Text="scan"
+                       Clicked="BtnScan_Clicked"  />
 
             </StackLayout> 
 
@@ -148,35 +164,97 @@
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
                       HeightRequest="80"
-                  HasUnevenRows="true"  >
+                      BackgroundColor="Bisque"
+                  HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
                 <!-- ItemSelected="OnListViewItemSelected" 
                   ItemTapped="OnListViewItemTapped"   -->
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="*"  />
+                                </Grid.ColumnDefinitions >
 
-                                <Label Grid.Column="1" 
+
+
+
+
+
+
+
+                                <Label Grid.Column="0" 
                                    Text="{Binding Name}"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" FontSize="Small" />
                                 <Label 
+                                    Grid.Column="1"
                                     
                                    Text="{Binding Location}"
                                     />
 
-                                <Label                                    
-                                   Text="{Binding idPEL}"
-                                    />
+                               
                                 <Label                                    
                                    Text="{Binding ImageUrl}" 
+                                    Grid.Column="3"
                                     />
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    Grid.Column="2"
+                                    />
+                            </Grid>
 
 
 
 
 
-                            </StackLayout>
+                            <!--    <StackLayout Padding="20" Spacing="10"  Orientation="Horizontal" >
+
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="Start"
+                                       
+                                   FontAttributes="Bold"
+                                       BackgroundColor="Aquamarine"
+                                       FontSize="Small" 
+                                />
+                                
+                                <Label                                     
+                                   Text="{Binding Location}"
+                                    FontAttributes="Bold"                                    
+                                    FontSize="Small"
+                                   VerticalOptions="Start"
+                                       HorizontalOptions="Start"
+                                 />
+
+                              
+                                  <Label                                    
+                                    Text="{Binding ImageUrl}" 
+                                    FontAttributes="Bold"
+                                    FontSize="Small"
+                                      VerticalOptions="Start"
+         HorizontalOptions="FillAndExpand"
+                                    />
+                                  <Label                                    
+                                   Text="{Binding idPEL}"
+                                    FontAttributes="Bold"
+                                    FontSize="Small"
+                                      VerticalOptions="Start"
+                  HorizontalOptions="FillAndExpand"
+                                  
+                                  />
+                            
+                           
+
+
+
+
+                            </StackLayout>    -->
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

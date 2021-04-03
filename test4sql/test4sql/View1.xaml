@@ -57,24 +57,41 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal" >
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="*"  />
+                                </Grid.ColumnDefinitions >
+                               
+                           
+
+
+
+
+                            
 
                                 <Label Grid.Column="1" 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" FontSize="Large" />
                                 <Label 
+                                    Grid.Column="2"
                                     
                                    Text="{Binding Location}"
                                     />
 
                                 <Label                                    
                                    Text="{Binding idPEL}"
+                                    Grid.Column="3"
                                     />
                                 <Label                                    
                                    Text="{Binding ImageUrl}" 
+                                    Grid.Column="4"
                                     />
 
-
+                                </Grid>
                                 <!--   <Grid Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -106,7 +123,7 @@
                             </Grid>-->
 
 
-                            </StackLayout>
+                           
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

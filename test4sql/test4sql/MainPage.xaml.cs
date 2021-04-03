@@ -49,7 +49,7 @@ namespace test4sql
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
- try
+          try
             {
             // DESKTOP-MPGU8SB\SQL17
             string[] lines = Globals.cSQLSERVER.Split(';');

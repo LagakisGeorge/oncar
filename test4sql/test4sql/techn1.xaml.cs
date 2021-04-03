@@ -33,7 +33,11 @@ namespace test4sql
         {
 
             //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
-
+            if (Globals.cSQLSERVER.Length<2)
+            {
+                await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return;
+            }
             string[] lines = Globals.cSQLSERVER.Split(';');
             string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
