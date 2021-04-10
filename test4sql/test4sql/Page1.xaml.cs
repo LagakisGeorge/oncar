@@ -9,6 +9,8 @@ using Xamarin.Forms.Xaml;
 //using PCLStorage;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using System.IO;
+using ZXing.Net.Mobile.Forms;
+using Mono.Data.Sqlite;
 
 namespace test4sql
 {
@@ -18,15 +20,17 @@ namespace test4sql
    
     public partial class Page1 : ContentPage
     {
+
+
+        public List<string> MyList = new List<string>();
+        public IList<Monkey> Monkeys { get; private set; }
+
+
         public Page1()
         {
             InitializeComponent();
             
         }
-
-
-
-        
 
 
          void Click_Login(object sender, EventArgs e)
@@ -164,21 +168,72 @@ namespace test4sql
         }
 
 
-        async void Runsql(object sender, EventArgs e)
+       
+
+        private void LISTTIMOL(object sender, EventArgs e)
         {
-            but21.Text = "==" ;
-            // Create New file
-
-            // To create a new file in the local folder, call the CreateFileAsync method.
-            //String filename = "username.txt";
-          //  IFolder folder = FileSystem.Current.LocalStorage;
-          //  IFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
-
-
-
-
-
+            Show_list();
         }
 
+
+        void Show_list()
+        {
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+
+            string dbPath = Path.Combine(
+              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+              "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT  IFNULL(AJI,0) AS AJI2,IFNULL(HME,'') AS HME2,IFNULL(ATIM,'') AS ATIM2,IFNULL(EPO,'') AS EPO2,ID  from TIM  order by ID DESC ; "; // +BARCODE.Text +"'";
+                                                                                                                                                           // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            Single s = 0;
+            while (r.Read())
+            {
+               // s = s + (Single)r["POSO"] * (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
+
+                Monkeys.Add(new Monkey
+                {
+                    Name = (r["EPO2"].ToString() + "                               ").Substring(0, 25), 
+                    Location = r["ATIM2"].ToString(),
+                    ImageUrl = (r["AJI2"].ToString() + "      ").Substring(0, 5),
+                    idPEL =  r["ID"].ToString()
+                });
+
+
+
+            }
+
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
+
+
+            connection.Close();
+
+          //  SAJIA.Text = String.Format("{0:0.00}", s);  // s.ToString();
+
+            BindingContext = this;
+        }
+
+        private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+
+        }
     }
 }

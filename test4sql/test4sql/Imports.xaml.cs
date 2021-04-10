@@ -68,6 +68,22 @@ namespace test4sql
 
             await DisplayAlert("ΕΙΔΗ ΟΚ", "ΕΙΔΗ ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
+
+            // αν δεν υπαρχει το πεδιο "MON" ΠΡΟΣΘΕΣΕ ΤΟ
+            string nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EID') WHERE name='MON' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                
+                MainPage.ExecuteSqlite("alter table EID ADD MON [varchar](5)");
+                MainPage.ExecuteSqlite("alter table EID ADD FPA INT");
+
+            }
+
+
+
+
+
+
             // Κωδικός;Α.Φ.Μ.;Επωνυμία;Διεύθυνση;Πόλη;Τηλ.1
 
             c = "CREATE TABLE IF NOT EXISTS PEL( ID  INTEGER PRIMARY KEY,KOD [nvarchar](25)," +
@@ -80,8 +96,18 @@ namespace test4sql
 
              MainPage.ExecuteSqlite(c);
 
+
+
+
+
+
+
+
+
+
+
             // αν δεν υπαρχει το πεδιο "TYP" ΠΡΟΣΘΕΣΕ ΤΟ
-            string nc=PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='TYP' ");
+             nc=PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='TYP' ");
             if (Int16.Parse(nc) == 0)
             {
                 MainPage.ExecuteSqlite("alter table PEL ADD TYP REAL");
@@ -90,7 +116,16 @@ namespace test4sql
 
             }
 
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+             nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='EPA' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table PEL ADD R1 REAL");
+                MainPage.ExecuteSqlite("alter table PEL ADD EPA [varchar](20)");
+                MainPage.ExecuteSqlite("alter table PEL ADD CH1 [varchar](20)");
+                MainPage.ExecuteSqlite("alter table PEL ADD INT1 [INT] ");
 
+            }
 
 
 
@@ -116,8 +151,44 @@ namespace test4sql
              MainPage.ExecuteSqlite(c);
 
 
+
+            c = "CREATE TABLE IF NOT EXISTS TIM (" +
+                   "[ATIM] [varchar](55)," +
+                   "[HME] [datetime] ," +
+                   "[TRP] [varchar](10) ," +
+                   "[KPE] [nvarchar](55) ," +
+                   "[AJI] [real] ," +
+                   "[AJ1] [real] ," +
+                   "[AJ2] [real] ," +
+                   "[AJ3] [real] ," +
+                   "[AJ4] [real] ," +
+                   "[AJ5] [real] ," +
+                   "[FPA1] [real] ," +
+                   "[FPA2] [real] ," +
+                   "[FPA3] [real] ," +
+                   "[FPA4] [real] ," +
+                   "[EPO] [varchar](55) ," +
+                   "[PROSUETA] [varchar](55) ," +
+                   "[CH1] [varchar](55) ," +
+                   "[CH2] [varchar](55) ," +
+                   "[NUM1] [int] ," +
+                   "[NUM2] [int] ," +
+                   "[TYP] [int] ," +
+                   "[ID]  INTEGER PRIMARY KEY )";
+
+            MainPage.ExecuteSqlite(c);
+
+
+
+
+
+
+
+
+
+
             // αν δεν υπαρχει το πεδιο "TYP" ΠΡΟΣΘΕΣΕ ΤΟ
-             nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EGGTIM') WHERE name='EKPT' ");
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EGGTIM') WHERE name='EKPT' ");
             if (Int16.Parse(nc) == 0)
             {
                 MainPage.ExecuteSqlite("alter table EGGTIM ADD EKPT REAL");

@@ -15,10 +15,10 @@
                <Label  x:Name="PAR2"  
                 Text="Παρ/κό:        . "
                        TextColor="Brown"
-                 WidthRequest="150"  VerticalTextAlignment="Center"   />
+                 WidthRequest="140"  VerticalTextAlignment="Center"   />
 
                 <Label  x:Name="ATIM"   VerticalTextAlignment="Center" 
-                Text="0000" WidthRequest="50"
+                Text="T000000" WidthRequest="70"
                  />
 
                 <Button x:Name="BRESPREV" 
@@ -30,11 +30,24 @@
                     Text=">"   WidthRequest="50"
                         Clicked="FBRESNEXT" />
 
+                <Button x:Name="BCASH"  HeightRequest="40"
+                        BackgroundColor="Red"
+                    Text="ΠΙΣΤΩΣΗ"   WidthRequest="50"
+                        Clicked="Cash" />
+
+
+                <Button x:Name="SAJIA"  HeightRequest="40"
+                        BackgroundColor="Cyan" FontSize="Small"  
+                    Text="0.00"   WidthRequest="10"
+                      />
+
+
+
+
             </StackLayout>
 
 
-          
-
+     
             <StackLayout Orientation="Horizontal">
                
                
@@ -52,9 +65,7 @@
 
                 </StackLayout>
 
-            <Label  
-                Text="----------------------------------------------------"
-                 />
+            
 
 
             <Grid>
@@ -137,10 +148,16 @@
 
             </Grid>
 
-            <Label  x:Name="LPER" 
-         
-                Text="ONOMA EIΔΟΥΣ..    " HorizontalOptions="Center"   />
 
+            <StackLayout Orientation="Horizontal">
+                <Label  x:Name="LFPA"            
+                Text=" " HorizontalOptions="Center"   />
+                
+                <Label  x:Name="LPER" 
+           FontAttributes="Bold" FontSize="Medium" 
+                Text="ONOMA EIΔΟΥΣ..    " HorizontalOptions="Center"   />
+                <StackLayout/>
+                
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="katax"  Grid.Row="3" Grid.Column="4" 
                      BackgroundColor="GreenYellow" 
@@ -154,7 +171,7 @@
 
                 <Button x:Name="btnScan" 
                      BackgroundColor="GreenYellow" 
-                        Text="scan"
+                        Text="EKTYΠΩΣΗ"
                        Clicked="BtnScan_Clicked"  />
 
             </StackLayout> 
@@ -200,11 +217,11 @@
                                
                                 <Label                                    
                                    Text="{Binding ImageUrl}" 
-                                    Grid.Column="3"
+                                    Grid.Column="2"
                                     />
                                 <Label                                    
                                    Text="{Binding idPEL}"
-                                    Grid.Column="2"
+                                    Grid.Column="3"
                                     />
                             </Grid>
 

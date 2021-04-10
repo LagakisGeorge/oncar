@@ -62,7 +62,7 @@ namespace test4sql
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5  FROM EID ", con);
+                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA  FROM EID ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                // List<string> MyList = new List<string>();
@@ -71,7 +71,15 @@ namespace test4sql
                 {
                     String mF = dt.Rows[k]["MONO"].ToString();
                     mF = mF.Replace("'", "`");
-                   // MyList.Add(mF);
+
+                    String MMON = dt.Rows[k]["MMON"].ToString();
+                    MMON = MMON.Replace("'", "`");
+
+                    string MFPA = dt.Rows[k]["MFPA"].ToString();
+                    MFPA = MFPA.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
                     string mTYP = dt.Rows[k]["MLTI5"].ToString();
                     mTYP = mTYP.Replace(",", ".");
                  
@@ -89,7 +97,7 @@ namespace test4sql
                     mERG = mERG.Replace("'", "`");
 
                     mTYP = mTYP.Replace(",", ".");
-                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "');");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE,MON,FPA) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "','"+MMON+"',"+MFPA+");");
                 } // FOR
 
                 // watch.Stop();
@@ -109,8 +117,8 @@ namespace test4sql
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(EPO,'') AS MEPO," +
-                    "ISNULL(DIE,'') AS MDIE,ISNULL(TYP,0) AS MYPOL ,ISNULL(DOY,'') AS MDOY,ISNULL(AFM,'') AS MAFM,ISNULL(POL,'') AS MPOL,PEK AS MPEK " +
+                SqlCommand cmd3 = new SqlCommand("select  LEFT(ISNULL(DOY,''),20) AS MDOY,ID,isnull(KOD,'') AS MKOD,LEFT(ISNULL(EPO,''),25) AS MEPO,LEFT(ISNULL(EPA,''),20) AS MEPA," +
+                    "ISNULL(DIE,'') AS MDIE,ISNULL(TYP,0) AS MYPOL ,ISNULL(DOY,'') AS MDOY,ISNULL(AFM,'') AS MAFM,ISNULL(POL,'') AS MPOL,ISNULL(PEK,0) AS MPEK " +
                     "FROM PEL WHERE EIDOS='e' ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
@@ -151,11 +159,15 @@ namespace test4sql
 
                     string mPEK = dt.Rows[k]["MPEK"].ToString();
 
+                    string mEPA = dt.Rows[k]["MEPA"].ToString();
+                    mEPA = mEPA.Replace("'", "`");
 
 
+                   
 
-                    int n2 = MainPage.ExecuteSqlite("insert into PEL (KOD,EPO,DIE,TYP) VALUES ('"
-                        +mKOD+"','" + mEPO + "','" + mDIE + "'," + mTYP + ");");
+
+                    int n2 = MainPage.ExecuteSqlite("insert into PEL (KOD,EPA,AFM,DOY,EPO,DIE,TYP,PEK) VALUES ('"
+                        +mKOD + "','" + mEPA + "','" + mAFM + "','" + mDOY + "','" + mEPO + "','" + mDIE + "'," + mTYP+ "," + mPEK + ");");
                 } // FOR
 
                 // watch.Stop();
