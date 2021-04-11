@@ -334,7 +334,8 @@ namespace test4sql
         {
             CCC=CCC.ToUpper();
             CKODE.Text = CCC;
-            fisEIDH = 1; // gia to listview
+           
+           // fisEIDH = 1; // gia to listview
             // determine the path for the database file
             string dbPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
@@ -390,14 +391,17 @@ namespace test4sql
             if (flag==0 || flag>1)
             {
                 Show_list_Eidon(CKODE.Text);
+                fisEIDH = 1; // για να tsimpaei  τα ειδη 
             }
             else
             {
                CPOSO.Focus();
+                fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
+                Show_list();
             }
 
+            
 
-          
 
         }
 
@@ -415,16 +419,48 @@ namespace test4sql
             if (CPOSO.Text.Length  == 0 & CKODE.Text.Length> 0)
             {
                 await DisplayAlert("ΔΕΝ ΒΑΛΑΤΕ ΠΟΣΟΤΗΤΑ", "", "OK");
-                return;
+                
+               
 
             }
 
 
+            if (EIDOSPAR == "τ" )
+            {
+            }
+            else
+            {
+
+                string mpos = ReadSQL("select IFNULL(YPOL,0)-IFNULL(DESM,0) AS TR FROM EID WHERE KOD='" + CKODE.Text + "'");
+               // string value = "246246.246";
+               // Convert.ToInt64(Convert.ToDouble(value));
+                if (Convert.ToInt64(Convert.ToDouble(CPOSO.Text)) > Convert.ToInt64(Convert.ToDouble(mpos)))
+                {
+
+                await DisplayAlert("ΕΧΩ ΥΠΟΛΟΙΠΟ "+mpos, "", "OK");
+                return;
+                }
+
+
+            }
+
 
             if (CTIMH.Text.Length == 0 & CKODE.Text.Length > 0)
             {
-                await DisplayAlert("ΔΕΝ ΒΑΛΑΤΕ TIMH", "", "OK");
-                return;
+
+
+                //  αν ειναι δελτιο συγ η απλο δεν θελω τιμη  CKODE.Text
+                if (EIDOSPAR == "τ" || EIDOSPAR == "A")
+                {
+                }
+                else
+                {
+                   await DisplayAlert("ΔΕΝ ΒΑΛΑΤΕ TIMH", "", "OK");
+                   return;
+                   
+                }
+
+                
 
             }
 
@@ -494,12 +530,12 @@ namespace test4sql
             MainPage.ExecuteSqlite(SQL1);
                 if (EIDOSPAR == "τ")
                 {
-                    MainPage.ExecuteSqlite("update EID set YPOL=YPOL+" + cpos + " WHERE KOD='" + CKODE.Text + "'");
+                    MainPage.ExecuteSqlite("update EID set YPOL=IFNULL(YPOL,0)+" + cpos + " WHERE KOD='" + CKODE.Text + "'");
 
                 }
                 else
                 {
-                    MainPage.ExecuteSqlite("update EID set DESM=DESM+" + cpos + " WHERE KOD='" + CKODE.Text + "'");
+                    MainPage.ExecuteSqlite("update EID set DESM=IFNULL(DESM,0)+" + cpos + " WHERE KOD='" + CKODE.Text + "'");
                 }
                 
             }
@@ -551,10 +587,11 @@ namespace test4sql
                 CKODE.Text = tappedItem.Location;
               
                 listview.ItemsSource = null;
-                fisEIDH = 2; // για να βλεπει τα ειδη απο δω και περα
+                fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
                              // BRESPREV.IsVisible = false;
                              // BRESNEXT.IsVisible = false;
                 CPOSO.Focus();
+                Show_list();
                 return;
             }
 
@@ -566,6 +603,17 @@ namespace test4sql
                 cid = tappedItem.idPEL ;
                 string[] lines =  cid.Split(';');
                 //  Navigate to first page
+                string mposo=ReadSQL("select POSO FROM EGGTIM WHERE  ID=" + lines[1]);
+                if (EIDOSPAR == "τ")
+                {
+                    MainPage.ExecuteSqlite("update EID set YPOL=IFNULL(YPOL,0)-" +mposo   + " WHERE KOD='" + CKODE.Text + "'");
+
+                }
+                else
+                {
+                    MainPage.ExecuteSqlite("update EID set DESM=IFNULL(DESM,0)-" + mposo + " WHERE  ID=" + lines[1]);
+                }
+
                 MainPage.ExecuteSqlite("delete from EGGTIM WHERE ID=" + lines[1]);
                 await DisplayAlert("διαγραφτηκε", "", "OK");
                 Show_list();
@@ -588,6 +636,11 @@ namespace test4sql
         {
             PRINTOUT();
         }
+
+
+
+
+
 
         private  async void PRINTOUT()
         {
@@ -665,92 +718,235 @@ namespace test4sql
                             //  byte[] unicodeBytes = unicode.GetBytes(llll);
                             //  outStream.Write(unicodeBytes, 0, unicodeBytes.Length);
                             //DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")	05/29/2015 05:50 AM
+
+
+
+                            //int i = 3;
+                            //Console.WriteLine(i);   // output: 3
+                            //Console.WriteLine(i++); // output: 3
+                            //Console.WriteLine(i);   // output: 4
+
+
+                            //Prefix increment operator
+                            //double a = 1.5;
+                            //Console.WriteLine(a);   // output: 1.5
+                            //Console.WriteLine(++a); // output: 2.5
+                            //Console.WriteLine(a);   // output: 2.5
+
+                            //                            int[] terms = new int[400];
+                            //                            for (int runs = 0; runs < 400; runs++)
+                            //                            {
+                            //                                terms[runs] = value;
+                            //                            }
+                            //                            Alternatively, you can use Lists -the advantage with lists being, you don't need to know the array size when instantiating the list.
+
+                            //List<int> termsList = new List<int>();
+                            //                            for (int runs = 0; runs < 400; runs++)
+                            //                            {
+                            //                                termsList.Add(value);
+                            //                            }
+
+                            //                            // You can convert it back to an array if you would like to
+                            //                            int[] terms = termsList.ToArray();
+
+
+
                             string spac40 = "                                        ";
-                            printt(outStream,(PAR2.Text +spac40).Substring (0,50)+(ATIM.Text+"          ").Substring(0,9)+ DateTime.Now.ToString("dd/MM/yyyy   HH:mm tt") + "\n");
-                            printt(outStream, "\n");
-                            printt(outStream, "\n");
-                            printt(outStream, "\n");
-                            printt(outStream, (" ΕΠΩΝΥΜΙΑ:"+EPO.Text+"                         ").Substring (0,30)+ "\n");
-
-
-
-                            
-                            string EPA=ReadSQL("select  IFNULL(EPA,'')  FROM PEL where KOD='"+ af +"'");
-                            string DIE = ReadSQL("select  IFNULL(DIE,'')  FROM PEL where KOD='" + af + "'");
-                            string AFM = ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
-                            string POL = ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
-                            string DOY = ReadSQL("select  IFNULL(DOY,'')  FROM PEL where KOD='" + af + "'");
-
-                            printt(outStream, ("ΕΠΑΓΓΕΛΜΑ: "+EPA + "                         ").Substring(0, 30) + "\n");
-                            printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: "+DIE + "                              ").Substring(0, 30) + "\n");
-                            printt(outStream, ("     ΠΟΛΗ: "+POL + "                              ").Substring(0, 25) + "\n");
-                            printt(outStream, ("      ΑΦΜ: "+AFM + "                              ").Substring(0, 30)+"                          "+BCASH.Text  + "\n");
-                            printt(outStream, ("      ΔΟΥ: "+DOY + "                              " + "                               "+ fEKPTNUM1.ToString ()) + "\n"); //fYPOLPEL
-
+                            // diabazo lines apo timologio
+                            string [] cLine = new string[400];
                             string dbPath = Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                            "adodemo.db3");
+                             Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                             "adodemo.db3");
+                       
                             SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
                             // Open the database connection and create table with data
                             connection.Open();
                             var contents = connection.CreateCommand();
                             contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
                             var r = contents.ExecuteReader();
-                            Console.WriteLine("Reading data");
-                            
-                           
-                            printt(outStream, "\n");
-                            printt(outStream, "\n");
-                            printt(outStream, "\n");
-                            int seir = 13;
-                            Single ssum = 0;
+                            Console.WriteLine("Reading data");                           
+                            int nseira = 0;
+                            //   Single ssum = 0;
                             // String.Format("{0:0.0#}", 123.4567)       // "123.46"
                             while (r.Read())
                             {
-                                seir++;
+                                nseira++;
                                 Single tt;
                                 Single te;
-                                te=(Single)r["TIMH"]  * (100 - (Single)r["EKPT"]) / 100;
+                                te = (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
                                 tt = (Single)r["TIMH"] * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
-                                ssum = ssum + tt;
-                                string lin = (r["KODE"].ToString() +"          ").Substring(0,10)+ " " + (r["PER"].ToString() + spac40).Substring(0, 35)+"TEM ";
+                                //  ssum = ssum + tt;
+                                string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM ";
                                 lin = lin + Right("     " + r["POSO"].ToString(), 5) + "  ";
-                                lin = lin + Right("     " + String.Format("{0:0.00}", te), 5) + " " ;
-                                lin = lin + ""+ "13"+"    "+Right("      "+ String.Format("{0:0.00}", tt), 5) +" ";
-
-                                // lin =lin+Right("     "+String.Format("{0:0.00}", r["EKPT"]),5 )+"13";
-                                printt(outStream, lin + "\n");
-
+                                lin = lin + Right("     " + String.Format("{0:0.00}", te), 5) + " ";
+                                lin = lin + "" + "13" + "    " + Right("      " + String.Format("{0:0.00}", tt), 5) + " ";
+                                cLine[nseira] = lin;
                             }
-
-
-
-                            for (int kk = seir; kk < 40; kk++)
+                                                                                                                                                                                                   // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                            int nCount= nseira ;   // posa records exei to timologio
+                            int RecPerPage = 2;
+                            int nPages = nCount / RecPerPage; 
+                            if (nCount % RecPerPage > 0) // exei ypoloipo
                             {
-                                printt(outStream, "\n");
+                                ++nPages;
+                            };
+                                                                             
+                            int quotient = 5 / 3;
+                            //Console.WriteLine(13 / 5);    // output: 2
+                            //Console.WriteLine(17 % 4);   // output: 1
 
-                            }
-                            //  fkauajiPro = s;
-                           //   s = s - (s * fEKPTNUM1) / 100;
-                            //  fkauaji = s;
-
-                            printt(outStream, spac40 + "             ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 6) + "\n");
-                            printt(outStream, spac40 + "             ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro- fkauaji ), 6) + "\n");
+                           
 
 
-                            printt(outStream, Right("               "+ fYPOLPEL .ToString (),15)+  spac40+"            "+ Right("     " + String.Format("{0:0.00}", fkauaji), 6) + "\n");
-                            printt(outStream, spac40+"                           "  + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 6) + "\n");
-                            printt(outStream, "\n");
-                            printt(outStream, spac40+"                           " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 6) + "\n");
-
-                            printt(outStream, "\n");
-                            printt(outStream, "\n");
-                            printt(outStream, "\n");
-                            for (int kk = 0; kk < 17; kk++)
+                            //==========================================================================================================
+                            int nCurRow = 0;
+                            for (int nCurPage = 1; nCurPage <= nPages; nCurPage++)
                             {
-                                printt(outStream, "\n");
 
+
+                                printt(outStream, (PAR2.Text + spac40).Substring(0, 50) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy   HH:mm tt") + "\n");
+                                printt(outStream, "\n");
+                                printt(outStream, "\n");
+                                printt(outStream, "\n");
+                                printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                         ").Substring(0, 30) + "\n");
+
+
+
+
+                                string EPA = ReadSQL("select  IFNULL(EPA,'')  FROM PEL where KOD='" + af + "'");
+                                string DIE = ReadSQL("select  IFNULL(DIE,'')  FROM PEL where KOD='" + af + "'");
+                                string AFM = ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
+                                string POL = ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
+                                string DOY = ReadSQL("select  IFNULL(DOY,'')  FROM PEL where KOD='" + af + "'");
+
+                                printt(outStream, ("ΕΠΑΓΓΕΛΜΑ: " + EPA + "                         ").Substring(0, 30) + "\n");
+                                printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: " + DIE + "                              ").Substring(0, 30) + "\n");
+                                printt(outStream, ("     ΠΟΛΗ: " + POL + "                              ").Substring(0, 25) + "\n");
+                                printt(outStream, ("      ΑΦΜ: " + AFM + "                              ").Substring(0, 30) + "                          " + BCASH.Text + "\n");
+                                printt(outStream, ("      ΔΟΥ: " + DOY + "                              " + "                            " + fEKPTNUM1.ToString()) + "\n"); //fYPOLPEL
+
+                                //string dbPath = Path.Combine(
+                                //Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                                //"adodemo.db3");
+                                //SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                                //// Open the database connection and create table with data
+                                //connection.Open();
+                                //var contents = connection.CreateCommand();
+                                //contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                                //var r = contents.ExecuteReader();
+                                //Console.WriteLine("Reading data");
+
+
+                                printt(outStream, "\n");
+                                printt(outStream, "\n");
+                                printt(outStream, "\n");
+                                int seir = 13;
+                                // Single ssum = 0;
+                                // String.Format("{0:0.0#}", 123.4567)       // "123.46"
+
+
+                                int nSeiresSelidas = 0;
+                                if (nCurPage==nPages) {
+                                    nSeiresSelidas = RecPerPage;
+                                }
+                                else {
+                                    nSeiresSelidas = RecPerPage;
+                                }
+                                     
+                                for (int k=1;k<= nSeiresSelidas; k++)
+                                {
+
+                                    nCurRow++;
+                                    seir++;
+                                    printt(outStream, cLine [nCurRow] + "\n");
+                                    //Single tt;
+                                    //Single te;
+                                    //te = (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
+                                    //tt = (Single)r["TIMH"] * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
+                                    //ssum = ssum + tt;
+                                    //string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM ";
+                                    //lin = lin + Right("     " + r["POSO"].ToString(), 5) + "  ";
+                                    //lin = lin + Right("     " + String.Format("{0:0.00}", te), 5) + " ";
+                                    //lin = lin + "" + "13" + "    " + Right("      " + String.Format("{0:0.00}", tt), 5) + " ";
+
+                                    // lin =lin+Right("     "+String.Format("{0:0.00}", r["EKPT"]),5 )+"13";
+                                  
+
+                                }
+
+
+
+                                for (int kk = seir; kk < 40; kk++)
+                                {
+                                    printt(outStream, "\n");
+
+                                }
+                                //  fkauajiPro = s;
+                                //   s = s - (s * fEKPTNUM1) / 100;
+                                //  fkauaji = s;
+                                if (nCurPage == nPages)
+
+
+                                {
+
+                                    float NEO;
+                                    if (BCASH.Text.Substring(0,1) == "Π")
+                                    {
+                                        NEO = (float)fYPOLPEL + (float)fkauaji * 113 / 100;  
+                                    }
+                                    else
+                                    {
+                                        NEO = (float)fYPOLPEL;
+                                      
+                                    }
+                                    
+                                    printt(outStream, spac40 + "             ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 6) + "\n");
+                                    printt(outStream, spac40 + "             ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 6) + "\n");
+                                    printt(outStream, Right("               " + fYPOLPEL.ToString(), 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji), 6) + "\n");
+                                    printt(outStream, Right("               " + fYPOLPEL.ToString(), 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 6) + "\n");
+                                    printt(outStream, "\n");
+                                    printt(outStream, spac40 + "                           " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 6) + "\n");
+                                }
+                                else
+                                {
+
+                                    for (int kk = 1; kk <= 5; kk++)
+                                    {
+                                        printt(outStream, "\n");
+                                    }
+                                    printt(outStream,  "\n");
+
+                                }
+                                  if ( nCurPage>1)
+                                {
+                                   printt(outStream, "ΣΕΛ." + nCurPage.ToString() + "\n");
+                                }                                    
+                                else
+                                {
+                                    if (nPages > 1)
+                                    {
+                                        printt(outStream, "ΣΕΛ." + nCurPage.ToString() + "\n");
+                                    }
+                                    else
+                                    {
+                                        printt(outStream, "\n");
+                                    }
+
+                                    
+                                }
+
+                              
+                                printt(outStream, "\n");
+                                printt(outStream, "\n");
+                                for (int kk = 0; kk < 17; kk++)
+                                {
+                                    printt(outStream, "\n");
+
+                                }
                             }
+
+
+
 
                             //fff=toGreek ("ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n");
 

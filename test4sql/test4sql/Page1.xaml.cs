@@ -246,6 +246,7 @@ namespace test4sql
 
                 MainPage.ExecuteSqlite("delete from EGGTIM");
                 MainPage.ExecuteSqlite("delete from TIM");
+                MainPage.ExecuteSqlite("update EID SET YPOL=0,DESM=0");
 
                 await DisplayAlert("διαγραφτηκε", "", "OK");
                 Show_list();
@@ -257,6 +258,67 @@ namespace test4sql
         private void delt(object sender, EventArgs e)
         {
             DELETETIMOL();
+        }
+
+        private void LISTEIDH(object sender, EventArgs e)
+        {
+
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+
+            string dbPath = Path.Combine(
+              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+              "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT ONO,KOD,YPOL,DESM FROM EID  WHERE YPOL>0 ; "; // +BARCODE.Text +"'";
+                                                                                                                                                                             // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            Single s = 0;
+            while (r.Read())
+            {
+                // s = s + (Single)r["POSO"] * (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
+
+                Monkeys.Add(new Monkey
+                {
+                    Name = (r["ONO"].ToString() + "                               ").Substring(0, 25),
+                    Location = r["KOD"].ToString(),
+                    ImageUrl = (r["YPOL"].ToString() + "      ").Substring(0, 5),
+                    idPEL = r["DESM"].ToString()
+                });
+
+
+
+            }
+
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
+
+
+            connection.Close();
+
+            //  SAJIA.Text = String.Format("{0:0.00}", s);  // s.ToString();
+
+            BindingContext = this;
+
+
+
+
+
         }
     }
 }

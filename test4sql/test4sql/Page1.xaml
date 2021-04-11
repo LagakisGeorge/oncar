@@ -143,13 +143,16 @@
                        Clicked="Click_Login" 
                
                  />-->
-            
-                <Button x:Name="BLISTTIMOL" 
+        <StackLayout Orientation="Horizontal">
+        <Button x:Name="BLISTTIMOL" 
                 Text="ΛΙΣΤΑ ΤΙΜΟΛΟΓΙΩΝ"
-                       Clicked="LISTTIMOL"
-                
+                       Clicked="LISTTIMOL"                
                  />
-
+                <Button x:Name="BLISTEIDH" 
+                Text="ΛΙΣΤΑ ΕΙΔΩΝ"
+                       Clicked="LISTEIDH"                
+                 />
+            </StackLayout>
             <Label x:Name="Lab1" 
                 Text="----------"
                       
