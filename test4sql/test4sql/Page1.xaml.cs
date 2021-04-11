@@ -235,5 +235,28 @@ namespace test4sql
         {
 
         }
+
+
+        private async Task DELETETIMOL()
+        {
+
+         var action = await DisplayAlert("Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+                MainPage.ExecuteSqlite("delete from EGGTIM");
+                MainPage.ExecuteSqlite("delete from TIM");
+
+                await DisplayAlert("διαγραφτηκε", "", "OK");
+                Show_list();
+            }   
+
+
+        }
+
+        private void delt(object sender, EventArgs e)
+        {
+            DELETETIMOL();
+        }
     }
 }

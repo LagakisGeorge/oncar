@@ -64,22 +64,13 @@
         </StackLayout>
             
 
-    <Button x:Name="but16" 
-                Text="ασυγχρονα SQLSERVER EIΔΗ"
-                Clicked="asSqlserverTοSQLITE"
-                 />
-
-
-        <Button x:Name="but18" 
-                Text="SQLSERVER BARCODES"
-                Clicked="SqlserverTοBARCODES"
-                 />
+    
 
 
 
 
         <Button x:Name="but121" 
-                Text="Topage1"
+                Text="ΛΙΣΤΑ ΤΙΜΟΛΟΓΙΩΝ"
                 Clicked="ToPage1"
                  />
         <Button x:Name="param" 

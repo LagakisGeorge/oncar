@@ -157,8 +157,8 @@
                  />
 
             <Button x:Name="but31" 
-                Text="read1File"
-                       Clicked="ReadFile"
+                Text="ΜΗΔΕΝΙΣΜΟΣ ΤΙΜΟΛΟΓΙΩΝ"
+                       Clicked="delt"
                 
                  />
 

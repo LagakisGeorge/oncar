@@ -83,7 +83,8 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*" />
+                </Grid.ColumnDefinitions>
 
 
 
@@ -136,7 +137,10 @@
                    Completed="posothtaCompleted"/>
 
 
-
+                <Entry x:Name="FPA"   Grid.Row="1" Grid.Column="4" 
+                   Placeholder="          "   Text=""
+                   HorizontalOptions="Start"   BackgroundColor="Azure"    
+                   />
 
 
 
@@ -149,14 +153,18 @@
             </Grid>
 
 
-            <StackLayout Orientation="Horizontal">
-                <Label  x:Name="LFPA"            
-                Text=" " HorizontalOptions="Center"   />
+           
+               
+              
                 
                 <Label  x:Name="LPER" 
            FontAttributes="Bold" FontSize="Medium" 
                 Text="ONOMA EIΔΟΥΣ..    " HorizontalOptions="Center"   />
-                <StackLayout/>
+                
+                 
+                
+                
+               
                 
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="katax"  Grid.Row="3" Grid.Column="4" 

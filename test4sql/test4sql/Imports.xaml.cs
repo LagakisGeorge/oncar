@@ -128,6 +128,16 @@ namespace test4sql
             }
 
 
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='NUM1' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table PEL ADD NUM1 REAL");              
+                MainPage.ExecuteSqlite("alter table PEL ADD CH2 [varchar](20)");
+                MainPage.ExecuteSqlite("alter table PEL ADD INT2 [INT] ");
+
+            }
+
 
 
             await DisplayAlert("ΠΕΛΑΤΕΣ ΟΚ", "ΠΕΛΑΤΕΣ ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
@@ -148,7 +158,16 @@ namespace test4sql
                     "[ENERGOS] [int] ," +
                     "[ID]  INTEGER PRIMARY KEY )";
 
-             MainPage.ExecuteSqlite(c);
+
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EGGTIM') WHERE name='FPA' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table EGGTIM ADD FPA INT");
+              
+            }
+
+            MainPage.ExecuteSqlite(c);
 
 
 
@@ -260,7 +279,11 @@ namespace test4sql
                  MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΔΕΛΤΙΟ ΑΠΟΣΤΟΛΗΣ','A')");
             }
 
-
+            if (PARAGGELIES.NReadSQL("select count(*) from PARASTAT") < 3)
+            {
+                MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΣΥΓΚΕΝΤΡΩΤΙΚΟ ΔΕΛΤΙΟ ΑΠΟΣΤΟΛΗΣ','τ')");
+               
+            }
 
 
 

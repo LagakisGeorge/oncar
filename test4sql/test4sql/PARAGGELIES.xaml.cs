@@ -47,6 +47,18 @@ namespace test4sql
         private string EIDOSPAR = "";
 
         public string fTIMOK;
+        public float fEKPTNUM1=0;
+        public float faji = 0;  // SYNOLO ME FPA
+        public float fkauaji = 0;  // SYNOLO ME FPA
+
+        public float fkauajiPro = 0;  // SYNOLO ME FPA
+
+        public float fYPOLPEL = 0;  // YPOLOIPO PELATH
+
+
+
+
+
         public List<string> MyList = new List<string>();
         public IList<Monkey> Monkeys { get; private set; }
        
@@ -294,6 +306,8 @@ namespace test4sql
             {
                 EPO.Text = r["EPO"].ToString();
                 fTIMOK = r["PEK"].ToString ();
+                fEKPTNUM1 = (float)r["NUM1"];
+                fYPOLPEL= (float)r["TYP"];
                 Monkeys.Add(new Monkey
                 {
                     Name = r["EPO"].ToString(),
@@ -340,10 +354,10 @@ namespace test4sql
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
             if (Globals.useBarcodes == "1")
-            {               contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,FPA from EID WHERE KODE =" + CKODE .Text + "' LIMIT 2 ; "; // +BARCODE.Text +"'";
+            {               contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2 from EID WHERE KODE =" + CKODE .Text + "' LIMIT 2 ; "; // +BARCODE.Text +"'";
             }
             else
-            {               contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,FPA from EID WHERE KOD = '" + CKODE.Text + "' LIMIT 2 ; "; // +BARCODE.Text +"'";
+            {               contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD = '" + CKODE.Text + "' LIMIT 2 ; "; // +BARCODE.Text +"'";
             }
 
 
@@ -357,13 +371,16 @@ namespace test4sql
             {
                 flag++;
                 LPER.Text = r["ONO"].ToString();  // ****
-                CTIMH.Text = r["XONDR"].ToString();
-                string ccc = r["XONDR"].ToString();
-                CEKPT.Text  = DD; // ***
+                CTIMH.Text = DD;  // r["XONDR"].ToString();
+                //string ccc = r["XONDR"].ToString();
+                CEKPT.Text  ="0" ; // ***
                 //ldesm.Text = r["DESM"].ToString(); // ****
                 //lypol.Text = r["YPOL"].ToString();
                 CKODE.Text = r["KOD"].ToString();
-                LFPA.Text = r["FPA"].ToString();
+                
+                // IF DELTA PROIONTA
+
+                FPA.Text = r["FPA2"].ToString();
                 //lbarcode.Text = r["BARCODE"].ToString();  // ***
 
             }
@@ -447,14 +464,21 @@ namespace test4sql
             //CTIMH.Text = lines[2] + "          ";
             //CEKPT.Text = lines[3] + "          ";
 
-            string cpos, ctimh, cekpt;
+            string cpos, ctimh, cekpt,cfpa;
             cpos = CPOSO.Text.Replace(",", ".");
             ctimh = CTIMH.Text.Replace(",", ".");
             if (CEKPT.Text.Length == 0) { CEKPT.Text = "0"; };
 
             cekpt = CEKPT.Text.Replace(",", ".");
 
-
+            if (FPA.Text.Length == 0) {
+                cfpa  = "1";
+            }
+            else
+            {
+                cfpa = FPA.Text ;
+            }
+                
 
 
             //    Monkeys.Add(new Monkey
@@ -466,8 +490,19 @@ namespace test4sql
             //    });
             try
             {
-            MainPage.ExecuteSqlite("insert into EGGTIM (ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) VALUES ('"+LPER.Text+"','" + ATIM.Text + "', datetime('now'),'" + CKODE.Text + "'," + cpos + "," + ctimh +","+cekpt +","+LFPA.Text+")");
-             }
+                string SQL1 = "insert into EGGTIM (ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) VALUES ('" + LPER.Text + "','" + ATIM.Text + "', datetime('now'),'" + CKODE.Text + "'," + cpos + "," + ctimh + "," + cekpt + "," +cfpa  + ")";
+            MainPage.ExecuteSqlite(SQL1);
+                if (EIDOSPAR == "τ")
+                {
+                    MainPage.ExecuteSqlite("update EID set YPOL=YPOL+" + cpos + " WHERE KOD='" + CKODE.Text + "'");
+
+                }
+                else
+                {
+                    MainPage.ExecuteSqlite("update EID set DESM=DESM+" + cpos + " WHERE KOD='" + CKODE.Text + "'");
+                }
+                
+            }
             catch
             {
                 await DisplayAlert("ΔΕΝ ΑΠΟΘΗΚΕΥΤΗΚΕ", "", "OK");
@@ -644,12 +679,13 @@ namespace test4sql
                             string DIE = ReadSQL("select  IFNULL(DIE,'')  FROM PEL where KOD='" + af + "'");
                             string AFM = ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
                             string POL = ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
-                           
+                            string DOY = ReadSQL("select  IFNULL(DOY,'')  FROM PEL where KOD='" + af + "'");
+
                             printt(outStream, ("ΕΠΑΓΓΕΛΜΑ: "+EPA + "                         ").Substring(0, 30) + "\n");
                             printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: "+DIE + "                              ").Substring(0, 30) + "\n");
                             printt(outStream, ("     ΠΟΛΗ: "+POL + "                              ").Substring(0, 25) + "\n");
-                            printt(outStream, ("      ΑΦΜ: "+AFM + "                              ").Substring(0, 30) + "\n");
-
+                            printt(outStream, ("      ΑΦΜ: "+AFM + "                              ").Substring(0, 30)+"                          "+BCASH.Text  + "\n");
+                            printt(outStream, ("      ΔΟΥ: "+DOY + "                              " + "                               "+ fEKPTNUM1.ToString ()) + "\n"); //fYPOLPEL
 
                             string dbPath = Path.Combine(
                             Environment.GetFolderPath(Environment.SpecialFolder.Personal),
@@ -662,7 +698,7 @@ namespace test4sql
                             var r = contents.ExecuteReader();
                             Console.WriteLine("Reading data");
                             
-                            printt(outStream, "\n");
+                           
                             printt(outStream, "\n");
                             printt(outStream, "\n");
                             printt(outStream, "\n");
@@ -689,16 +725,23 @@ namespace test4sql
 
 
 
-                            for (int kk = seir; kk < 42; kk++)
+                            for (int kk = seir; kk < 40; kk++)
                             {
                                 printt(outStream, "\n");
 
                             }
+                            //  fkauajiPro = s;
+                           //   s = s - (s * fEKPTNUM1) / 100;
+                            //  fkauaji = s;
 
-                            printt(outStream, spac40+"                           "+ Right("     " + String.Format("{0:0.00}", ssum), 5) + "\n");
-                            printt(outStream, spac40+"                           "  + Right("     " + String.Format("{0:0.00}", ssum*0.13), 5) + "\n");
+                            printt(outStream, spac40 + "             ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 6) + "\n");
+                            printt(outStream, spac40 + "             ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro- fkauaji ), 6) + "\n");
+
+
+                            printt(outStream, Right("               "+ fYPOLPEL .ToString (),15)+  spac40+"            "+ Right("     " + String.Format("{0:0.00}", fkauaji), 6) + "\n");
+                            printt(outStream, spac40+"                           "  + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 6) + "\n");
                             printt(outStream, "\n");
-                            printt(outStream, spac40+"                           " + Right("     " + String.Format("{0:0.00}", ssum*1.13), 5) + "\n");
+                            printt(outStream, spac40+"                           " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 6) + "\n");
 
                             printt(outStream, "\n");
                             printt(outStream, "\n");
@@ -956,27 +999,24 @@ namespace test4sql
             while (r.Read())
             {
                 s = s + (Single)r["POSO"]* (Single)r["TIMH"]*(100- (Single)r["EKPT"])/100;   
-
                 Monkeys.Add(new Monkey
                 {
                     Name = (r["KODE"].ToString()+";"+ r["PER"].ToString()+"                ").Substring(0,18),
-
                     Location = (r["POSO"].ToString()+"      ").Substring(0,5),
                     ImageUrl = (r["TIMH"].ToString()+"      ").Substring(0,5),
                     idPEL = r["EKPT"].ToString() + ";" + r["ID"].ToString()
                 }); 
-
-
-
             }
 
             listview.ItemsSource = Monkeys;
             BindingContext = this;
-
-
+            fkauajiPro = s;
+            s = s - (s * fEKPTNUM1   ) / 100;
+            fkauaji = s;
+            faji = s * 113/100;
             connection.Close();
 
-            SAJIA.Text = String.Format("{0:0.00}", s);  // s.ToString();
+            SAJIA.Text = String.Format("{0:0.00}", faji);  // s.ToString();
 
             BindingContext = this;
         }
