@@ -119,9 +119,6 @@ namespace test4sql
                 //for (int i=0;0;lines.count )
                     for (int k = 0; k <= lines.Length  - 1; k++)
                     {
-
-
-
                     }
 
 
@@ -231,8 +228,90 @@ namespace test4sql
             BindingContext = this;
         }
 
-        private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        private async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
+
+            Monkey tappedItem = e.Item as Monkey;
+            // tappedItem.Location=>'00182'
+            string mID = tappedItem.idPEL;
+            string mATIM = tappedItem.Location;
+            // if (fisEIDH == 0)
+            // {
+            //     EPO.Text = tappedItem.Name;
+
+                    //Name = (r["EPO2"].ToString() + "                               ").Substring(0, 25), 
+                    //Location = r["ATIM2"].ToString(),
+                    //ImageUrl = (r["AJI2"].ToString() + "      ").Substring(0, 5),
+                    //idPEL = r["ID"].ToString()
+
+
+                var action = await DisplayAlert(mATIM +" Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+
+
+                // ΚΑΝΩ ΑΡΝΗΤΙΚΗ ΕΝΗΜΕΡΩΣΗ ΓΙΑ ΑΥΤΟ ΠΟΥ ΣΒΗΝΩ
+                string dbPath = Path.Combine(
+                  Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                  "adodemo.db3");
+                SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                // Open the database connection and create table with data
+                connection.Open();
+                // query the database to prove data was inserted!
+                var contents = connection.CreateCommand();
+                contents.CommandText = "SELECT * from EGGTIM where ATIM='" + mATIM + "'";
+                var r = contents.ExecuteReader();
+                Console.WriteLine("Reading data");
+
+                //     int[] terms = new int[400];
+                //     for (int runs = 0; runs < 400; runs++)
+                //     {
+                //         terms[runs] = value;
+                //      }
+                //      Alternatively, you can use Lists -the advantage with lists being, you don't need to know the array size when instantiating the list.
+
+
+                string[] POSO = new string [400];
+                string[] KODE = new string[400];
+
+                int ll = 0;
+                string cc = "";
+                while (r.Read())
+                {
+                    ll++;
+                    cc = r["POSO"].ToString();
+                    cc = cc.Replace(",", ".");
+                    string ck = r["KODE"].ToString();
+                    POSO[ll] = cc;
+                    KODE[ll] = ck;                   
+                }
+                connection.Close();
+
+
+                for (int k = 1; k <= ll; k++)
+                {
+                    if (mATIM.Substring(0, 1) == "τ")
+                    {  MainPage.ExecuteSqlite("update EID SET YPOL=YPOL-" + POSO[k]+ " WHERE KOD='" + KODE[k] + "'");
+                        MainPage.ExecuteSqlite("update EID SET YPOL=0 WHERE YPOL<0 AND  KOD='" + KODE[k] + "'");
+                    }
+                    else
+                    {   MainPage.ExecuteSqlite("update EID SET DESM=DESM-" + POSO[k] + " WHERE KOD='" + KODE[k] + "'");
+                        MainPage.ExecuteSqlite("update EID SET DESM=0 WHERE DESM<0 AND  KOD='" + KODE[k] + "'");
+                    }
+                }
+
+
+
+                MainPage.ExecuteSqlite("delete from EGGTIM where ATIM='"+mATIM +"'");
+                MainPage.ExecuteSqlite("delete from    TIM where ATIM='" + mATIM + "'");
+
+               
+                
+
+                await DisplayAlert("διαγραφτηκε", "", "OK");
+                Show_list();
+            }
 
         }
 

@@ -117,6 +117,7 @@
                 <Entry x:Name="CKODE"   Grid.Row="1" Grid.Column="0" 
                    Placeholder="          " 
                        Text=""
+                       IsEnabled="False" 
                         HorizontalOptions="Center"  
                     BackgroundColor="Azure"    
                    Completed="KODECompleted"/>
@@ -180,13 +181,30 @@
                 <Button x:Name="btnScan" 
                      BackgroundColor="GreenYellow" 
                         Text="EKTYΠΩΣΗ"
+                        IsEnabled="False" 
                        Clicked="BtnScan_Clicked"  />
+                
+                
+                
 
-            </StackLayout> 
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
 
-         
+                <Button x:Name="BEXODOS" 
+                     BackgroundColor="GreenYellow" 
+                        Text="ΕΞΟΔΟΣ"
+                       Clicked="EXODOS"  />
+                <Label  x:Name="LPLIR" 
+          
+                Text="..........................................." HorizontalOptions="Center"   />
 
-            <ListView ItemsSource="{Binding Monkeys}"
+                <Button x:Name="BSYGKEPIS" 
+                     BackgroundColor="GreenYellow" 
+                        Text="ΣΥΓΚ.ΕΠΙΣ"
+                       Clicked="SYGKEPIS"  />
+                </StackLayout>
+
+                    <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
                       HeightRequest="80"
                       BackgroundColor="Bisque"

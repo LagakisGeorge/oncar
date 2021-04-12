@@ -45,12 +45,12 @@ namespace test4sql
         private int nn = 1;
        public int fisEIDH = 0;
         private string EIDOSPAR = "";
-
-        public string fTIMOK;
-        public float fEKPTNUM1=0;
+        private int fISDiortosi = 0;
+        public string fTIMOK;  // timokatalogos pelath
+        public float fEKPTNUM1=0; // εχτρα εκπτωση πελατη
         public float faji = 0;  // SYNOLO ME FPA
         public float fkauaji = 0;  // SYNOLO ME FPA
-
+       // public string fIDTimDior = "0";
         public float fkauajiPro = 0;  // SYNOLO ME FPA
 
         public float fYPOLPEL = 0;  // YPOLOIPO PELATH
@@ -73,19 +73,62 @@ namespace test4sql
 
             //ATIM.Text = ReadSQL("select  EIDOS+printf('%06d',  IFNULL(ARITMISI,0)+1)   FROM PARASTAT where ID=1");
 
+            string lasttim = ReadSQL("select ATIM FROM TIM WHERE NUM1=-1 ORDER BY ID DESC");
+        if (lasttim.Length == 0)  // den yparxei miso teleiomeno parastatiko
+            {
+                fISDiortosi = 0;
             ATIM.Text = PARAGGELIES.ReadSQL("select  printf('%06d',  IFNULL(ARITMISI,0)+1)    FROM PARASTAT WHERE  ID=" + nn.ToString());
-
-
             EIDOSPAR = PARAGGELIES.ReadSQL("select ifnull(EIDOS,'') AS C FROM PARASTAT WHERE ID=" + nn.ToString());
-
             ATIM.Text = EIDOSPAR + Right("000000" + ATIM.Text, 6);
-
-
-
-
-
             PAR2.Text = ReadSQL("select TITLOS FROM PARASTAT where ID=1");
-            // Monkeys = new List<Monkey>();
+                CKODE.IsEnabled = true;
+
+            }
+        else
+            {
+
+                
+              try
+              {
+
+                
+                fISDiortosi = 1;
+                    BRESPREV.IsEnabled = false;
+                    BRESNEXT.IsEnabled = false;
+                    // fIDTimDior = ReadSQL("select ID FROM TIM WHERE ATIM='" + ATIM.Text + "'");
+                    ATIM.Text = lasttim;
+                EIDOSPAR = lasttim.Substring(0, 1);
+                PAR2.Text = ReadSQL("select TITLOS FROM PARASTAT where EIDOS='"+EIDOSPAR+"'");
+                AFM.Text = ReadSQL("select KPE FROM TIM WHERE ATIM='" + ATIM.Text + "'");
+                EPO.Text = ReadSQL("select EPO FROM TIM WHERE ATIM='" + ATIM.Text + "'");
+                  nn =(int) NReadSQL("select ID FROM PARASTAT where EIDOS='" + EIDOSPAR + "'");
+
+                    CKODE.Focus();
+                    bresPelath_NoList();  //  bresPelath(); // giana parei ypoloipo kai katalogo kai ekptosi
+                   
+                  CKODE.IsEnabled = true;
+                
+                }
+                catch
+                {                }
+                
+                //  fTIMOK = tappedItem.ImageUrl;
+            }
+
+
+
+
+        if (EIDOSPAR == "τ")
+            {
+                BSYGKEPIS.IsVisible = true;
+            }
+        else
+            {
+                BSYGKEPIS.IsVisible = false;
+            }
+
+
+           
             Show_list();
         }
 
@@ -97,6 +140,34 @@ namespace test4sql
         }
 
         // 
+
+
+         void bresPelath_NoList()
+         {
+            string dbPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                "adodemo.db3");
+               SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT  EPO,IFNULL(PEK,0) AS PEK2,IFNULL(NUM1,0) AS NUM12,IFNULL(TYP,0) AS TYP2 from PEL WHERE EPO LIKE '% " + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            while (r.Read())
+            {
+                // EPO.Text = r["EPO"].ToString();  gia na kanei klik sto listview
+                fTIMOK = r["PEK2"].ToString();
+                fEKPTNUM1 = float.Parse(r["NUM12"].ToString ());
+                fYPOLPEL = float.Parse(r["TYP2"].ToString());
+                LPLIR.Text = r["ID"].ToString() + " Εκπ:" + r["NUM12"].ToString();
+            }
+            connection.Close();
+         }
+
+
+
+
+
+
 
         public static string toGreek(string Q)
         {
@@ -189,7 +260,14 @@ namespace test4sql
 
             ATIM.Text = EIDOSPAR + Right("000000" + ATIM.Text, 6);
 
-
+            if (EIDOSPAR == "τ")
+            {
+                BSYGKEPIS.IsVisible = true ;
+            }
+            else
+            {
+                BSYGKEPIS.IsVisible = false;
+            }
 
         }
 
@@ -209,6 +287,17 @@ namespace test4sql
             EIDOSPAR = PARAGGELIES.ReadSQL("select ifnull(EIDOS,'') AS C FROM PARASTAT WHERE ID=" + nn.ToString());
 
             ATIM.Text = EIDOSPAR + Right("000000" + ATIM.Text, 6);
+
+            if (EIDOSPAR == "τ")
+            {
+                BSYGKEPIS.IsVisible = true;
+            }
+            else
+            {
+                BSYGKEPIS.IsVisible = false;
+            }
+
+
         }
 
 
@@ -269,6 +358,7 @@ namespace test4sql
         }
 
 
+
         async void BRES_AFM(object sender, EventArgs e)
         {
             fisEIDH = 0;
@@ -299,22 +389,93 @@ namespace test4sql
 
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  * from PEL WHERE EPO LIKE '% "+ AFM.Text.ToUpper () + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  * from PEL WHERE EPO LIKE '% " + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
             {
                 EPO.Text = r["EPO"].ToString();
-                fTIMOK = r["PEK"].ToString ();
+                fTIMOK = r["PEK"].ToString();
                 fEKPTNUM1 = (float)r["NUM1"];
-                fYPOLPEL= (float)r["TYP"];
+                fYPOLPEL = (float)r["TYP"];
                 Monkeys.Add(new Monkey
                 {
                     Name = r["EPO"].ToString(),
                     Location = r["KOD"].ToString(),
                     ImageUrl = r["PEK"].ToString(),
-                    idPEL =""
+                    idPEL = r["ID"].ToString()
                 });
+
+
+
+            }
+            // r["ONO"].ToString();
+
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
+
+            connection.Close();
+
+            //  BARCODE.Focus();
+
+        }
+
+
+
+
+
+
+        /*
+        async void BRES_AFM(object sender, EventArgs e)
+        {
+           
+            fisEIDH = 0;
+           // CKODE.IsEnabled = true;
+            SAJIA.WidthRequest = 90;
+            BRESPREV.IsVisible = false;
+            BRESNEXT.IsVisible = false;
+
+            // determine the path for the database file
+            string dbPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+            Monkeys = new List<Monkey>();
+            listview.ItemsSource = null;
+
+            // query the database to prove data was inserted!
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT  EPO,IFNULL(PEK,0) AS PEK2,IFNULL(NUM1,0) AS NUM12,IFNULL(TYP,0) AS TYP2 from PEL WHERE EPO LIKE '% "+ AFM.Text.ToUpper () + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            while (r.Read())
+            {
+                // EPO.Text = r["EPO"].ToString();  gia na kanei klik sto listview
+                fTIMOK = r["PEK2"].ToString ();
+                fEKPTNUM1 = float.Parse(r["NUM12"].ToString ());
+                fYPOLPEL= float.Parse(r["TYP2"].ToString());  // (float)r["TYP2"];
+                LPLIR.Text = "Yπ:" + r["TYP2"].ToString () + " Εκπ:" + r["NUM12"].ToString ();
+
+
+                Monkeys.Add(new Monkey
+                {
+                    Name = r["EPO"].ToString(),
+                    Location = r["KOD"].ToString(),
+                    ImageUrl = r["PEK2"].ToString(),
+                    idPEL = ""  //  r["TYP2"].ToString() + ";" + r["NUM12"].ToString()
+                }); ;
 
 
 
@@ -329,6 +490,9 @@ namespace test4sql
           //  BARCODE.Focus();
 
         }
+
+        */
+
 
         async void BresEidos(string CCC)
         {
@@ -399,10 +563,6 @@ namespace test4sql
                 fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
                 Show_list();
             }
-
-            
-
-
         }
 
         async void kataxorisi(object sender, EventArgs e)
@@ -427,20 +587,34 @@ namespace test4sql
 
             if (EIDOSPAR == "τ" )
             {
+                CTIMH.Text = "0";
             }
             else
             {
 
+                try
+                {
+
+                    //if (IsNumeric(   CPOSO.Text))
+                    //{
+                    //    await DisplayAlert("η ποσότητα δεν ειναι αριθμός", "", "OK");
+                    //    return;
+                    //}
+                    
+
                 string mpos = ReadSQL("select IFNULL(YPOL,0)-IFNULL(DESM,0) AS TR FROM EID WHERE KOD='" + CKODE.Text + "'");
                // string value = "246246.246";
                // Convert.ToInt64(Convert.ToDouble(value));
-                if (Convert.ToInt64(Convert.ToDouble(CPOSO.Text)) > Convert.ToInt64(Convert.ToDouble(mpos)))
+                if (Convert.ToInt64(Convert.ToDouble(CPOSO.Text.Replace(",","."))) > Convert.ToInt64(Convert.ToDouble(mpos)))
                 {
 
                 await DisplayAlert("ΕΧΩ ΥΠΟΛΟΙΠΟ "+mpos, "", "OK");
                 return;
                 }
+              }catch
+                {
 
+              }
 
             }
 
@@ -452,6 +626,7 @@ namespace test4sql
                 //  αν ειναι δελτιο συγ η απλο δεν θελω τιμη  CKODE.Text
                 if (EIDOSPAR == "τ" || EIDOSPAR == "A")
                 {
+                    CTIMH.Text = "0";
                 }
                 else
                 {
@@ -561,6 +736,11 @@ namespace test4sql
 
         }
 
+
+        public bool IsNumeric(string value)
+        {
+            return value.All(char.IsNumber);
+        }
         void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             Monkey selectedItem = e.SelectedItem as Monkey;
@@ -575,8 +755,28 @@ namespace test4sql
               EPO.Text = tappedItem.Name;
               AFM.Text = tappedItem.Location;
               listview.ItemsSource = null;
+                CKODE.IsEnabled = true;
               fisEIDH = 1; // για να βλεπει τα ειδη απο δω και περα
+
+                // BAZO NUM1=-1 ΟΤΙ ΕΙΝΑΙ ΕΚΚΡΕΜΕΣ
+                if (fISDiortosi == 1){}
+                else
+                { MainPage.ExecuteSqlite("INSERT INTO TIM (NUM1,HME,ATIM,KPE,TRP,EPO) VALUES (-1,datetime('now'),'" + ATIM.Text + "','" + AFM.Text + "','" + BCASH.Text.Substring(0, 5) + "','" + EPO.Text + "')");
+                }
+
+
+
                 fTIMOK = tappedItem.ImageUrl;
+                string ccv = ReadSQL("SELECT IFNULL(NUM1,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
+                fEKPTNUM1 = float.Parse(ccv);
+                string ccv2 = ReadSQL("SELECT IFNULL(TYP,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
+                fYPOLPEL = float.Parse(ccv2);
+               
+                // string[] lines = tappedItem.idPEL.Split(';');
+                // fEKPTNUM1 = float.Parse (lines[1]);
+                //  fYPOLPEL = float.Parse(lines[0]);
+                 LPLIR.Text = "Yπ:" +ccv2 + " Εκπ:" + ccv;
+                // idPEL = r["TYP2"].ToString() + ";" + r["NUM12"].ToString()
                 return;
             }
             if (fisEIDH == 1)
@@ -634,15 +834,10 @@ namespace test4sql
 
         private async void BtnScan_Clicked(object sender, EventArgs e)
         {
-            PRINTOUT();
+            PRINTOUT(0);
         }
 
-
-
-
-
-
-        private  async void PRINTOUT()
+        private  async void PRINTOUT( int IsSygkEpistr) // 0=timologio 1=sygkentrotiko epistrofis
         {
 
         
@@ -762,7 +957,16 @@ namespace test4sql
                             // Open the database connection and create table with data
                             connection.Open();
                             var contents = connection.CreateCommand();
-                            contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                         //   if (IsSygkEpistr ==0)
+                         //   {
+                                contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+
+                          //  }
+                          //  else
+                          //  {
+                           //     contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,EID.YPOL AS POSO,IFNULL(EID.DESM,0) AS TIMH,EGGTIM.EKPT from EGGTIM inner join EID ON EGGTIM.KODE=EID.KOD  where ATIM ='" + ATIM.Text + "';";   // order by EGGTIM.ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+
+                           // }
                             var r = contents.ExecuteReader();
                             Console.WriteLine("Reading data");                           
                             int nseira = 0;
@@ -773,8 +977,18 @@ namespace test4sql
                                 nseira++;
                                 Single tt;
                                 Single te;
-                                te = (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
-                                tt = (Single)r["TIMH"] * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
+
+                                if (IsSygkEpistr == 1)
+                                {
+                                    string MPOL= ReadSQL("select DESM from EID where KOD='" + r["KODE"].ToString() + "'");
+                                    te = Convert.ToInt64(Convert.ToDouble(MPOL));
+                                    tt = (Single)r["POSO"] - te ;
+                                }
+                                else
+                                {
+                                    te = (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
+                                    tt = (Single)r["TIMH"] * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
+                                }
                                 //  ssum = ssum + tt;
                                 string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM ";
                                 lin = lin + Right("     " + r["POSO"].ToString(), 5) + "  ";
@@ -976,9 +1190,10 @@ namespace test4sql
 
 
                         }
-                        catch
+                        catch (SqliteException ex )
                         {
-                            await DisplayAlert("αδυναμια εκτυπωσης", " ok", "OK");
+
+                            await DisplayAlert("αδυναμια εκτυπωσης ", ex.ErrorCode.ToString () , "OK");
                         };
 
 
@@ -989,6 +1204,7 @@ namespace test4sql
 
                         socket.Close(); }
                          catch
+                           
                         {
 
                          }
@@ -1239,11 +1455,14 @@ namespace test4sql
 
 
             MainPage.ExecuteSqlite("update PARASTAT SET ARITMISI=ifnull(ARITMISI,0)+1 WHERE   ID=" + nn.ToString());
+            MainPage.ExecuteSqlite("UPDATE TIM SET KPE='"+AFM.Text+"',TRP='"+ BCASH.Text.Substring(0, 5)+"',EPO='"+EPO.Text +"', NUM1 =0,AJI="+SAJIA.Text.Replace(",",".") +" WHERE ATIM='" + ATIM.Text +"'");
 
-            
-            MainPage.ExecuteSqlite("INSERT INTO TIM (AJI,HME,ATIM,KPE,TRP,EPO) VALUES ("+SAJIA.Text.Replace(",",".") +",datetime('now'),'" + ATIM.Text +"','"+AFM.Text+"','"+BCASH.Text.Substring(0,5)+"','"+EPO.Text+"')");
+            btnScan.IsEnabled = true;
+            AFM.IsEnabled = false;
+            BRESafm.IsEnabled = false;
 
-            await Navigation.PopAsync();
+
+          //  await Navigation.PopAsync();
 
 
         }
@@ -1289,6 +1508,38 @@ namespace test4sql
 
 
 
+        }
+
+        private void SYGKEPIS(object sender, EventArgs e)
+        {
+
+
+
+            string MATIM = "";
+            // ΒΡΙΣΚΩ ΤΟ ΠΡΟΓΟΥΜΕΝΟ  ΣΥΓΚΕΝΤΡΩΤΙΚΟ ΓΙΑ ΝΑ ΤΟ ΑΝΤΙΓΡΑΨΩ
+            MATIM  = PARAGGELIES.ReadSQL("select  printf('%06d',  IFNULL(ARITMISI,0))    FROM PARASTAT WHERE  ID=" + nn.ToString());
+            EIDOSPAR = PARAGGELIES.ReadSQL("select ifnull(EIDOS,'') AS C FROM PARASTAT WHERE ID=" + nn.ToString());
+            MATIM = EIDOSPAR + Right("000000" + MATIM, 6);
+
+
+
+
+
+            string SQL = "insert into EGGTIM (ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) ";
+                SQL=SQL+"SELECT ONO,'"+ATIM.Text  +"',HME,KODE,POSO,TIMH,EKPT,FPA FROM EGGTIM WHERE ATIM='"+MATIM+"'";
+            MainPage.ExecuteSqlite(SQL);
+
+            PRINTOUT(1);
+
+
+
+
+
+        }
+
+        private  async void EXODOS(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
         }
 
 
