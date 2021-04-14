@@ -159,6 +159,9 @@ namespace test4sql
                     "[ID]  INTEGER PRIMARY KEY )";
 
 
+   MainPage.ExecuteSqlite(c);
+
+
             // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
             nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EGGTIM') WHERE name='FPA' ");
             if (Int16.Parse(nc) == 0)
@@ -167,7 +170,7 @@ namespace test4sql
               
             }
 
-            MainPage.ExecuteSqlite(c);
+         
 
 
 
@@ -284,7 +287,13 @@ namespace test4sql
                 MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΣΥΓΚΕΝΤΡΩΤΙΚΟ ΔΕΛΤΙΟ ΑΠΟΣΤΟΛΗΣ','τ')");
                
             }
+            if (PARAGGELIES.NReadSQL("select count(*) from PARASTAT") < 4)
+            {
+                MainPage.ExecuteSqlite("INSERT INTO PARASTAT (TITLOS,EIDOS) VALUES ('ΠΙΣΤΩΤΙΚΟ ΤΙΜΟΛΟΓΙΟ','P')");
+                MainPage.ExecuteSqlite("UPDATE PARASTAT SET TITLOS='ΤΙΜΟΛΟΓΙΟ ΠΩΛΗΣΗΣ-ΔΑ ΣΕΙΡΑ Β',EIDOS='ρ' WHERE ID=2");
 
+
+            }
 
 
 

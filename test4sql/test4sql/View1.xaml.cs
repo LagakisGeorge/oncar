@@ -189,7 +189,7 @@ namespace test4sql
 
 
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  * from PARALABES where ATIM ='" + cATIM.Text + "' order by ID DESC ; "; // +BARCODE.Text +"'";
+  //          contents.CommandText = "SELECT  * from PARALABES where ATIM ='" + cATIM.Text + "' order by ID DESC ; "; // +BARCODE.Text +"'";
                                                                                                                     // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
@@ -220,17 +220,10 @@ namespace test4sql
 
         async void WriteFile(object sender, EventArgs e)
         {
-
-
-            // DIABAZO sqlite database KAI TA SOZO :
+           // DIABAZO sqlite database KAI TA SOZO :
             // se sqlserver
             // KAI SE KOINO FAKELO SAN ARXEIO  EGGTIM2.TXT
-
-
             //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
-
-          
-
             string[] lines = Globals.cSQLSERVER.Split(';');
             string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
@@ -238,27 +231,13 @@ namespace test4sql
             con = new SqlConnection(constring);
             try
             {
-
-
-
-
-
-
-
-
-                con.Open();
-                
+                con.Open();                
             }
             catch (Exception ex)
             {
                 await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
             }
             //  -----------------SQLSERVER ---------------------------------------
-
-
-
-
-
             /*
             // '=====================  EGGTIM2.TXT  ======================================================'
             try
@@ -339,7 +318,7 @@ namespace test4sql
                 while (r.Read())
                 {
                     string[] lines2 = r["HME"].ToString().Split('/');
-                    cc = "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES ('";
+                    cc = "INSERT INTO PEGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES ('";
                     cc +=  r["ATIM"].ToString() + "','";
                     cc +=  lines2[1]+"/"+lines2[0]+"/"+lines2[2].Substring(0,4) + "','";
                     cc +=  r["KODE"].ToString() + "',";
@@ -382,19 +361,19 @@ namespace test4sql
 
 
              contents = connection.CreateCommand();
-            contents.CommandText = "SELECT* FROM EGGTIM";
+            contents.CommandText = "SELECT* From TIM";
             r = contents.ExecuteReader();
             try
             {
                 while (r.Read())
                 {
                     string[] lines2 = r["HME"].ToString().Split('/');
-                    cc = "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES ('";
+                    cc = "INSERT INTO PTIM (ATIM,HME,KPE,AJI) VALUES ('";
                     cc += r["ATIM"].ToString() + "','";
                     cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
-                    cc += r["KODE"].ToString() + "',";
-                    cc += r["POSO"].ToString().Replace(",", ".") + ",";
-                    cc += r["TIMH"].ToString().Replace(",", ".") + ")";
+                    cc += r["KPE"].ToString() + "',";
+                    cc += r["AJI"].ToString().Replace(",", ".") + ")";
+                   // cc += r["TIMH"].ToString().Replace(",", ".") + ")";
 
                     SqlCommand cmd = new SqlCommand(cc);
                     cmd.Connection = con;
@@ -415,6 +394,10 @@ namespace test4sql
             {
                 await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
             }
+
+
+
+
         }
 
 
@@ -427,26 +410,6 @@ namespace test4sql
         async void PaletaChanged(object sender, EventArgs e)
         {
 
-            if (Paleta.Text.Length < 34) return;
-
-            BindingContext = null;
-            Monkeys.Add(new Monkey
-            {
-                Name = Paleta.Text,
-
-                Location = "***",
-                ImageUrl = "---",
-                idPEL = "///"
-            });
-
-            BindingContext = this;
-
-            
-
-            Paleta.Text = ""; // to ekana etsi gia na mporei na pairnei 2 fores tin idia paleta
-            MainPage.ExecuteSqlite("INSERT INTO PARALABES (ATIM,BARCODE) VALUES ('" + cATIM.Text + "','" + Paleta.Text + "')");
-            Show_list();
-            Paleta.Focus();
 
         }
       
@@ -455,57 +418,14 @@ namespace test4sql
         async void barcfoc(object sender, EventArgs e)
         {
 
-            string cc = "";
-            var scanPage = new ZXingScannerPage();
-            // Navigate to our scanner page
-            await Navigation.PushAsync(scanPage);
-
-            scanPage.OnScanResult += (result) =>
-            {
-
-                // Stop scanning
-                scanPage.IsScanning = false;
-
-                // Pop the page and show the result
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-
-
-                    await Navigation.PopAsync();
-                    // await DisplayAlert("Scanned Barcode", result.Text, "OK");
-                    Thread.Sleep(500);
-                    Paleta.Text = result.Text;
-
-                    cc = Paleta.Text;
-
-
-
-
-                });
-            };
+ 
         }
 
 
         async void paletfoc()
         {
            
-            var scanPage = new ZXingScannerPage();
-            // Navigate to our scanner page
-            await Navigation.PushAsync(scanPage);
-            scanPage.OnScanResult += (result) =>
-            {
-                // Stop scanning
-                scanPage.IsScanning = false;
-                // Pop the page and show the result
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await Navigation.PopAsync();
-                    // await DisplayAlert("Scanned Barcode", result.Text, "OK");
-                    Thread.Sleep(500);
-                    cATIM .Text = result.Text;
-                   
-                });
-            };
+           
         }
 
 

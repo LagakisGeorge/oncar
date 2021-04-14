@@ -45,17 +45,9 @@
                  BackgroundColor="Green"
                 Clicked="toPage2"/>
 
-        <StackLayout Orientation="Horizontal" >
+        <StackLayout  >
             
-            <Button x:Name="but11" 
-                Text="SQL ΠΕΛΑΤΕΣ"
-                Clicked="SqlserverTableToListview"
-                 />
-
-            <Button x:Name="but12" 
-                Text="SQL EIΔΗ"
-                Clicked="SqlserverTοSQLITE"
-                 />
+          
             <Button x:Name="SUPER2" 
                 Text="Παράμετροι Παραστατικών"
                     BackgroundColor="Green" 
@@ -78,15 +70,7 @@
                 Clicked="fparam"
                  />
         <StackLayout Orientation="Horizontal" >
-            <Button x:Name="SUPER" 
-                Text="ΕΛΕΓΧΟΣ BARCODE"
-                Clicked="FSEARCH"
-                 />
-
-            <Button x:Name="PRINT" 
-                Text="print"
-                Clicked="printing"
-                 />
+            
 
            
         </StackLayout>

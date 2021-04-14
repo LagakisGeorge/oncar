@@ -143,7 +143,22 @@
                        Clicked="Click_Login" 
                
                  />-->
-        <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal">
+                <Label  x:Name="PAR2"  
+                     Text="Παρ/κό:        . "
+                       TextColor="Brown"
+                     />
+
+                <Label  x:Name="ATIM"   VerticalTextAlignment="Center"  Text="" WidthRequest="70"  />
+                <Entry x:Name="AFM"  Placeholder="    "   />
+                <Label  x:Name="EPO"   Text=""   />
+                <Label  x:Name="BCASH"   Text=""   />
+
+
+
+            </StackLayout>
+            
+            <StackLayout Orientation="Horizontal">
         <Button x:Name="BLISTTIMOL" 
                 Text="ΛΙΣΤΑ ΤΙΜΟΛΟΓΙΩΝ"
                        Clicked="LISTTIMOL"                
@@ -153,11 +168,7 @@
                        Clicked="LISTEIDH"                
                  />
             </StackLayout>
-            <Label x:Name="Lab1" 
-                Text="----------"
-                      
-                
-                 />
+            
 
             <Button x:Name="but31" 
                 Text="ΜΗΔΕΝΙΣΜΟΣ ΤΙΜΟΛΟΓΙΩΝ"

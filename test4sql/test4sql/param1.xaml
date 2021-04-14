@@ -8,6 +8,20 @@
     <ContentPage.Content>
         <StackLayout>
 
+
+
+
+            <Label Text="ΑΡΙΘΜΟΣ ΦΟΡΤΗΓΟΥ "
+
+                
+                HorizontalOptions="CenterAndExpand" />
+
+            <Entry x:Name="FORTHGO"
+                   
+                    BackgroundColor="Green"      
+                   />
+
+
             <Label Text="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES=1 ΕΙΔΩΝ=0 "
 
                 

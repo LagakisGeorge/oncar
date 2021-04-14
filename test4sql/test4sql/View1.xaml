@@ -9,26 +9,14 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal" >
 
-                <Label Text="Aρ.Παλέτας "/>
-                <Entry x:Name="cATIM" Placeholder=".................." />
-
-                <Button Text="Σκανάρω παλέτα" Clicked="ViewPalet"/>
-                
-                
-                
-                
+               
 
             </StackLayout>
             <StackLayout Orientation="Horizontal" >
-                <Label Text="---------------- "/>
-              
+               
             </StackLayout>
             <StackLayout Orientation="Horizontal" >
-                <Label Text="Παλέτα "/>
-                <Label Text=".... "/>
-                <Entry x:Name="Paleta" Placeholder=".........................."  
-                       Focused="barcfoc"
-                       TextChanged="PaletaChanged"/>
+                
             </StackLayout>
 
             

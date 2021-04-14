@@ -11,6 +11,7 @@ namespace test4sql
     {
         public static string cIP ;
         public static string cSQLSERVER;
+        public static string cFORTHGO;
 
         public static string GReadSQ(string Query)
         {

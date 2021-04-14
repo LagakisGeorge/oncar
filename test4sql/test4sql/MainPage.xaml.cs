@@ -123,6 +123,9 @@ namespace test4sql
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
             Globals.useBarcodes  = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=1");
+
+            Globals.cFORTHGO  = PARAGGELIES.ReadSQL("select THL from MEM  where ID=1");
+
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
 
 
@@ -430,14 +433,14 @@ namespace test4sql
 
         private async void FSEARCH(object sender, EventArgs e)
         {
-            but11.IsVisible = false;
+          // but11.IsVisible = false;
             await Navigation.PushAsync(new SUPER());  //imports
 
         }
 
         private async void FSEARCH2(object sender, EventArgs e)
         {
-            but11.IsVisible = false;
+           // but11.IsVisible = false;
             await Navigation.PushAsync(new SUPER2());  //imports
 
         }
@@ -488,7 +491,7 @@ namespace test4sql
 
 
 
-            but11.Text = "sss";
+            //but11.Text = "sss";
             //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             // using (SqlConnection con = new SqlConnection(constring))
@@ -890,7 +893,7 @@ NewMethod(e),
 
 
 
-            but11.Text = "sss";
+          //  but11.Text = "sss";
             //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             // using (SqlConnection con = new SqlConnection(constring))

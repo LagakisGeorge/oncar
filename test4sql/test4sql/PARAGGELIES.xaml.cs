@@ -110,14 +110,9 @@ namespace test4sql
                 
                 }
                 catch
-                {                }
-                
+                {                }                
                 //  fTIMOK = tappedItem.ImageUrl;
             }
-
-
-
-
         if (EIDOSPAR == "τ")
             {
                 BSYGKEPIS.IsVisible = true;
@@ -125,10 +120,7 @@ namespace test4sql
         else
             {
                 BSYGKEPIS.IsVisible = false;
-            }
-
-
-           
+            }          
             Show_list();
         }
 
@@ -138,9 +130,6 @@ namespace test4sql
             base.OnAppearing();
             AFM.Focus();
         }
-
-        // 
-
 
          void bresPelath_NoList()
          {
@@ -162,12 +151,6 @@ namespace test4sql
             }
             connection.Close();
          }
-
-
-
-
-
-
 
         public static string toGreek(string Q)
         {
@@ -389,14 +372,21 @@ namespace test4sql
 
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  * from PEL WHERE EPO LIKE '% " + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  * from PEL WHERE EPO LIKE '%" + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
             {
                 EPO.Text = r["EPO"].ToString();
                 fTIMOK = r["PEK"].ToString();
-                fEKPTNUM1 = (float)r["NUM1"];
+                if (nn == 1)
+                {
+                    fEKPTNUM1 = (float)r["NUM1"];
+                }
+                else  // στην σειρα Β δεν εχει εκπτωση
+                {
+                    fEKPTNUM1 = 0;
+                }
                 fYPOLPEL = (float)r["TYP"];
                 Monkeys.Add(new Monkey
                 {
@@ -536,7 +526,14 @@ namespace test4sql
             {
                 flag++;
                 LPER.Text = r["ONO"].ToString();  // ****
-                CTIMH.Text = DD;  // r["XONDR"].ToString();
+
+                if (DD  == "0")
+                {  CTIMH.Text =  r["XONDR"].ToString();}
+                else
+                { CTIMH.Text = DD; }
+                
+                
+                //CTIMH.Text = DD;  // r["XONDR"].ToString();
                 //string ccc = r["XONDR"].ToString();
                 CEKPT.Text  ="0" ; // ***
                 //ldesm.Text = r["DESM"].ToString(); // ****
@@ -769,6 +766,16 @@ namespace test4sql
                 fTIMOK = tappedItem.ImageUrl;
                 string ccv = ReadSQL("SELECT IFNULL(NUM1,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
                 fEKPTNUM1 = float.Parse(ccv);
+                if (nn == 1)
+                {
+                    //fEKPTNUM1 = (float)r["NUM1"];
+                }
+                else  // στην σειρα Β δεν εχει εκπτωση
+                {
+                    fEKPTNUM1 = 0;
+                }
+
+
                 string ccv2 = ReadSQL("SELECT IFNULL(TYP,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
                 fYPOLPEL = float.Parse(ccv2);
                
@@ -837,13 +844,13 @@ namespace test4sql
             PRINTOUT(0);
         }
 
-        private  async void PRINTOUT( int IsSygkEpistr) // 0=timologio 1=sygkentrotiko epistrofis
+        private async void PRINTOUT( int IsSygkEpistr) // 0=timologio 1=sygkentrotiko epistrofis
         {
 
         
             string af = AFM.Text;
 
-          //  BluetoothDevice mmDevice;
+            //  BluetoothDevice mmDevice;   ATIM.Text(Τ000012) ,epo.text ,BCASH.Text(ΜΕΤΡΗΤΑ), Par2.Text(ΤΙΤΛΟΣ ΠΑΡ/ΚΟΥ)  ,AFM.TEXT (0001)
             BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.DefaultAdapter;
 
             if (mBluetoothAdapter == null)
@@ -959,7 +966,7 @@ namespace test4sql
                             var contents = connection.CreateCommand();
                          //   if (IsSygkEpistr ==0)
                          //   {
-                                contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                                contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,ifnull(POSO,0) as POSO,IFNULL(TIMH,0 ) AS TIMH ,IFNULL(EKPT,0) AS EKPT ,ID ,IFNULL(TIMH*POSO,0) AS AXIA from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
                           //  }
                           //  else
@@ -980,14 +987,14 @@ namespace test4sql
 
                                 if (IsSygkEpistr == 1)
                                 {
-                                    string MPOL= ReadSQL("select DESM from EID where KOD='" + r["KODE"].ToString() + "'");
+                                    string MPOL= ReadSQL("select IFNULL(DESM,0) AS DESM from EID where KOD='" + r["KODE"].ToString() + "'");
                                     te = Convert.ToInt64(Convert.ToDouble(MPOL));
-                                    tt = (Single)r["POSO"] - te ;
+                                    tt = Convert.ToInt64(Convert.ToDouble(r["POSO"])) - te;        //(Single)r["POSO"] - te ;
                                 }
                                 else
                                 {
-                                    te = (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
-                                    tt = (Single)r["TIMH"] * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
+                                    te = float.Parse(r["TIMH"].ToString());  //.Replace(",",".") );  //  * (100 - (Single)r["EKPT"]) / 100;
+                                    tt = float.Parse(r["AXIA"].ToString()); //.Replace(",", "."));   //   * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
                                 }
                                 //  ssum = ssum + tt;
                                 string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM ";
@@ -998,7 +1005,7 @@ namespace test4sql
                             }
                                                                                                                                                                                                    // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
                             int nCount= nseira ;   // posa records exei to timologio
-                            int RecPerPage = 2;
+                            int RecPerPage = 20;
                             int nPages = nCount / RecPerPage; 
                             if (nCount % RecPerPage > 0) // exei ypoloipo
                             {
@@ -1022,7 +1029,7 @@ namespace test4sql
                                 printt(outStream, "\n");
                                 printt(outStream, "\n");
                                 printt(outStream, "\n");
-                                printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                         ").Substring(0, 30) + "\n");
+                                printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                         ").Substring(0, 30)+spac40 +Globals.cFORTHGO  + "\n");
 
 
 
@@ -1053,7 +1060,21 @@ namespace test4sql
 
                                 printt(outStream, "\n");
                                 printt(outStream, "\n");
-                                printt(outStream, "\n");
+
+                                // εαν ειναι συγκεντρωτικό να τυπωνει και επικεφαλιδα αλλοιώς κενο
+                                if (IsSygkEpistr == 1)
+                                {
+                                    string lin = ("ΚΩΔΙΚΟΣ          ").Substring(0, 10) + " " + ("ΠΕΡΙΓΡΑΦΗ" + spac40).Substring(0, 35) + "TEM ";
+                                    lin = lin + "ΦΟΡΤΩΣΗ";
+                                    lin = lin + "ΠΩΛΗΣΗ";
+                                    lin = lin + "" + "  " + "    " + "ΥΠΟΛΟΙΠΟ ";
+                                    printt(outStream, lin+"\n");
+                                }
+                                else
+                                {
+                                    printt(outStream, "\n");
+                                }
+                                
                                 int seir = 13;
                                 // Single ssum = 0;
                                 // String.Format("{0:0.0#}", 123.4567)       // "123.46"
@@ -1073,17 +1094,7 @@ namespace test4sql
                                     nCurRow++;
                                     seir++;
                                     printt(outStream, cLine [nCurRow] + "\n");
-                                    //Single tt;
-                                    //Single te;
-                                    //te = (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
-                                    //tt = (Single)r["TIMH"] * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
-                                    //ssum = ssum + tt;
-                                    //string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM ";
-                                    //lin = lin + Right("     " + r["POSO"].ToString(), 5) + "  ";
-                                    //lin = lin + Right("     " + String.Format("{0:0.00}", te), 5) + " ";
-                                    //lin = lin + "" + "13" + "    " + Right("      " + String.Format("{0:0.00}", tt), 5) + " ";
-
-                                    // lin =lin+Right("     "+String.Format("{0:0.00}", r["EKPT"]),5 )+"13";
+                                   
                                   
 
                                 }
