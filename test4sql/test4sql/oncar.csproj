@@ -57,6 +57,12 @@
     <Compile Update="SUPER - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="APOPC.xaml.cs">
+      <DependentUpon>APOPC.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SEPC.xaml.cs">
+      <DependentUpon>SEPC.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -75,10 +81,10 @@
     <EmbeddedResource Update="SUPER.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="techn1.xaml">
+    <EmbeddedResource Update="APOPC.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View1.xaml">
+    <EmbeddedResource Update="SEPC.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

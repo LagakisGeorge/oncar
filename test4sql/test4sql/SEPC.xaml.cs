@@ -236,7 +236,16 @@ namespace test4sql
             catch (Exception ex)
             {
                 await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                return;
             }
+
+            SqlCommand cmd = new SqlCommand("DELETE FROM PEGGTIM;DELETE FROM PTIM;DELETE FROM PEGG;");
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+
+
+
+
             //  -----------------SQLSERVER ---------------------------------------
             /*
             // '=====================  EGGTIM2.TXT  ======================================================'
@@ -287,9 +296,9 @@ namespace test4sql
             */
 
             // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
-          //  SqlCommand cmd = new SqlCommand("insert into PALETES(PALET,KOD,PARTIDA,POSO) values (1)");
-          //  cmd.Connection = con;
-          //  cmd.ExecuteNonQuery();
+            //  SqlCommand cmd = new SqlCommand("insert into PALETES(PALET,KOD,PARTIDA,POSO) values (1)");
+            //  cmd.Connection = con;
+            //  cmd.ExecuteNonQuery();
 
 
 
@@ -303,7 +312,7 @@ namespace test4sql
             connection.Open();
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT* FROM EGGTIM";
+            contents.CommandText = "SELECT* FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
             var r = contents.ExecuteReader();
             // Console.WriteLine("Reading data");
 
@@ -332,7 +341,7 @@ namespace test4sql
                    
 
 
-                    SqlCommand cmd = new SqlCommand(cc);
+                     cmd = new SqlCommand(cc);
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
 
@@ -361,21 +370,22 @@ namespace test4sql
 
 
              contents = connection.CreateCommand();
-            contents.CommandText = "SELECT* From TIM";
+            contents.CommandText = "SELECT TRP,ATIM,HME,KPE,IFNULL(AJI,0) AS AJI From TIM ";  //  WHERE LEFT(ATIM,1) IN ('T','ρ')
             r = contents.ExecuteReader();
             try
             {
                 while (r.Read())
                 {
                     string[] lines2 = r["HME"].ToString().Split('/');
-                    cc = "INSERT INTO PTIM (ATIM,HME,KPE,AJI) VALUES ('";
+                    cc = "INSERT INTO PTIM (TRP,ATIM,HME,KPE,AJI) VALUES ('";
+                    cc += r["TRP"].ToString() + "','";
                     cc += r["ATIM"].ToString() + "','";
                     cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
                     cc += r["KPE"].ToString() + "',";
                     cc += r["AJI"].ToString().Replace(",", ".") + ")";
                    // cc += r["TIMH"].ToString().Replace(",", ".") + ")";
 
-                    SqlCommand cmd = new SqlCommand(cc);
+                    cmd = new SqlCommand(cc);
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
                 }

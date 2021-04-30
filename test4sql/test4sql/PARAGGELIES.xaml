@@ -104,7 +104,7 @@
                   
                 Text="ΠΟΣΟΤΗΤΑ" HorizontalOptions="Center"  />
 
-                <Label     Grid.Row="0" Grid.Column="2" 
+                <Label  x:Name="LTIMH"   Grid.Row="0" Grid.Column="2" 
                    
                 Text="ΤΙΜΗ" HorizontalOptions="Center"  />
 

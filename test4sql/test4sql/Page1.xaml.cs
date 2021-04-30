@@ -101,6 +101,7 @@ namespace test4sql
 
         // ΠΡΟΣΟΧΗ ΤΟ PRINTOUT ΕΙΝΑΙ ΑΚΡΙΒΩΣ ΙΔΙΟ ΜΕ ΤΟ PARAGGELIES.PRINTOUT
         // ΓΙΑΥΤΟ ΚΑΝΕ ΤΙΣ ΑΛΛΑΓΕΣ ΣΤΟ PARAGGELIES KAI META COPY PASTE ΕΔΩ
+
         private async void PRINTOUT(int IsSygkEpistr) // 0=timologio 1=sygkentrotiko epistrofis
         {
 
@@ -137,7 +138,7 @@ namespace test4sql
 
                     // await DisplayAlert(device.Name, " not ok", "OK");
 
-                    if (device.Name.Contains("ADT"))
+                    if (device.Name.Contains("ADT") || device.Name.Contains("_DD") )
                     {
                         mmDevice = device;
 
@@ -148,7 +149,79 @@ namespace test4sql
                         try
                         {
                             socket.Connect();
+
+
+
                             outStream = socket.OutputStream;
+
+
+
+                            //Printing
+
+                            // = Encoding.UTF8.GetBytes("αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ  MY TEXT TO PRINT");
+                            //  outStream.Write(toBytes, 0, toBytes.Length);
+                            // char[] ccc;
+
+                            //  string llll = Convert.ToChar(921) + Convert.ToChar(922)+ "ελληνικα ΕΛΛΗΝΙΚΑ";
+
+                            //= Convert.ToChar(915);// + Convert.ToChar(916) + Convert.ToChar(917);
+                          
+                            // byte[] toBytes;
+                            //string ww = "";
+                            //for (int l = 80; l < 879; l++) {
+                            //    ww = ww + Convert.ToChar(l);
+                            //    };
+                            //toBytes =     Encoding.Unicode.GetBytes(ww);
+                            // outStream.Write(toBytes, 0, toBytes.Length);
+                            //return;
+                          // printt(outStream, "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ\n");
+                          //  printt(outStream, PARAGGELIES.toGreek("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")+"\n");
+
+                            //  string b = "\u03a0";// ι
+                            //  string c = "\u03a1";  // κ
+                            //  string d = "\u03a3";  // μ
+                            //  Ρ     Σ    Τ     Υ      β    γ      δ
+                            // llll ="///"+ b + c + d+ "/\u0390\u0391\u0392\u0393\u0399\u039a\u039b //";
+                            //  Encoding unicode = Encoding.Unicode;
+                            // Convert the string into a byte array.
+
+
+                            //  byte[] unicodeBytes = unicode.GetBytes(llll);
+                            //  outStream.Write(unicodeBytes, 0, unicodeBytes.Length);
+                            //DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")	05/29/2015 05:50 AM
+
+
+
+                            //int i = 3;
+                            //Console.WriteLine(i);   // output: 3
+                            //Console.WriteLine(i++); // output: 3
+                            //Console.WriteLine(i);   // output: 4
+
+
+                            //Prefix increment operator
+                            //double a = 1.5;
+                            //Console.WriteLine(a);   // output: 1.5
+                            //Console.WriteLine(++a); // output: 2.5
+                            //Console.WriteLine(a);   // output: 2.5
+
+                            //                            int[] terms = new int[400];
+                            //                            for (int runs = 0; runs < 400; runs++)
+                            //                            {
+                            //                                terms[runs] = value;
+                            //                            }
+                            //                            Alternatively, you can use Lists -the advantage with lists being, you don't need to know the array size when instantiating the list.
+
+                            //List<int> termsList = new List<int>();
+                            //                            for (int runs = 0; runs < 400; runs++)
+                            //                            {
+                            //                                termsList.Add(value);
+                            //                            }
+
+                            //                            // You can convert it back to an array if you would like to
+                            //                            int[] terms = termsList.ToArray();
+
+
+
                             string spac40 = "                                        ";
                             // diabazo lines apo timologio
                             string[] cLine = new string[400];
@@ -164,7 +237,13 @@ namespace test4sql
                             //   {
                             contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,ifnull(POSO,0) as POSO,IFNULL(TIMH,0 ) AS TIMH ,IFNULL(EKPT,0) AS EKPT ,ID ,IFNULL(TIMH*POSO,0) AS AXIA from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
-                           var r = contents.ExecuteReader();
+                            //  }
+                            //  else
+                            //  {
+                            //     contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,EID.YPOL AS POSO,IFNULL(EID.DESM,0) AS TIMH,EGGTIM.EKPT from EGGTIM inner join EID ON EGGTIM.KODE=EID.KOD  where ATIM ='" + ATIM.Text + "';";   // order by EGGTIM.ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+
+                            // }
+                            var r = contents.ExecuteReader();
                             Console.WriteLine("Reading data");
                             int nseira = 0;
                             //   Single ssum = 0;
@@ -203,7 +282,12 @@ namespace test4sql
                             };
 
                             int quotient = 5 / 3;
- 
+                            //Console.WriteLine(13 / 5);    // output: 2
+                            //Console.WriteLine(17 % 4);   // output: 1
+
+
+
+
                             //==========================================================================================================
                             int nCurRow = 0;
                             for (int nCurPage = 1; nCurPage <= nPages; nCurPage++)
@@ -214,12 +298,12 @@ namespace test4sql
                                 printt(outStream, "\n");
                                 printt(outStream, "\n");
                                 printt(outStream, "\n");
-                                printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                         ").Substring(0, 30) + "\n");
+                                printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                         ").Substring(0, 30) + "                                        " + (PARAGGELIES.toGreek(Globals.cFORTHGO) + "          ").Substring(0, 9) + "\n");
 
 
 
 
-                                string EPA = PARAGGELIES.ReadSQL ("select  IFNULL(EPA,'')  FROM PEL where KOD='" + af + "'");
+                                string EPA = PARAGGELIES.ReadSQL("select  IFNULL(EPA,'')  FROM PEL where KOD='" + af + "'");
                                 string DIE = PARAGGELIES.ReadSQL("select  IFNULL(DIE,'')  FROM PEL where KOD='" + af + "'");
                                 string AFM = PARAGGELIES.ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
                                 string POL = PARAGGELIES.ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
@@ -231,11 +315,35 @@ namespace test4sql
                                 printt(outStream, ("      ΑΦΜ: " + AFM + "                              ").Substring(0, 30) + "                          " + BCASH.Text + "\n");
                                 printt(outStream, ("      ΔΟΥ: " + DOY + "                              " + "                            " + fEKPTNUM1.ToString()) + "\n"); //fYPOLPEL
 
- 
+                                //string dbPath = Path.Combine(
+                                //Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                                //"adodemo.db3");
+                                //SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                                //// Open the database connection and create table with data
+                                //connection.Open();
+                                //var contents = connection.CreateCommand();
+                                //contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                                //var r = contents.ExecuteReader();
+                                //Console.WriteLine("Reading data");
+
 
                                 printt(outStream, "\n");
                                 printt(outStream, "\n");
-                                printt(outStream, "\n");
+
+                                // εαν ειναι συγκεντρωτικό να τυπωνει και επικεφαλιδα αλλοιώς κενο
+                                if (IsSygkEpistr == 1)
+                                {
+                                    string lin = ("ΚΩΔΙΚΟΣ          ").Substring(0, 10) + " " + ("ΠΕΡΙΓΡΑΦΗ" + spac40).Substring(0, 35) + "TEM ";
+                                    lin = lin + "ΦΟΡΤΩΣΗ";
+                                    lin = lin + "ΠΩΛΗΣΗ";
+                                    lin = lin + "" + "  " + "    " + "ΥΠΟΛΟΙΠΟ ";
+                                    printt(outStream, lin + "\n");
+                                }
+                                else
+                                {
+                                    printt(outStream, "\n");
+                                }
+
                                 int seir = 13;
                                 // Single ssum = 0;
                                 // String.Format("{0:0.0#}", 123.4567)       // "123.46"
@@ -257,7 +365,7 @@ namespace test4sql
                                     nCurRow++;
                                     seir++;
                                     printt(outStream, cLine[nCurRow] + "\n");
-                            
+
 
 
                                 }
@@ -278,21 +386,22 @@ namespace test4sql
                                 {
 
                                     float NEO;
-
-                                    if (BCASH.Text.Substring(0, 1) == "Ε")
+                                    if (BCASH.Text.Substring(0, 1) == "Μ")
                                     {
-                                        NEO = (float)fYPOLPEL + (float)fkauaji * 113 / 100;
+                                        NEO = (float)fYPOLPEL;
                                     }
                                     else
                                     {
-                                        NEO = (float)fYPOLPEL;
-
+                                        NEO = (float)fYPOLPEL + (float)fkauaji * 113 / 100;
                                     }
+                                    string cold, cneo;
+                                    cold = String.Format("{0:0.00}", fYPOLPEL);
+                                    cneo = String.Format("{0:0.00}", NEO);
 
                                     printt(outStream, spac40 + "             ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 6) + "\n");
                                     printt(outStream, spac40 + "             ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 6) + "\n");
-                                    printt(outStream, Right("               " + fYPOLPEL.ToString(), 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji), 6) + "\n");
-                                    printt(outStream, Right("               " + fYPOLPEL.ToString(), 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 6) + "\n");
+                                    printt(outStream, Right("               " + cold, 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji), 6) + "\n");
+                                    printt(outStream, Right("               " + cneo, 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 6) + "\n");
                                     printt(outStream, "\n");
                                     printt(outStream, spac40 + "                           " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 6) + "\n");
                                 }
@@ -333,6 +442,37 @@ namespace test4sql
 
                                 }
                             }
+
+
+
+
+                            //fff=toGreek ("ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n");
+
+                            //toBytes = Encoding.Unicode.GetBytes(fff);
+                            //outStream.Write(toBytes, 0, toBytes.Length);
+                            ////            "ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n"
+                            //fff = toGreek("I I I I IIIIIIIIIIIIIIIIIIII\n");
+                            //toBytes = Encoding.Unicode.GetBytes(fff);
+                            //outStream.Write(toBytes, 0, toBytes.Length);
+
+
+
+
+                            //fff = toGreek("                          II\n");
+                            //toBytes = Encoding.Unicode.GetBytes(fff);
+                            //outStream.Write(toBytes, 0, toBytes.Length);
+
+
+                            //string ddd = (char)920+(char)921+ (char)922 + (char)923 + "--ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ PRINT/n";
+                            //toBytes = Encoding.GetEncoding("windows-1253").GetBytes(ddd);
+                            //   string eee = Encoding.GetEncoding("windows-1253").GetString(toBytes);
+
+                            //   outStream.Write( toBytes, 0, toBytes.Length);
+                            // toBytes = Encoding.UTF8 .GetBytes("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ PRINT/n");
+                            //  outStream.Write(toBytes, 0, toBytes.Length);
+
+
+
                         }
                         catch (SqliteException ex)
                         {
@@ -371,6 +511,87 @@ namespace test4sql
             }
 
 
+
+            /*
+            UUID uuid = UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
+
+            if (mmDevice == null)
+            {
+                await DisplayAlert("NO DEVICE FOUND", " not ok", "OK");
+              //  await MyFavHelper.InformUser("No Device Found", "Sorry");
+            }
+
+          BluetoothSocket   mmsSocket = mmDevice.CreateRfcommSocketToServiceRecord(uuid);
+
+            mmsSocket.Connect();
+
+            if (mmsSocket.IsConnected)
+            {
+                await DisplayAlert("socket ok", " not ok", "OK");
+                //await MyFavHelper.InformUser("Socket Connected Successfully", "Success");
+            }
+            else
+            {
+                await DisplayAlert("NO DEVICE FOUND", " not ok", "OK");
+              //  await MyFavHelper.InformUser("Socket Not Connected Successfully", "Sorry");
+            }
+
+            System.IO.Stream datastream = mmsSocket.OutputStream;
+
+            byte[] byteArray = Encoding.ASCII.GetBytes("Sample Text");
+
+            datastream.Write(byteArray, 0, byteArray.Length);
+
+            */
+
+
+
+
+
+
+
+            /*   ParcelUuid uuid = mmDevice.GetUuids().ElementAt(0);
+
+               if (mmDevice == null)
+               {
+                   await MyFavHelper.InformUser("No Device Found", "Sorry");
+               }
+
+               mmsSocket = mmDevice.CreateInsecureRfcommSocketToServiceRecord(uuid.Uuid);
+
+               mmsSocket.Connect();
+
+
+               if (mmsSocket.IsConnected)
+               {
+                   await DisplayAlert("Socket  Connected Successfully", "not ok", "OK");
+                   //await MyFavHelper.InformUser("Socket Connected Successfully", "Success");
+               }
+               else
+               {
+                   await DisplayAlert("Socket Not Connected Successfully", "not ok", "OK");
+                   // await MyFavHelper.InformUser("Socket Not Connected Successfully", "Sorry");
+               }
+
+               var datastream = mmsSocket.OutputStream;
+
+               byte[] byteArray = Encoding.ASCII.GetBytes("Sample Text");
+
+               datastream.Write(byteArray, 0, byteArray.Length);
+
+               */
+
+
+
+
+
+
+            //devicelist.Clear();
+            //adapter.DeviceDiscovered += (s, a) =>
+            //{
+            //    devicelist.Add(a.Device);
+            //};
+            //await adapter.StartScanningForDevicesAsync();
         }
 
 
@@ -389,7 +610,7 @@ namespace test4sql
             byte[] toBytes;
             string fff;
             fff = PARAGGELIES.toGreek (qq);
-
+           // fff = qq;
             toBytes = Encoding.Unicode.GetBytes(fff);
             outs.Write(toBytes, 0, toBytes.Length);
 
@@ -626,7 +847,7 @@ namespace test4sql
             connection.Open();
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT * from TIM where ID='" + mID + "'";
+            contents.CommandText = "SELECT ATIM,KPE,HME,TRP,IFNULL(TYP,0) AS TYP from TIM where ID='" + mID + "'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             string f_hme;
@@ -640,10 +861,14 @@ namespace test4sql
 
                 BCASH.Text = r["TRP"].ToString();
                 f_hme= r["HME"].ToString();
+
+                fYPOLPEL = float.Parse(r["TYP"].ToString());  // YPOLOIPO PELATH
             }
             connection.Close();
+           
 
-            if (BCASH.Text.Substring(0, 1) == "Π")
+
+                if (BCASH.Text.Substring(0, 1) == "Π")
             {
                 BCASH.Text ="ΕΠΙ ΠΙΣΤΩΣΕΙ";
             }
@@ -660,7 +885,7 @@ namespace test4sql
             string ypol= PARAGGELIES.ReadSQL("select TYP FROM PEL WHERE KOD='" + AFM.Text  + "'");
             string EKPTNUM1 = PARAGGELIES.ReadSQL("select NUM1 FROM PEL WHERE KOD='" + AFM.Text + "'");
 
-            fYPOLPEL = float.Parse(ypol);  // YPOLOIPO PELATH
+         //   fYPOLPEL = float.Parse(ypol);  // YPOLOIPO PELATH
               fEKPTNUM1 = float.Parse(EKPTNUM1 );  // εχτρα εκπτωση πελατη
 
 
@@ -669,10 +894,23 @@ namespace test4sql
          fkauaji = 0;  // SYNOLO ME FPA                                   // public string fIDTimDior = "0";
          fkauajiPro = 0;  // SYNOLO ME FPA
             Show2_list(ATIM.Text );
+            try
+            {
 
+           
+            if (ATIM.Text.Substring(0, 1) == "τ")
+            {
+                PRINTOUT(1);  // συγκεντρωτικο
+            }
+            else
+            {
+                 PRINTOUT(0); // απλο τιμολογιο
+            }
 
+            }catch
+            {
 
-           PRINTOUT(0);
+            }
 
 
 

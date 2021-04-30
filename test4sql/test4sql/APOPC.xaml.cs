@@ -32,8 +32,18 @@ namespace test4sql
         async void WriteFile(object sender, EventArgs e)
         {
 
-            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
-            if (Globals.cSQLSERVER.Length<2)
+           
+
+
+
+
+
+
+
+
+
+                //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+                if (Globals.cSQLSERVER.Length<2)
             {
                 await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
                 return;
@@ -57,12 +67,28 @@ namespace test4sql
             }
 
 
+
+
+            var action = await DisplayAlert("Θα διαγραφουν τα τιμολόγια του κινητού", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+
+
             MainPage.ExecuteSqlite("delete from EID;");
+            MainPage.ExecuteSqlite("delete from TIM;");
+            MainPage.ExecuteSqlite("delete from EGGTIM;");
+
             try
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI5,0) AS MLTI5,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA  FROM EID ", con);
+                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA  FROM EID ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                // List<string> MyList = new List<string>();
@@ -80,7 +106,7 @@ namespace test4sql
 
 
                     // MyList.Add(mF);
-                    string mTYP = dt.Rows[k]["MLTI5"].ToString();
+                    string mTYP = dt.Rows[k]["MLTI"].ToString();
                     mTYP = mTYP.Replace(",", ".");
                  
                     /* Monkeys.Add(new Monkey
