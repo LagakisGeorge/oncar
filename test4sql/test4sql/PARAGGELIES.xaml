@@ -194,7 +194,14 @@
                      BackgroundColor="GreenYellow" 
                         Text="ΕΞΟΔΟΣ"
                        Clicked="EXODOS"  />
-                <Label  x:Name="LPLIR" 
+
+         <!--       <Button x:Name="BAKYR" 
+                     BackgroundColor="GreenYellow" 
+                        Text="ΑΚΥΡΩΣΗ ΤΙΜ"
+                       Clicked="AKYR"  />
+           -->
+
+                <Label  x:Name="LPLIR"  
           
                 Text="..........................................." HorizontalOptions="Center"   />
 

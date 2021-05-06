@@ -138,16 +138,26 @@ namespace test4sql
                 "adodemo.db3");
                SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
             connection.Open();
-            var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  EPO,IFNULL(PEK,0) AS PEK2,IFNULL(NUM1,0) AS NUM12,IFNULL(TYP,0) AS TYP2 from PEL WHERE EPO LIKE '% " + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
-            var r = contents.ExecuteReader();
-            while (r.Read())
+            string ff = "";
+            try
             {
-                // EPO.Text = r["EPO"].ToString();  gia na kanei klik sto listview
-                fTIMOK = r["PEK2"].ToString();
-                fEKPTNUM1 = float.Parse(r["NUM12"].ToString ());
-                fYPOLPEL = float.Parse(r["TYP2"].ToString());
-                LPLIR.Text = r["ID"].ToString() + " Εκπ:" + r["NUM12"].ToString();
+
+
+                var contents = connection.CreateCommand();
+                contents.CommandText = "SELECT  EPO,IFNULL(PEK,0) AS PEK2,IFNULL(NUM1,0) AS NUM12,IFNULL(TYP,0) AS TYP2 from PEL WHERE EPO LIKE '% " + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
+                var r = contents.ExecuteReader();
+                while (r.Read())
+                {
+                    // EPO.Text = r["EPO"].ToString();  gia na kanei klik sto listview
+                    fTIMOK = r["PEK2"].ToString();
+                    fEKPTNUM1 = float.Parse(r["NUM12"].ToString());
+                    fYPOLPEL = float.Parse(r["TYP2"].ToString());
+                    LPLIR.Text = r["ID"].ToString() + " Εκπ:" + r["NUM12"].ToString();
+                }
+            }
+            catch
+            {
+                ff = "error";
             }
             connection.Close();
          }
@@ -521,12 +531,13 @@ namespace test4sql
 
 
             var r = contents.ExecuteReader();
-            Console.WriteLine("Reading data");
+           // Console.WriteLine("Reading data");
             int flag = 0;
             while (r.Read())
             {
                 flag++;
                 LPER.Text = r["ONO"].ToString();  // ****
+                LPER.TextColor = Color.Blue;
 
                 if (DD  == "" || DD == "0")
                 {
@@ -556,9 +567,23 @@ namespace test4sql
             // r["ONO"].ToString();
             connection.Close();
 
-            if (flag==0 || flag>1)
+
+
+            string cck = CKODE.Text;
+            if (flag == 0 )
             {
-                Show_list_Eidon(CKODE.Text);
+                LPER.Text = cck+" ΔΕΝ ΒΡΕΘΗΚΕ ";  // ****
+                LPER.TextColor = Color.Red;
+                CKODE.Text = "";
+                CKODE.Focus();
+
+            }
+
+
+
+            if   (flag==0 || flag>1)
+            {
+                Show_list_Eidon(cck);
                 fisEIDH = 1; // για να tsimpaei  τα ειδη 
             }
             else
@@ -693,7 +718,7 @@ namespace test4sql
             {
                 cfpa = FPA.Text ;
             }
-                
+
 
 
             //    Monkeys.Add(new Monkey
@@ -703,6 +728,15 @@ namespace test4sql
             //        ImageUrl = CTIMH.Text.Substring(0, 5),
             //        idPEL = CEKPT.Text.Substring(0, 2)
             //    });
+
+
+            BRESafm.IsEnabled = false;
+            // KLEIDONO TON PELATH GIATI ΘΑ ΒΓΟΥΝ ΛΑΘΟΣ ΟΙ ΤΙΜΕΣ
+            // ΑΝ ΠΕΡΑΣΩ ΕΝΑ ΕΙΔΟΣ ΜΕ ΠΕΛΑΤΗ Α
+            // ΚΑΙ ΤΟ ΔΕΥΤΕΡΟ ΜΕ ΠΕΛΑΤΗ Β (ΘΑ ΠΑΡΕΙ ΑΛΛΟ ΤΙΜΟΚΑΤΑΛΟΓΟ)
+
+
+
             try
             {
                 string SQL1 = "insert into EGGTIM (ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) VALUES ('" + LPER.Text + "','" + ATIM.Text + "', datetime('now'),'" + CKODE.Text + "'," + cpos + "," + ctimh + "," + cekpt + "," +cfpa  + ")";
@@ -756,7 +790,7 @@ namespace test4sql
             // tappedItem.Location=>'00182'
             //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
             if (fisEIDH == 0) {
-                BRESafm.IsEnabled = false;
+                //  BRESafm.IsEnabled = false;
               EPO.Text = tappedItem.Name;
               AFM.Text = tappedItem.Location;
               listview.ItemsSource = null;
@@ -766,7 +800,11 @@ namespace test4sql
                 // BAZO NUM1=-1 ΟΤΙ ΕΙΝΑΙ ΕΚΚΡΕΜΕΣ
                 if (fISDiortosi == 1){}
                 else
-                { MainPage.ExecuteSqlite("INSERT INTO TIM (NUM1,HME,ATIM,KPE,TRP,EPO) VALUES (-1,datetime('now'),'" + ATIM.Text + "','" + AFM.Text + "','" + BCASH.Text.Substring(0, 5) + "','" + EPO.Text + "')");
+                {
+                    MainPage.ExecuteSqlite("delete from TIM WHERE ATIM='" + ATIM.Text + "'");
+
+
+                   MainPage.ExecuteSqlite("INSERT INTO TIM (NUM1,HME,ATIM,KPE,TRP,EPO) VALUES (-1,datetime('now'),'" + ATIM.Text + "','" + AFM.Text + "','" + BCASH.Text.Substring(0, 5) + "','" + EPO.Text + "')");
                 }
 
 
@@ -813,6 +851,12 @@ namespace test4sql
             var action = await DisplayAlert("Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
             if (action)
             {
+                string cKOD;
+                
+                cKOD = tappedItem.Name;
+                string[] lines1 = cKOD.Split(';');
+                cKOD = lines1[0];
+
                 string cid;
                 
                 cid = tappedItem.idPEL ;
@@ -821,12 +865,12 @@ namespace test4sql
                 string mposo=ReadSQL("select POSO FROM EGGTIM WHERE  ID=" + lines[1]);
                 if (EIDOSPAR == "τ")
                 {
-                    MainPage.ExecuteSqlite("update EID set YPOL=IFNULL(YPOL,0)-" +mposo   + " WHERE KOD='" + CKODE.Text + "'");
+                    MainPage.ExecuteSqlite("update EID set YPOL=IFNULL(YPOL,0)-" +mposo   + " WHERE KOD='" + cKOD + "'");
 
                 }
                 else
                 {
-                    MainPage.ExecuteSqlite("update EID set DESM=IFNULL(DESM,0)-" + mposo + " WHERE  ID=" + lines[1]);
+                    MainPage.ExecuteSqlite("update EID set DESM=IFNULL(DESM,0)-" + mposo  +" WHERE KOD='" + cKOD + "'");
                 }
 
                 MainPage.ExecuteSqlite("delete from EGGTIM WHERE ID=" + lines[1]);
@@ -1578,18 +1622,24 @@ namespace test4sql
             // σβηνω τυχον απομειναρια Συγκεντρωτικου επιστροφης απο λαθος δημιουργια 
             string SQL2 = "delete FROM EGGTIM WHERE ATIM='" + ATIM.Text + "'";
             MainPage.ExecuteSqlite(SQL2);
+            string SQL = "insert into EGGTIM (ATIM,ONO,KODE,POSO) ";
+            SQL = SQL + "SELECT '" + ATIM.Text + "' AS MATIM, ONO,KODE,sum(POSO) AS SPOSO FROM EGGTIM WHERE ATIM like 'τ%'  GROUP BY ONO,KODE,MATIM "; //='"+MATIM+"'";
 
 
-            string SQL = "insert into EGGTIM (ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) ";
-                SQL=SQL+"SELECT ONO,'"+ATIM.Text  +"',HME,KODE,POSO,TIMH,EKPT,FPA FROM EGGTIM WHERE ATIM='"+MATIM+"'";
+           // SQL = SQL + "SELECT ONO,'" + ATIM.Text + "',HME,KODE,POSO,TIMH,EKPT,FPA FROM EGGTIM WHERE ATIM like 'τ%'"; //='"+MATIM+"'";
             MainPage.ExecuteSqlite(SQL);
 
-            PRINTOUT(1);
+            //αν τυχον εβγαλε 2 συγκεντρωτικα ενα κανονικο+1 συπληρωματικο και το 2ο εχει το ίδιο είδος
+            // τοτε θα εμφανιζει 2 φορες το ιδιο ειδος
 
-            // BAZO NUM1=-1 ΟΤΙ ΕΙΝΑΙ ΕΚΚΡΕΜΕΣ
-            // if (fISDiortosi == 1) { }
-            // else
-            //  {
+            MainPage.ExecuteSqlite("UPDATE EGGTIM SET HME= datetime('now'),TIMH=0,EKPT=0,FPA=13 WHERE ATIM='" + ATIM.Text + "'");
+
+
+            MainPage.ExecuteSqlite("UPDATE EGGTIM SET TIMH=(SELECT IFNULL(DESM,0)  FROM EID WHERE KOD=EGGTIM.KODE) WHERE ATIM='" + ATIM.Text + "'");
+            MainPage.ExecuteSqlite("UPDATE EGGTIM SET AXIA=POSO-TIMH  WHERE ATIM='" + ATIM.Text + "'");
+
+
+            PRINTOUT(1);
 
 
             MainPage.ExecuteSqlite("update PARASTAT SET ARITMISI=ifnull(ARITMISI,0)+1 WHERE   ID=" + nn.ToString());
@@ -1605,6 +1655,157 @@ namespace test4sql
         {
             await Navigation.PopAsync();
         }
+
+        private async void AKYR(object sender, EventArgs e)
+        {
+
+            
+
+           var action = await DisplayAlert(ATIM.Text  + " Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+                
+              //  connection.Close();
+              string[] POSO = new string[400];
+              string[] KODE = new string[400];
+
+              int ll=0;
+              readtable(ref POSO, ref KODE,ref ll);
+
+                if (ll == 0)
+                {
+                    await DisplayAlert(ATIM.Text + " ΔΕΝ ΔΙΑΓΡΑΦΗΚΕ.ΣΒΗΣΤΕ ΑΠΟ ΤΗΝ ΛΙΣΤΑ?", "", "Ναι", "Οχι");
+                    return;
+                }
+
+
+                for (int  k = 1; k <= ll; k++)
+
+                {
+
+
+
+                    // ΚΑΝΩ ΑΡΝΗΤΙΚΗ ΕΝΗΜΕΡΩΣΗ ΓΙΑ ΑΥΤΟ ΠΟΥ ΣΒΗΝΩ
+                   string dbPath = Path.Combine(
+                      Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                      "adodemo.db3");
+                    SqliteConnection connection2 = new SqliteConnection("Data Source=" + dbPath);
+                    // Open the database connection and create table with data
+                    connection2.Open();
+
+
+
+
+
+
+
+                    if (ATIM.Text.Substring(0, 1) == "τ")
+                    {
+
+                        //var c = connection2.CreateCommand();
+                        //c.CommandText = ;
+
+                        //var rowcount = c.ExecuteNonQuery();
+
+
+                        //c = connection2.CreateCommand();
+                        //c.CommandText = ;
+                        // rowcount = c.ExecuteNonQuery();
+
+
+                         MainPage.ExecuteSqlite("update EID SET YPOL=YPOL-" + POSO[k] + " WHERE KOD='" + KODE[k] + "'");
+                        MainPage.ExecuteSqlite("update EID SET YPOL = 0 WHERE YPOL<0 AND KOD = '" + KODE[k] + "'");
+                    }
+                    else
+                    {
+                       //var c = connection2.CreateCommand();
+                       // c.CommandText = "update EID SET DESM = DESM - " + POSO[k] + " WHERE KOD = '" + KODE[k] + "'";
+                       // var rowcount = c.ExecuteNonQuery();
+  
+                       //  c = connection2.CreateCommand();
+                       // c.CommandText = "update EID SET DESM=0 WHERE DESM<0 AND  KOD='" + KODE[k] + "'";
+                       // rowcount = c.ExecuteNonQuery();
+
+
+
+
+                          MainPage.ExecuteSqlite("update EID SET DESM=DESM-" + POSO[k] + " WHERE KOD='" + KODE[k] + "'");
+                        MainPage.ExecuteSqlite("update EID SET DESM=0 WHERE DESM<0 AND  KOD='" + KODE[k] + "'");
+                    }
+
+
+                   // connection2.Close;
+
+
+
+                }
+
+
+              //  var c2 = connection.CreateCommand();
+              //  c2.CommandText = "delete from EGGTIM where ATIM = '" + ATIM.Text  + "'";
+               // var rowcount2 = c2.ExecuteNonQuery();
+
+                MainPage.ExecuteSqlite("delete from EGGTIM where ATIM = '" + ATIM.Text + "'");
+
+              //  c2 = connection.CreateCommand();
+              //  c2.CommandText = "delete from    TIM where ATIM='" + ATIM.Text + "'";
+              //  rowcount2 = c2.ExecuteNonQuery();
+                MainPage.ExecuteSqlite("delete from TIM where ATIM = '" + ATIM.Text + "'");
+
+              //   connection.Close();
+                await DisplayAlert("διαγραφτηκε", "", "OK");
+
+                await Navigation.PopAsync();
+                // Show_list();
+
+
+               
+
+            }
+
+        }
+
+
+        private void readtable(ref string[]  POSO,ref string[]  KODE,ref int ll ) 
+        {
+
+            // ΚΑΝΩ ΑΡΝΗΤΙΚΗ ΕΝΗΜΕΡΩΣΗ ΓΙΑ ΑΥΤΟ ΠΟΥ ΣΒΗΝΩ
+            string dbPath = Path.Combine(
+              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+              "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            // query the database to prove data was inserted!
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT * from EGGTIM where ATIM='" + ATIM.Text + "'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+
+           // string[] POSO = new string[400];
+           // string[] KODE = new string[400];
+
+             ll = 0;
+            string cc = "";
+            while (r.Read())
+            {
+                ll++;
+                cc = r["POSO"].ToString();
+                cc = cc.Replace(",", ".");
+                string ck = r["KODE"].ToString();
+                POSO[ll] = cc;
+                KODE[ll] = ck;
+            }
+
+
+           // connection.Close;
+
+
+           
+        }
+
+
+
 
 
         /*   
