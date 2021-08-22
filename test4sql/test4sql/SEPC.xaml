@@ -28,7 +28,7 @@
                
                
             </StackLayout>
-              <Button Text="Aποστ.Αρχ" Clicked="WriteFile"/>
+            <Button  x:Name="SENDTOPC"  Text="Aποστ.Αρχ" Clicked="WriteFile"/>
             
             
                <Button Text="Eξοδος" Clicked="CloseInvoice"/>

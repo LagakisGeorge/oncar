@@ -220,7 +220,12 @@ namespace test4sql
 
         async void WriteFile(object sender, EventArgs e)
         {
-           // DIABAZO sqlite database KAI TA SOZO :
+            //.ISENABLED = false;
+            SENDTOPC.IsEnabled = false;
+            SENDTOPC.BackgroundColor = Xamarin.Forms.Color.Green;
+            // listview.BackgroundColor = "";
+
+            // DIABAZO sqlite database KAI TA SOZO :
             // se sqlserver
             // KAI SE KOINO FAKELO SAN ARXEIO  EGGTIM2.TXT
             //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
@@ -239,6 +244,9 @@ namespace test4sql
                 return;
             }
 
+
+            // TO EKANA NA TO DIAGRAFEI APO TO EMPORIKO
+            // ALLA MPOREI NA ΞΕΧΑΣΤΕΙ ΚΑΙ ΝΑ ΤΟ ΣΤΕΙΛΕΙ 2 ΦΟΡΕΣ
             SqlCommand cmd = new SqlCommand("DELETE FROM PEGGTIM;DELETE FROM PTIM;DELETE FROM PEGG;");
             cmd.Connection = con;
             cmd.ExecuteNonQuery();
@@ -296,9 +304,9 @@ namespace test4sql
             */
 
             // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
-            //  SqlCommand cmd = new SqlCommand("insert into PALETES(PALET,KOD,PARTIDA,POSO) values (1)");
-            //  cmd.Connection = con;
-            //  cmd.ExecuteNonQuery();
+           // SqlCommand cmd; // = new SqlCommand("insert into PALETES(PALET,KOD,PARTIDA,POSO) values (1)");
+          // cmd.Connection = con;
+           //  cmd.ExecuteNonQuery();
 
 
 
@@ -312,7 +320,7 @@ namespace test4sql
             connection.Open();
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT* FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
+            contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
             var r = contents.ExecuteReader();
             // Console.WriteLine("Reading data");
 
@@ -327,7 +335,7 @@ namespace test4sql
                 while (r.Read())
                 {
                     string[] lines2 = r["HME"].ToString().Split('/');
-                    cc = "INSERT INTO PEGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES ('";
+                    cc = "INSERT INTO PEGGTIM (PELKOD,ATIM,HME,KODE,POSO,TIMM) VALUES ('" + r["PELKOD"].ToString() + "','";
                     cc +=  r["ATIM"].ToString() + "','";
                     cc +=  lines2[1]+"/"+lines2[0]+"/"+lines2[2].Substring(0,4) + "','";
                     cc +=  r["KODE"].ToString() + "',";

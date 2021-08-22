@@ -1046,10 +1046,23 @@ namespace test4sql
 
 
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT ONO,KOD,YPOL,DESM FROM EID  WHERE YPOL>0 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT ONO,KOD,YPOL,DESM FROM EID  WHERE DESM>0 OR YPOL>0 ; "; // +BARCODE.Text +"'";
                                                                                                                                                                              // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
+
+
+            Monkeys.Add(new Monkey
+            {
+                Name = "ΠΕΡΙΓΡΑΦΗ ΕΙΔΟΥΣ",
+                Location = "ΚΩΔΙΚΟΣ ΕΙΔΟΥΣ",
+                ImageUrl ="ΥΠΟΛ",
+                idPEL ="ΠΩΛΗΣ"
+            });
+
+
+
+
             Single s = 0;
             while (r.Read())
             {

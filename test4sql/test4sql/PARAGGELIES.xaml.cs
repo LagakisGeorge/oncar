@@ -739,7 +739,7 @@ namespace test4sql
 
             try
             {
-                string SQL1 = "insert into EGGTIM (ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) VALUES ('" + LPER.Text + "','" + ATIM.Text + "', datetime('now'),'" + CKODE.Text + "'," + cpos + "," + ctimh + "," + cekpt + "," +cfpa  + ")";
+                string SQL1 = "insert into EGGTIM (CH1,ONO,ATIM,HME,KODE,POSO,TIMH,EKPT,FPA) VALUES ('"+AFM.Text +"','" + LPER.Text + "','" + ATIM.Text + "', datetime('now'),'" + CKODE.Text + "'," + cpos + "," + ctimh + "," + cekpt + "," +cfpa  + ")";
             MainPage.ExecuteSqlite(SQL1);
                 if (EIDOSPAR == "τ")
                 {
@@ -893,9 +893,20 @@ namespace test4sql
 
         private async void BtnScan_Clicked(object sender, EventArgs e)
         {
+
+
+
             try
             {
-                PRINTOUT(0);
+                if (ATIM.Text.Substring(0, 1) == "τ")  // συγκεντρωτικο
+                {
+                    PRINTOUT(1);
+                }
+                else
+                {
+                  PRINTOUT(0);
+                }
+               
             }
             catch
             {
@@ -1030,7 +1041,7 @@ namespace test4sql
                                 var contents = connection.CreateCommand();
                                 //   if (IsSygkEpistr ==0)
                                 //   {
-                                contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,ifnull(POSO,0) as POSO,IFNULL(TIMH,0 ) AS TIMH ,IFNULL(EKPT,0) AS EKPT ,ID ,IFNULL(TIMH*POSO,0) AS AXIA from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                                contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,ifnull(POSO,0) as POSO,IFNULL(TIMH,0 ) AS TIMH ,IFNULL(EKPT,0) AS EKPT ,ID ,IFNULL(TIMH*POSO,0) AS AXIA,ifnull(POSO,0)-ifnull(TIMH,0) as EPISTRPOSO  from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
                                 //  }
                                 //  else
@@ -1052,8 +1063,10 @@ namespace test4sql
                                     if (IsSygkEpistr == 1)
                                     {
                                         string MPOL = PARAGGELIES.ReadSQL("select IFNULL(DESM,0) AS DESM from EID where KOD='" + r["KODE"].ToString() + "'");
-                                        te = Convert.ToInt64(Convert.ToDouble(MPOL));
-                                        tt = Convert.ToInt64(Convert.ToDouble(r["POSO"])) - te;        //(Single)r["POSO"] - te ;
+                                        // te = Convert.ToInt64(Convert.ToDouble(MPOL));
+                                        te = float.Parse(r["TIMH"].ToString());
+                                        tt = float.Parse(r["EPISTRPOSO"].ToString());
+                                        //  tt = Convert.ToInt64(Convert.ToDouble(r["POSO"])) - te;        //(Single)r["POSO"] - te ;
                                     }
                                     else
                                     {
@@ -1069,7 +1082,7 @@ namespace test4sql
                                 }
                                 // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
                                 int nCount = nseira;   // posa records exei to timologio
-                                int RecPerPage = 20;
+                                int RecPerPage = 26;
                                 int nPages = nCount / RecPerPage;
                                 if (nCount % RecPerPage > 0) // exei ypoloipo
                                 {
@@ -1093,7 +1106,7 @@ namespace test4sql
                                     printt(outStream, "\n");
                                     printt(outStream, "\n");
                                     printt(outStream, "\n");
-                                    printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                         ").Substring(0, 30) + "                                        " + (PARAGGELIES.toGreek(Globals.cFORTHGO) + "          ").Substring(0, 9) + "\n");
+                                    printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                                   ").Substring(0, 40) + "                              " + (PARAGGELIES.toGreek(Globals.cFORTHGO) + "          ").Substring(0, 9) + "\n");
 
 
 
@@ -1103,11 +1116,13 @@ namespace test4sql
                                     string AFM = PARAGGELIES.ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
                                     string POL = PARAGGELIES.ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
                                     string DOY = PARAGGELIES.ReadSQL("select  IFNULL(DOY,'')  FROM PEL where KOD='" + af + "'");
+                                    string PARAD = PARAGGELIES.ReadSQL("select  IFNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ')  FROM PEL where KOD='" + af + "'");
+
 
                                     printt(outStream, ("ΕΠΑΓΓΕΛΜΑ: " + EPA + "                         ").Substring(0, 30) + "\n");
-                                    printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: " + DIE + "                              ").Substring(0, 30) + "\n");
+                                    printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: " + DIE + "                              ").Substring(0, 36) + "              " + (PARAD+"                              ").Substring(0,30)+ "\n");
                                     printt(outStream, ("     ΠΟΛΗ: " + POL + "                              ").Substring(0, 25) + "\n");
-                                    printt(outStream, ("      ΑΦΜ: " + AFM + "                              ").Substring(0, 30) + "                          " + BCASH.Text + "\n");
+                                    printt(outStream, ("      ΑΦΜ: " + AFM + "                              ").Substring(0, 30) + "                       " + BCASH.Text + "\n");  // 3 ARISTERA PHGE APO ARXIKO
                                     printt(outStream, ("      ΔΟΥ: " + DOY + "                              " + "                            " + fEKPTNUM1.ToString()) + "\n"); //fYPOLPEL
 
                                     //string dbPath = Path.Combine(
@@ -1536,9 +1551,28 @@ namespace test4sql
 
         private async void CloseInvoice_Clicked(object sender, EventArgs e)
         {
+            if (EPO.Text.Substring(0,2)=="..")
+            {
+                await DisplayAlert("δεν διαλεξες πελάτη", " not ok", "OK");
+                return;
 
 
-            MainPage.ExecuteSqlite("update PARASTAT SET ARITMISI=ifnull(ARITMISI,0)+1 WHERE   ID=" + nn.ToString());
+            }
+
+
+            var action = await DisplayAlert(BCASH.Text , "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+            }
+            else
+            {
+                return;
+            }
+
+
+
+
+                MainPage.ExecuteSqlite("update PARASTAT SET ARITMISI=ifnull(ARITMISI,0)+1 WHERE   ID=" + nn.ToString());
             string TYP;
             TYP = String.Format("{0:0.00}", fYPOLPEL);
             TYP = TYP.Replace(",", ".");
@@ -1636,7 +1670,7 @@ namespace test4sql
 
 
             MainPage.ExecuteSqlite("UPDATE EGGTIM SET TIMH=(SELECT IFNULL(DESM,0)  FROM EID WHERE KOD=EGGTIM.KODE) WHERE ATIM='" + ATIM.Text + "'");
-            MainPage.ExecuteSqlite("UPDATE EGGTIM SET AXIA=POSO-TIMH  WHERE ATIM='" + ATIM.Text + "'");
+          //  MainPage.ExecuteSqlite("UPDATE EGGTIM SET AXIA=POSO-TIMH  WHERE ATIM='" + ATIM.Text + "'");
 
 
             PRINTOUT(1);
@@ -1645,7 +1679,39 @@ namespace test4sql
             MainPage.ExecuteSqlite("update PARASTAT SET ARITMISI=ifnull(ARITMISI,0)+1 WHERE   ID=" + nn.ToString());
 
             MainPage.ExecuteSqlite("INSERT INTO TIM (NUM1,HME,ATIM,KPE,TRP,EPO) VALUES (-1,datetime('now'),'" + ATIM.Text + "','" + AFM.Text + "','" + BCASH.Text.Substring(0, 5) + "','" + EPO.Text + "')");
-          //  }
+            //  }
+
+            // CLOSE INVOICE
+           // MainPage.ExecuteSqlite("update PARASTAT SET ARITMISI=ifnull(ARITMISI,0)+1 WHERE   ID=" + nn.ToString());
+          //  string TYP;
+          //  TYP = String.Format("{0:0.00}", fYPOLPEL);
+         //   TYP = TYP.Replace(",", ".");
+           // MainPage.ExecuteSqlite("UPDATE TIM SET KPE='" + AFM.Text + "',TRP='" + BCASH.Text.Substring(0, 5) + "',EPO='" + EPO.Text + "', NUM1 =0,TYP=" + TYP + ",AJI=" + SAJIA.Text.Replace(",", ".") + " WHERE ATIM='" + ATIM.Text + "'");
+
+            // EAN EINAI PISTVSH NA ANEBEI TO YPOLOIPO
+      //      if (BCASH.Text.Substring(0, 1) == "Μ")
+     //       {
+
+      //      }
+       //     else
+       //     {
+          //      MainPage.ExecuteSqlite("UPDATE PEL SET TYP=TYP+" + SAJIA.Text.Replace(",", ".") + " WHERE KOD='" + AFM.Text + "'");
+         //   }
+
+            btnScan.IsEnabled = true;
+            AFM.IsEnabled = false;
+            BRESafm.IsEnabled = false;
+            CloseInvoice.IsEnabled = false;
+            
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1802,6 +1868,11 @@ namespace test4sql
 
 
            
+        }
+
+        private void CHANGE_EKPT(object sender, EventArgs e)
+        {
+
         }
 
 

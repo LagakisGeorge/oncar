@@ -59,11 +59,21 @@
                         Clicked="BRES_AFM" 
                   />
 
-            <Label  x:Name="EPO"  
-                Text="ΕΠΩΝΥΜΙΑ..    " VerticalOptions="Center" 
+           <!-- <Label  x:Name="EPO2"  
+                Text="ΕΠΩΝΥΜΙΑ..    " VerticalOptions="Center"  
+                 />
+                   -->
+                <Button  x:Name="EPO"  
+                Text="............................" VerticalOptions="Center" 
+                          Clicked="CHANGE_EKPT" 
                  />
 
-                </StackLayout>
+
+
+
+
+
+            </StackLayout>
 
             
 
