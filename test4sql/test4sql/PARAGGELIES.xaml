@@ -88,6 +88,8 @@
             
 
         </Grid.RowDefinitions>
+                
+                
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
@@ -225,12 +227,12 @@
                        x:Name="listview"
                       HeightRequest="80"
                       BackgroundColor="Bisque"
-                  HasUnevenRows="true" 
+                      HasUnevenRows="true" 
                       ItemTapped="OnListViewItemTapped" >
-                <!-- ItemSelected="OnListViewItemSelected" 
-                  ItemTapped="OnListViewItemTapped"   -->
+                              <!-- ItemSelected="OnListViewItemSelected" 
+                                ItemTapped="OnListViewItemTapped"   -->
 
-                <ListView.ItemTemplate>
+                      <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
@@ -318,7 +320,7 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+                    </ListView>
 
 
           

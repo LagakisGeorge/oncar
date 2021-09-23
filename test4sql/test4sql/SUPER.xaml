@@ -34,17 +34,24 @@
 
             </Grid>
 
-
-            <Button x:Name="butbarcode" 
-                Text="BARCODE ΜΕ ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
-
-
-            <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+             <StackLayout    Orientation="Horizontal">
+                 
+           
+                   <Button x:Name="butbarcode" 
+                    Text="BARCODE ΜΕ ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
+          
+                 
+            
+                  <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
                    Placeholder="BARCODE " Focused="barcfoc"      />
 
+            
+         </StackLayout>
 
 
 
+                    <Entry x:Name="mono"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+                   Placeholder="ONOMA"       />
 
 
             <Button x:Name="but10" 
@@ -58,26 +65,90 @@
 
 
 
-                <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
+             
+
+
+            <StackLayout    Orientation="Horizontal">
+                
+                   <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
                 Text=".............."  />
                 <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
                 Text="..............."  />
+                
 
+                 <Label     Grid.Row="4" Grid.Column="0" 
+                  Text="ΤΙΜΗ    " 
+                  TextColor="BlueViolet"    />
 
-
-
-                <Label     Grid.Row="4" Grid.Column="0" 
-                Text="ΤΙΜΗ    " 
-                 TextColor="BlueViolet"    />
-
-            <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
+                <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
                   Text="0"  
                    />
 
-            <Button x:Name="but20" 
-                        Text="αποθηκευση"  Grid.Row="3" Grid.Column="0"
-                         TextColor="Purple" 
-                       Clicked="savecodes"  />
+            </StackLayout>
+            
+            
+
+
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                      HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                                ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="*"  />
+                                </Grid.ColumnDefinitions >
+
+
+
+
+
+
+
+
+                                <Label Grid.Column="0" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" FontSize="Small" />
+                                <Label 
+                                    Grid.Column="1"
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    Grid.Column="2"
+                                    />
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    Grid.Column="3"
+                                    />
+                            </Grid>
+
+
+
+
+
+                 
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
 
 
 

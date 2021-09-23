@@ -84,11 +84,17 @@ namespace test4sql
             MainPage.ExecuteSqlite("delete from TIM;");
             MainPage.ExecuteSqlite("delete from EGGTIM;");
 
+            String SYNT = "";
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                SYNT= " TOP 20 ";
+
+
+
             try
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select  ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA  FROM EID ", con);
+                SqlCommand cmd3 = new SqlCommand("select "+SYNT+" ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA  FROM EID ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                // List<string> MyList = new List<string>();
@@ -138,34 +144,47 @@ namespace test4sql
                 await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                 await DisplayAlert("EIΔΗ ΟΚ", "", "OK");
+
             MainPage.ExecuteSqlite("delete from PEL;");
             try
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select  LEFT(ISNULL(DOY,''),20) AS MDOY,ID,isnull(KOD,'') AS MKOD,LEFT(ISNULL(EPO,''),25) AS MEPO,LEFT(ISNULL(EPA,''),20) AS MEPA," +
+                SqlCommand cmd3 = new SqlCommand("select "+SYNT+" LEFT(ISNULL(DOY,''),20) AS MDOY,ID,isnull(KOD,'') AS MKOD,LEFT(ISNULL(EPO,''),25) AS MEPO,LEFT(ISNULL(EPA,''),20) AS MEPA," +
                     "ISNULL(DIE,'') AS MDIE,ISNULL(TYP,0) AS MYPOL ,ISNULL(DOY,'') AS MDOY,ISNULL(AFM,'') AS MAFM,ISNULL(POL,'') AS MPOL,ISNULL(PEK,0) AS MPEK,ISNULL(NUM1,0) AS MNUM1 ,ISNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ') AS PARAD  " +
-                    "FROM PEL WHERE EIDOS='e' ", con);
+                    "FROM PEL WHERE EIDOS='e' " , con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 //List<string> MyList = new List<string>();
                 int k = 0;
+
                 for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
-                   // String mF = dt.Rows[k]["MEPO"].ToString();
-                   // mF = mF.Replace("'", "`");
-                   // MyList.Add(mF);
-                    string mTYP = dt.Rows[k]["MYPOL"].ToString();
-                    mTYP = mTYP.Replace(",", ".");
+                    // String mF = dt.Rows[k]["MEPO"].ToString();
+                    // mF = mF.Replace("'", "`");
+                    // MyList.Add(mF);
+                    string mTYP2;
+                    mTYP2 = dt.Rows[k]["MYPOL"].ToString();
+
+                    if (mTYP2 == null)
+                    {
+                        mTYP2 = "0";
+                    }
+                    //else
+                    mTYP2 = mTYP2.Replace(",", ".");
+
 
                     /* Monkeys.Add(new Monkey
                     {
-                        Name = mF,
-                        Location = dt.Rows[k]["MKOD"].ToString(),
-                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
-                        idPEL = dt.Rows[k]["ID"].ToString()
-                    });
-                    */
+                       Name = mF,
+                       Location = dt.Rows[k]["MKOD"].ToString(),
+                       ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                       idPEL = dt.Rows[k]["ID"].ToString()
+                     });
+                      */
                     string mKOD = dt.Rows[k]["MKOD"].ToString();
                     //string mONO = dt.Rows[k]["MONO"].ToString();
                     string mDIE = dt.Rows[k]["MDIE"].ToString();
@@ -193,13 +212,14 @@ namespace test4sql
 
 
                     string mNUM1 = dt.Rows[k]["MNUM1"].ToString();
-                    mNUM1 = mNUM1.Replace(",", ".");
+                    if (mNUM1.All(char.IsNumber) ==false) { mNUM1 = "0"; }
+                        mNUM1 = mNUM1.Replace(",", ".");
 
 
                     int n2 = MainPage.ExecuteSqlite("insert into PEL (KOD,EPA,AFM,DOY,EPO,DIE,TYP,PEK,NUM1,CH3) VALUES ('"
-                        +mKOD + "','" + mEPA + "','" + mAFM + "','" + mDOY + "','" + mEPO + "','" + mDIE + "'," + mTYP+ "," + mPEK +","+mNUM1+",'"+ mPARAD +"' );");
-                } // FOR
-
+                        + mKOD + "','" + mEPA + "','" + mAFM + "','" + mDOY + "','" + mEPO + "','" + mDIE + "'," + mTYP2 + "," + mPEK + "," + mNUM1 + ",'" + mPARAD + "' );");
+                    // FOR
+                }
                 // watch.Stop();
                 //  var elapsedMs = watch.ElapsedMilliseconds;
                 //  await DisplayAlert("ΠΕΛΑΤΕΣ", " Πελάτες:" + dt.Rows.Count, "OK");
@@ -213,7 +233,8 @@ namespace test4sql
             }
 
 
-
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("ΠΕΛΑΤΕΣ ΟΚ", "", "OK");
 
 
             //   TIMOKAT( [KOD][nvarchar](14) NOT NULL,"+
@@ -238,6 +259,14 @@ namespace test4sql
 
                     // MyList.Add(mF);
                     string mTYP = dt.Rows[k]["MEKPT"].ToString();
+
+                    if (mTYP == null)
+                    {
+                        mTYP = "0";
+                    }
+
+
+
                     mTYP = mTYP.Replace(",", ".");
 
                     string mTIMOK = dt.Rows[k]["MTIMOK"].ToString();
@@ -271,6 +300,8 @@ namespace test4sql
 
 
 
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("ΤΙΜΟΚΑΤΑΛΟΓΟΙ ΟΚ", "", "OK");
 
 
 
@@ -285,7 +316,11 @@ namespace test4sql
 
 
 
+        }
 
+        private void dokimi(object sender, EventArgs e)
+        {
+            TEST2.BackgroundColor = Xamarin.Forms.Color.Green;
         }
 
 

@@ -69,6 +69,14 @@
                 Text="ΠΑΡΑΜΕΤΡΟΙ"
                 Clicked="fparam"
                  />
+
+        <Button x:Name="APOTHIKI" 
+                Text="ΑΠΟΘΗΚΗ"
+                Clicked="fAPOTHIKI"
+                 />
+
+
+
         <StackLayout Orientation="Horizontal" >
             
 

@@ -1077,7 +1077,7 @@ namespace test4sql
                                     string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM";
                                     lin = lin + Right("      " + r["POSO"].ToString(), 6) + " ";
                                     lin = lin + Right("      " + String.Format("{0:0.00}", te), 6) + " ";
-                                    lin = lin + "" + "13" + "   " + Right("       " + String.Format("{0:0.00}", tt), 6) + " ";
+                                    lin = lin + "" + "13" + "  " + Right("       " + String.Format("{0:0.00}", tt), 7) + " ";
                                     cLine[nseira] = lin;
                                 }
                                 // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
@@ -1208,12 +1208,12 @@ namespace test4sql
                                         cold = String.Format("{0:0.00}", fYPOLPEL);
                                         cneo = String.Format("{0:0.00}", NEO);
 
-                                        printt(outStream, spac40 + "             ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 6) + "\n");
-                                        printt(outStream, spac40 + "             ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 6) + "\n");
-                                        printt(outStream, Right("               " + cold, 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji), 6) + "\n");
-                                        printt(outStream, Right("               " + cneo, 15) + spac40 + "            " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 6) + "\n");
+                                        printt(outStream, spac40 + "            ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 7) + "\n");
+                                        printt(outStream, spac40 + "            ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 7) + "\n");
+                                        printt(outStream, Right("               " + cold, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji), 7) + "\n");
+                                        printt(outStream, Right("               " + cneo, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 7) + "\n");
                                         printt(outStream, "\n");
-                                        printt(outStream, spac40 + "                           " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 6) + "\n");
+                                        printt(outStream, spac40 + "                          " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 7) + "\n");
                                     }
                                     else
                                     {

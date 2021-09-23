@@ -216,11 +216,17 @@ namespace test4sql
 
         async void BresEidos(object sender, EventArgs e)
         {
-            find_eid();
 
-                }
+            Show_list_Eidon(mono.Text);
 
-        void find_eid() { 
+        }
+
+        void find_eid() {
+
+
+
+            
+
             // determine the path for the database file
             string dbPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
@@ -252,7 +258,7 @@ namespace test4sql
             }
             else
             {             
-            contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE KOD like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE ONO like '%" + mono .Text + "%'  ; "; // +BARCODE.Text +"'";
             }
             
             var r = contents.ExecuteReader();
@@ -278,7 +284,7 @@ namespace test4sql
            // System.Threading.Thread.Sleep(1000);
           
 
-            BARCODE.Focus();
+          
 
            
 
@@ -286,11 +292,62 @@ namespace test4sql
         }
 
 
+        void Show_list_Eidon(string ono)
+        {
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+
+            string dbPath = Path.Combine(
+              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+              "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(ONO,'') AS PER,ifnull(XONDR,0) as timh,ID from EID where KOD LIKE '%" + ono + "%' OR ONO LIKE '%" + ono + "%' order by ONO ; "; // +BARCODE.Text +"'";
+                                                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            while (r.Read())
+            {
+
+
+                Monkeys.Add(new Monkey
+                {
+                    Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
+
+                    Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
+                    ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),
+                    idPEL = r["ID"].ToString()
+                });
 
 
 
+            }
+
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
 
 
+            connection.Close();
 
+            BindingContext = this;
+        }
+
+        private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+
+        }
     }
 }

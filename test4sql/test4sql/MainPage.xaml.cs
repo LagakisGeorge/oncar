@@ -981,6 +981,16 @@ NewMethod(e),
             return rowcount;
         }
 
+        private async void fAPOTHIKI(object sender, EventArgs e)
+        {
+
+          //  private async void fparam(object sender, EventArgs e)
+            
+
+                await Navigation.PushAsync(new SUPER()) ;  //imports
+
+            
+        }
     }  // public partial class MainPage : ContentPage
 
 }  // namespace

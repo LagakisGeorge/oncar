@@ -16,6 +16,7 @@
                 <Button x:Name="EID" Text="ΕΙΔΗ" />
                 <Button x:Name="PEL" Text="ΠΕΛΑΤΕΣ" />
                 <Button x:Name="TIMOKAT" Text="ΤΙΜΟΚΑΤΑΛΟΓΟΙ" />
+                <Button x:Name="TEST2" Clicked="dokimi"    Text="TEST ΑΠΟΣΤΟΛΗΣ 10 ΕΓΓΡ" />
             </StackLayout> 
             
            

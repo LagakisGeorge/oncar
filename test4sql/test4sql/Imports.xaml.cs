@@ -139,6 +139,15 @@ namespace test4sql
             }
 
 
+
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='PEK' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table PEL ADD PEK REAL");
+            }
+
+
             // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
             nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='CH3' ");
             if (Int16.Parse(nc) == 0)
