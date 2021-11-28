@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="oncar.PELATES">
+    <ContentPage.Content>
+        <StackLayout>
+            
+           <!--  <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+           -->
+
+            <StackLayout Orientation="Horizontal" >
+                <Button Text="ΝΕΟΣ ΠΕΛΑΤΗΣ"   x:Name="bnew"  Clicked="NEWPEL" />
+                <Button Text="ΔΙΟΡΘΩΣΗ"   x:Name="bedit"  Clicked="EDITPEL" />
+                <Button Text="ΑΠΟΘΗΚΕΥΣΗ"  x:Name="bkatax" Clicked="KATAX" />
+                <Label x:Name="LID" Text="" />
+
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" >
+                <Button Text="Κινηση"   x:Name="bkin"  Clicked="newkin" />
+                <Button Text="Διαγ.Κιν"   x:Name="diagkin"  Clicked="DiagrafhKinisis" />
+                
+                
+
+            </StackLayout>
+
+
+
+
+
+            <Entry x:Name="EPO"
+                   Placeholder="ΕΠΩΝΥΜΟ ΟΝΟΜΑ    "   />
+
+            <Entry x:Name="EPA"
+                   Placeholder="ΕΠΑΓΓΕΛΜΑ    "   />
+
+            <Entry x:Name="DIE"
+                   Placeholder="ΔΙΕΥΘΥΝΣΗ    "   />
+            
+            <StackLayout Orientation="Horizontal" >
+
+                <Entry x:Name="POL"
+                   Placeholder="ΠΟΛΗ                "   />
+                   <Entry x:Name="TK"
+                   Placeholder="ΤΚ     "   />
+                <Entry x:Name="THL"
+                   Placeholder="ΤΗΛΕΦΩΝΟ    "   />
+
+            </StackLayout>
+
+
+          
+            <StackLayout Orientation="Horizontal" >
+                
+                  <Entry x:Name="KINHTO"
+                   Placeholder="ΚΙΝΗΤΟ      "   />
+
+                 <Entry x:Name="EMAIL"
+                   Placeholder="EMAIL          "   />
+
+                 <Entry x:Name="EMAIL2"
+                   Placeholder="2ο EMAIL    "   />
+            </StackLayout>
+
+            <Entry x:Name="FEPO" BackgroundColor="Aquamarine"
+                   Placeholder="ANAZHTHΣΗ ΜΕ ΟΝΟΜΑ   "  TextChanged="BRESPEL"  />
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                      HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                                ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="*"  />
+                                </Grid.ColumnDefinitions >
+
+
+
+
+
+
+
+
+                                <Label Grid.Column="0" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" FontSize="Small" />
+                                <Label 
+                                    Grid.Column="1"
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    Grid.Column="2"
+                                    />
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    Grid.Column="3"
+                                    />
+                            </Grid>
+
+
+
+
+
+                            <!--    <StackLayout Padding="20" Spacing="10"  Orientation="Horizontal" >
+
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="Start"
+                                       
+                                   FontAttributes="Bold"
+                                       BackgroundColor="Aquamarine"
+                                       FontSize="Small" 
+                                />
+                                
+                                <Label                                     
+                                   Text="{Binding Location}"
+                                    FontAttributes="Bold"                                    
+                                    FontSize="Small"
+                                   VerticalOptions="Start"
+                                       HorizontalOptions="Start"
+                                 />
+
+                              
+                                  <Label                                    
+                                    Text="{Binding ImageUrl}" 
+                                    FontAttributes="Bold"
+                                    FontSize="Small"
+                                      VerticalOptions="Start"
+         HorizontalOptions="FillAndExpand"
+                                    />
+                                  <Label                                    
+                                   Text="{Binding idPEL}"
+                                    FontAttributes="Bold"
+                                    FontSize="Small"
+                                      VerticalOptions="Start"
+                  HorizontalOptions="FillAndExpand"
+                                  
+                                  />
+                            
+                           
+
+
+
+
+                            </StackLayout>    -->
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

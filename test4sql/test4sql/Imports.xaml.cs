@@ -154,8 +154,7 @@ namespace test4sql
             {
                 
                 MainPage.ExecuteSqlite("alter table PEL ADD CH3 [varchar](40)");
-              
-
+             
             }
 
 
@@ -163,11 +162,40 @@ namespace test4sql
             nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='DOY' ");
             if (Int16.Parse(nc) == 0)
             {
-
                 MainPage.ExecuteSqlite("alter table PEL ADD DOY [varchar](40)");
-
-
             }
+
+
+
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('PEL') WHERE name='EMAIL' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table PEL ADD EMAIL [varchar](40)");
+                MainPage.ExecuteSqlite("alter table PEL ADD EMAIL2 [varchar](40)");
+                MainPage.ExecuteSqlite("alter table PEL ADD TK [varchar](5)");
+                MainPage.ExecuteSqlite("alter table PEL ADD KINHTO [varchar](40)");
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -192,6 +220,34 @@ namespace test4sql
 
 
    MainPage.ExecuteSqlite(c);
+
+
+
+            c = "CREATE TABLE IF NOT EXISTS EGG (" +
+                   "[ATIM] [varchar](55)," +
+                   "[HME] [datetime] ," +                 
+                   "[KOD] [nvarchar](55) ," +
+                   "[IDPEL] [int] ," +
+                   "[XRE] [real] ," +
+                   "[PIS] [real] ," +
+                   "[AIT] [varchar](55) ," +
+                   "[CH1] [varchar](55) ," +
+                   "[CH2] [varchar](55) ," +
+                   "[NUM1] [int] ," +
+                   "[NUM2] [int] ," +
+                   "[ID]  INTEGER PRIMARY KEY )";
+
+
+            MainPage.ExecuteSqlite(c);
+
+
+
+
+
+
+
+
+
 
 
             // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
@@ -263,6 +319,23 @@ namespace test4sql
             MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
             await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
+            if (PARAGGELIES.NReadSQL("select count(*) from ARITMISI") < 10)
+            {
+
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+                MainPage.ExecuteSqlite("INSERT INTO ARITMISI (ARITMISI) VALUES (0)");
+
+                // ID=8  PELATES 
+
+
+            }
 
 
 

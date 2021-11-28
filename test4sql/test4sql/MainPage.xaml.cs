@@ -14,7 +14,7 @@ using System.IO;
 using Mono.Data.Sqlite;
 using System.Data;
 using System.Threading;
-
+using oncar;
 
 namespace test4sql
 
@@ -990,6 +990,18 @@ NewMethod(e),
                 await Navigation.PushAsync(new SUPER()) ;  //imports
 
             
+        }
+
+        private async void fPELATHS(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new PELATES());  //imports
+
+        }
+
+        private async void fPELkin(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Pelkin());
         }
     }  // public partial class MainPage : ContentPage
 

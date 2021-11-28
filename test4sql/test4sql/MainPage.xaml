@@ -74,7 +74,15 @@
                 Text="ΑΠΟΘΗΚΗ"
                 Clicked="fAPOTHIKI"
                  />
+        <Button x:Name="PELATHS" 
+                Text="ΠΕΛΑΤΗΣ"
+                Clicked="fPELATHS"
+                 />
 
+        <Button x:Name="kinpelath" 
+                Text="ΚΙΝΗΣΗ ΠΕΛΑΤΗ"
+                Clicked="fPELkin"
+                 />
 
 
         <StackLayout Orientation="Horizontal" >
