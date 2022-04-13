@@ -20,9 +20,9 @@
 
             <StackLayout Orientation="Horizontal" >
                 <Button Text="Κινηση"   x:Name="bkin"  Clicked="newkin" />
-                <Button Text="Διαγ.Κιν"   x:Name="diagkin"  Clicked="DiagrafhKinisis" />
-                
-                
+                <Button Text="Διαγ.Πελάτη"   x:Name="diagpel"  Clicked="Diagrpel" />
+                <Button Text="Αντιγραφή Πελ"   x:Name="antig"  Clicked="Antig" />
+
 
             </StackLayout>
 

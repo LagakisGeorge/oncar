@@ -35,9 +35,24 @@ namespace test4sql
         }
         public static string useBarcodes="0";
 
-    } 
+    }
 
+    public class Monkey2
+    {
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string ImageUrl { get; set; }
+        public string idPEL { get; set; }
 
+        public string Prood { get; set; }
+
+        public string ID  { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
 
     public class Monkey
     {

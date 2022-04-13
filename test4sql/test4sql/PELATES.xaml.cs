@@ -37,6 +37,7 @@ namespace oncar
         {
             bkatax.IsEnabled = true;
             bnew.IsEnabled = false;
+            bedit.IsEnabled = false;
 
         }
 
@@ -121,13 +122,26 @@ namespace oncar
 
         private async void KATAX(object sender, EventArgs e)
         {
+            kataxorisi();
+        }
+
+
+        private async void kataxorisi()
+        {
             string DD;
             bedit.IsEnabled = false;
+           
 
             if (bnew.IsEnabled == false) // προκειται για νεα εγγραφη
             {
                 try
                 {
+                if (EPO.Text==null)
+                
+                    {
+                      await  DisplayAlert("δεν συμπληρώσατε όνομα", "","ok");
+                        return;
+                    }
 
                     DD = PARAGGELIES.ReadSQL("select IFNULL(ARITMISI,0) AS EKTP2 FROM ARITMISI WHERE ID=8");
 
@@ -176,7 +190,9 @@ namespace oncar
                 return;
 
             }
-            bnew.IsEnabled = false;
+            bnew.IsEnabled = true;
+            bkatax.IsEnabled = false;
+
 
         }
 
@@ -215,15 +231,65 @@ namespace oncar
 
              }
 
-        private void DiagrafhKinisis(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private async void newkin(object sender, EventArgs e)
         {
 
             await Navigation.PushAsync(new Pelkin ());
+
+        }
+
+        private async void Antig(object sender, EventArgs e)
+        {
+            if (EPO.Text == null)
+            {
+                await DisplayAlert("δεν διαλεξατε πελάτη", "", "ok");
+                return;
+            }
+
+                bnew.IsEnabled = false;
+                antig.IsEnabled = false;
+                bkatax.IsEnabled = false;
+            await DisplayAlert("Η αντιγραφή έγινε", "", "ok");
+            EPO.Text = "";
+            EPA.Text = "";
+            DIE.Text  = "";
+            POL.Text = "";
+
+
+
+            kataxorisi();
+
+
+
+
+
+        }
+
+        private async void Diagrpel(object sender, EventArgs e)
+        {
+
+            var action = await DisplayAlert(" Να διαγραφεί η εγγραφή", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action == true)
+            {
+                string DD;
+                DD = PARAGGELIES.ReadSQL("select count(*)  FROM EGG WHERE IDPEL=" + LID.Text);
+
+                float xr = 0;
+                xr = Convert.ToInt64(Convert.ToDouble(DD)); //  r["xre"];
+
+                if (xr>0) {
+                    action = await DisplayAlert(" Εχει κινήσεις αδύνατη η διαγραφή", "", "ΟΚ", "");
+                    return;
+                }
+
+                MainPage.ExecuteSqlite("delete from PEL where  ID='" + LID.Text  + "'");
+                Show_list_Eidon(FEPO.Text);
+
+            }
+
+
 
         }
     }

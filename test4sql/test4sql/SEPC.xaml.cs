@@ -320,7 +320,7 @@ namespace test4sql
             connection.Open();
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
+            contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH,EKPT,IFNULL(FPA,1) AS FPA FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
             var r = contents.ExecuteReader();
             // Console.WriteLine("Reading data");
 
@@ -335,21 +335,23 @@ namespace test4sql
                 while (r.Read())
                 {
                     string[] lines2 = r["HME"].ToString().Split('/');
-                    cc = "INSERT INTO PEGGTIM (PELKOD,ATIM,HME,KODE,POSO,TIMM) VALUES ('" + r["PELKOD"].ToString() + "','";
+                    cc = "INSERT INTO PEGGTIM (PELKOD,ATIM,HME,KODE,POSO,TIMM,EKPT,FPA) VALUES ('" + r["PELKOD"].ToString() + "','";
                     cc +=  r["ATIM"].ToString() + "','";
                     cc +=  lines2[1]+"/"+lines2[0]+"/"+lines2[2].Substring(0,4) + "','";
                     cc +=  r["KODE"].ToString() + "',";
                     cc +=  r["POSO"].ToString().Replace(",",".") + ",";
-                    cc += r["TIMH"].ToString().Replace(",", ".") + ")";
+                    cc += r["TIMH"].ToString().Replace(",", ".") + ",";
+                    cc += r["EKPT"].ToString().Replace(",", ".") + ",";
+                    cc += r["FPA"].ToString().Replace(",", ".") + ")";
                     // cc = cc + r["TIMH"].ToString() + "\n";  11  12->  21,5
 
 
 
 
-                   
 
 
-                     cmd = new SqlCommand(cc);
+
+                    cmd = new SqlCommand(cc);
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
 
