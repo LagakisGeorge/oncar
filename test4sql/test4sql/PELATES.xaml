@@ -9,35 +9,37 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
            -->
+            <Frame BorderColor="Orange"  CornerRadius="10"   HasShadow="True">
+              <StackLayout>
+                <StackLayout Orientation="Horizontal" >
+                   <Button Text="ΝΕΟΣ ΠΕΛΑΤΗΣ"   x:Name="bnew"  Clicked="NEWPEL" />
+                   <Button Text="ΔΙΟΡΘΩΣΗ"   x:Name="bedit"  Clicked="EDITPEL" />
+                   <Button Text="ΑΠΟΘΗΚΕΥΣΗ"  x:Name="bkatax" Clicked="KATAX" />
+                   <Label x:Name="LID" Text="" />
 
-            <StackLayout Orientation="Horizontal" >
-                <Button Text="ΝΕΟΣ ΠΕΛΑΤΗΣ"   x:Name="bnew"  Clicked="NEWPEL" />
-                <Button Text="ΔΙΟΡΘΩΣΗ"   x:Name="bedit"  Clicked="EDITPEL" />
-                <Button Text="ΑΠΟΘΗΚΕΥΣΗ"  x:Name="bkatax" Clicked="KATAX" />
-                <Label x:Name="LID" Text="" />
+                </StackLayout>
 
-            </StackLayout>
-
-            <StackLayout Orientation="Horizontal" >
+               <StackLayout Orientation="Horizontal" >
                 <Button Text="Κινηση"   x:Name="bkin"  Clicked="newkin" />
                 <Button Text="Διαγ.Πελάτη"   x:Name="diagpel"  Clicked="Diagrpel" />
                 <Button Text="Αντιγραφή Πελ"   x:Name="antig"  Clicked="Antig" />
 
 
-            </StackLayout>
+               </StackLayout>
+              </StackLayout>
+            </Frame> 
 
 
+                <Frame BorderColor="Orange"  CornerRadius="10"   HasShadow="True">
+                <StackLayout>
+                    <Entry x:Name="EPO"
+                         Placeholder="ΕΠΩΝΥΜΟ ΟΝΟΜΑ    "   />
 
+                   <Entry x:Name="EPA"
+                         Placeholder="ΕΠΑΓΓΕΛΜΑ    "   />
 
-
-            <Entry x:Name="EPO"
-                   Placeholder="ΕΠΩΝΥΜΟ ΟΝΟΜΑ    "   />
-
-            <Entry x:Name="EPA"
-                   Placeholder="ΕΠΑΓΓΕΛΜΑ    "   />
-
-            <Entry x:Name="DIE"
-                   Placeholder="ΔΙΕΥΘΥΝΣΗ    "   />
+                   <Entry x:Name="DIE"
+                         Placeholder="ΔΙΕΥΘΥΝΣΗ    "   />
             
             <StackLayout Orientation="Horizontal" >
 
@@ -63,8 +65,16 @@
                  <Entry x:Name="EMAIL2"
                    Placeholder="2ο EMAIL    "   />
             </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Entry x:Name="MEMO"  
+                Placeholder="ΣΧΟΛΙΑ    "/>
+            </StackLayout>
 
-            <Entry x:Name="FEPO" BackgroundColor="Aquamarine"
+                    </StackLayout>
+         </Frame> 
+
+
+                        <Entry x:Name="FEPO" BackgroundColor="Aquamarine"
                    Placeholder="ANAZHTHΣΗ ΜΕ ΟΝΟΜΑ   "  TextChanged="BRESPEL"  />
 
             <ListView ItemsSource="{Binding Monkeys}"
@@ -82,9 +92,9 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1" />
                                     <ColumnDefinition  Width="*" />
-                                    <ColumnDefinition  Width="*"  />
+                                    <ColumnDefinition  Width="1"  />
                                 </Grid.ColumnDefinitions >
 
 
@@ -96,7 +106,7 @@
 
                                 <Label Grid.Column="0" 
                                    Text="{Binding Name}"
-                                   FontAttributes="Bold" FontSize="Small" />
+                                    FontSize="Default" />
                                 <Label 
                                     Grid.Column="1"
                                     

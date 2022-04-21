@@ -101,6 +101,14 @@ namespace oncar
         {
             Monkey tappedItem = e.Item as Monkey;
             pelaths.Text = tappedItem.Name +";"+ tappedItem.idPEL;
+            string id= tappedItem.idPEL;
+           
+            EPA.Text = PARAGGELIES.ReadSQL("select IFNULL(EPA,'') AS EKTP2 FROM PEL WHERE ID=" + id);
+            DIE.Text = PARAGGELIES.ReadSQL("select IFNULL(DIE,'') AS EKTP2 FROM PEL WHERE ID=" + id);
+           
+            THL.Text = PARAGGELIES.ReadSQL("select IFNULL(THL,'') AS EKTP2 FROM PEL WHERE ID=" + id);
+            KINHTO.Text = PARAGGELIES.ReadSQL("select IFNULL(KINHTO,'') AS EKTP2 FROM PEL WHERE ID=" + id);
+            MEMO.Text = PARAGGELIES.ReadSQL("select IFNULL(MEMO,'') AS MEMO FROM PEL WHERE ID=" + id);
 
             fIDPEL = tappedItem.idPEL;
             listview.IsVisible = false;
@@ -218,7 +226,7 @@ namespace oncar
 
 
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ifnull(HME,'          ') as HM,AIT, XRE , PIS,ID from EGG where IDPEL=" + idpel+ "  order by HM; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ifnull(HME,'          ') as HM,AIT, XRE , PIS,ID from EGG where IDPEL=" + idpel+ "  order by ID; "; // +BARCODE.Text +"'";
                                                                                                                                                                              // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");

@@ -221,6 +221,8 @@ namespace test4sql
 
    MainPage.ExecuteSqlite(c);
 
+            MainPage.ExecuteSqlite("alter table PEL ADD MEMO  [varchar](250)");
+
 
 
             c = "CREATE TABLE IF NOT EXISTS EGG (" +

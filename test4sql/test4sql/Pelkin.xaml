@@ -7,15 +7,42 @@
         
         
         <StackLayout>
-            <StackLayout Orientation="Horizontal">
+            <Frame BorderColor="Orange"
+       CornerRadius="10"
+       HasShadow="True">
+                <Label  x:Name="pelaths" FontSize="Small" Text="Ονομα Πελάτη" FontAttributes="Bold" BackgroundColor="Cyan"  />
 
-                <Label  x:Name="pelaths"
-                        FontSize="Medium" />
-                
-                
+
+
+
+
+
+            </Frame>
+
+          <Frame BorderColor="Orange"  CornerRadius="10"   HasShadow="True">
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Horizontal">
+                <Label  x:Name="THL" />
+                <Label  x:Text="**" />
+                <Label  x:Name="KINHTO" />
             </StackLayout>
-                  
-            <StackLayout Orientation="Horizontal" >
+                
+            <StackLayout Orientation="Horizontal">
+                <Label  x:Name="DIE" />
+                <Label  x:Name="EPA" />
+            </StackLayout>
+                
+            <StackLayout Orientation="Horizontal">
+                <Label  x:Name="MEMO" />
+               
+            </StackLayout>
+
+
+            </StackLayout>
+
+        </Frame> 
+
+            <StackLayout Orientation="Horizontal">
                 <Button Text="ΝΕΑ ΕΓΓΡΑΦΗ"   x:Name="bnew"  Clicked="NEWPEL" />
                 <Button Text="ΚΑΡΤΕΛΑ"   x:Name="bedit"  Clicked="EDITPEL" />
 
@@ -26,24 +53,26 @@
 
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" >
-                <DatePicker MinimumDate="01/01/2018"
-            MaximumDate="12/31/2025"
-                            x:Name="hmer"
-            Date="{Binding SelectedDate}" />
+            <Frame BorderColor="Orange"  CornerRadius="10"   HasShadow="True">
 
-                <Entry x:Name="aiti" Focused="ergasies"
+               <StackLayout Orientation="Horizontal" >
+                  <DatePicker MinimumDate="01/01/2018"  FontSize="Small"
+                         MaximumDate="12/31/2025"
+                            x:Name="hmer"
+                         Date="{Binding SelectedDate}" />
+
+                  <Entry x:Name="aiti" Focused="ergasies"
                    Placeholder="Αιτιολογια                   "   />
 
 
-                <Entry x:Name="poso" BackgroundColor="Aquamarine"
+                  <Entry x:Name="poso" BackgroundColor="Azure"
                    Placeholder="ποσο   "    />
+                </StackLayout >
+            </Frame> 
 
-               
 
 
-
-            </StackLayout >
+            
 
             <Entry x:Name="FEPO" BackgroundColor="Aquamarine"
                    Placeholder="ANAZHTHΣΗ ΜΕ ΟΝΟΜΑ   "  TextChanged="BRESPEL"  />

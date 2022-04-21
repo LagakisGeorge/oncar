@@ -47,8 +47,6 @@ namespace oncar
         }
 
 
-
-
         void Show_list_Eidon(string ono)
         {
             Monkeys = new List<Monkey>();
@@ -72,7 +70,7 @@ namespace oncar
 
 
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(EPO,'') AS PER,ifnull(THL,'') as THL,ID from PEL where EPO LIKE '%" + ono + "%'  order by EPO ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(EPO,'') AS PER,ifnull(THL,'') as THL,KINHTO,ID from PEL where EPO LIKE '%" + ono + "%'  order by EPO ; "; // +BARCODE.Text +"'";
                                                                                                                                                                                                           // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
@@ -85,7 +83,7 @@ namespace oncar
                     Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
 
                     Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
-                    ImageUrl = (r["THL"].ToString() + "            ").Substring(0, 9),
+                    ImageUrl = (r["THL"].ToString()+" "+ r["KINHTO"].ToString() + "                    ").Substring(0, 20),
                     idPEL = r["ID"].ToString()
                 });
 
@@ -103,30 +101,13 @@ namespace oncar
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private async void KATAX(object sender, EventArgs e)
+        private  void KATAX(object sender, EventArgs e)
         {
-            kataxorisi();
+            Kataxorisi();
         }
 
 
-        private async void kataxorisi()
+        private async void Kataxorisi()
         {
             string DD;
             bedit.IsEnabled = false;
@@ -159,8 +140,7 @@ namespace oncar
                 }
 
                 MainPage.ExecuteSqlite("UPDATE ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID=8");
-            }
-            else
+            }         else
             {
                 DD = LID.Text;
                 if (DD.Length == 0)
@@ -173,16 +153,17 @@ namespace oncar
             }
             try
             {
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EPO='" + EPO.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EPA='" + EPA.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET POL='" + POL.Text + "' WHERE KOD='" + DD + "'");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EPO='" + EPO.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EPA='" + EPA.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET POL='" + POL.Text + "' WHERE ID=" + DD + "");
 
-                MainPage.ExecuteSqlite("UPDATE PEL  SET DIE='" + DIE.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET THL='" + THL.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET TK='" + TK.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET KINHTO='" + KINHTO.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL='" + EMAIL.Text + "' WHERE KOD='" + DD + "'");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL2='" + EMAIL2.Text + "' WHERE KOD='" + DD + "'");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET DIE='" + DIE.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET THL='" + THL.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET TK='" + TK.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET KINHTO='" + KINHTO.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL='" + EMAIL.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL2='" + EMAIL2.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET MEMO='" + MEMO.Text + "' WHERE ID=" + DD + "");
             }
             catch
             {
@@ -221,7 +202,7 @@ namespace oncar
 
             EMAIL.Text = PARAGGELIES.ReadSQL("select IFNULL(EMAIL,'') AS EKTP2 FROM PEL WHERE ID=" + id);
             EMAIL2.Text = PARAGGELIES.ReadSQL("select IFNULL(EMAIL2,'') AS EKTP2 FROM PEL WHERE ID=" + id);
-
+            MEMO.Text = PARAGGELIES.ReadSQL("select IFNULL(MEMO,'') AS MEMO FROM PEL WHERE ID=" + id);
             bkatax.IsEnabled = true;
 
 
@@ -259,7 +240,7 @@ namespace oncar
 
 
 
-            kataxorisi();
+            Kataxorisi();
 
 
 
