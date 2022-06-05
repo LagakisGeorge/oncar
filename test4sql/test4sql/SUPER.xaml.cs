@@ -348,6 +348,21 @@ namespace test4sql
         private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
 
-        }
+            Monkey tappedItem = e.Item as Monkey;
+            // tappedItem.Location=>'00182'
+            //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
+            //if (fisEIDH == 0)
+            {
+                //  BRESafm.IsEnabled = false;
+                mono.Text = tappedItem.Name;
+                find_eid();
+
+            }
+
+
+
+
+
+            }
     }
 }

@@ -13,7 +13,7 @@ using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using Plugin.Toast;
 using System.Data.SqlClient;
 //<<<<<<< HEAD
-// ' using ZXing.Net.Mobile.Forms;
+// ' using ZXing.Net.Mobile.Forms;....
 //'=======
 using ZXing.Net.Mobile.Forms;
 //>>>>>>> 846966aea3c06d66db1f7d414f0bbcdce34bb4a5
@@ -26,7 +26,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 using Plugin.BLE;
 using Android.Bluetooth;
-using Java.Util;
+//using Java.Util;
 
 // using Android.OS;
 

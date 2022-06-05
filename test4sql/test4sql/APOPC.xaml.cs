@@ -94,7 +94,7 @@ namespace test4sql
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select "+SYNT+" ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA  FROM EID ", con);
+                SqlCommand cmd3 = new SqlCommand("select "+SYNT+ " ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA,ISNULL(XTI,0) AS MXTI  FROM EID ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                // List<string> MyList = new List<string>();
@@ -114,7 +114,15 @@ namespace test4sql
                     // MyList.Add(mF);
                     string mTYP = dt.Rows[k]["MLTI"].ToString();
                     mTYP = mTYP.Replace(",", ".");
-                 
+
+
+
+
+                    string mXTI = dt.Rows[k]["MXTI"].ToString();
+                    mXTI = mTYP.Replace(",", ".");
+
+
+
                     /* Monkeys.Add(new Monkey
                     {
                         Name = mF,
@@ -129,7 +137,7 @@ namespace test4sql
                     mERG = mERG.Replace("'", "`");
 
                     mTYP = mTYP.Replace(",", ".");
-                    int n2 = MainPage.ExecuteSqlite("insert into EID (XONDR,KOD,ONO,BARCODE,MON,FPA) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "','"+MMON+"',"+MFPA+");");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XTI,XONDR,KOD,ONO,BARCODE,MON,FPA) VALUES ("+mXTI+"," + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "','"+MMON+"',"+MFPA+");");
                 } // FOR
 
                 // watch.Stop();
