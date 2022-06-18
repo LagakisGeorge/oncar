@@ -83,7 +83,10 @@
                 Text="ΚΙΝΗΣΗ ΠΕΛΑΤΗ"
                 Clicked="fPELkin"
                  />
-
+        <Button x:Name="trapezia" 
+                Text="ΤΡΑΠΕΖΙΑ"
+                Clicked="ftrapezia"
+                 />
 
         <StackLayout Orientation="Horizontal" >
             

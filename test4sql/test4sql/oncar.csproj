@@ -22,11 +22,15 @@
 
   <ItemGroup>
     <Compile Remove="printingBT.xaml.cs" />
+    <Compile Remove="trapezia.xaml.cs" />
+    <Compile Remove="View1.xaml.cs" />
     <Compile Remove="ViewModels\PrintPageViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="printingBT.xaml" />
+    <EmbeddedResource Remove="trapezia.xaml" />
+    <EmbeddedResource Remove="View1.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
     <PackageReference Include="Mono.Data.Sqlite.Portable" Version="1.0.3.5" />
     <PackageReference Include="PCLStorage" Version="1.0.2" />
     <PackageReference Include="Plugin.BLE" Version="2.2.0-pre2" />
@@ -91,6 +96,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="SEPC.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="trapezia2.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

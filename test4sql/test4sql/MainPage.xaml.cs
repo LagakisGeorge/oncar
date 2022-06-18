@@ -43,6 +43,8 @@ namespace test4sql
             try
             {
                 int i = StartSqlite("");
+               
+
             }
             catch (Exception ex)
             {
@@ -1002,6 +1004,13 @@ NewMethod(e),
         private async void fPELkin(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Pelkin());
+        }
+
+        private async void ftrapezia(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new  trapezia2 ());
+
         }
     }  // public partial class MainPage : ContentPage
 

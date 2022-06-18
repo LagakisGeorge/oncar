@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using DLToolkit.Forms.Controls;
 
 namespace test4sql
 {
@@ -9,8 +10,9 @@ namespace test4sql
         public App()
         {
             InitializeComponent();
+            FlowListView.Init();
 
-          //  MainPage = new MainPage();
+            //  MainPage = new MainPage();
             MainPage = new NavigationPage(new MainPage ());
         }
 
