@@ -16,7 +16,7 @@ namespace oncar
         private void AddItems()
         {
             for (int i = 0; i < 40; i++)
-                Items.Add(string.Format("List Item at {0}", i));
+                Items.Add(string.Format("Τραπεζι {0}", i));
         }
 
         private ObservableCollection<string> _items = new ObservableCollection<string>();
@@ -42,7 +42,7 @@ namespace oncar
             {
                 return new Command((data) =>
                 {
-                    mainPage.DisplayAlert("FlowListView", data + "", "Ok");
+                    mainPage.DisplayAlert("Τραπέζι Νο ", data + "", "Ok");
                 });
             }
         }

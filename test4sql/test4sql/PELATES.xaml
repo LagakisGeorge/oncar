@@ -15,7 +15,7 @@
                    <Button Text="ΝΕΟΣ ΠΕΛΑΤΗΣ"   x:Name="bnew"  Clicked="NEWPEL" />
                    <Button Text="ΔΙΟΡΘΩΣΗ"   x:Name="bedit"  Clicked="EDITPEL" />
                    <Button Text="ΑΠΟΘΗΚΕΥΣΗ"  x:Name="bkatax" Clicked="KATAX" />
-                   <Label x:Name="LID" Text="" />
+                   <Label x:Name="LID"  Text="" />
 
                 </StackLayout>
 

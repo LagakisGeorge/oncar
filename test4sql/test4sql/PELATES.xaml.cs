@@ -29,20 +29,42 @@ namespace oncar
         public PELATES()
         {
             InitializeComponent();
-            bkatax.IsEnabled = false;
-           // EPO.IsEnabled = false;
+            bkatax.IsVisible = false;
+            diagpel.IsVisible = false;
+            antig.IsVisible = false;
+            bkin.IsVisible = false;
+            bedit.IsVisible = false;
+
+
+            // EPO.IsEnabled = false;
         }
 
         private void NEWPEL(object sender, EventArgs e)
         {
             bkatax.IsEnabled = true;
+            bkatax.IsVisible = true;
             bnew.IsEnabled = false;
-            bedit.IsEnabled = false;
+            bnew.BackgroundColor = Color.Green;
+            bedit.IsVisible  = false ; // IsEnabled = false;
 
         }
 
         private void EDITPEL(object sender, EventArgs e)
         {
+
+            bkatax.IsEnabled = true;
+            bkatax.IsVisible = true;
+            bnew.IsEnabled = false;
+            bnew.BackgroundColor = Color.Yellow ;
+            bedit.IsVisible = false; // IsEnabled = false;
+            diagpel.IsVisible = false;
+            antig.IsVisible = false;
+            bkin.IsVisible = false;
+
+
+
+
+
 
         }
 
@@ -101,9 +123,18 @@ namespace oncar
         }
 
 
-        private  void KATAX(object sender, EventArgs e)
+        private async void KATAX(object sender, EventArgs e)
         {
             Kataxorisi();
+            await DisplayAlert("Κατεχωρήθη", "", "ok");
+            bkatax.IsVisible =false;
+            bnew.IsEnabled = true;
+            bnew.BackgroundColor = Color.Gray ;
+
+
+
+
+            // bedit.IsVisible = true; // IsEnabled = false;
         }
 
 
@@ -113,7 +144,7 @@ namespace oncar
             bedit.IsEnabled = false;
            
 
-            if (bnew.IsEnabled == false) // προκειται για νεα εγγραφη
+            if (bnew.IsEnabled == false && bnew.BackgroundColor == Color.Green) // προκειται για νεα εγγραφη
             {
                 try
                 {
@@ -129,7 +160,7 @@ namespace oncar
 
                     MainPage.ExecuteSqlite("INSERT INTO PEL (KOD,EPO) VALUES ('" + DD + "','" + EPO.Text + "')");
 
-
+                    LID.Text  = PARAGGELIES.ReadSQL("select MAX(ID) FROM PEL ");
 
                 }
                 catch
@@ -140,8 +171,9 @@ namespace oncar
                 }
 
                 MainPage.ExecuteSqlite("UPDATE ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID=8");
-            }         else
-            {
+            }    
+            else
+            {   // diortosi
                 DD = LID.Text;
                 if (DD.Length == 0)
                 {   // den διαλεξα τιποτα
@@ -153,17 +185,17 @@ namespace oncar
             }
             try
             {
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EPO='" + EPO.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EPA='" + EPA.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET POL='" + POL.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EPO='" + EPO.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EPA='" + EPA.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET POL='" + POL.Text + "' WHERE ID="+DD);
 
-                MainPage.ExecuteSqlite("UPDATE PEL  SET DIE='" + DIE.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET THL='" + THL.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET TK='" + TK.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET KINHTO='" + KINHTO.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL='" + EMAIL.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL2='" + EMAIL2.Text + "' WHERE ID=" + DD + "");
-                MainPage.ExecuteSqlite("UPDATE PEL  SET MEMO='" + MEMO.Text + "' WHERE ID=" + DD + "");
+                MainPage.ExecuteSqlite("UPDATE PEL  SET DIE='" + DIE.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET THL='" + THL.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET TK='" + TK.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET KINHTO='" + KINHTO.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL='" + EMAIL.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET EMAIL2='" + EMAIL2.Text + "' WHERE ID="+DD);
+                MainPage.ExecuteSqlite("UPDATE PEL  SET MEMO='" + MEMO.Text + "' WHERE ID="+DD);
             }
             catch
             {
@@ -203,14 +235,16 @@ namespace oncar
             EMAIL.Text = PARAGGELIES.ReadSQL("select IFNULL(EMAIL,'') AS EKTP2 FROM PEL WHERE ID=" + id);
             EMAIL2.Text = PARAGGELIES.ReadSQL("select IFNULL(EMAIL2,'') AS EKTP2 FROM PEL WHERE ID=" + id);
             MEMO.Text = PARAGGELIES.ReadSQL("select IFNULL(MEMO,'') AS MEMO FROM PEL WHERE ID=" + id);
-            bkatax.IsEnabled = true;
+           
+            bkatax.IsVisible = false;  // IsEnabled = true;
+            bnew.IsVisible = false;
+            bedit.IsVisible = true;
+            bedit.IsEnabled  = true;
 
 
 
 
-
-
-             }
+        }
 
       
 

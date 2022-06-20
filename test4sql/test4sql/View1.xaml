@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             x:Class="oncar.View1">
+  <ContentView.Content>
+      <StackLayout>
+          <Label Text="Hello Xamarin.Forms!" />
+
+            <flv:FlowListView FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+	                  FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+	                  FlowItemsSource="{Binding Items}" >
+
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                        <Label HorizontalOptions="Fill" VerticalOptions="Fill" 
+			     	    XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+                    </DataTemplate>
+                </flv:FlowListView.FlowColumnTemplate>
+
+            </flv:FlowListView>
+
+
+
+
+
+
+
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>
