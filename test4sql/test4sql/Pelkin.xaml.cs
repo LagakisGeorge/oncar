@@ -67,6 +67,7 @@ namespace oncar
 
             ono = ono.ToUpper();
             var contents = connection.CreateCommand();
+
             contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(EPO,'') AS PER,ifnull(THL,'') as THL,ID from PEL where EPO LIKE '%" + ono + "%'  order by EPO ; "; // +BARCODE.Text +"'";
                                                                                                                                                                              // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
@@ -77,10 +78,10 @@ namespace oncar
 
                 Monkeys.Add(new Monkey
                 {
-                    Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
+                    Name = (r["PER"].ToString() + "                                   ").Substring(0, 28),
 
                     Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
-                    ImageUrl = (r["THL"].ToString() + "            ").Substring(0, 9),
+                    ImageUrl = (r["THL"].ToString() + "              ").Substring(0, 11),
                     idPEL = r["ID"].ToString()
                 });
 

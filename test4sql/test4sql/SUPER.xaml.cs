@@ -125,7 +125,7 @@ namespace test4sql
                     // await DisplayAlert("Scanned Barcode", result.Text, "OK");
                     BARCODE.Text = result.Text;
                    // Completed = "posothtaCompleted"
-                    find_eid();
+                    find_eid("0");
                 });
             };
 
@@ -221,7 +221,7 @@ namespace test4sql
 
         }
 
-        void find_eid() {
+        void find_eid(string fromTap) {
 
 
 
@@ -244,23 +244,32 @@ namespace test4sql
             // Open the database connection and create table with data
             connection.Open();
 
-           
 
 
 
 
+            string cc4 = "";
 
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            if (Globals.useBarcodes=="1") {
+
+            if (fromTap == "0")
+            {
+
+            
+              if (Globals.useBarcodes=="1") {
                 //contents.CommandText = "SELECT  E.ONO,E.XONDR,E.YPOL,E.BARCODE,E.KOD from EID E inner JOIN BARCODES B ON E.KOD=B.KOD   WHERE B.BARCODE like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
-                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
+                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
+              }
+              else {             
+                  contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE ONO like '%" + mono .Text + "%'  ; "; // +BARCODE.Text +"'";
+                 }
             }
             else
-            {             
-            contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE ONO like '%" + mono .Text + "%'  ; "; // +BARCODE.Text +"'";
+            {
+                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE ID=" + fromTap + "; ";
+
             }
-            
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
@@ -271,8 +280,9 @@ namespace test4sql
                
                 lkode.Text = r["KOD"].ToString();
                 lbarcode.Text = r["BARCODE"].ToString();  // ***
-
-                 cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
+                cc4=r["XTI"].ToString();
+                cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
+                xtimh.Text = "20-"+r["XTI"].ToString();
 
             }
             // r["ONO"].ToString();
@@ -325,7 +335,7 @@ namespace test4sql
 
                 Monkeys.Add(new Monkey
                 {
-                    Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
+                    Name = (r["PER"].ToString() + "                                     ").Substring(0, 30),
 
                     Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
                     ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),
@@ -355,7 +365,8 @@ namespace test4sql
             {
                 //  BRESafm.IsEnabled = false;
                 mono.Text = tappedItem.Name;
-                find_eid();
+                string mmid =tappedItem.idPEL;
+                find_eid(mmid);
 
             }
 

@@ -55,6 +55,12 @@
                      BackgroundColor="Green"
                
                  />
+            <Button x:Name="IMPBAR"
+                      Text="IMPORT BAR RESTAURANT"
+                       Clicked="SUBIMPBAR" 
+                     BackgroundColor="Green"
+               
+                 />
 
 
 

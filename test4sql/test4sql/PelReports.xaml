@@ -1,83 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="oncar.PELATES">
+             x:Class="oncar.PelReports">
     <ContentPage.Content>
         <StackLayout>
-            
-           <!--  <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-           -->
-            <Frame BorderColor="Orange"  CornerRadius="10"   HasShadow="True">
-              <StackLayout>
-                <StackLayout Orientation="Horizontal" >
-                   <Button Text="ΝΕΟΣ ΠΕΛΑΤΗΣ"   x:Name="bnew"  Clicked="NEWPEL" />
-                   <Button Text="ΔΙΟΡΘΩΣΗ"   x:Name="bedit"  Clicked="EDITPEL" />
-                   <Button Text="ΑΠΟΘΗΚΕΥΣΗ"  x:Name="bkatax" Clicked="KATAX" />
-                        <Label x:Name="LID"  Text="" />
-                        <Label x:Name="LIDtest"  Text="" />
+            <Label Text="Welcome to Xamarin.Forms!" 
 
-                    </StackLayout>
-
-               <StackLayout Orientation="Horizontal" >
-                <Button Text="Κινηση"   x:Name="bkin"  Clicked="newkin" />
-                <Button Text="Διαγ.Πελάτη"   x:Name="diagpel"  Clicked="Diagrpel" />
-                <Button Text="Αντιγραφή Πελ"   x:Name="antig"  Clicked="Antig" />
-
-
-               </StackLayout>
-              </StackLayout>
-            </Frame> 
-
-
-                <Frame BorderColor="Orange"  CornerRadius="10"   HasShadow="True">
-                <StackLayout>
-                    <Entry x:Name="EPO"
-                         Placeholder="ΕΠΩΝΥΜΟ ΟΝΟΜΑ    "   />
-
-                   <Entry x:Name="EPA"
-                         Placeholder="ΕΠΑΓΓΕΛΜΑ    "   />
-
-                   <Entry x:Name="DIE"
-                         Placeholder="ΔΙΕΥΘΥΝΣΗ    "   />
+            HorizontalOptions="CenterAndExpand" />
             
             <StackLayout Orientation="Horizontal" >
 
-                <Entry x:Name="POL"
-                   Placeholder="ΠΟΛΗ                "   />
-                   <Entry x:Name="TK"
-                   Placeholder="ΤΚ     "   />
-                <Entry x:Name="THL"
-                   Placeholder="ΤΗΛΕΦΩΝΟ    "   />
+                <Label Text="Από"  />
+                <DatePicker MinimumDate="01/01/2018"  FontSize="Small"
+                         MaximumDate="12/31/2025"
+                            x:Name="hmer1"
+                         Date="{Binding SelectedDate}" />
+
+                    <Label Text="Εως"  />
+
+                    <DatePicker MinimumDate="01/01/2018"  FontSize="Small"
+                         MaximumDate="12/31/2025"
+                            x:Name="hmer2"
+                         Date="{Binding SelectedDate}" />
+
+
+                <Button x:Name="reppelath" 
+                Text="REPORTS ΠΕΛΑΤΩΝ"
+                Clicked="fPELREP2" />
+
+
+
 
             </StackLayout>
-
-
-          
-            <StackLayout Orientation="Horizontal" >
-                
-                  <Entry x:Name="KINHTO"
-                   Placeholder="ΚΙΝΗΤΟ      "   />
-
-                 <Entry x:Name="EMAIL"
-                   Placeholder="EMAIL          "   />
-
-                 <Entry x:Name="EMAIL2"
-                   Placeholder="2ο EMAIL    "   />
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" >
-                <Entry x:Name="MEMO"  
-                Placeholder="ΣΧΟΛΙΑ    "/>
-            </StackLayout>
-
-                    </StackLayout>
-         </Frame> 
-
-
-                        <Entry x:Name="FEPO" BackgroundColor="Aquamarine"
-                   Placeholder="ANAZHTHΣΗ ΜΕ ΟΝΟΜΑ   "  TextChanged="BRESPEL"  />
-
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
                       HeightRequest="80"
@@ -92,9 +46,9 @@
                         <ViewCell>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="6*" />
+                                    <ColumnDefinition Width="5*" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition  Width="2*" />
+                                    <ColumnDefinition  Width="*" />
                                     <ColumnDefinition  Width="*"  />
                                 </Grid.ColumnDefinitions >
 
@@ -176,18 +130,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         </StackLayout>

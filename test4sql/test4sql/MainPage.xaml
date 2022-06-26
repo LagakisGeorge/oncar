@@ -19,23 +19,24 @@
    
 
         <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
+        <Label Text="Π ε λ α τ ο λ ό γ ι ο" 
            HorizontalOptions="Center"
             />
 
         <StackLayout Orientation="Horizontal" >
-           <Button Text="ΦΟΡΤΩΣΗ ΑΠΟ PC          "
+            <Button  x:Name="but1fort" Text="ΦΟΡΤΩΣΗ ΑΠΟ PC          "
                Clicked="Fortosh"
                 />
                 <!-- Clicked="Runsql"  -->
-        <Button Text="ΕΠΙΣΤΡΟΦΗ ΦΟΡΤΗΓΟΥ"
+            <Button  x:Name="but1EPIST"
+                     Text="ΕΠΙΣΤΡΟΦΗ ΦΟΡΤΗΓΟΥ"
                      Clicked="xtisimo"       
                 />
            
         </StackLayout>
-        
-        
-        <Button Text="ΤΙΜΟΛΟΓΗΣΗ"
+
+
+        <Button  x:Name="but1TIMOL" Text="ΤΙΜΟΛΟΓΗΣΗ"
                 Clicked="PARAGG" />
 
 
@@ -81,8 +82,16 @@
 
         <Button x:Name="kinpelath" 
                 Text="ΚΙΝΗΣΗ ΠΕΛΑΤΗ"
-                Clicked="fPELkin"
-                 />
+                Clicked="fPELkin"/>
+        <Button x:Name="reppelath" 
+                Text="REPORTS ΠΕΛΑΤΩΝ"
+                Clicked="fPELREP" />
+
+
+
+
+
+
         <Button x:Name="trapezia" 
                 Text="ΤΡΑΠΕΖΙΑ"
                 Clicked="ftrapezia"

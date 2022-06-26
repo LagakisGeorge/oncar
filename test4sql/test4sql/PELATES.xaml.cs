@@ -102,13 +102,22 @@ namespace oncar
 
                 Monkeys.Add(new Monkey
                 {
+                    Name = (r["PER"].ToString() + "                                   ").Substring(0, 28),
+
+                    Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
+                    ImageUrl = (r["THL"].ToString() + "              ").Substring(0, 11),
+                    idPEL = r["ID"].ToString()
+                });
+
+              /*  Monkeys.Add(new Monkey
+                {
                     Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
 
                     Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
                     ImageUrl = (r["THL"].ToString()+" "+ r["KINHTO"].ToString() + "                    ").Substring(0, 20),
                     idPEL = r["ID"].ToString()
                 });
-
+              */
 
 
             }
@@ -148,19 +157,19 @@ namespace oncar
             {
                 try
                 {
-                if (EPO.Text==null)
+                    if (EPO.Text==null)
                 
                     {
                       await  DisplayAlert("δεν συμπληρώσατε όνομα", "","ok");
                         return;
                     }
+                    string mmKod ;
+                    mmKod = PARAGGELIES.ReadSQL("select IFNULL(ARITMISI,0) AS EKTP2 FROM ARITMISI WHERE ID=8");
 
-                    DD = PARAGGELIES.ReadSQL("select IFNULL(ARITMISI,0) AS EKTP2 FROM ARITMISI WHERE ID=8");
 
+                    MainPage.ExecuteSqlite("INSERT INTO PEL (KOD,EPO) VALUES ('" + mmKod + "','" + EPO.Text + "')");
 
-                    MainPage.ExecuteSqlite("INSERT INTO PEL (KOD,EPO) VALUES ('" + DD + "','" + EPO.Text + "')");
-
-                    LID.Text  = PARAGGELIES.ReadSQL("select MAX(ID) FROM PEL ");
+                    DD  = PARAGGELIES.ReadSQL("select MAX(ID) FROM PEL ");
 
                 }
                 catch
@@ -218,6 +227,7 @@ namespace oncar
         {
 
             Monkey tappedItem = e.Item as Monkey;
+            LIDtest.Text = e.ItemIndex.ToString() ;
             LID.Text= tappedItem.idPEL;
             // tappedItem.Location=>'00182'
             //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
@@ -240,7 +250,9 @@ namespace oncar
             bnew.IsVisible = false;
             bedit.IsVisible = true;
             bedit.IsEnabled  = true;
-
+            antig.IsVisible = true;
+            diagpel.IsVisible = true;
+            diagpel.IsEnabled = true;
 
 
 
@@ -262,10 +274,15 @@ namespace oncar
                 await DisplayAlert("δεν διαλεξατε πελάτη", "", "ok");
                 return;
             }
-
+ 
                 bnew.IsEnabled = false;
+            bnew.BackgroundColor = Color.Green;
                 antig.IsEnabled = false;
                 bkatax.IsEnabled = false;
+            //  (bnew.IsEnabled == false && bnew.BackgroundColor == Color.Green) // προκειται για νεα εγγραφη
+            Kataxorisi();
+            bnew.BackgroundColor = Color.Gray ;
+
             await DisplayAlert("Η αντιγραφή έγινε", "", "ok");
             EPO.Text = "";
             EPA.Text = "";
@@ -274,7 +291,7 @@ namespace oncar
 
 
 
-            Kataxorisi();
+           
 
 
 
@@ -301,6 +318,13 @@ namespace oncar
 
                 MainPage.ExecuteSqlite("delete from PEL where  ID='" + LID.Text  + "'");
                 Show_list_Eidon(FEPO.Text);
+
+                diagpel.IsVisible = false;
+                diagpel.IsEnabled = false;
+
+
+                antig.IsVisible = false;
+                antig.IsEnabled = false;
 
             }
 

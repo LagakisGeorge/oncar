@@ -82,7 +82,10 @@
 
                 <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
                   Text="0"  />
-                <Label   x:Name="xtimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
+                <Label            Grid.Row="4" Grid.Column="2" FontSize="Large" 
+                  Text="0"  />
+
+                <Label   x:Name="xtimh"   Grid.Row="4" Grid.Column="3" FontSize="Large" 
                   Text="0"  
                    />
 

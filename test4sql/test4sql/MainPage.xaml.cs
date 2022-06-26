@@ -53,18 +53,45 @@ namespace test4sql
 
           try
             {
-            // DESKTOP-MPGU8SB\SQL17
-            string[] lines = Globals.cSQLSERVER.Split(';');
-            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
-
-       //     string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
-            // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
-            // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
-
-            con = new SqlConnection(constring);
-
            
+                
+
+
+                if  (Globals.cFORTHGO =="99")
+                {
+                    but1.IsVisible = false;
+                    but121.IsVisible = false;
+                    SUPER2.IsVisible = false;
+                    but1TIMOL.IsVisible = false;
+                    APOTHIKI.IsVisible = false;
+                   // param.IsVisible = false;
+                    trapezia.IsVisible = false;
+                    but1fort.IsVisible = false;
+                    but1EPIST.IsVisible = false;
+                    
+
+
+
+                }
+
+                // DESKTOP-MPGU8SB\SQL17
+                string[] lines = Globals.cSQLSERVER.Split(';');
+                string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+                //     string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+                // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+                // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+
+
+
+                con = new SqlConnection(constring);
+
+
                 con.Open();
+
+
+
             }
             catch (Exception ex)
             {
@@ -1010,6 +1037,12 @@ NewMethod(e),
         {
 
             await Navigation.PushAsync(new  trapezia2 ());
+
+        }
+
+        private async void fPELREP(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PelReports ());
 
         }
     }  // public partial class MainPage : ContentPage

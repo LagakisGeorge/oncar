@@ -119,7 +119,7 @@ namespace test4sql
 
 
                     string mXTI = dt.Rows[k]["MXTI"].ToString();
-                    mXTI = mTYP.Replace(",", ".");
+                    mXTI = mXTI.Replace(",", ".");
 
 
 

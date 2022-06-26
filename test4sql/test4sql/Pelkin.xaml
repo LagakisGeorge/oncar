@@ -23,7 +23,7 @@
                 <StackLayout Orientation="Horizontal">
                     <StackLayout Orientation="Horizontal">
                 <Label  x:Name="THL" />
-                <Label  x:Text="**" />
+                <Label  Text="**" />
                 <Label  x:Name="KINHTO" />
             </StackLayout>
                 
@@ -94,9 +94,9 @@
                         <ViewCell>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="6*" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="2*" />
                                     <ColumnDefinition  Width="*"  />
                                 </Grid.ColumnDefinitions >
 
@@ -109,7 +109,7 @@
 
                                 <Label Grid.Column="0" 
                                    Text="{Binding Name}"
-                                   FontAttributes="Bold" FontSize="Small" />
+                                   FontAttributes="Bold" FontSize="Micro"/>
                                 <Label 
                                     Grid.Column="1"
                                     
@@ -150,9 +150,9 @@
                             <ViewCell>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="6*" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition  Width="*" />
+                                        <ColumnDefinition  Width="2*" />
                                         <ColumnDefinition  Width="*"  />
                                     </Grid.ColumnDefinitions >
 
@@ -165,7 +165,7 @@
 
                                     <Label Grid.Column="0" 
                                    Text="{Binding Name}"
-                                   FontAttributes="Bold" FontSize="Small" />
+                                   FontAttributes="Bold" FontSize="Micro"/>
                                     <Label 
                                     Grid.Column="1"
                                     
