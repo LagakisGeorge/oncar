@@ -15,8 +15,8 @@
             <flv:FlowListView.FlowColumnTemplate>  
                 <DataTemplate>  
                     <Frame BackgroundColor="Purple"  
-                Margin="5">  
-                        <Label HorizontalOptions="Fill"   
+                    Margin="5">  
+                   <Label HorizontalOptions="Fill"   
                     VerticalOptions="Fill"   
                     TextColor="White"  
                     XAlign="Center"  

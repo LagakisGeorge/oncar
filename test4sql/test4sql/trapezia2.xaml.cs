@@ -17,7 +17,9 @@ namespace oncar
            // this.Navigation.PopAsync();
             //this.Navigation.RemovePage( );
             // toparagg();
-            Navigation.PushAsync(new trapparagg());  //imports
+
+
+         //   Navigation.PushAsync(new trapparagg());  //imports
 
         }
 
@@ -32,22 +34,10 @@ namespace oncar
         {
             MainPageModel tappedItem = e.Item as MainPageModel;
             Globals.gIDPARAGG = e.Item.ToString();
-            DisplayAlert("Τραπέζι Νο ",  "", "Ok");
+           // DisplayAlert("Τραπέζι Νο ", e.Item.ToString(), "Ok");
             await Navigation.PushAsync(new trapparagg());  //imports
         }
-        //{
-        //    for (int i = 0; i < 40; i++)
-        //        Monkeys.Add(new Monkey
-        //        {
-        //            Name = "11",
-
-        //            Location = "",
-        //            ImageUrl = "",
-        //            idPEL = ""
-        //        });
-        //    //  Items.Add(string.Format("Τραπεζι {0}", i));
-        //}
-
+  
 
 
 

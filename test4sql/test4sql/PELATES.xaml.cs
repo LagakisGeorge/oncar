@@ -23,8 +23,8 @@ namespace oncar
     public partial class PELATES : ContentPage
     {
 
-        public IList<Monkey> Monkeys { get; private set; }
-
+      
+  public IList<Monkey> Monkeys { get; private set; }
 
         public PELATES()
         {

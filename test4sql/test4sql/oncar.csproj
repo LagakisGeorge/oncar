@@ -61,6 +61,9 @@
     <Compile Update="Imports.xaml.cs">
       <DependentUpon>Imports.xaml</DependentUpon>
     </Compile>
+    <Compile Update="TrapEpil.xaml.cs">
+      <DependentUpon>TrapEpil.xaml</DependentUpon>
+    </Compile>
     <Compile Update="SUPER - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -77,6 +80,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Imports.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="TrapEpil.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="PARAGGELIES.xaml">

@@ -914,9 +914,9 @@ namespace test4sql
             }
 
 
-            MainPage.ExecuteSqlite("delete from EID;");
-            MainPage.ExecuteSqlite("delete from TIM;");
-            MainPage.ExecuteSqlite("delete from EGGTIM;");
+            MainPage.ExecuteSqlite("delete from TABLES;");
+            MainPage.ExecuteSqlite("delete from PARAGG;");
+            MainPage.ExecuteSqlite("delete from KATHG;");
 
             String SYNT = "";
           //  if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
@@ -986,3 +986,12 @@ namespace test4sql
         }
     }
 }
+
+
+
+
+
+
+           
+        
+ 

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"  
+             x:Class="oncar.trapeziEpil">
+    <ContentPage.Content>
+        <StackLayout>
+            
+
+
+            <StackLayout Orientation="Horizontal" >
+                <Button Text="OK"   x:Name="ok"  Clicked="okdone" />
+                <Label x:Name="LID"  Text="" />
+                <Button Text="+"   x:Name="syn"  Clicked="subplus" />
+                <Label x:Name="tem"  Text="" />
+                <Button Text="-"  x:Name="plin" Clicked="subminus" />
+                <Label x:Name="LID2"  Text="" />
+
+
+            </StackLayout>
+
+
+            <!--<flv:FlowListView x:Name="listy" FlowColumnCount="3" SeparatorVisibility="Default" HasUnevenRows="true">
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{Binding Name}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </flv:FlowListView.FlowColumnTemplate>
+            </flv:FlowListView>-->
+
+            <!--<ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                      HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+
+                <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                      
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition  Width="2*" />
+                                <ColumnDefinition  Width="*"  />
+                            </Grid.ColumnDefinitions >
+
+                            <Label Grid.Column="0" 
+                                   Text="{Binding Name}"
+                                    FontSize="Default" />
+                            <Label 
+                                    Grid.Column="1"
+                                    
+                                   Text="{Binding Location}"
+                                    />
+                            <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    Grid.Column="2"
+                                    />
+                            <Label                                    
+                                   Text="{Binding idPEL}"
+                                    Grid.Column="3"
+                                    />
+                        </Grid>
+                       
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            </ListView>-->
+
+            <StackLayout Padding="6">
+                <flv:FlowListView FlowColumnCount="3"   
+                SeparatorVisibility="Default"   
+                HasUnevenRows="True"  
+                FlowItemTapped="LISTXAR1"   
+                x:Name="listXAR1"
+             
+                FlowItemsSource="{Binding  Itemsx}">
+
+                    <flv:FlowListView.FlowColumnTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="Purple"  
+                            Margin="5">
+                                <Label HorizontalOptions="Fill"   
+                    VerticalOptions="Fill"   
+                    TextColor="White"  
+                    XAlign="Center"  
+                  
+                    Text="{Binding  }"/>
+                            </Frame>
+                        </DataTemplate>
+                    </flv:FlowListView.FlowColumnTemplate>
+                </flv:FlowListView>
+            </StackLayout>
+
+
+
+ <!--FlowItemTappedCommand="{Binding ItemTappedCommand}"--> 
+            <StackLayout Padding="6">
+                <flv:FlowListView FlowColumnCount="3"   
+                SeparatorVisibility="Default"   
+                 x:Name="listEIDH"                                 
+                HasUnevenRows="True"  
+                  FlowItemTapped="LISTEIDH"   
+                
+                FlowItemsSource="{Binding ItemsEidh}">
+                    <flv:FlowListView.FlowColumnTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="Black"
+                        Margin="5">
+                                <Label HorizontalOptions="Fill"   
+                    VerticalOptions="Fill"   
+                    TextColor="White"  
+                    XAlign="Center"  
+                  
+                    Text="{Binding }"/>
+                            </Frame>
+                        </DataTemplate>
+                        
+                        
+                        
+                        
+                    </flv:FlowListView.FlowColumnTemplate>
+                </flv:FlowListView>
+
+
+
+            </StackLayout>
+
+            <Label  Text="--------------------------" />
+
+
+           
+
+
+
+           
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

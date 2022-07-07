@@ -13,6 +13,8 @@ namespace test4sql
         public static string cSQLSERVER;
         public static string cFORTHGO;
         public static string gIDPARAGG;
+        public static string gKathg;
+        public static string gIDEIDOS;
         public static string GReadSQ(string Query)
         {
             string dbPath = Path.Combine(

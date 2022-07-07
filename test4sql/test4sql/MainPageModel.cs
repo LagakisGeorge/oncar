@@ -66,16 +66,22 @@ namespace oncar
 
         public Command ItemTappedCommand => new Command((data) =>
                                                           {
-                                                              mainPage.DisplayAlert("Τραπέζι Νο ", data + "", "Ok");
-                                                              Globals.gIDPARAGG = (string)data;
-                    // ClearItems(Items);
-                   // Items.Clear();
-                    // for (int i = 0; i < 40; i++)
-                    //    Items.Add(string.Format("Τραπ {0} table{0}", i));
-                  //  AddItems();
-
-
-
+                                                              //mainPage.DisplayAlert("Τραπέζι Νο ", data + "", "Ok");
+                                                              //Globals.gIDPARAGG = (string)data;
+                                                              //string[] lines = Globals.gIDPARAGG.Split(' ');
+                                                              //if (lines.Length > 1)
+                                                              //{
+                                                              //  Globals.gIDPARAGG = lines[1];
+                                                              //}
+                                                              //else
+                                                              //{
+                                                              //    Globals.gIDPARAGG = "0";
+                                                              //}
+                                                              //// ClearItems(Items);
+                                                              //// Items.Clear();
+                                                              //// for (int i = 0; i < 40; i++)
+                                                              //////    Items.Add(string.Format("Τραπ {0} table{0}", i));
+                                                              ////  AddItems();
                                                           });
     }
 }
