@@ -21,7 +21,7 @@ namespace oncar
 
         public IList<Monkey> Monkeys { get; private set; }
         public  MainXAR1PageModel pageModelx;
-
+        public int[] fIDEIDON =  new int[500];
         public  MainEIDHPageModel pageModel;
         public trapeziEpil()
         {
@@ -43,9 +43,57 @@ namespace oncar
 
         private async void okdone(object sender, EventArgs e)
         {
+            addParagg();
+            Globals.indexParaggLine = Globals.indexParaggLine + 1;
+            Globals.PARAGGlines[Globals.indexParaggLine, 0] = EIDOS.Text;
+            Globals.PARAGGlines[Globals.indexParaggLine, 1] = tem.Text;
+            Globals.PARAGGlines[Globals.indexParaggLine, 2] = "0";// tem.Text;
+            Globals.PARAGGlines[Globals.indexParaggLine, 3] = "0"; // tem.Text;
+            
+           
             await Navigation.PopAsync();
             //  App.Current.Mainpage.Navigation.PopModalAsync();
         }
+        
+        private void addParagg()
+        {
+
+
+            if (Globals.indexParaggLine == -1)  // νεα παραγγελια
+            {
+                Globals.ExecuteSQLServer("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
+                string cIDParagg = "";
+                cIDParagg =Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
+
+                Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
+
+
+          
+                Globals.gIDPARAGG = cIDParagg;
+            }
+            if (tem.Text.Length == 0)
+            {
+                tem.Text = "0";
+            }
+
+            Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1) VALUES ("+ Globals.gIDPARAGG + ",'" + Globals.gTrapezi+"','"+ EIDOS.Text +"',"+tem.Text +","+timh.Text.Replace(",",".")+",'"+PROSU.Text+"','',0)" );
+
+            //  cIDParagg = Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
+            // TA APLHRVTA  EINAI TO ΝUΜ1=0
+            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
+
+            Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA="+caji.Replace(",",".")+" WHERE   ID="+ Globals.gIDPARAGG +  ";");
+
+            Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+
+
+
+
+
+
+        }
+
+
 
         private void subplus(object sender, EventArgs e)
         {
@@ -130,34 +178,52 @@ namespace oncar
         {
             //  Show_list_Eidon();
 
-
+            // 
+            //string cID;
            // τσιμπαω αυτο που πατησε
             MainPageModel tappedItem = e.Item as MainPageModel;
             string c= e.Item.ToString();
+            //  EIDOS.Text = c;
 
 
-
-            string[] lines =c.Split(' ');
+            string[] lines =c.Split('*');
+            EIDOS.Text = lines[0];
+            timh.Text = lines[2];
+            Globals.gIDEIDOS = lines[1];
 
             // αδειο τρπαζζι  π.χ. 12 345
-            if (lines.Length > 1)
-            {
-                Globals.gIDEIDOS = lines[lines.Length-1];
+            //if (lines.Length > 1)
+            //{
+            //     
+            //    if (lines.Length == 2)
+            //    {
+            //        EIDOS.Text = lines[0] ;
+            //    }
+            //    else
+            //    {
+            //        if (lines.Length == 3)
+            //        {
+            //            EIDOS.Text = lines[0] + " " + lines[1];
+            //        }else
+            //        {  // 4 kai anv
+            //            EIDOS.Text = lines[0] + " " + lines[1] + " " + lines[2];
+            //        }                        
+            //    }                  
 
-            }
-            else
-            {
-                Globals.gKathg = "0";
-            }
+            //}
+            //else
+            //{
+            //    EIDOS.Text = lines[0];
+            //}
+
+            tem.Text = "1";
 
 
 
 
 
 
-
-
-           // Globals.gIDEIDOS = e.Item.ToString();
+          //  Globals.gIDEIDOS = cID ; // e.Item.ToString();
             // DisplayAlert("Τραπέζι Νο ", e.Item.ToString(), "Ok");
 
             pageModelx = new MainXAR1PageModel(this);
@@ -169,6 +235,39 @@ namespace oncar
 
         private void LISTXAR1(object sender, ItemTappedEventArgs e)
         {
+            // τσιμπαω αυτο που πατησε
+            MainXAR1PageModel tappedItem = e.Item as MainXAR1PageModel;
+            string c = e.Item.ToString();
+            string cID = "";
+
+            string[] lines = c.Split(' ');
+
+            // αδειο τρπαζζι  π.χ. 12 345
+            if (lines.Length > 1)
+            {
+                cID = lines[lines.Length - 1];
+                if (lines.Length == 2)
+                {
+                    PROSU.Text =PROSU.Text +" "+ lines[0];
+                }
+                else
+                {
+                    if (lines.Length == 3)
+                    {
+                        PROSU.Text = PROSU.Text +" "+ lines[0] + " " + lines[1];
+                    }
+                    else
+                    {  // 4 kai anv
+                        PROSU.Text = PROSU.Text +" "+ lines[0] + " " + lines[1] + " " + lines[2];
+                    }
+                }
+
+            }
+            else
+            {
+                PROSU.Text = PROSU.Text + lines[0];
+            }
+
 
         }
 
@@ -221,7 +320,7 @@ namespace oncar
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID FROM EIDH WHERE KATHG=" + Globals.gKathg +"  order by ONO ; ", con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID,TIMH FROM EIDH WHERE KATHG=" + Globals.gKathg +"  order by ONO ; ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
@@ -232,7 +331,9 @@ namespace oncar
                     fONO = dt.Rows[k]["ONO"].ToString();
                     string fID;
                     fID = dt.Rows[k]["ID"].ToString();
-                    ItemsEidh.Add(string.Format("{0}", fONO + " " + fID));
+                    string ft;
+                    ft = dt.Rows[k]["timh"].ToString();
+                    ItemsEidh.Add(string.Format("{0}", fONO + "*" + fID+"*"+ft));
 
 
 

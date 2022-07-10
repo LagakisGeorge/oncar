@@ -5,11 +5,7 @@
              x:Class="oncar.trapparagg">
 
 
-  <StackLayout>
-       
-
-
-
+    <StackLayout>
         <Label Text="Tραπέζι " 
                 x:Name="titlos" 
            HorizontalOptions="Center"
@@ -108,9 +104,10 @@
             <Label x:Name="tem"  Text="" />
             <Button Text="-"  x:Name="exod" Clicked="exodos" />
             <Label x:Name="LID2"  Text="" />
+          </StackLayout>  
+            <Button Text="ΠΛΗΡΩΜΗ"   x:Name="PLIROMIOL"  Clicked="PLIROMI" />
 
-
-        </StackLayout>
+       
 
 
     </StackLayout>

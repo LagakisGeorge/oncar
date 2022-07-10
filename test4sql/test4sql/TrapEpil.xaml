@@ -18,7 +18,16 @@
 
 
             </StackLayout>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" >
+                    <Label x:Name="EIDOS"  Text="---" />
+                    <Label x:Name="timh"  Text="0" />
+                </StackLayout>
+                <Label x:Name="PROSU"  Text="---" />
 
+
+
+            </StackLayout>
 
             <!--<flv:FlowListView x:Name="listy" FlowColumnCount="3" SeparatorVisibility="Default" HasUnevenRows="true">
                 <flv:FlowListView.FlowColumnTemplate>

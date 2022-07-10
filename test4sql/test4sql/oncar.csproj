@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="MainPageModel.cs" />
     <Compile Remove="Page2.xaml.cs" />
     <Compile Remove="printingBT.xaml.cs" />
     <Compile Remove="trapezia.xaml.cs" />
