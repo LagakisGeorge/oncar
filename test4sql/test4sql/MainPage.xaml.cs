@@ -43,7 +43,7 @@ namespace test4sql
             try
             {
                 int i = StartSqlite("");
-               
+
 
             }
             catch (Exception ex)
@@ -51,28 +51,58 @@ namespace test4sql
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
-          try
+            try
             {
-           
-                
 
 
-                if  (Globals.cFORTHGO =="99")
+
+
+                if (Globals.cFORTHGO == "99")  // PELATES
                 {
                     but1.IsVisible = false;
                     but121.IsVisible = false;
                     SUPER2.IsVisible = false;
                     but1TIMOL.IsVisible = false;
                     APOTHIKI.IsVisible = false;
-                   // param.IsVisible = false;
+                    // param.IsVisible = false;
                     trapezia.IsVisible = false;
                     but1fort.IsVisible = false;
                     but1EPIST.IsVisible = false;
-                    
+
 
 
 
                 }
+
+                if (Globals.cFORTHGO.Substring(0, 1) == "8")  // ΤΡΑΠΕΖΙΑ
+                {
+                    but1.IsVisible = false;
+                    but121.IsVisible = false;
+                    SUPER2.IsVisible = false;
+                    but1TIMOL.IsVisible = false;
+                    APOTHIKI.IsVisible = false;
+                    // param.IsVisible = false;
+                    trapezia.IsVisible = true;
+                    but1fort.IsVisible = false;
+                    but1EPIST.IsVisible = false;
+                    kinpelath.IsVisible = false;
+                    reppelath.IsVisible = false;
+                    PELATHS.IsVisible = false;
+                    Globals.gUserWaiter = Globals.cFORTHGO.Substring(1, 1);
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
 
                 // DESKTOP-MPGU8SB\SQL17
                 string[] lines = Globals.cSQLSERVER.Split(';');
@@ -151,9 +181,9 @@ namespace test4sql
             Globals.cIP = PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
-            Globals.useBarcodes  = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=1");
+            Globals.useBarcodes = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=1");
 
-            Globals.cFORTHGO  = PARAGGELIES.ReadSQL("select THL from MEM  where ID=1");
+            Globals.cFORTHGO = PARAGGELIES.ReadSQL("select THL from MEM  where ID=1");
 
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
 
@@ -316,9 +346,9 @@ namespace test4sql
             // String c3 = morecomplex();
         }
 
-        public async void Fortosh (object sender, EventArgs e){
+        public async void Fortosh(object sender, EventArgs e) {
 
-            await Navigation.PushAsync(new techn1 ());  //imports
+            await Navigation.PushAsync(new techn1());  //imports
 
 
         }
@@ -443,9 +473,9 @@ namespace test4sql
         private async void ToPage1(object sender, EventArgs e)
         {
 
-       
 
-             await Navigation.PushAsync(new Page1());
+
+            await Navigation.PushAsync(new Page1());
 
 
             // await Navigation.PushAsync(new Page2 { });
@@ -456,20 +486,20 @@ namespace test4sql
         {
 
             await Navigation.PushAsync(new Page2());  //imports
-           
+
         }
 
 
         private async void FSEARCH(object sender, EventArgs e)
         {
-          // but11.IsVisible = false;
+            // but11.IsVisible = false;
             await Navigation.PushAsync(new SUPER());  //imports
 
         }
 
         private async void FSEARCH2(object sender, EventArgs e)
         {
-           // but11.IsVisible = false;
+            // but11.IsVisible = false;
             await Navigation.PushAsync(new SUPER2());  //imports
 
         }
@@ -513,7 +543,7 @@ namespace test4sql
         }
 
         // ΑΝΟΙΓΕΙ ΑΠΟ SQLSERVER ΤΟ ΑΡΧΕΙΟ ΤΩΝ ΠΕΛΑΤΩΝ ΚΑΙ ΤΟ ΒΑΖΕΙ ΣΕ LISTVIEW
-        private async void SqlserverTableToListview (object sender, EventArgs e)
+        private async void SqlserverTableToListview(object sender, EventArgs e)
         {
 
             MainPage.ExecuteSqlite("delete from PEL;");
@@ -533,11 +563,11 @@ namespace test4sql
 
 
                 // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
-               // SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
-               // cmd.Connection = con;
-               // cmd.ExecuteNonQuery();
+                // SqlCommand cmd = new SqlCommand("UPDATE ARITMISI SET ARITMISI=9009 WHERE ID = 1");
+                // cmd.Connection = con;
+                // cmd.ExecuteNonQuery();
 
-                
+
                 //  DataSet ds = new DataSet();
 
                 //  SqlCommand cmd2 = new SqlCommand("select * FROM PEL", con);
@@ -556,7 +586,7 @@ namespace test4sql
                 adapter2.Fill(dt);
                 List<string> MyList = new List<string>();
                 int k = 0;
-                for ( k = 0; k <= dt.Rows.Count -1; k++)
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
                     String mF = dt.Rows[k]["EPO"].ToString();
                     MyList.Add(mF);
@@ -568,24 +598,24 @@ namespace test4sql
                         Name = mF,
 
                         Location = dt.Rows[k]["DIE"].ToString(),
-                        ImageUrl = mTYP , // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
                         idPEL = dt.Rows[k]["ID"].ToString()
                     }); ;
 
-                       
+
                     string mKOD = dt.Rows[k]["kod"].ToString();
                     string mDIE = dt.Rows[k]["die"].ToString();
                     string mAFM = dt.Rows[k]["afm"].ToString();
-                  
+
                     mTYP = mTYP.Replace(",", ".");
-                    int n2 = MainPage.ExecuteSqlite("insert into PEL (TYP,KOD,EPO,DIE,AFM) VALUES ("+mTYP+",'" + mKOD + "','" + mF + "','" +mDIE + "','"+mAFM+"');");
+                    int n2 = MainPage.ExecuteSqlite("insert into PEL (TYP,KOD,EPO,DIE,AFM) VALUES (" + mTYP + ",'" + mKOD + "','" + mF + "','" + mDIE + "','" + mAFM + "');");
 
 
 
 
 
                 } // FOR
-                await DisplayAlert("ΠΕΛΑΤΕΣ",""+dt.Rows.Count, "OK");
+                await DisplayAlert("ΠΕΛΑΤΕΣ", "" + dt.Rows.Count, "OK");
 
                 BindingContext = this;
 
@@ -610,7 +640,7 @@ namespace test4sql
 
 
             // Ethernet or WiFi
-        //    var printer = new NetworkPrinter(ipAddress: "192.168.1.80", port: 9000, reconnectOnTimeout: true);
+            //    var printer = new NetworkPrinter(ipAddress: "192.168.1.80", port: 9000, reconnectOnTimeout: true);
 
             /*
             var e = new EPSON();
@@ -675,14 +705,14 @@ NewMethod(e),
         private async void asSqlserverTοSQLITE(object sender, EventArgs e)
         {
 
-            await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη  " , "OK");
+            await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη  ", "OK");
             Task<int> task = new Task<int>(Imp_EIDH);
             // IMPORTEID.Text = "*** ΠΑΡΑΚΑΛΩ ΠΕΡΙΜΕΝΕΤΕ 3λεπτά*****";
-             task.Start();
-             int count = await task;
+            task.Start();
+            int count = await task;
 
-             // IMPORTEID.Text = count.ToString();
-             await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη που περάσ "+count.ToString (), "OK");
+            // IMPORTEID.Text = count.ToString();
+            await DisplayAlert("--Εναρξη μεταφοράς ειδών", "Είδη που περάσ " + count.ToString(), "OK");
             BindingContext = this;
 
 
@@ -710,17 +740,17 @@ NewMethod(e),
 
 
 
-          //  int count2= Imp_BARCODES();
+            //  int count2= Imp_BARCODES();
 
 
 
-          Task<int> task = new Task<int>(Imp_BARCODES);
-          task.Start();
+            Task<int> task = new Task<int>(Imp_BARCODES);
+            task.Start();
 
-              int count2 = await task;
+            int count2 = await task;
 
             // IMPORTEID.Text = count.ToString();
-               await DisplayAlert("--Εναρξη μεταφοράς BARCODES", "    barcodes που περάστηκαν " + count2.ToString(), "OK");
+            await DisplayAlert("--Εναρξη μεταφοράς BARCODES", "    barcodes που περάστηκαν " + count2.ToString(), "OK");
 
         }
 
@@ -750,9 +780,9 @@ NewMethod(e),
             int nc = 0;
             MainPage.ExecuteSqlite("delete from EID;");
 
-          //  return 1; //debug
+            //  return 1; //debug
 
-         //   but11.Text = "sss";
+            //   but11.Text = "sss";
             //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             // using (SqlConnection con = new SqlConnection(constring))
@@ -768,7 +798,7 @@ NewMethod(e),
                 int k = 0;
                 for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
-                   // Thread.Sleep(500);
+                    // Thread.Sleep(500);
                     String mF = dt.Rows[k]["MONO"].ToString();
                     mF = mF.Replace("'", "`");
                     MyList.Add(mF);
@@ -801,9 +831,9 @@ NewMethod(e),
                 // watch.Stop();
                 //  var elapsedMs = watch.ElapsedMilliseconds;
 
-               // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
 
-              //  BindingContext = this;
+                //  BindingContext = this;
 
 
 
@@ -812,7 +842,7 @@ NewMethod(e),
             }
             catch (Exception ex)
             {
-               // await DisplayAlert("Error", ex.ToString(), "OK");
+                // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
 
@@ -849,7 +879,7 @@ NewMethod(e),
             // {
             try
             {
-               
+
                 DataTable dt = new DataTable();
                 SqlCommand cmd3 = new SqlCommand("select   isnull(KOD,'') AS MKOD,ISNULL(ERG,'') AS MERG  FROM BARCODES ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
@@ -858,7 +888,7 @@ NewMethod(e),
                 int k = 0;
                 for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
-                    
+
 
 
                     string mKOD = dt.Rows[k]["MKOD"].ToString();
@@ -866,7 +896,7 @@ NewMethod(e),
                     string mERG = dt.Rows[k]["MERG"].ToString();
                     mERG = mERG.Replace("'", "`");
 
-                 
+
                     int n2 = MainPage.ExecuteSqlite("insert into BARCODES (KOD,BARCODE) VALUES ('" + mKOD + "','" + mERG + "');");
 
 
@@ -876,13 +906,7 @@ NewMethod(e),
                 } // FOR
                 nc = dt.Rows.Count;
 
-                // watch.Stop();
-                //  var elapsedMs = watch.ElapsedMilliseconds;
-
-                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
-
-                //  BindingContext = this;
-
+          
 
 
 
@@ -910,10 +934,10 @@ NewMethod(e),
             // var watch = System.Diagnostics.Stopwatch.StartNew();
             // the code that you want to measure comes here
 
-           // Device.BeginInvokeOnMainThread(async () =>
-          //  {
-         //       await DisplayAlert("Alert", "No internet connection", "Ok");
-         //   });
+            // Device.BeginInvokeOnMainThread(async () =>
+            //  {
+            //       await DisplayAlert("Alert", "No internet connection", "Ok");
+            //   });
 
 
 
@@ -922,7 +946,7 @@ NewMethod(e),
 
 
 
-          //  but11.Text = "sss";
+            //  but11.Text = "sss";
             //  string constring = @"Data Source=192.168.1.3,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
             // using (SqlConnection con = new SqlConnection(constring))
@@ -966,8 +990,8 @@ NewMethod(e),
 
                 } // FOR
 
-               // watch.Stop();
-              //  var elapsedMs = watch.ElapsedMilliseconds;
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
 
                 await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
 
@@ -982,7 +1006,7 @@ NewMethod(e),
             {
                 await DisplayAlert("Error", ex.ToString(), "OK");
             }
-           
+
         }
 
 
@@ -1000,11 +1024,11 @@ NewMethod(e),
                 Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
 
             }
-                connection = new SqliteConnection("Data Source=" + dbPath);               
-                // Open the database connection and create table with data
-                connection.Open();
-            var c = connection.CreateCommand() ;
-            c.CommandText  = Query;
+            connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            var c = connection.CreateCommand();
+            c.CommandText = Query;
 
             var rowcount = c.ExecuteNonQuery(); // rowcount will be 1
             return rowcount;
@@ -1013,12 +1037,12 @@ NewMethod(e),
         private async void fAPOTHIKI(object sender, EventArgs e)
         {
 
-          //  private async void fparam(object sender, EventArgs e)
-            
+            //  private async void fparam(object sender, EventArgs e)
 
-                await Navigation.PushAsync(new SUPER()) ;  //imports
 
-            
+            await Navigation.PushAsync(new SUPER());  //imports
+
+
         }
 
         private async void fPELATHS(object sender, EventArgs e)
@@ -1035,16 +1059,242 @@ NewMethod(e),
 
         private async void ftrapezia(object sender, EventArgs e)
         {
+            DataTable dt2 = new DataTable();
 
-            await Navigation.PushAsync(new  trapezia2 ());
+            dt2 = trapparagg.ReadSQLServer("SELECT str(isnull(MAX(ID),0)) as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString());
+            string cc = dt2.Rows[0]["aa"].ToString();
+            int n = Int32.Parse(cc);
+
+            if (n == 0)
+            {
+                Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+            }
+            else
+            {
+
+
+                DataTable dt3 = trapparagg.ReadSQLServer("SELECT * FROM BARDIA WHERE ID= " + cc);
+                if (dt3.Rows[0]["ISOPEN"].ToString() == "1")
+                {
+                    Globals.gIDBARDIA = dt3.Rows[0]["ID"].ToString();
+
+                }
+                else
+                {
+                    Globals.gIDBARDIA = "0";
+                    await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ", "   ", "OK");
+                    return;
+                }
+
+
+
+            }
+
+
+            await Navigation.PushAsync(new trapezia2());
+
+
+
 
         }
 
         private async void fPELREP(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new PelReports ());
+            await Navigation.PushAsync(new PelReports());
 
         }
+
+        private async void fCloseVardia(object sender, EventArgs e)
+        {
+
+            DataTable dt2 = new DataTable();
+            // ΒΡΕΣ ΤΗΝ ΤΕΛΕΥΤΑΙΑ ΒΑΡΔΙΑ ΤΟΥ ΣΕΡΒΙΤΟΡΟΥ ν
+            dt2 = trapparagg.ReadSQLServer("SELECT top 1 * FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString()+" order by  ID DESC");
+      
+
+            if (dt2.Rows.Count  == 0)
+            {
+                Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + "0" + ", " + Globals.gUserWaiter.ToString() + ")");
+                //   Globals.gIDBARDIA = cc;
+                await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ.ΤΩΡΑ ΜΟΛΙΣ ΑΝΟΙΞΕ ΝΕΑ", "   ", "OK");
+                return;
+            }
+            else // βρηκε βαρδια να δω αν ειναι ανοιχτη
+            {
+
+                string cc = dt2.Rows[0]["ISOPEN"].ToString();
+                int n = Int32.Parse(cc);
+                if (n == 0)
+                {
+                    await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ ΓΙΑ ΝΑ ΚΛΕΙΣΕΙ.", "   ", "OK");
+
+                    var action = await DisplayAlert("ΕΝΑΡΞΗ ΝΕΑΣ ΒΑΡΔΙΑΣ;", "Εισαι σίγουρος?", "Ναι", "Οχι");
+                    if (action)
+                    {
+                        Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+                        //   Globals.gIDBARDIA = cc;
+                        await DisplayAlert("ΜΟΛΙΣ ΑΝΟΙΞΕ ΝΕΑ", "   ", "OK");
+                        return;
+                    }
+                    else
+                    {
+                        return;
+                    }                   
+                }
+            }
+
+
+
+
+   Single CASHTOT = 0;
+
+
+            if (Globals.gIDBARDIA == "0")
+            {
+                await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ", "   ", "OK");
+                return;
+
+            }
+            else
+            {
+                DataTable DT;
+                DT = trapparagg.ReadSQLServer("SELECT Sum(isnull(AJIA,0)) AS JJ , isnull(TROPOS,2) as TROPOS  FROM PARAGGMASTER GROUP BY TROPOS,IDBARDIA  HAVING  IDBARDIA=" + Globals.gIDBARDIA);
+
+                string mm="-------";
+                // string[] CASH;
+             
+                for (int K = 0; K <= DT.Rows.Count - 1; K++)
+                {
+                    if (DT.Rows[K]["jj"].ToString() == "0") {
+
+                    }
+                    else
+                    {
+                        string Tropos = "";
+                        if (DT.Rows[K]["tropos"].ToString() == "1")
+                        {
+                            Tropos = "μετρητα";
+                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH1="+ DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                        }
+                        if (DT.Rows[K]["tropos"].ToString() == "2")
+                        {
+                            Tropos = "καρτα1";
+                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH2=" + DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                        }
+                        if (DT.Rows[K]["tropos"].ToString() == "3")
+                        {
+                            Tropos = "μετρητα";
+                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH3=" + DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                        }
+                        if (DT.Rows[K]["tropos"].ToString() == "4")
+                        {
+                            Tropos = "μετρητα";
+                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH4=" + DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                        }
+
+                        
+
+
+                       mm = mm +Tropos+ " => " +DT.Rows [K]["JJ"].ToString()+ "\r\n";
+                     if ( Int32.Parse(DT.Rows[K]["tropos"].ToString()) < 5 )
+                        {
+
+                        }
+                        //   CASH(DT(K)(1)) = DT(K)(0).ToString
+                        CASHTOT = CASHTOT + float.Parse( DT.Rows[K]["JJ"].ToString());
+                    //End If
+                    }
+
+                }  //for 
+
+                  List<string> myText = new List<string>();
+                myText.Add("=================================" + "\r\n");
+                myText.Add(PARAGGELIES.toGreek(mm));
+                printing(myText);
+
+
+            }
+
+
+
+
+            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + CASHTOT.ToString().Replace (",",".") + ", CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID="  +Globals.gIDBARDIA);
+
+               //For K = 1 To 5
+               //     If CASH(K) = Nothing Then
+               //     Else
+
+               //         If Val(CASH(K)) > 0 Then
+               //             ExecuteSQLQuery("UPDATE BARDIA SET CASH" + Format(K, "0") + "=" + CASH(K) + " WHERE ID=" + Str(gBardia), DT2)
+               //         End If
+
+               //     End If
+               // Next
+
+
+
+
+
+
+
+
+
+        }
+
+
+        private async void printing(List<string> myText) //  object sender, EventArgs e)
+        {
+            string ipAddress = "192.168.1.120";
+            int portNumber = 9100;
+           // List<string> myText = new List<string>();
+            //  {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
+            //DataTable dt = ReadSQLServer("SELECT  ISNULL(ONO,'') AS ONO, POSO, TIMH,ID,ISNULL(PROSUETA,'') AS PROSUETA  FROM PARAGG where IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+            // Monkeys.Add(new Monkey
+            //myText.Add(PARAGGELIES.toGreek("*******  TΡΑΠΕΖΙ " + Globals.gTrapezi) + " *********");
+
+            //for (int k = 0; k <= dt.Rows.Count - 1; k++)
+            //{
+            //    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString()));
+            //    myText.Add(PARAGGELIES.toGreek(dt.Rows[k]["PROSUETA"].ToString()));
+            //}
+
+
+            var printer = DependencyService.Get<test4sql.iPrinter>();
+            if (printer == null)
+            {
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                return;
+
+            }
+            try
+            {
+                printer.Print(ipAddress, portNumber, myText);
+            }
+            catch
+            {
+                await DisplayAlert("error2", "", "");
+            }
+
+        }
+
+
+
+
+
     }  // public partial class MainPage : ContentPage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }  // namespace

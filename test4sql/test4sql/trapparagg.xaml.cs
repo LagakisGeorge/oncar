@@ -25,7 +25,7 @@ namespace oncar
     {
         Main2PageModel pageModel;
         public SqlConnection con;
-       
+
         public IList<Monkey> Monkeys { get; private set; }
         public IList<Monkey2> Monkeys2 { get; private set; }
         public string trapezi;
@@ -34,46 +34,18 @@ namespace oncar
         public trapparagg()
         {
             InitializeComponent();
-            Globals.gtIDPARAGG=Globals.gtIDPARAGG.Replace("#", "");
+            Globals.gtIDPARAGG = Globals.gtIDPARAGG.Replace("#", "");
             //  Items.Add(string.Format(" {0} ", fkat + fONO + "*" + fID+"*"+CH1));
             string[] lines = Globals.gtIDPARAGG.Split('*');
             Globals.gTrapezi = lines[0];
-            Globals.gTrapezi=Globals.gTrapezi.TrimStart();
-            Globals.gTrapezi= Globals.gTrapezi.TrimEnd();
+            Globals.gTrapezi = Globals.gTrapezi.TrimStart();
+            Globals.gTrapezi = Globals.gTrapezi.TrimEnd();
             Globals.gIDPARAGG = lines[1];
             titlos.Text = "Τραπέζι: " + Globals.gTrapezi;
 
 
 
-            //if (lines[0].Substring(0,1) == "#")
-            //{     // οχι αδειο τρπαζζι  π.χ. # 12 345
-            //    if (lines.Length > 3)
-            //    {
-            //        IDPARAGG = lines[3];
-            //        trapezi = lines[2];
-            //        titlos.Text = "Τραπέζι: " + trapezi;
-            //        Show_listsql_Paragg(IDPARAGG);
-            //    }
-            //    else
-            //    {
-            //        IDPARAGG = "0";
-            //        trapezi = "0";
-            //    }
-            //}
-            //else
-            //{              // αδειο τρπαζζι  π.χ. 12 345
-            //    if (lines.Length > 2)
-            //    {
-            //        IDPARAGG = lines[2];
-            //        trapezi = lines[1];
-            //        titlos.Text = "Τραπέζι: " + trapezi;
-            //        Show_listsql_Paragg(IDPARAGG);
-            //    }
-            //    else
-            //    {
-            //        IDPARAGG = "0";
-            //        trapezi = "0";
-            //    }
+          
 
             //}
             //  Globals.gTrapezi = trapezi;
@@ -90,7 +62,7 @@ namespace oncar
         {
             base.OnAppearing();
 
-          //  Globals.gTrapezi = "";
+            //  Globals.gTrapezi = "";
 
             Show_listsql_Paragg(Globals.gIDPARAGG);
             pageModel = new Main2PageModel(this);
@@ -173,9 +145,9 @@ namespace oncar
 
 
             Monkey tappedItem = e.Item as Monkey;
-         //   LIDtest.Text = e.ItemIndex.ToString();
-             string cc = tappedItem.idPEL;
-             string mc = tappedItem.Name ;
+            //   LIDtest.Text = e.ItemIndex.ToString();
+            string cc = tappedItem.idPEL;
+            string mc = tappedItem.Name;
             //Location = mTimh,
             //           ImageUrl = mPoso
 
@@ -184,11 +156,11 @@ namespace oncar
 
             string[] lines = cc.Split('~');
 
-            if (action.Substring(0, 1) == "3") 
+            if (action.Substring(0, 1) == "3")
             {
                 if (cc.Substring(0, 2) == "**")
                 {
-                    await DisplayAlert("αδυνατη η διαγραφή","εγινε πληρωμή", "OK");
+                    await DisplayAlert("αδυνατη η διαγραφή", "εγινε πληρωμή", "OK");
                 }
                 else
                 {
@@ -198,8 +170,8 @@ namespace oncar
 
             if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2")
             {
-               
-                Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**'+ONO , NUM1="+ action.Substring(0, 1) +" WHERE ID=" + lines[1]);
+
+                Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + lines[1]);
             }
 
 
@@ -208,9 +180,9 @@ namespace oncar
             // ΑΞΙΑ ΗΔΗ ΠΛΗΡΩΜΕΝΩΝ
             string cPLIR = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
 
-            Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".")+",NUM1="+ cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
+            Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".") + ",NUM1=" + cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
 
-           // Globals.ExecuteSQLServer("update PARAGGMASTER SET NUM1=" + caji.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
+            // Globals.ExecuteSQLServer("update PARAGGMASTER SET NUM1=" + caji.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
 
             Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
             Show_listsql_Paragg(Globals.gIDPARAGG);
@@ -223,19 +195,19 @@ namespace oncar
 
 
             string[] lines = Globals.gKathg.Split(' ');
-           
-                         // αδειο τρπαζζι  π.χ. 12 345
-                if (lines.Length > 1)
-                {
-                     Globals.gKathg = lines[1];
-                   
-                }
-                else
-                {
-                     Globals.gKathg = "0";
-                }
 
-            
+            // αδειο τρπαζζι  π.χ. 12 345
+            if (lines.Length > 1)
+            {
+                Globals.gKathg = lines[1];
+
+            }
+            else
+            {
+                Globals.gKathg = "0";
+            }
+
+
 
 
 
@@ -243,7 +215,7 @@ namespace oncar
 
 
             // DisplayAlert("Τραπέζι Νο ", e.Item.ToString(), "Ok");
-            await Navigation.PushAsync(new trapeziEpil ());  //imports
+            await Navigation.PushAsync(new trapeziEpil());  //imports
 
 
 
@@ -286,10 +258,20 @@ namespace oncar
         {
             string ipAddress = "192.168.1.120";
             int portNumber = 9100;
-            List<string> myText = new List<string>()
-            {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
+            List<string> myText = new List<string>();
+            //  {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
+            DataTable dt = ReadSQLServer("SELECT  ISNULL(ONO,'') AS ONO, POSO, TIMH,ID,ISNULL(PROSUETA,'') AS PROSUETA  FROM PARAGG where IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+            // Monkeys.Add(new Monkey
+            myText.Add(PARAGGELIES.toGreek("*******  TΡΑΠΕΖΙ " +Globals.gTrapezi) +" *********" );
 
-            var printer = DependencyService.Get<test4sql.iPrinter>();
+            for (int k = 0; k <= dt.Rows.Count - 1; k++)
+            {
+                myText.Add(dt.Rows[k]["POSO"].ToString()+" "+ PARAGGELIES.toGreek( dt.Rows[k]["ONO"].ToString() ) +" " + dt.Rows[k]["TIMH"].ToString());
+                myText.Add(PARAGGELIES.toGreek( dt.Rows[k]["PROSUETA"].ToString())     );
+            }
+
+
+                var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
                 await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
@@ -359,6 +341,59 @@ NewMethod(e),
 
 
         }
+
+
+
+
+
+
+
+ public static DataTable ReadSQLServer(string cSQL)
+
+        {
+            DataTable dt = new DataTable();
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                //  await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return dt;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+
+
+            // private SqlConnection con;
+            SqlConnection con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+try
+{
+    //Monkeys = new List<Monkey>();
+    Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
+   
+    SqlCommand cmd3 = new SqlCommand(cSQL , con);
+    var adapter2 = new SqlDataAdapter(cmd3);
+    adapter2.Fill(dt);
+  
+}
+catch (Exception ex)
+{
+    //await DisplayAlert("Error", ex.ToString(), "OK");
+}
+            return dt;
+}
+        
+
+
+
 
 
 

@@ -96,6 +96,10 @@
                 Text="ΤΡΑΠΕΖΙΑ"
                 Clicked="ftrapezia"
                  />
+        <Button x:Name="vardia" 
+                Text="ΚΛΕΙΣΙΜΟ ΒΑΡΔΙΑΣ"
+                Clicked="fCloseVardia"
+                 />
 
         <StackLayout Orientation="Horizontal" >
             

@@ -164,6 +164,7 @@ namespace test4sql
 
         public static string toGreek(string Q)
         {
+            Q = Q.ToUpper();
             string t = "";
             for (int k = 1; k <= Q.Length ; k +=  1)
             {

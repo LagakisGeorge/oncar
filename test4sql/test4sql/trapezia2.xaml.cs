@@ -18,7 +18,7 @@ namespace oncar
             InitializeComponent();
             //  pageModel = new MainPageModel(this);
             //  BindingContext = pageModel;
-              Globals.gIDBARDIA = "1"; // αυθαιρετα μεχρι να ορισω βαρδιεσ
+           //   Globals.gIDBARDIA = "1"; // αυθαιρετα μεχρι να ορισω βαρδιεσ
            // this.Navigation.PopAsync();
            //this.Navigation.RemovePage( );
            // toparagg();
@@ -115,7 +115,7 @@ namespace oncar
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES; ", con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES WHERE NUM1="+ Globals.gUserWaiter, con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();

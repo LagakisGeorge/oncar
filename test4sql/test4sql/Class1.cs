@@ -22,6 +22,9 @@ namespace test4sql
         public static string gKathg;
         public static string gIDEIDOS;
         public static string gTrapezi;
+        public static string gUserWaiter;
+
+
         public static string GReadSQ(string Query)
         {
             string dbPath = Path.Combine(
