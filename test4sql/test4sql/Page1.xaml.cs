@@ -830,6 +830,21 @@ namespace test4sql
                     }
                 }
                 MainPage.ExecuteSqlite("delete from EGGTIM where ATIM='"+mATIM +"'");
+
+                string PLIROMI = PARAGGELIES.ReadSQL("select IFNULL(TRP,' ') FROM TIM WHERE ATIM='" + mATIM + "'");  //  EIDOS='" + ATIM.Text.Substring(0, 1) + "'");
+
+                if (PLIROMI.Substring(0,1)=="Π")
+                {
+                    string axia = PARAGGELIES.ReadSQL("select IFNULL(AJI,0) FROM TIM WHERE ATIM='" + mATIM + "'");
+                    MainPage.ExecuteSqlite("UPDATE PEL SET TYP=TYP-" + axia.Replace(",", "."));
+                }
+                else
+                {
+
+                }
+
+
+
                 MainPage.ExecuteSqlite("delete from    TIM where ATIM='" + mATIM + "'");
                 await DisplayAlert("διαγραφτηκε", "", "OK");
                 Show_list();

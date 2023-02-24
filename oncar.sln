@@ -13,6 +13,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "oncar", "test4sql\test4sql\oncar.csproj", "{A761D44D-9092-498B-AACE-3834401FF4E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2CCA399-BBD5-471D-9439-CB0B97818ECE}"
+	ProjectSection(SolutionItems) = preProject
+		help.txt = help.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

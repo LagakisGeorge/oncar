@@ -25,6 +25,12 @@ namespace test4sql
         public static string gUserWaiter;
 
 
+
+
+
+        public static string cIPPR1;
+        public static string cIPPR2;
+
         public static string GReadSQ(string Query)
         {
             string dbPath = Path.Combine(
@@ -91,6 +97,7 @@ namespace test4sql
 
                 string ret;
                 ret= dt.Rows[0][0].ToString();
+                con.Close();
                 return ret;
         
     
@@ -101,7 +108,7 @@ namespace test4sql
                 // await DisplayAlert("Error", ex.ToString(), "OK");
           }
 
-               con.Close();
+               
             
         }
 

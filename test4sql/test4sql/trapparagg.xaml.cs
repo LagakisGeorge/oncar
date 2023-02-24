@@ -30,6 +30,7 @@ namespace oncar
         public IList<Monkey2> Monkeys2 { get; private set; }
         public string trapezi;
         public string IDPARAGG;
+        public Single fypol = 0;
 
         public trapparagg()
         {
@@ -156,8 +157,20 @@ namespace oncar
 
             string[] lines = cc.Split('~');
 
+            string cTYPOMENO = Globals.ReadSQLServer("SELECT  ISNULL(ENERGOS,0) AS TYP FROM PARAGG WHERE   ID=" + lines[1]);
             if (action.Substring(0, 1) == "3")
             {
+              
+                 if (cTYPOMENO=="1")
+                {
+                    await DisplayAlert("αδυνατη η διαγραφή", "ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
+                    return;
+
+                }
+                
+                
+                
+                
                 if (cc.Substring(0, 2) == "**")
                 {
                     await DisplayAlert("αδυνατη η διαγραφή", "εγινε πληρωμή", "OK");
@@ -168,10 +181,25 @@ namespace oncar
                 }
             }
 
-            if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2")
-            {
 
-                Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + lines[1]);
+            //------------- PLHRVMH ------------------------
+            if (cTYPOMENO == "0")
+            {
+                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
+                return;
+            }
+
+                if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2")
+            {
+                if (cc.Substring(0, 2) == "**")
+                {
+                    await DisplayAlert("αδυνατη η πληρωμή", "ειναι πληρωμένο", "OK");
+                }
+                else
+                {
+                    Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + lines[1]);
+                }
+                   
             }
 
 
@@ -192,6 +220,14 @@ namespace oncar
         {
             Main2PageModel tappedItem = e.Item as Main2PageModel;
             Globals.gKathg = e.Item.ToString();
+            //  int idx = Items.IndexOf("BBB");
+
+            //change Core.Models.Data.TaskItem to the object you want to cast to.
+            // var SelectedItem = (Core.Models.Data.TaskItem)e.SelectedItem;
+
+            // await DisplayAlert("Info", $"{SelectedItem.Description}}", "Ok");
+            //where SelectedItem.Description is a field in my model
+
 
 
             string[] lines = Globals.gKathg.Split(' ');
@@ -229,14 +265,24 @@ namespace oncar
 
         }
 
-        private void typlog(object sender, EventArgs e)
+        private async void typlog(object sender, EventArgs e)
         {
-            printing();
+            try
+            {
+              printing(1);
+            }
+            
+             catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+           
+
         }
 
         private void apoth(object sender, EventArgs e)
         {
-
+              Navigation.PopAsync(); // new PelReports());
         }
 
         void printt(Stream outs, string qq)
@@ -254,92 +300,67 @@ namespace oncar
 
 
 
-        private async void printing() //  object sender, EventArgs e)
+        private async void printing(int part) //  object sender, EventArgs e)
         {
-            string ipAddress = "192.168.1.120";
+            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             List<string> myText = new List<string>();
-            //  {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
-            DataTable dt = ReadSQLServer("SELECT  ISNULL(ONO,'') AS ONO, POSO, TIMH,ID,ISNULL(PROSUETA,'') AS PROSUETA  FROM PARAGG where IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+            DataTable dt;
+
+            // {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
+            if (part == 1) // τα νεα μονο
+            {
+                 dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where (ENERGOS IS NULL) AND IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+            }
+            else
+            {     // ολα 
+                 dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+            }
             // Monkeys.Add(new Monkey
             myText.Add(PARAGGELIES.toGreek("*******  TΡΑΠΕΖΙ " +Globals.gTrapezi) +" *********" );
-
+            float ss = 0;
             for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
-                myText.Add(dt.Rows[k]["POSO"].ToString()+" "+ PARAGGELIES.toGreek( dt.Rows[k]["ONO"].ToString() ) +" " + dt.Rows[k]["TIMH"].ToString());
-                myText.Add(PARAGGELIES.toGreek( dt.Rows[k]["PROSUETA"].ToString())     );
+                if (part == 1)
+                {
+                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                    // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                    myText.Add(PARAGGELIES.toGreek(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + PARAGGELIES.toGreek(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29)));
+                } else
+                {    //ola
+                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))+ "   " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                    ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
+                }
+               
+               
+                myText.Add("");
             }
+            myText.Add(PARAGGELIES.toGreek("ΣΥΝΟΛΟ ")+"    "+ss.ToString ());
+            myText.Add("");
+            myText.Add("");
+            myText.Add("");
+            myText.Add("");
+            myText.Add("");
 
-
-                var printer = DependencyService.Get<test4sql.iPrinter>();
+            var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
+
                 await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
                 return;
 
             }
             try
-            {
+            { 
                 printer.Print(ipAddress, portNumber, myText);
             }
-            catch
+            
+             catch (Exception ex)
             {
-                await DisplayAlert("error2", "", "");
+                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+               // await DisplayAlert("error2", "", "");
             }
-
-            // Ethernet or WiFi
-            // var printer = new ESCPOS_NET.NetworkPrinter(ipAddress: "192.168.1.80", port: 9000, reconnectOnTimeout: true);
-            // printer.Write()
-            /*
-            var e = new EPSON();
-            printer.Write(
-              ByteSplicer.Combine(
-                e.CenterAlign(),
-                e.PrintImage(File.ReadAllBytes("images/pd-logo-300.png"), true),
-NewMethod(e),
-                e.SetBarcodeHeightInDots(360),
-                e.SetBarWidth(BarWidth.Default),
-                e.SetBarLabelPosition(BarLabelPrintPosition.None),
-                e.PrintBarcode(BarcodeType.ITF, "0123456789"),
-                e.PrintLine(),
-                e.PrintLine("B&H PHOTO & VIDEO"),
-                e.PrintLine("420 NINTH AVE."),
-                e.PrintLine("NEW YORK, NY 10001"),
-                e.PrintLine("(212) 502-6380 - (800)947-9975"),
-                e.SetStyles(PrintStyle.Underline),
-                e.PrintLine("www.bhphotovideo.com"),
-                e.SetStyles(PrintStyle.None),
-                e.PrintLine(),
-                e.LeftAlign(),
-                e.PrintLine("Order: 123456789        Date: 02/01/19"),
-                e.PrintLine(),
-                e.PrintLine(),
-                e.SetStyles(PrintStyle.FontB),
-                e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
-                e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
-                e.PrintLine("----------------------------------------------------------------"),
-                e.RightAlign(),
-                e.PrintLine("SUBTOTAL         89.95"),
-                e.PrintLine("Total Order:         89.95"),
-                e.PrintLine("Total Payment:         89.95"),
-                e.PrintLine(),
-                e.LeftAlign(),
-                e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
-                e.PrintLine("SOLD TO:                        SHIP TO:"),
-                e.SetStyles(PrintStyle.FontB),
-                e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
-                e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
-                e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
-                e.PrintLine("  (123)456-7890                   (123)456-7890"),
-                e.PrintLine("  CUST: 87654321"),
-                e.PrintLine(),
-                e.PrintLine()
-              )
-            );
-
-            */
-
-
+            Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG );
         }
 
 
@@ -377,7 +398,10 @@ NewMethod(e),
 try
 {
     //Monkeys = new List<Monkey>();
-    Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
+   
+                
+                // ΤΟ ΠΑΡΑΚΑΤΩ ΠΗΓΑΙΝΕ ΠΑΝΤΟΥ ΚΑΙ ΜΕ ΜΠΕΡΔΕΥΕ ΕΝΩ ΠΡΕΠΕΙ ΝΑ ΕΙΝΑΙ ΜΕΤΑ ΤΗΝ ΠΛΗΡΩΜΗ
+                //  Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
    
     SqlCommand cmd3 = new SqlCommand(cSQL , con);
     var adapter2 = new SqlDataAdapter(cmd3);
@@ -403,7 +427,7 @@ catch (Exception ex)
 
         private  async void  Show_listsql_Paragg(string ono)
          {
-            Monkeys = new List<Monkey>();
+            Monkeys2 = new List<Monkey2>();
             BindingContext = null;
             //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
             if (Globals.cSQLSERVER.Length < 2)
@@ -434,12 +458,12 @@ catch (Exception ex)
                 //Monkeys = new List<Monkey>();
                 Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ISNULL(ONO,'') AS ONO, POSO, TIMH,ID,ISNULL(PROSUETA,'') AS PROSUETA  FROM PARAGG where IDPARAGG = " + ono + "  order by ID ; ", con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ISNULL(ONO,'') AS ONO, POSO, TIMH,ID,ISNULL(PROSUETA,'') AS PROSUETA,ISNULL(CH1,'') AS SXOLIA  FROM PARAGG where IDPARAGG = " + ono + "  order by ID ; ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
                 int k = 0;
-               
+                
                 for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
                     string mPoso = (dt.Rows[k]["POSO"].ToString() + "                                   ").Substring(0, 3);
@@ -447,13 +471,16 @@ catch (Exception ex)
                     string midEggtim = (dt.Rows[k]["ID"].ToString() + "              ").Substring(0, 5);
                     string mTimh = (dt.Rows[k]["TIMH"].ToString() + "              ").Substring(0, 5);
                     string mPROSU = (dt.Rows[k]["PROSUETA"].ToString() + "              ").Substring(0, 11);
-                    Monkeys.Add(new Monkey
+                    string mCOMMENTS = (dt.Rows[k]["SXOLIA"].ToString() + "                                           ").Substring(0, 31);
+                    Monkeys2.Add(new Monkey2
                     {  // dt.Rows[k]["ONO"].ToString();
                         Name = mOno,
 
                         Location = mTimh,
                         ImageUrl = mPoso,
-                        idPEL = mPROSU+"  ~"+ midEggtim
+                        idPEL = mPROSU+"  ~"+ midEggtim,
+                        Prood="/",
+                        ID=mCOMMENTS 
                     }) ;
 
                     Globals.PARAGGlines[k, 0] = mOno;
@@ -461,6 +488,7 @@ catch (Exception ex)
                     Globals.PARAGGlines[k, 2] = mTimh;
                     Globals.PARAGGlines[k, 3] = mPROSU;
                     Globals.PARAGGlines[k, 4] = midEggtim;
+                    Globals.PARAGGlines[k, 5] = mCOMMENTS;
                     Globals.indexParaggLine = k;
                 } // FOR
 
@@ -471,7 +499,7 @@ catch (Exception ex)
             {
                 await DisplayAlert("Error", ex.ToString(), "OK");
             }
-            listERG.ItemsSource = Monkeys;
+            listERG.ItemsSource = Monkeys2;
             BindingContext = this;
             con.Close();
 
@@ -486,10 +514,36 @@ catch (Exception ex)
 
         private async void PLIROMI(object sender, EventArgs e)
         {
-            string action = await DisplayActionSheet("Τρόπος Πληρωμής", "Ακυρο", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα");
+            string catyp = Globals.ReadSQLServer("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
+            if (Int32.Parse(catyp) > 0)
+            {
+                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
+                return;
+            }
+
+            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+            string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα");
            if (action.Substring(0, 1) == "Α") { return; }
             Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
             Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
+            Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
+
+            await Navigation.PopAsync();
+
+
+        }
+
+        private async void TYPLOGALL(object sender, EventArgs e)
+        {
+            try
+            {
+                printing(2);
+            }
+
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
         }
     }
 

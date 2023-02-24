@@ -371,7 +371,22 @@ namespace test4sql
                        "[POL] [nvarchar](35) ," +
                          "[THL] [nvarchar](35) ," +
                        "[AFM] [nvarchar](15) )";
-             MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+            
+
+            if (PARAGGELIES.NReadSQL("select count(*) from MEM") < 2)
+            {
+                MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+                MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+                
+            }
+
+
+
+
+
+
+
+
             await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
              MainPage.ExecuteSqlite(c);

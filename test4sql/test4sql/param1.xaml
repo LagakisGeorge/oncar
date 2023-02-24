@@ -51,6 +51,18 @@
                    Placeholder="SQLSERVER INSTANCE" 
                     BackgroundColor="Azure"    
                    />
+            <Entry x:Name="CIPPR1"
+                   Placeholder="IP PRINTER1" 
+                    BackgroundColor="Azure"    
+                   />
+            <Entry x:Name="CIPPR2"
+                   Placeholder="IP PRINTER2" 
+                    BackgroundColor="Azure"    
+                   />
+
+
+
+
             <Button x:Name="katax" 
                     Text="ΚΑΤΑΧΩΡΗΣΗ"
                         Clicked="fkatax" 

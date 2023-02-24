@@ -23,7 +23,10 @@ namespace oncar
         public  MainXAR1PageModel pageModelx;
         public int[] fIDEIDON =  new int[500];
         public  MainEIDHPageModel pageModel;
+        public double fTem;
+
         public trapeziEpil()
+           
         {
             InitializeComponent();
 
@@ -49,8 +52,8 @@ namespace oncar
             Globals.PARAGGlines[Globals.indexParaggLine, 1] = tem.Text;
             Globals.PARAGGlines[Globals.indexParaggLine, 2] = "0";// tem.Text;
             Globals.PARAGGlines[Globals.indexParaggLine, 3] = "0"; // tem.Text;
-            
-           
+            Globals.PARAGGlines[Globals.indexParaggLine, 5] = COMMENTS.Text; // tem.Text;
+
             await Navigation.PopAsync();
             //  App.Current.Mainpage.Navigation.PopModalAsync();
         }
@@ -74,9 +77,10 @@ namespace oncar
             if (tem.Text.Length == 0)
             {
                 tem.Text = "0";
+                fTem = 0.0;
             }
 
-            Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1) VALUES ("+ Globals.gIDPARAGG + ",'" + Globals.gTrapezi+"','"+ EIDOS.Text +"',"+tem.Text +","+timh.Text.Replace(",",".")+",'"+PROSU.Text+"','',0)" );
+            Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES ("+ Globals.gIDPARAGG + ",'" + Globals.gTrapezi+"','"+ EIDOS.Text +"',"+tem.Text +","+timh.Text.Replace(",",".")+",'"+PROSU.Text+"','',0,'"+COMMENTS.Text+"')" );
 
             //  cIDParagg = Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
             // TA APLHRVTA  EINAI TO ΝUΜ1=0
@@ -97,11 +101,15 @@ namespace oncar
 
         private void subplus(object sender, EventArgs e)
         {
+            fTem = fTem + 1;
+            tem.Text =fTem.ToString() ;
 
         }
 
         private void subminus(object sender, EventArgs e)
         {
+            fTem = fTem + 1;
+            tem.Text = fTem.ToString();
 
         }
 
@@ -215,8 +223,8 @@ namespace oncar
             //{
             //    EIDOS.Text = lines[0];
             //}
-
-            tem.Text = "1";
+            fTem = 1;
+            tem.Text = fTem.ToString ();
 
 
 

@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              NavigationPage.HasNavigationBar="False" 
               xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"  
              x:Class="oncar.trapparagg">
+    
 
 
     <StackLayout>
@@ -12,7 +14,7 @@
             />
 
 
-        <ListView ItemsSource="{Binding Monkeys}"
+        <ListView ItemsSource="{Binding Monkeys2}"
                   HasUnevenRows="true"
                    x:Name="listERG"
                   ItemSelected="OnListViewItemSelected"
@@ -20,43 +22,52 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <!--  <Image Grid.RowSpan="2" 
-                                   Source="{Binding ImageUrl}" 
-                                   Aspect="AspectFill"
-                                   HeightRequest="60"
-                                   WidthRequest="60" /> -->
-
-                            <Label Grid.Column="0" 
-                                   Text="{Binding ImageUrl}"
-                                   FontAttributes="Bold" />
-
-
-                            <Label Grid.Column="1" 
-                                   Text="{Binding Name}"
-                                   FontAttributes="Bold" />
+                        <StackLayout   Orientation="Horizontal">
 
 
                             <Label 
+                                   Text="{Binding ImageUrl}"                                 
+                                   WidthRequest="20"       />
+
+                            <StackLayout HorizontalOptions="StartAndExpand" Spacing="0"  >
+                               
+                            <Label 
+                                   Text="{Binding Name}"
+                                  
+                                    WidthRequest="350" />
+                                
+                                 <Label 
+                              
+                                   Text="{Binding Prood}"
+                                   VerticalOptions="End" />
+                                
+                                
+                                
+                            </StackLayout>
+
+                            <Label 
+                                   
                                    Grid.Column="2" 
                                    Text="{Binding Location}"
+                                    
+                                    WidthRequest="20"
                                    VerticalOptions="End" />
+
+                           
+                            
                             <Label 
-                                   Grid.Column="3" 
+                                  Grid.Row="1"
+                                   Grid.Column="0" 
                                    Text="{Binding idPEL}"
-                                   VerticalOptions="End" />  
+                                   VerticalOptions="End" />
+                           
+                            <Label 
+                                   Grid.Column="2" 
+                                   Text="{Binding ID}"
+                                   VerticalOptions="End" />
 
-
-
-                        </Grid>
+                            </StackLayout>
+                       
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -80,9 +91,9 @@
             <flv:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
                     <Frame BackgroundColor="Blue"
-                Margin="5">
-                        <Label HorizontalOptions="Fill"   
-                    VerticalOptions="Fill"   
+                     Margin="5">
+                    <Label HorizontalOptions="Center"   
+                    VerticalOptions="Center"   
                     TextColor="White"  
                     XAlign="Center"  
                     YAlign="Center"   
@@ -98,14 +109,21 @@
 
 
         <StackLayout Orientation="Horizontal" >
-            <Button Text="αποθηκευση"   x:Name="ok"  Clicked="apoth" />
+            <Button Text="ΕΞΟΔΟΣ"   x:Name="ok"  Clicked="apoth" />
             <Label x:Name="LID"  Text="" />
+
+            <Button Text="BILL"   x:Name="BILL"  Clicked="TYPLOGALL" />
+            <Label x:Name="LID3"  Text="" />
+
             <Button Text="τυπώνω λογ"   x:Name="typoma"  Clicked="typlog" />
             <Label x:Name="tem"  Text="" />
-            <Button Text="-"  x:Name="exod" Clicked="exodos" />
+           
             <Label x:Name="LID2"  Text="" />
+             <Button Text="ΠΛΗΡΩΜΗ"   x:Name="PLIROMIOL"  Clicked="PLIROMI" />
+             <Button Text="-"  x:Name="exod" Clicked="exodos" />
+            
           </StackLayout>  
-            <Button Text="ΠΛΗΡΩΜΗ"   x:Name="PLIROMIOL"  Clicked="PLIROMI" />
+           
 
        
 

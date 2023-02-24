@@ -24,7 +24,7 @@ namespace oncar
         public IList<Monkey2> Monkeys2 { get; private set; }
 
         string fIDPEL;
-
+        string fArxYpolPelath;
         public Pelkin()
         {
             InitializeComponent();
@@ -110,7 +110,7 @@ namespace oncar
             THL.Text = PARAGGELIES.ReadSQL("select IFNULL(THL,'') AS EKTP2 FROM PEL WHERE ID=" + id);
             KINHTO.Text = PARAGGELIES.ReadSQL("select IFNULL(KINHTO,'') AS EKTP2 FROM PEL WHERE ID=" + id);
             MEMO.Text = PARAGGELIES.ReadSQL("select IFNULL(MEMO,'') AS MEMO FROM PEL WHERE ID=" + id);
-
+            fArxYpolPelath= PARAGGELIES.ReadSQL("select IFNULL(R1,0) AS AYP FROM PEL WHERE ID=" + id);
             fIDPEL = tappedItem.idPEL;
             listview.IsVisible = false;
             btam.IsVisible = false;
@@ -206,6 +206,7 @@ namespace oncar
             Monkeys2 = new List<Monkey2>();
             BindingContext = null;//45596/
 
+          
 
             string dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.Personal),
@@ -232,7 +233,25 @@ namespace oncar
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             float ProodYp = 0;
-            while (r.Read())
+            float ProodYp2 = Convert.ToSingle(fArxYpolPelath);
+            if (Globals.cFORTHGO.Substring(0, 1) == "7")  // ΑΠΟΘΗΚΗ-ΤΙΜΟΛΟΓΗΣΗ-ΚΑΡΤΕΛΑ 
+            {
+                Monkeys2.Add(new Monkey2
+                {
+                    Location = "Αρχικό",
+                    Name = "Υπόλ.",
+                    ImageUrl = ProodYp2.ToString(),
+                    idPEL = "",
+                    Prood = ProodYp2.ToString(),
+                    ID = r["ID"].ToString()
+                });
+            }
+
+
+
+
+
+                while (r.Read())
             {
 
               
@@ -241,7 +260,7 @@ namespace oncar
                 float xr = 0;
                 xr = Convert.ToInt64(Convert.ToDouble(r["xre"])); //  r["xre"];
                 ProodYp = ProodYp + xr;
-     string ait = "";
+                string ait = "";
 
                 if (xr   >= 0)  // xreosi
                 {
@@ -254,8 +273,6 @@ namespace oncar
                     xr = -xr;
                     mp = (xr.ToString() + "            ").Substring(0, 9);
                     mx = ("            ").Substring(0, 9);
-
-
                     if (Convert.ToInt64(Convert.ToDouble(r["pis"])) > 0)  // tameiakh
                     {
                         ait = "ΑΠΥ" + (r["AIT"].ToString() + "                         ").Substring(0, 17);
@@ -263,43 +280,66 @@ namespace oncar
                     else
                     {
                         ait = (r["AIT"].ToString() + "                         ").Substring(0, 18);
-
                     }
-
-
-
+                }
+                // ; //  r["xre"];
+                if (Globals.cFORTHGO.Substring(0, 1) == "7")  // ΑΠΟΘΗΚΗ-ΤΙΜΟΛΟΓΗΣΗ-ΚΑΡΤΕΛΑ 
+                {
+                    ProodYp2 = ProodYp2+(float)r["XRE"] - (float)r["PIS"] ; //  r["xre"];
+                    ait = (r["AIT"].ToString() + "                         ").Substring(0, 8);
+                    if ((float) r["XRE"] == 0){
+                        mx = "";
+                    }else {
+                        mx = r["XRE"].ToString();
+                    }
+                    if ((float)r["PIS"] == 0)
+                    {
+                        mp = "";
+                    }
+                    else
+                    {
+                        mp = r["pis"].ToString();
+                    }
+                    Monkeys2.Add(new Monkey2
+                    {
+                        Location = ait,
+                        Name = r["HM"].ToString().Substring(0,6) + r["HM"].ToString().Substring(8, 2),
+                        ImageUrl = mx,
+                        idPEL = mp,
+                        Prood = ProodYp2.ToString(),
+                        ID = r["ID"].ToString()
+                    });
+                }
+                else  // ανθιμος
+                {
+                    if (xr >= 0)
+                        Monkeys2.Add(new Monkey2
+                        {
+                            Location = ait,
+                            Name = r["HM"].ToString().Substring(8, 2) + "/" + r["HM"].ToString().Substring(5, 2) + "/" + r["HM"].ToString().Substring(2, 2),
+                            ImageUrl = mx,
+                            idPEL = mp,
+                            Prood = ProodYp.ToString(),
+                            ID = r["ID"].ToString()
+                        });
 
                 }
 
 
-
-
-
-                // ; //  r["xre"];
-
-                if (xr >= 0)
-                    Monkeys2.Add(new Monkey2
-                    {
-                        Location = ait,
-
-                        Name = r["HM"].ToString().Substring(8, 2) + "/" + r["HM"].ToString().Substring(5, 2) + "/" + r["HM"].ToString().Substring(2, 2),
-
-                        ImageUrl = mx,
-                        idPEL = mp,
-                        Prood = ProodYp.ToString (),
-                    ID = r["ID"].ToString()
-                    })  ;
-
-
-
             }
 
-            listkin.ItemsSource = Monkeys2;
+            if (Globals.cFORTHGO.Substring(0, 1) == "7")  // ΑΠΟΘΗΚΗ-ΤΙΜΟΛΟΓΗΣΗ-ΚΑΡΤΕΛΑ 
+            {
+                listkart.ItemsSource = Monkeys2;
+                listkin.IsVisible = false;
+            }
+            else
+            {
+              listkin.ItemsSource = Monkeys2;
+                listkart.IsVisible  = false;
+            }                                                  
             BindingContext = this;
-
-
             connection.Close();
-
             BindingContext = this;
         }
 

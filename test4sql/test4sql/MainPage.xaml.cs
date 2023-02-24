@@ -76,7 +76,7 @@ namespace test4sql
 
                 if (Globals.cFORTHGO.Substring(0, 1) == "8")  // ΤΡΑΠΕΖΙΑ
                 {
-                    but1.IsVisible = false;
+                    but1.IsVisible = true;
                     but121.IsVisible = false;
                     SUPER2.IsVisible = false;
                     but1TIMOL.IsVisible = false;
@@ -92,7 +92,20 @@ namespace test4sql
 
                 }
 
+                if (Globals.cFORTHGO.Substring(0, 1) == "7")  // ΑΠΟΘΗΚΗ-ΤΙΜΟΛΟΓΗΣΗ-ΚΑΡΤΕΛΑ 
+                {
+                    but1.IsVisible = false;
+                    but121.IsVisible = false;
+                    SUPER2.IsVisible = true;
+                    but1TIMOL.IsVisible = false;
+                    APOTHIKI.IsVisible = true;
+                    // param.IsVisible = false;
+                    trapezia.IsVisible = false;
+                    but1fort.IsVisible = true;
+                    but1EPIST.IsVisible = true;
+                  //  Globals.gUserWaiter = Globals.cFORTHGO.Substring(1, 1);
 
+                }
 
 
 
@@ -172,18 +185,25 @@ namespace test4sql
                 c.CommandText = "INSERT INTO MEM (IP) VALUES ('*')";
 
                 rowcount = c.ExecuteNonQuery(); // rowcount will be 1
-
+                rowcount = c.ExecuteNonQuery(); // rowcount will be 1
 
 
             }
 
 
             Globals.cIP = PARAGGELIES.ReadSQL("select IP from MEM  where ID=1");
-
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO from MEM  where ID=1");
             Globals.useBarcodes = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=1");
-
             Globals.cFORTHGO = PARAGGELIES.ReadSQL("select THL from MEM  where ID=1");
+
+            Globals.cIPPR1 = PARAGGELIES.ReadSQL("select IP from MEM  where ID=2");
+            Globals.cIPPR2 = PARAGGELIES.ReadSQL("select AFM from MEM  where ID=2");
+
+
+
+
+
+
 
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
 
@@ -1061,6 +1081,17 @@ NewMethod(e),
         {
             DataTable dt2 = new DataTable();
 
+            try
+            {
+               
+
+
+
+
+            
+
+
+
             dt2 = trapparagg.ReadSQLServer("SELECT str(isnull(MAX(ID),0)) as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString());
             string cc = dt2.Rows[0]["aa"].ToString();
             int n = Int32.Parse(cc);
@@ -1093,7 +1124,11 @@ NewMethod(e),
 
             await Navigation.PushAsync(new trapezia2());
 
-
+            }
+            catch
+            {
+                await DisplayAlert("λαθος", "", "");
+            }
 
 
         }
@@ -1112,7 +1147,7 @@ NewMethod(e),
             dt2 = trapparagg.ReadSQLServer("SELECT top 1 * FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString()+" order by  ID DESC");
       
 
-            if (dt2.Rows.Count  == 0)
+            if (dt2.Rows.Count  == 0)   // EINAI NEOS SERBITOROS ΠΑΡΘΕΝΙΚΗ ΕΜΦΑΝΙΣΗ
             {
                 Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + "0" + ", " + Globals.gUserWaiter.ToString() + ")");
                 //   Globals.gIDBARDIA = cc;
@@ -1124,7 +1159,7 @@ NewMethod(e),
 
                 string cc = dt2.Rows[0]["ISOPEN"].ToString();
                 int n = Int32.Parse(cc);
-                if (n == 0)
+                if (n == 0)  // ΕΙΝΑΙ ΚΛΕΙΣΤΗ Η ΒΑΡΔΙΑ
                 {
                     await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ ΓΙΑ ΝΑ ΚΛΕΙΣΕΙ.", "   ", "OK");
 
@@ -1143,10 +1178,10 @@ NewMethod(e),
                 }
             }
 
+            // ΟΚ Η ΒΑΡΔΙΑ ΕΙΝΑΙ ΑΝΟΙΧΤΗ
 
 
-
-   Single CASHTOT = 0;
+            Single CASHTOT = 0;
 
 
             if (Globals.gIDBARDIA == "0")
@@ -1162,7 +1197,8 @@ NewMethod(e),
 
                 string mm="-------";
                 // string[] CASH;
-             
+                List<string> myText = new List<string>();
+
                 for (int K = 0; K <= DT.Rows.Count - 1; K++)
                 {
                     if (DT.Rows[K]["jj"].ToString() == "0") {
@@ -1207,13 +1243,78 @@ NewMethod(e),
 
                 }  //for 
 
-                  List<string> myText = new List<string>();
+                //  List<string> myText = new List<string>();
                 myText.Add("=================================" + "\r\n");
                 myText.Add(PARAGGELIES.toGreek(mm));
-                printing(myText);
+                await DisplayAlert(mm , "---   ", "OK");
+               // printing(myText);
+
+
+
+
+                string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+                int portNumber = 9100;
+                var printer = DependencyService.Get<test4sql.iPrinter>();
+                if (printer == null)
+                {
+                    await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                    return;
+                }
+                try
+                {
+                    printer.Print(ipAddress, portNumber, myText);
+                }
+
+                catch (Exception ex)
+                {
+                    await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                    // await DisplayAlert("error2", "", "");
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             }
+
+
+            DataTable DT2;
+            DT2 = trapparagg.ReadSQLServer("SELECT TRAPEZI,HME,AJIA,ISNULL([TROPOS],'') AS TROPOS  FROM PARAGGMASTER   where  IDBARDIA=" + Globals.gIDBARDIA);
+
+            
+            // string[] CASH;
+            List<string> myText2 = new List<string>();
+            string mm2 = "";
+            myText2.Add("---");
+            for (int K = 0; K <= DT2.Rows.Count - 1; K++)
+            {
+                string v = DT2.Rows[K]["TRAPEZI"].ToString() + "----" + DT2.Rows[K]["HME"].ToString() + "----" + DT2.Rows[K]["AJIA"].ToString() + "--"+DT2.Rows[K]["TROPOS"].ToString();
+                mm2 = mm2 + v;
+                myText2.Add(v);
+
+            }
+            await DisplayAlert(mm2, "   ", "OK");
+            printing(myText2 );
+
+
 
 
 
@@ -1244,7 +1345,7 @@ NewMethod(e),
 
         private async void printing(List<string> myText) //  object sender, EventArgs e)
         {
-            string ipAddress = "192.168.1.120";
+            string ipAddress = Globals.cIPPR1;// "192.168.1.120";
             int portNumber = 9100;
            // List<string> myText = new List<string>();
             //  {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};

@@ -708,7 +708,9 @@ namespace test4sql
             string cpos, ctimh, cekpt,cfpa;
             cpos = CPOSO.Text.Replace(",", ".");
             ctimh = CTIMH.Text.Replace(",", ".");
-            if (CEKPT.Text.Length == 0) { CEKPT.Text = "0"; };
+  
+            
+            if (CEKPT.Text.Length == 0 ||  Int32.Parse(CEKPT.Text)==0      ) { CEKPT.Text = fEKPTNUM1.ToString(); };
 
             cekpt = CEKPT.Text.Replace(",", ".");
 

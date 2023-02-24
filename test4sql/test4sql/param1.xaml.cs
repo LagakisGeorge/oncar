@@ -34,6 +34,12 @@ namespace test4sql
             Globals.cFORTHGO  = PARAGGELIES.ReadSQL("select ifnull(THL,'') FROM MEM WHERE ID=1");
             FORTHGO .Text = Globals.cFORTHGO ;
 
+            CIPPR1.Text = Globals.cIPPR1;
+            CIPPR2.Text = Globals.cIPPR2;
+
+
+
+
         }
 
         async void fkatax(object sender, EventArgs e)
@@ -44,11 +50,24 @@ namespace test4sql
             MainPage.ExecuteSqlite("update MEM SET DIE='" + BARCODES.Text + "' WHERE ID=1");
             MainPage.ExecuteSqlite("update MEM SET THL='" + FORTHGO.Text + "' WHERE ID=1");
 
+            MainPage.ExecuteSqlite("update MEM SET IP='" + CIPPR1.Text + "' WHERE ID=2");
+            MainPage.ExecuteSqlite("update MEM SET AFM='" + CIPPR2.Text + "' WHERE ID=2");
+
+
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
             Globals.cIP = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=1");
             Globals.useBarcodes = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=1");
             Globals.cFORTHGO= PARAGGELIES.ReadSQL("select ifnull(THL,'') FROM MEM WHERE ID=1");
+
+            Globals.cIPPR1 = PARAGGELIES.ReadSQL("select IP  FROM MEM WHERE ID=2");
+            Globals.cIPPR2 = PARAGGELIES.ReadSQL("select AFM FROM MEM WHERE ID=2");
+
+
+
+
+
+
         }
 
         async void ftest(object sender, EventArgs e)

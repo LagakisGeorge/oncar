@@ -24,7 +24,10 @@
                     <Label x:Name="timh"  Text="0" />
                 </StackLayout>
                 <Label x:Name="PROSU"  Text="---" />
-
+                <Entry x:Name="COMMENTS"
+                   Placeholder="ΣΧΟΛΙΑ" 
+                    BackgroundColor="Azure"    
+                   />
 
 
             </StackLayout>

@@ -162,7 +162,7 @@ namespace test4sql
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
                 SqlCommand cmd3 = new SqlCommand("select "+SYNT+" LEFT(ISNULL(DOY,''),20) AS MDOY,ID,isnull(KOD,'') AS MKOD,LEFT(ISNULL(EPO,''),25) AS MEPO,LEFT(ISNULL(EPA,''),20) AS MEPA," +
-                    "ISNULL(DIE,'') AS MDIE,ISNULL(TYP,0) AS MYPOL ,ISNULL(DOY,'') AS MDOY,ISNULL(AFM,'') AS MAFM,ISNULL(POL,'') AS MPOL,ISNULL(PEK,0) AS MPEK,ISNULL(NUM1,0) AS MNUM1 ,ISNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ') AS PARAD  " +
+                    "ISNULL(DIE,'') AS MDIE,ISNULL(TYP,0) AS MYPOL ,ISNULL(DOY,'') AS MDOY,ISNULL(AFM,'') AS MAFM,ISNULL(POL,'') AS MPOL,ISNULL(PEK,0) AS MPEK,ISNULL(NUM1,0) AS MNUM1 ,ISNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ') AS PARAD ,ISNULL(AYP,0) AS AYP  " +
                     "FROM PEL WHERE EIDOS='e' " , con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
@@ -183,6 +183,20 @@ namespace test4sql
                     }
                     //else
                     mTYP2 = mTYP2.Replace(",", ".");
+
+                    string mAYP2;
+                    mAYP2 = dt.Rows[k]["AYP"].ToString();
+
+                    if (mAYP2 == null)
+                    {
+                        mAYP2 = "0";
+                    }
+                    //else
+                    mAYP2 = mAYP2.Replace(",", ".");
+
+
+
+
 
 
                     /* Monkeys.Add(new Monkey
@@ -224,8 +238,8 @@ namespace test4sql
                         mNUM1 = mNUM1.Replace(",", ".");
 
 
-                    int n2 = MainPage.ExecuteSqlite("insert into PEL (KOD,EPA,AFM,DOY,EPO,DIE,TYP,PEK,NUM1,CH3) VALUES ('"
-                        + mKOD + "','" + mEPA + "','" + mAFM + "','" + mDOY + "','" + mEPO + "','" + mDIE + "'," + mTYP2 + "," + mPEK + "," + mNUM1 + ",'" + mPARAD + "' );");
+                    int n2 = MainPage.ExecuteSqlite("insert into PEL (R1,KOD,EPA,AFM,DOY,EPO,DIE,TYP,PEK,NUM1,CH3) VALUES ("
+                     + mAYP2 + ",'" + mKOD + "','" + mEPA + "','" + mAFM + "','" + mDOY + "','" + mEPO + "','" + mDIE + "'," + mTYP2 + "," + mPEK + "," + mNUM1 + ",'" + mPARAD + "' );");
                     // FOR
                 }
                 // watch.Stop();
@@ -328,7 +342,122 @@ namespace test4sql
 
         private void dokimi(object sender, EventArgs e)
         {
+
             TEST2.BackgroundColor = Xamarin.Forms.Color.Green;
+        }
+
+        async void CKARTELA32(object sender, EventArgs e) 
+        { 
+
+         
+
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                // SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                // cmd.Connection = con;
+                // cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+
+
+
+            var action = await DisplayAlert("Θα διαγραφουν οι κινησεις καρτελας του κινητού", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+
+
+            MainPage.ExecuteSqlite("delete from EGG;");
+  
+            String SYNT = "";
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                SYNT = " TOP 20 ";
+
+
+
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ID,isnull(KOD,'') AS MKOD,ISNULL(ATIM,'') AS MATIM,ISNULL(XREOSI,0) AS MXRE,ISNULL(PISTOSI,0) AS MPIS,CONVERT(CHAR(10),HME,103) AS MHME  FROM EGG  WHERE EIDOS='e'  ORDER BY KOD,HME ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String mATIM= dt.Rows[k]["MATIM"].ToString();
+                    mATIM = mATIM.Replace("'", "`");
+
+
+                    String mKOD = dt.Rows[k]["MKOD"].ToString();
+                    mKOD = mKOD.Replace("'", "`");
+
+
+
+                    String mHME = dt.Rows[k]["MHME"].ToString();
+                    mHME = mHME.Replace("'", "`");
+
+                    string mXRE = dt.Rows[k]["MXRE"].ToString();
+                    mXRE = mXRE.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
+                    string mPIS = dt.Rows[k]["MPIS"].ToString();
+                    mPIS = mPIS.Replace(",", ".");
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into EGG (KOD,HME,AIT,XRE,PIS) VALUES ('" + mKOD + "','" + mHME + "','" + mATIM + "'," + mXRE + "," + mPIS  + ");");
+                } // FOR
+
+
+
+                MainPage.ExecuteSqlite("UPDATE EGG SET IDPEL=(SELECT ID FROM PEL WHERE KOD=EGG.KOD) ;");
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+                EID.Text = " KINHΣEIΣ:" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("KINHΣΕΙΣ ΟΚ", "", "OK");
+
+
+
+
+
+
+
         }
 
 
