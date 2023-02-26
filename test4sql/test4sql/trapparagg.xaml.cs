@@ -130,10 +130,7 @@ namespace oncar
 
 
 
-        private void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-
-        }
+      
 
         private async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -145,7 +142,7 @@ namespace oncar
             if (action.Substring(0, 1) == "Α") { return; }
 
 
-            Monkey tappedItem = e.Item as Monkey;
+            Monkey2 tappedItem = e.Item as Monkey2;
             //   LIDtest.Text = e.ItemIndex.ToString();
             string cc = tappedItem.idPEL;
             string mc = tappedItem.Name;
@@ -317,25 +314,34 @@ namespace oncar
                  dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
             }
             // Monkeys.Add(new Monkey
-            myText.Add(PARAGGELIES.toGreek("*******  TΡΑΠΕΖΙ " +Globals.gTrapezi) +" *********" );
+            myText.Add(MainPage.ToGreek737("*******  TΡΑΠΕΖΙ " +Globals.gTrapezi) +" *********" );
             float ss = 0;
             for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
                 if (part == 1)
                 {
-                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
                     // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
-                    myText.Add(PARAGGELIES.toGreek(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + PARAGGELIES.toGreek(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29)));
+                    myText.Add(MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29)));
                 } else
                 {    //ola
-                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))+ "   " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Substring(0, 30))+ "   " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
                     ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
                 }
                
                
                 myText.Add("");
             }
-            myText.Add(PARAGGELIES.toGreek("ΣΥΝΟΛΟ ")+"    "+ss.ToString ());
+            if (part == 1) 
+            {
+                myText.Add(MainPage.ToGreek737( ss.ToString());
+
+            }
+            else
+            {
+                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "    " + ss.ToString());
+            }
+               
             myText.Add("");
             myText.Add("");
             myText.Add("");

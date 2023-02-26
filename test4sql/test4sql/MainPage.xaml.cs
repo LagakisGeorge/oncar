@@ -15,6 +15,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System.Threading;
 using oncar;
+//  using SharpCifs.Util.Sharpen;
 
 namespace test4sql
 
@@ -88,6 +89,7 @@ namespace test4sql
                     kinpelath.IsVisible = false;
                     reppelath.IsVisible = false;
                     PELATHS.IsVisible = false;
+                    test.IsVisible = true;
                     Globals.gUserWaiter = Globals.cFORTHGO.Substring(1, 1);
 
                 }
@@ -1054,6 +1056,93 @@ NewMethod(e),
             return rowcount;
         }
 
+        static int instr(int StartPos, String SearchString, String SearchFor, int IgnoreCaseFlag)
+        {
+            int result = -1;
+            if (IgnoreCaseFlag == 1)
+                result = SearchString.IndexOf(SearchFor, StartPos, StringComparison.OrdinalIgnoreCase);
+            else
+                result = SearchString.IndexOf(SearchFor, StartPos);
+            return result;
+        }
+
+        public static string ToGreek737(string Q)
+        {
+            Q = Q.ToUpper();
+            string t = "";
+            for (int k = 1; k <= Q.Length; k += 1)
+            {
+                string m = Q.Substring(k - 1, 1);
+                if (instr(0, "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ", m, 1) == -1)
+                {
+                    t = t + m;
+                }
+                else
+                {
+                    if (m == "Α") { t += Convert.ToChar(128).ToString(); }
+                    if (m == "Β") { t += Convert.ToChar(129).ToString(); }
+                    if (m == "Γ") { t += Convert.ToChar(130).ToString(); }
+                    if (m == "Δ") { t += Convert.ToChar(131).ToString(); }
+                    if (m == "Ε") { t += Convert.ToChar(132).ToString(); }
+                    if (m == "Ζ") { t += Convert.ToChar(133).ToString(); }
+                    if (m == "Η") { t += Convert.ToChar(134).ToString(); }
+                    if (m == "Θ") { t += Convert.ToChar(135).ToString(); }
+
+                    if (m == "Ι") { t += Convert.ToChar(136).ToString(); }
+                    if (m == "Κ") { t += Convert.ToChar(137).ToString(); }
+                    if (m == "Λ") { t += Convert.ToChar(138).ToString(); }
+                    if (m == "Μ") { t += Convert.ToChar(139).ToString(); }
+                    if (m == "Ν") { t += Convert.ToChar(140).ToString(); }
+                    if (m == "Ξ") { t += Convert.ToChar(141).ToString(); }
+                    if (m == "Ο") { t += Convert.ToChar(142).ToString(); }
+                    if (m == "Π") { t += Convert.ToChar(143).ToString(); }
+
+                    if (m == "Ρ") { t += Convert.ToChar(144).ToString(); }
+                    if (m == "Σ") { t += Convert.ToChar(145).ToString(); }
+                    if (m == "Τ") { t += Convert.ToChar(146).ToString(); }
+                    if (m == "Υ") { t += Convert.ToChar(147).ToString(); }
+                    if (m == "Φ") { t += Convert.ToChar(148).ToString(); }
+                    if (m == "Χ") { t += Convert.ToChar(149).ToString(); }
+                    if (m == "Ψ") { t += Convert.ToChar(150).ToString(); }
+                    if (m == "Ω") { t += Convert.ToChar(151).ToString(); }
+
+
+
+
+                }
+
+
+               
+            }
+            return t;
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private async void fAPOTHIKI(object sender, EventArgs e)
         {
 
@@ -1084,14 +1173,6 @@ NewMethod(e),
             try
             {
                
-
-
-
-
-            
-
-
-
             dt2 = trapparagg.ReadSQLServer("SELECT str(isnull(MAX(ID),0)) as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString());
             string cc = dt2.Rows[0]["aa"].ToString();
             int n = Int32.Parse(cc);
@@ -1378,15 +1459,72 @@ NewMethod(e),
 
         }
 
+        private async void testprint(object sender, EventArgs e)
+        {
+            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            int portNumber = 9100;
+            List<string> myText = new List<string>();
+            DataTable dt;
+
+            for (int k = 0; k <= 800; k++)
+            {
+
+            }
+
+            string ss = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠ";
+            ss = PARAGGELIES.toGreek(ss);
+            // 'myText.Add (Encoding.Unicode.GetBytes(ss));  Convert.ToChar(921) + Convert.ToChar(922)+
+            myText.Add(ToGreek737("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ-ABCDEαβγδεζηθικλμ")) ;
+
+            myText.Add("------------------"+Convert.ToChar (129).ToString()+Convert.ToChar(131).ToString()+Convert.ToChar(130).ToString() )  ;
+            myText.Add("A" );
+            myText.Add("Β");
+            myText.Add("Γ");
+            myText.Add("Δ");
+            myText.Add("Ε");
+            myText.Add("Ζ");
+            myText.Add("Η");
+            myText.Add("Θ");
+            myText.Add("Ι");
+            myText.Add("==========================");
+            myText.Add("Λ");
+            myText.Add("Μ");
+            myText.Add("Ν");
+            myText.Add("Ξ");
+            myText.Add("Ο");
+            myText.Add("////////////////////");
 
 
 
 
+
+
+            var printer = DependencyService.Get<test4sql.iPrinter>();
+            if (printer == null)
+            {
+
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                return;
+
+            }
+            try
+            {
+                printer.Print(ipAddress, portNumber, myText);
+            }
+
+            catch (Exception ex)
+            {
+                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("error2", "", "");
+            }
+
+
+
+
+
+
+        }
     }  // public partial class MainPage : ContentPage
-
-
-
-
 
 
 

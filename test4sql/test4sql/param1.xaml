@@ -11,7 +11,7 @@
 
 
 
-            <Label Text="ΑΡΙΘΜΟΣ ΦΟΡΤΗΓΟΥ "
+            <Label Text="82=βαρ-σερβιτ2  7=τιμολ 99=πελ "
 
                 
                 HorizontalOptions="CenterAndExpand" />

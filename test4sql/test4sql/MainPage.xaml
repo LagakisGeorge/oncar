@@ -94,13 +94,21 @@
 
         <Button x:Name="trapezia" 
                 Text="ΤΡΑΠΕΖΙΑ"
+                WidthRequest="60"
                 Clicked="ftrapezia"
                  />
-        <Button x:Name="vardia" 
+
+        <StackLayout Orientation="Horizontal" >
+            <Button x:Name="vardia" 
                 Text="ΚΛΕΙΣΙΜΟ ΒΑΡΔΙΑΣ"
                 Clicked="fCloseVardia"
                  />
 
+            <Button x:Name="test" 
+                Text="TEST"
+                Clicked="testprint"
+                 />
+        </StackLayout>
         <StackLayout Orientation="Horizontal" >
             
 

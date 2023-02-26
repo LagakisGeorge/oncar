@@ -17,11 +17,12 @@
         <ListView ItemsSource="{Binding Monkeys2}"
                   HasUnevenRows="true"
                    x:Name="listERG"
-                  ItemSelected="OnListViewItemSelected"
+                
                   ItemTapped="OnListViewItemTapped">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
+                        
                         <StackLayout   Orientation="Horizontal">
 
 
@@ -31,12 +32,12 @@
 
                             <StackLayout HorizontalOptions="StartAndExpand" Spacing="0"  >
                                
-                            <Label 
+                               <Label 
                                    Text="{Binding Name}"
                                   
                                     WidthRequest="350" />
                                 
-                                 <Label 
+                               <Label 
                               
                                    Text="{Binding Prood}"
                                    VerticalOptions="End" />
@@ -48,9 +49,7 @@
                             <Label 
                                    
                                    Grid.Column="2" 
-                                   Text="{Binding Location}"
-                                    
-                                    WidthRequest="20"
+                                   Text="{Binding Location}"                                                                                                         
                                    VerticalOptions="End" />
 
                            
@@ -58,12 +57,14 @@
                             <Label 
                                   Grid.Row="1"
                                    Grid.Column="0" 
+                                
                                    Text="{Binding idPEL}"
                                    VerticalOptions="End" />
                            
                             <Label 
                                    Grid.Column="2" 
                                    Text="{Binding ID}"
+                                
                                    VerticalOptions="End" />
 
                             </StackLayout>

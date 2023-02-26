@@ -276,12 +276,19 @@ namespace oncar
                 PROSU.Text = PROSU.Text + lines[0];
             }
 
+            COMMENTS.Focus();
+
 
         }
 
         private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
 
+        }
+
+        private void deleprosu(object sender, EventArgs e)
+        {
+            PROSU.Text = "";
         }
     }
 

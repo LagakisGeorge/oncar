@@ -12,19 +12,25 @@
                 <Button Text="OK"   x:Name="ok"  Clicked="okdone" />
                 <Label x:Name="LID"  Text="" />
                 <Button Text="+"   x:Name="syn"  Clicked="subplus" />
-                <Label x:Name="tem"  Text="" />
+                <Label x:Name="tem" FontSize="Large" Text="" />
                 <Button Text="-"  x:Name="plin" Clicked="subminus" />
                 <Label x:Name="LID2"  Text="" />
-
+                <Label x:Name="timh"  FontSize="Large" Text="" />
+                <Label x:Name="euros" FontSize="Large" Text="€" />
 
             </StackLayout>
             <StackLayout>
                 <StackLayout Orientation="Horizontal" >
-                    <Label x:Name="EIDOS"  Text="---" />
-                    <Label x:Name="timh"  Text="0" />
+                    <Label x:Name="EIDOS" FontSize="Large"   Text="" />
+                  
                 </StackLayout>
-                <Label x:Name="PROSU"  Text="---" />
-                <Entry x:Name="COMMENTS"
+
+                <StackLayout Orientation="Horizontal" >
+                    <Label x:Name="PROSU"  Text="" />
+                    <Button Text="-"  x:Name="bdeleprosu" WidthRequest="30" Clicked="deleprosu" />
+                </StackLayout >
+
+                        <Entry x:Name="COMMENTS"
                    Placeholder="ΣΧΟΛΙΑ" 
                     BackgroundColor="Azure"    
                    />
