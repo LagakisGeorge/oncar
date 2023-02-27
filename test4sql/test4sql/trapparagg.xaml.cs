@@ -128,9 +128,14 @@ namespace oncar
 
 
 
+        /*  <!--           Location = mTimh,
+                         ImageUrl = mPoso,
+                         idPEL = mPROSU,
+                         Prood= midEggtim, 
+                         Name = mOno,
+                         ID=mCOMMENTS   -->    */
 
 
-      
 
         private async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -138,32 +143,36 @@ namespace oncar
             // PARAGG -> NUM1 = TROPOS PLHROMHS  1,2,3     -1=ΔΙΑΓΡΑΦΤΗΚΕ
             // ENERGOS=1  ΤΥΠΟΜΕΝΟ
 
-            string action = await DisplayActionSheet("Επιλογή", "Ακυρο", null, "1.Μετρητά Πληρωμή", "2.Κάρτα Πληρωμή", "3.Διαγραφή");
+            string action = await DisplayActionSheet("Επιλογή", "Ακυρο", null, "1.Μετρητά Πληρωμή", "2.Κάρτα Πληρωμή", "3.Κάρτα2 Πληρωμή","4.Κερασμένα", "5.Διαγραφή");
             if (action.Substring(0, 1) == "Α") { return; }
 
 
             Monkey2 tappedItem = e.Item as Monkey2;
             //   LIDtest.Text = e.ItemIndex.ToString();
-            string cc = tappedItem.idPEL;
+            string cc = tappedItem.Prood;
             string mc = tappedItem.Name;
-            //Location = mTimh,
+
+
+            string mt = tappedItem.Location;
+            mt = mt.Replace(",", ".");
+            string mp = tappedItem.ImageUrl;
             //           ImageUrl = mPoso
 
 
 
 
-            string[] lines = cc.Split('~');
+           // string[] lines = cc.Split('~');
 
-            string cTYPOMENO = Globals.ReadSQLServer("SELECT  ISNULL(ENERGOS,0) AS TYP FROM PARAGG WHERE   ID=" + lines[1]);
-            if (action.Substring(0, 1) == "3")
-            {
+            string cTYPOMENO = Globals.ReadSQLServer("SELECT  ISNULL(ENERGOS,0) AS TYP FROM PARAGG WHERE   ID=" + cc);
+          if (action.Substring(0, 1) == "5")
+          {
               
                  if (cTYPOMENO=="1")
-                {
+                 {
                     await DisplayAlert("αδυνατη η διαγραφή", "ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
                     return;
 
-                }
+                 }
                 
                 
                 
@@ -174,9 +183,9 @@ namespace oncar
                 }
                 else
                 {
-                    Globals.ExecuteSQLServer("delete from PARAGG WHERE ID=" + lines[1]);
+                    Globals.ExecuteSQLServer("delete from PARAGG WHERE ID=" + cc);
                 }
-            }
+          }
 
 
             //------------- PLHRVMH ------------------------
@@ -186,7 +195,7 @@ namespace oncar
                 return;
             }
 
-                if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2")
+            if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3" || action.Substring(0, 1) == "4")
             {
                 if (cc.Substring(0, 2) == "**")
                 {
@@ -194,7 +203,26 @@ namespace oncar
                 }
                 else
                 {
-                    Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + lines[1]);
+
+
+                    Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**"+ action.Substring(0, 1)+"-'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + cc);
+                    if (action.Substring(0, 1) == "1")
+                    {
+                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" +mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
+                    }
+                    if (action.Substring(0, 1) == "2")
+                    {
+                    Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
+                    }
+                    if (action.Substring(0, 1) == "3")
+                    {
+                      Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS2=ISNULL(PIS2,0)+" + mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
+                    }
+
+                    if (action.Substring(0, 1) == "4")
+                    {
+                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET KERA=ISNULL(KERA,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                    }
                 }
                    
             }
@@ -239,13 +267,6 @@ namespace oncar
             {
                 Globals.gKathg = "0";
             }
-
-
-
-
-
-
-
 
             // DisplayAlert("Τραπέζι Νο ", e.Item.ToString(), "Ok");
             await Navigation.PushAsync(new trapeziEpil());  //imports
@@ -311,7 +332,7 @@ namespace oncar
             }
             else
             {     // ολα 
-                 dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+                 dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
             }
             // Monkeys.Add(new Monkey
             myText.Add(MainPage.ToGreek737("*******  TΡΑΠΕΖΙ " +Globals.gTrapezi) +" *********" );
@@ -325,7 +346,7 @@ namespace oncar
                     myText.Add(MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29)));
                 } else
                 {    //ola
-                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " + MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Substring(0, 30))+ "   " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                    myText.Add(dt.Rows[k]["POSO"].ToString() + " " +( MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString()+"                              ").Substring(0, 30))+ "   " + (dt.Rows[k]["TIMH"].ToString()+"     ").Substring(0, 5) + "    " + (dt.Rows[k]["AXIA"].ToString()+"     ").Substring(0, 5)) ;
                     ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
                 }
                
@@ -334,7 +355,7 @@ namespace oncar
             }
             if (part == 1) 
             {
-                myText.Add(MainPage.ToGreek737( ss.ToString());
+                myText.Add("                                                                          "+MainPage.ToGreek737( ss.ToString()));
 
             }
             else
@@ -342,11 +363,12 @@ namespace oncar
                 myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "    " + ss.ToString());
             }
                
-            myText.Add("");
-            myText.Add("");
-            myText.Add("");
-            myText.Add("");
-            myText.Add("");
+            myText.Add( "\r\n");
+            myText.Add("\r\n");
+            myText.Add("\r\n");
+            myText.Add("\r\n");
+            myText.Add("\r\n");
+            myText.Add("\r\n");
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
@@ -484,8 +506,8 @@ catch (Exception ex)
 
                         Location = mTimh,
                         ImageUrl = mPoso,
-                        idPEL = mPROSU+"  ~"+ midEggtim,
-                        Prood="/",
+                        idPEL = mPROSU,   //+"  ~"+ midEggtim,
+                        Prood= midEggtim,
                         ID=mCOMMENTS 
                     }) ;
 
@@ -532,6 +554,27 @@ catch (Exception ex)
            if (action.Substring(0, 1) == "Α") { return; }
             Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
             Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
+
+            if (action.Substring(0, 1) == "1")
+            {
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)+" + caji.Replace(",",".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+            }
+            if (action.Substring(0, 1) == "2")
+            {
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+            }
+            if (action.Substring(0, 1) == "3")
+            {
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+            }
+
+
+
+
+
+
+
+
             Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
 
             await Navigation.PopAsync();

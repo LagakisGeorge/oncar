@@ -47,13 +47,15 @@ namespace oncar
         private async void okdone(object sender, EventArgs e)
         {
             addParagg();
-            Globals.indexParaggLine = Globals.indexParaggLine + 1;
-            Globals.PARAGGlines[Globals.indexParaggLine, 0] = EIDOS.Text;
-            Globals.PARAGGlines[Globals.indexParaggLine, 1] = tem.Text;
-            Globals.PARAGGlines[Globals.indexParaggLine, 2] = "0";// tem.Text;
-            Globals.PARAGGlines[Globals.indexParaggLine, 3] = "0"; // tem.Text;
-            Globals.PARAGGlines[Globals.indexParaggLine, 5] = COMMENTS.Text; // tem.Text;
-
+            for (int n = 1; n <= (Int32.Parse(tem.Text)); n++)
+            {
+                Globals.indexParaggLine = Globals.indexParaggLine + 1;
+                Globals.PARAGGlines[Globals.indexParaggLine, 0] = EIDOS.Text;
+                Globals.PARAGGlines[Globals.indexParaggLine, 1] = "1"; // tem.Text;
+                Globals.PARAGGlines[Globals.indexParaggLine, 2] = "0";// tem.Text;
+                Globals.PARAGGlines[Globals.indexParaggLine, 3] = "0"; // tem.Text;
+                Globals.PARAGGlines[Globals.indexParaggLine, 5] = COMMENTS.Text; // tem.Text;
+            }
             await Navigation.PopAsync();
             //  App.Current.Mainpage.Navigation.PopModalAsync();
         }
@@ -79,9 +81,11 @@ namespace oncar
                 tem.Text = "0";
                 fTem = 0.0;
             }
-
-            Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES ("+ Globals.gIDPARAGG + ",'" + Globals.gTrapezi+"','"+ EIDOS.Text +"',"+tem.Text +","+timh.Text.Replace(",",".")+",'"+PROSU.Text+"','',0,'"+COMMENTS.Text+"')" );
-
+            for (int n = 1; n <= (Int32.Parse(tem.Text)); n++)
+            {
+                // Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "'," + tem.Text + "," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
+                Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "',1," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
+            }
             //  cIDParagg = Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
             // TA APLHRVTA  EINAI TO ΝUΜ1=0
             string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");

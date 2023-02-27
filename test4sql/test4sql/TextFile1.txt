@@ -1,0 +1,61 @@
+﻿CREATE TABLE [dbo].[PARAGG](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[TRAPEZI] [nvarchar](255) NULL,
+	[HME] [datetime] NULL,
+	[IDPARAGG] [int] NULL,
+	[KOD] [nvarchar](255) NULL,
+	[POSO] [real] NULL,
+	[TIMH] [real] NULL,
+	[ONO] [nvarchar](255) NULL,
+	[PROSUETA] [nvarchar](255) NULL,
+	[CH1] [nvarchar](255) NULL,
+	[CH2] [nvarchar](255) NULL,
+	[NUM1] [int] NULL,
+	[NUM2] [int] NULL,
+	[ENERGOS] [smallint] NULL,
+	[KERASMENOAPO] [nvarchar](255) NULL,
+	[KERASMENOSE] [nvarchar](255) NULL
+) ON [PRIMARY]
+
+to NUM1  Ο ΤΡΟΠΟΣ ΠΛΗΡΩΜΗς
+
+ID	TRAPEZI	HME	IDPARAGG	KOD	 POSO TIMH	ONO	       PROSUETA	CH1	CH2	NUM1	NUM2	ENERGOS	KERASMENOAPO	KERASMENOSE
+1232	51	NULL	1079	NULL	1	6	Aperrol  	---	   NULL		0	    NULL	NULL	NULL	        NULL
+
+
+<ViewCell>
+
+                        <StackLayout   Orientation="Horizontal">
+                            <Label 
+                                   Text="{Binding ImageUrl}"                                 
+                                   WidthRequest="20"       />
+
+                            <StackLayout HorizontalOptions="StartAndExpand" Spacing="0"  >
+                               
+                               <Label 
+                                   Text="{Binding Name}"                                  
+                                    WidthRequest="350" />
+
+                                <Label                               
+                                   Text="{Binding Prood}"
+                                   VerticalOptions="End" />
+                            </StackLayout>
+
+                            <Label                                   
+                                   Grid.Column="2" 
+                                   Text="{Binding Location}"                                                                                                         
+                                   VerticalOptions="End" />
+                            <Label 
+                                  Grid.Row="1"
+                                   Grid.Column="0"                                
+                                   Text="{Binding idPEL}"
+                                   VerticalOptions="End" />
+                            <Label 
+                                   Grid.Column="2" 
+                                   Text="{Binding ID}"
+                                
+                                   VerticalOptions="End" />
+
+                        </StackLayout>
+                       
+                    </ViewCell>

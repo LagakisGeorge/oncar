@@ -1223,7 +1223,24 @@ NewMethod(e),
         private async void fCloseVardia(object sender, EventArgs e)
         {
 
-            DataTable dt2 = new DataTable();
+            DataTable dt3 = new DataTable();
+            // ΒΡΕΣ AN EXV ANOIXTA TRAPEZIA
+            dt3 = trapparagg.ReadSQLServer("SELECT * FROM TABLES where KATEILHMENO=1 AND  NUM1="+ Globals.gUserWaiter.ToString());
+
+
+            if (dt3.Rows.Count> 0)
+            {
+                await DisplayAlert("ΚΛΕΙΣΤΕ ΤΑ ΑΝΟΙΧΤΑ ΤΡΑΠΕΖΙΑ", dt3.Rows.Count.ToString()+ " ανοικτα", "OK");
+                return;
+            }
+                 
+
+
+
+
+
+
+                DataTable dt2 = new DataTable();
             // ΒΡΕΣ ΤΗΝ ΤΕΛΕΥΤΑΙΑ ΒΑΡΔΙΑ ΤΟΥ ΣΕΡΒΙΤΟΡΟΥ ν
             dt2 = trapparagg.ReadSQLServer("SELECT top 1 * FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString()+" order by  ID DESC");
       
@@ -1274,55 +1291,56 @@ NewMethod(e),
             else
             {
                 DataTable DT;
-                DT = trapparagg.ReadSQLServer("SELECT Sum(isnull(AJIA,0)) AS JJ , isnull(TROPOS,2) as TROPOS  FROM PARAGGMASTER GROUP BY TROPOS,IDBARDIA  HAVING  IDBARDIA=" + Globals.gIDBARDIA);
-
-                string mm="-------";
+                // DT = trapparagg.ReadSQLServer("SELECT Sum(isnull(AJIA,0)) AS JJ , isnull(TROPOS,2) as TROPOS  FROM PARAGGMASTER GROUP BY TROPOS,IDBARDIA  HAVING  IDBARDIA=" + Globals.gIDBARDIA);
+                DT = trapparagg.ReadSQLServer("SELECT Sum(isnull(CASH,0)) AS CASH ,  Sum(isnull(PIS1,0)) AS PIS1 , Sum(isnull(PIS2,0)) AS PIS2 ,  Sum(isnull(KERA,0)) AS KERA  FROM PARAGGMASTER WHERE  IDBARDIA=" + Globals.gIDBARDIA);
+                string mm="-------"+ "\r\n";  // myText.Add( "\r\n");
                 // string[] CASH;
                 List<string> myText = new List<string>();
 
-                for (int K = 0; K <= DT.Rows.Count - 1; K++)
+
+
+                if (DT.Rows.Count == 0)   // ΔΕΝ ΕΧΕΙ ΚΙΝΗΣΕΙΣ ΤΟ PARAGGMASTER
                 {
-                    if (DT.Rows[K]["jj"].ToString() == "0") {
-
-                    }
-                    else
-                    {
-                        string Tropos = "";
-                        if (DT.Rows[K]["tropos"].ToString() == "1")
-                        {
-                            Tropos = "μετρητα";
-                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH1="+ DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
-                        }
-                        if (DT.Rows[K]["tropos"].ToString() == "2")
-                        {
-                            Tropos = "καρτα1";
-                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH2=" + DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
-                        }
-                        if (DT.Rows[K]["tropos"].ToString() == "3")
-                        {
-                            Tropos = "μετρητα";
-                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH3=" + DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
-                        }
-                        if (DT.Rows[K]["tropos"].ToString() == "4")
-                        {
-                            Tropos = "μετρητα";
-                            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH4=" + DT.Rows[K]["JJ"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
-                        }
-
-                        
+                    Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + "0" + ", " + Globals.gUserWaiter.ToString() + ")");
+                    //   Globals.gIDBARDIA = cc;
+                    await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ.ΤΩΡΑ ΜΟΛΙΣ ΑΝΟΙΞΕ ΝΕΑ", "   ", "OK");
+                    return;
+                }
 
 
-                       mm = mm +Tropos+ " => " +DT.Rows [K]["JJ"].ToString()+ "\r\n";
-                     if ( Int32.Parse(DT.Rows[K]["tropos"].ToString()) < 5 )
-                        {
 
-                        }
-                        //   CASH(DT(K)(1)) = DT(K)(0).ToString
-                        CASHTOT = CASHTOT + float.Parse( DT.Rows[K]["JJ"].ToString());
-                    //End If
-                    }
 
-                }  //for 
+
+
+
+
+
+
+
+
+                string Tropos = "Μετρητα";
+                Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH1=" + DT.Rows[0]["CASH"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                mm = mm + Tropos + " => " + DT.Rows[0]["CASH"].ToString();// + "\r\n";
+                 Tropos = "καρτα1";
+                Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH2=" + DT.Rows[0]["PIS1"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                mm = mm + Tropos + " => " + DT.Rows[0]["PIS1"].ToString();// + "\r\n";
+
+
+                if (Int32.Parse(DT.Rows[0]["PIS2"].ToString().Replace(",", ".")) > 0) {
+                Tropos = "καρτα2";
+                Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH3=" + DT.Rows[0]["PIS2"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                 mm = mm + Tropos + " => " + DT.Rows[0]["PIS2"].ToString();// + "\r\n";
+                }
+                Tropos = "Κερασμένα";
+                Globals.ExecuteSQLServer("UPDATE BARDIA SET CASH4=" + DT.Rows[0]["KERA"].ToString().Replace(",", ".") + " WHERE ID=" + Globals.gIDBARDIA);
+                mm = mm + Tropos + " => " + DT.Rows[0]["KERA"].ToString();// + "\r\n";
+
+
+
+                
+
+
+
 
                 //  List<string> myText = new List<string>();
                 myText.Add("=================================" + "\r\n");
@@ -1352,33 +1370,11 @@ NewMethod(e),
                     // await DisplayAlert("error2", "", "");
                 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
 
 
             DataTable DT2;
-            DT2 = trapparagg.ReadSQLServer("SELECT TRAPEZI,HME,AJIA,ISNULL([TROPOS],'') AS TROPOS  FROM PARAGGMASTER   where  IDBARDIA=" + Globals.gIDBARDIA);
+            DT2 = trapparagg.ReadSQLServer("SELECT TRAPEZI,HME,AJIA,CASH,PIS1,PIS2,KERA  FROM PARAGGMASTER   where  IDBARDIA=" + Globals.gIDBARDIA);
 
             
             // string[] CASH;
@@ -1387,11 +1383,13 @@ NewMethod(e),
             myText2.Add("---");
             for (int K = 0; K <= DT2.Rows.Count - 1; K++)
             {
-                string v = DT2.Rows[K]["TRAPEZI"].ToString() + "----" + DT2.Rows[K]["HME"].ToString() + "----" + DT2.Rows[K]["AJIA"].ToString() + "--"+DT2.Rows[K]["TROPOS"].ToString();
+                string v = DT2.Rows[K]["TRAPEZI"].ToString() + "----" + DT2.Rows[K]["HME"].ToString() + "----"+"\r\n" + MainPage.ToGreek737("Μετρ:") + DT2.Rows[K]["CASH"].ToString() + MainPage.ToGreek737(" Πιστ:") +DT2.Rows[K]["PIS1"].ToString() + MainPage.ToGreek737(" Κερ:") + DT2.Rows[K]["KERA"].ToString();
                 mm2 = mm2 + v;
                 myText2.Add(v);
 
             }
+
+            myText2.Add("\r\n");
             await DisplayAlert(mm2, "   ", "OK");
             printing(myText2 );
 
@@ -1402,22 +1400,7 @@ NewMethod(e),
 
             Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + CASHTOT.ToString().Replace (",",".") + ", CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID="  +Globals.gIDBARDIA);
 
-               //For K = 1 To 5
-               //     If CASH(K) = Nothing Then
-               //     Else
-
-               //         If Val(CASH(K)) > 0 Then
-               //             ExecuteSQLQuery("UPDATE BARDIA SET CASH" + Format(K, "0") + "=" + CASH(K) + " WHERE ID=" + Str(gBardia), DT2)
-               //         End If
-
-               //     End If
-               // Next
-
-
-
-
-
-
+              
 
 
 
@@ -1426,6 +1409,11 @@ NewMethod(e),
 
         private async void printing(List<string> myText) //  object sender, EventArgs e)
         {
+
+
+
+
+
             string ipAddress = Globals.cIPPR1;// "192.168.1.120";
             int portNumber = 9100;
            // List<string> myText = new List<string>();
@@ -1461,6 +1449,16 @@ NewMethod(e),
 
         private async void testprint(object sender, EventArgs e)
         {
+            await Navigation.PushAsync(new Page11());
+
+            return;
+
+
+
+
+
+
+
             string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             List<string> myText = new List<string>();

@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="test4sql.Page11">
+    <ContentPage.Content>
+        <StackLayout>
+
+
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                  HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                  ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="*"  />
+                                </Grid.ColumnDefinitions >
+
+                                <Label Grid.Column="0" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" FontSize="Small" />
+                                <Label 
+                                    Grid.Column="1"
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    Grid.Column="2"
+                                    />
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    Grid.Column="3"
+                                   />
+                            </Grid>
+
+
+
+
+
+                            <!--    <StackLayout Padding="20" Spacing="10"  Orientation="Horizontal" >
+
+                                <Label Grid.Column="1" 
+                                   Text="{Binding Name}"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="Start"
+                                       
+                                   FontAttributes="Bold"
+                                       BackgroundColor="Aquamarine"
+                                       FontSize="Small" 
+                                />
+                                
+                                <Label                                     
+                                   Text="{Binding Location}"
+                                    FontAttributes="Bold"                                    
+                                    FontSize="Small"
+                                   VerticalOptions="Start"
+                                       HorizontalOptions="Start"
+                                 />
+
+                              
+                                  <Label                                    
+                                    Text="{Binding ImageUrl}" 
+                                    FontAttributes="Bold"
+                                    FontSize="Small"
+                                      VerticalOptions="Start"
+         HorizontalOptions="FillAndExpand"
+                                    />
+                                  <Label                                    
+                                   Text="{Binding idPEL}"
+                                    FontAttributes="Bold"
+                                    FontSize="Small"
+                                      VerticalOptions="Start"
+                  HorizontalOptions="FillAndExpand"
+                                  
+                                  />
+                            
+                           
+
+
+
+
+                            </StackLayout>    -->
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--    <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+         -->        
+          <Grid  x:Name="grid1" >
+              <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+       
+              </Grid.ColumnDefinitions>
+             <Grid.RowDefinitions>
+                 <RowDefinition Height="*" />
+             </Grid.RowDefinitions>
+           </Grid>
+
+
+
+
+
+           
+                <!-- Place new controls here
+                <Label Text="Welcome to Xamarin.Forms!" 
+                     HorizontalOptions="Center"
+                  /> 
+            
+            
+                <Button Text="ΑΠΟΘΗΚΕΥΣΗ ΤΕΧΤ ΑΡΧΕΙΟΥ ΣΕ ΚΟΙΝΟΧΡΗΣΤΟ ΦΑΚΕΛΟ"
+                        Clicked="Shared_Folder" 
+                  />
+                <Button x:Name="but10" 
+                        Text="CreateFolder"
+                       Clicked="Click_Login" 
+               
+                 />-->
+            <StackLayout Orientation="Horizontal">
+                <Label  x:Name="PAR2"  
+                     Text="Παρ/κό:        . "
+                       TextColor="Brown"
+                     />
+
+                <Label  x:Name="ATIM"   VerticalTextAlignment="Center"  Text="" WidthRequest="70"  />
+                <Entry x:Name="AFM"  Placeholder="    "   />
+                <Label  x:Name="EPO"   Text=""   />
+                <Label  x:Name="BCASH"   Text=""   />
+
+
+
+            </StackLayout>
+            
+            <StackLayout Orientation="Horizontal">
+        <Button x:Name="BLISTTIMOL" 
+                Text="ΛΙΣΤΑ ΤΙΜΟΛΟΓΙΩΝ"
+                       Clicked="LISTTIMOL"                
+                 />
+                <Button x:Name="BLISTEIDH" 
+                Text="ΛΙΣΤΑ ΕΙΔΩΝ"
+                       Clicked="LISTEIDH"                
+                 />
+            </StackLayout>
+
+
+
+            <!--    τεστ   cell   -->
+            <StackLayout   Orientation="Horizontal">
+
+
+                               <Label 
+                                   Text="1"                                 
+                                   WidthRequest="20"       />
+                                  <Label 
+                                    WidthRequest="120"  
+                                
+                                   Text="2.5"                                                                                                         
+                                   />
+
+                               <Label 
+                                   Text="Name9999999 765765768"
+                                    FontSize="Large"
+                                    FontAttributes="Bold"
+                                    WidthRequest="650" />
+            </StackLayout>
+
+
+            <!--           Location = mTimh,
+                        ImageUrl = mPoso,
+                        idPEL = mPROSU+"  ~"+ midEggtim,
+                        Prood="/",
+                        Name = mOno,
+                        ID=mCOMMENTS   -->
+            
+            
+            <StackLayout   Orientation="Horizontal">
+               
+                <Label 
+                                FontSize="Micro" 
+                                   Grid.Column="0"                                 
+                                   Text="προσθετα ~123456"
+                                   />
+                <Label 
+                               
+                                   Text="ψομμεντσ ....... gfhgfhgfhgfhg hfgththty"                                
+                                   VerticalOptions="End" />
+            </StackLayout>
+
+            <Button x:Name="but31" 
+                Text="ΜΗΔΕΝΙΣΜΟΣ ΤΙΜΟΛΟΓΙΩΝ"
+                       Clicked="delt"
+                
+                 />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

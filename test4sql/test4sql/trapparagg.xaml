@@ -14,6 +14,22 @@
             />
 
 
+
+    
+
+
+
+
+
+
+
+        <!--           Location = mTimh,
+                        ImageUrl = mPoso,
+                        idPEL = mPROSU+"  ~"+ midEggtim,
+                        Prood="/",
+                        Name = mOno,
+                        ID=mCOMMENTS   -->
+
         <ListView ItemsSource="{Binding Monkeys2}"
                   HasUnevenRows="true"
                    x:Name="listERG"
@@ -22,52 +38,40 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        
-                        <StackLayout   Orientation="Horizontal">
 
+                       <StackLayout>
 
+                         <StackLayout   Orientation="Horizontal">
                             <Label 
                                    Text="{Binding ImageUrl}"                                 
                                    WidthRequest="20"       />
+                                <!-- Location = mTimh    ImageUrl = mPoso,  ,-->
+                                <Label       Text="X" />                            
+                                                                  
+                                <Label Text="{Binding Location}" />                                                                                                                                                 
+                               <Label 
+                                   Text="{Binding Name}"    VerticalOptions="End"    FontSize="Small"   FontAttributes="Bold"                         
+                                    WidthRequest="650" />
 
-                            <StackLayout HorizontalOptions="StartAndExpand" Spacing="0"  >
+                                
+                         </StackLayout>
+
+                            <StackLayout   Orientation="Horizontal">
                                
-                               <Label 
-                                   Text="{Binding Name}"
-                                  
-                                    WidthRequest="350" />
-                                
-                               <Label 
-                              
-                                   Text="{Binding Prood}"
-                                   VerticalOptions="End" />
-                                
-                                
-                                
-                            </StackLayout>
-
-                            <Label 
-                                   
-                                   Grid.Column="2" 
-                                   Text="{Binding Location}"                                                                                                         
-                                   VerticalOptions="End" />
-
-                           
-                            
-                            <Label 
-                                  Grid.Row="1"
-                                   Grid.Column="0" 
-                                
+                                 <Label 
+                                 
+                                   Grid.Column="0"                                
                                    Text="{Binding idPEL}"
-                                   VerticalOptions="End" />
-                           
-                            <Label 
-                                   Grid.Column="2" 
-                                   Text="{Binding ID}"
+                                   HorizontalOptions="Start" />
+                                 <Label 
+                                 
+                                   Text="{Binding ID}" />
+                                <Label    FontSize="Micro"  IsVisible="false"  VerticalOptions="End"                        
+                                   Text="{Binding Prood}"/>
                                 
-                                   VerticalOptions="End" />
-
                             </StackLayout>
+
+                        </StackLayout>
                        
                     </ViewCell>
                 </DataTemplate>

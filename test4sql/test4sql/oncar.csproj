@@ -62,6 +62,9 @@
     <Compile Update="Imports.xaml.cs">
       <DependentUpon>Imports.xaml</DependentUpon>
     </Compile>
+    <Compile Update="LISTATRAPEZ.xaml.cs">
+      <DependentUpon>LISTATRAPEZ.xaml</DependentUpon>
+    </Compile>
     <Compile Update="TrapEpil.xaml.cs">
       <DependentUpon>TrapEpil.xaml</DependentUpon>
     </Compile>
