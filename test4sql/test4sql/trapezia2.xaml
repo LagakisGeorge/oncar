@@ -14,6 +14,7 @@
             <!--  FlowItemTappedCommand="{Binding ItemTappedCommand}"  -->
             <flv:FlowListView.FlowColumnTemplate>  
                 <DataTemplate>  
+                    
                     <Frame BackgroundColor="Purple"  
                     Margin="5">  
                    <Label HorizontalOptions="Fill"   
@@ -21,7 +22,9 @@
                     TextColor="White"  
                     XAlign="Center"  
                     YAlign="Center"   
-                    Text="{Binding }"/>  
+                    Text="{Binding }"/>
+                        
+                   
                     </Frame>  
                 </DataTemplate>  
             </flv:FlowListView.FlowColumnTemplate>  

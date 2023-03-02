@@ -3,13 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:test4sql"
             NavigationPage.HasNavigationBar="False" 
-             x:Class="test4sql.MainPage">
- 
+             x:Class="test4sql.MainPage" >
     
+
     <StackLayout>
+        <!--  <Image Source="https://commons.wikimedia.org/wiki/Main_Page#/media/File:Oranges_-_whole-halved-segment.jpg"
+       Aspect="Fill"
+       HeightRequest="{OnPlatform iOS=300, Android=250}"
+       WidthRequest="{OnPlatform iOS=300, Android=250}"
+       HorizontalOptions="Center" />  
 
-
-        <!--   <Image Source="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg" Opacity="0.3"
+           <Image Source="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg" Opacity="0.3"
                 RelativeLayout.WidthConstraint=
                   "{ConstraintExpression Type=RelativeToParent, Property=Width}"
                 RelativeLayout.HeightConstraint=
@@ -105,7 +109,7 @@
                  />
 
             <Button x:Name="test" 
-                Text="TEST"
+                Text="Λιστα τραπεζιων"
                 Clicked="testprint"
                  />
         </StackLayout>

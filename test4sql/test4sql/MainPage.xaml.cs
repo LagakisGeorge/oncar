@@ -15,6 +15,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System.Threading;
 using oncar;
+using Android.Views.Animations;
 //  using SharpCifs.Util.Sharpen;
 
 namespace test4sql
@@ -1068,43 +1069,113 @@ NewMethod(e),
 
         public static string ToGreek737(string Q)
         {
-            Q = Q.ToUpper();
+           // Q = Q.ToUpper();
             string t = "";
             for (int k = 1; k <= Q.Length; k += 1)
             {
                 string m = Q.Substring(k - 1, 1);
-                if (instr(0, "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ", m, 1) == -1)
+                if (instr(0, "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψωάέήίόύώς", m, 1) == -1)
                 {
                     t = t + m;
                 }
                 else
                 {
                     if (m == "Α") { t += Convert.ToChar(128).ToString(); }
+                    if (m == "Ά") { t += Convert.ToChar(234).ToString(); }
+
+
                     if (m == "Β") { t += Convert.ToChar(129).ToString(); }
                     if (m == "Γ") { t += Convert.ToChar(130).ToString(); }
                     if (m == "Δ") { t += Convert.ToChar(131).ToString(); }
                     if (m == "Ε") { t += Convert.ToChar(132).ToString(); }
+                    if (m == "Έ") { t += Convert.ToChar(235).ToString(); }
                     if (m == "Ζ") { t += Convert.ToChar(133).ToString(); }
                     if (m == "Η") { t += Convert.ToChar(134).ToString(); }
+                    if (m == "Ή") { t += Convert.ToChar(236).ToString(); }
                     if (m == "Θ") { t += Convert.ToChar(135).ToString(); }
 
                     if (m == "Ι") { t += Convert.ToChar(136).ToString(); }
+                    if (m == "Ί") { t += Convert.ToChar(237).ToString(); }
+
                     if (m == "Κ") { t += Convert.ToChar(137).ToString(); }
                     if (m == "Λ") { t += Convert.ToChar(138).ToString(); }
                     if (m == "Μ") { t += Convert.ToChar(139).ToString(); }
                     if (m == "Ν") { t += Convert.ToChar(140).ToString(); }
                     if (m == "Ξ") { t += Convert.ToChar(141).ToString(); }
                     if (m == "Ο") { t += Convert.ToChar(142).ToString(); }
+                    if (m == "Ό") { t += Convert.ToChar(238).ToString(); }
                     if (m == "Π") { t += Convert.ToChar(143).ToString(); }
 
                     if (m == "Ρ") { t += Convert.ToChar(144).ToString(); }
                     if (m == "Σ") { t += Convert.ToChar(145).ToString(); }
                     if (m == "Τ") { t += Convert.ToChar(146).ToString(); }
                     if (m == "Υ") { t += Convert.ToChar(147).ToString(); }
+                    if (m == "Ύ") { t += Convert.ToChar(239).ToString(); }
+
                     if (m == "Φ") { t += Convert.ToChar(148).ToString(); }
                     if (m == "Χ") { t += Convert.ToChar(149).ToString(); }
+
                     if (m == "Ψ") { t += Convert.ToChar(150).ToString(); }
                     if (m == "Ω") { t += Convert.ToChar(151).ToString(); }
+                    if (m == "Ώ") { t += Convert.ToChar(240).ToString(); }
+
+
+                    if (m == "α") { t += Convert.ToChar(152).ToString(); }
+                    if (m == "ά") { t += Convert.ToChar(225).ToString(); }
+
+
+                    if (m == "β") { t += Convert.ToChar(153).ToString(); }
+                    if (m == "γ") { t += Convert.ToChar(154).ToString(); }
+                    if (m == "δ") { t += Convert.ToChar(155).ToString(); }
+                    if (m == "ε") { t += Convert.ToChar(156).ToString(); }
+                    if (m == "έ") { t += Convert.ToChar(226).ToString(); }
+                    if (m == "ζ") { t += Convert.ToChar(157).ToString(); }
+                    if (m == "η") { t += Convert.ToChar(158).ToString(); }
+                    if (m == "ή") { t += Convert.ToChar(227).ToString(); }
+                    if (m == "θ") { t += Convert.ToChar(159).ToString(); }
+
+                    if (m == "ι") { t += Convert.ToChar(160).ToString(); }
+                    if (m == "ί") { t += Convert.ToChar(229).ToString(); }
+
+                    if (m == "κ") { t += Convert.ToChar(161).ToString(); }
+                    if (m == "λ") { t += Convert.ToChar(162).ToString(); }
+                    if (m == "μ") { t += Convert.ToChar(163).ToString(); }
+                    if (m == "ν") { t += Convert.ToChar(164).ToString(); }
+                    if (m == "ξ") { t += Convert.ToChar(165).ToString(); }
+                    if (m == "ο") { t += Convert.ToChar(166).ToString(); }
+                    if (m == "ό") { t += Convert.ToChar(230).ToString(); }
+                    if (m == "π") { t += Convert.ToChar(167).ToString(); }
+
+                    if (m == "ρ") { t += Convert.ToChar(168).ToString(); }
+                    if (m == "σ") { t += Convert.ToChar(169).ToString(); }
+                    if (m == "ς") { t += Convert.ToChar(170).ToString(); }
+
+                    if (m == "τ") { t += Convert.ToChar(171).ToString(); }
+                    if (m == "υ") { t += Convert.ToChar(172).ToString(); }
+                    if (m == "ύ") { t += Convert.ToChar(231).ToString(); }
+
+                    if (m == "φ") { t += Convert.ToChar(173).ToString(); }
+                    if (m == "χ") { t += Convert.ToChar(174).ToString(); }
+
+                    if (m == "ψ") { t += Convert.ToChar(175).ToString(); }
+                    if (m == "ω") { t += Convert.ToChar(224).ToString(); }
+                    if (m == "ώ") { t += Convert.ToChar(233).ToString(); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1172,10 +1243,24 @@ NewMethod(e),
 
             try
             {
-               
-            dt2 = trapparagg.ReadSQLServer("SELECT str(isnull(MAX(ID),0)) as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString());
-            string cc = dt2.Rows[0]["aa"].ToString();
-            int n = Int32.Parse(cc);
+                string ccg = "";
+                ccg = "SELECT STR(MAX(  ISNULL(ID,0)   ))   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
+            dt2 = trapparagg.ReadSQLServer(ccg);
+
+                int n;
+                string cc="0";
+                if (dt2 == null || dt2.Rows.Count == 0)
+                {
+                    // Throw the error or retrun the code 
+                    n = 0;
+                }
+                else
+                {
+                  
+                    cc = dt2.Rows[0]["aa"].ToString();
+                    n = Int32.Parse(cc);
+                }
+           
 
             if (n == 0)
             {

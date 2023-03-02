@@ -255,7 +255,7 @@ namespace oncar
 
 
 
-            string[] lines = Globals.gKathg.Split(' ');
+            string[] lines = Globals.gKathg.Split(';');
 
             // αδειο τρπαζζι  π.χ. 12 345
             if (lines.Length > 1)
@@ -335,7 +335,14 @@ namespace oncar
                  dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
             }
             // Monkeys.Add(new Monkey
-            myText.Add(MainPage.ToGreek737("*******  TΡΑΠΕΖΙ " +Globals.gTrapezi) +" *********" );
+            myText.Add(MainPage.ToGreek737("*******  TΡΑΠΕΖΙ  " +Globals.gTrapezi) + "  ***************************" + "\r\n");
+
+            myText.Add("\r\n");
+            myText.Add("\r\n");
+
+
+
+
             float ss = 0;
             for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
@@ -349,9 +356,9 @@ namespace oncar
                     myText.Add(dt.Rows[k]["POSO"].ToString() + " " +( MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString()+"                              ").Substring(0, 30))+ "   " + (dt.Rows[k]["TIMH"].ToString()+"     ").Substring(0, 5) + "    " + (dt.Rows[k]["AXIA"].ToString()+"     ").Substring(0, 5)) ;
                     ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
                 }
-               
-               
-                myText.Add("");
+
+                myText.Add("\r\n");
+                
             }
             if (part == 1) 
             {
@@ -369,6 +376,14 @@ namespace oncar
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
+           
+          //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
+          //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
+          for (int ll = 128; ll < 255; ll++)
+            {
+               // myText.Add(ll.ToString()+" "+Convert.ToChar(ll).ToString());
+
+            }
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
@@ -389,6 +404,30 @@ namespace oncar
                // await DisplayAlert("error2", "", "");
             }
             Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG );
+
+
+
+            List<byte> outputList = new List<byte>();
+         //   outputList.Add(0x0A);
+            outputList.Add(0x1B);
+            outputList.Add(0x69);
+
+            Socket pSocket = new Socket(SocketType.Stream, ProtocolType.IP);
+
+            // Connect to the printer
+            pSocket.Connect(ipAddress, portNumber);
+
+            // ToDo: Send some commands to the printer
+            // Send the command to the printer
+            pSocket.Send(outputList.ToArray());
+            // Close the socket connection when done
+            pSocket.Close();
+
+
+
+
+
+
         }
 
 
@@ -655,7 +694,7 @@ catch (Exception ex)
                     fONO = dt.Rows[k]["ONO"].ToString();
                     string fID;
                     fID = dt.Rows[k]["ID"].ToString();
-                    Items.Add(string.Format("{0}",  fONO + " " + fID));
+                    Items.Add(string.Format("{0}",  fONO + ";" + fID));
 
 
 
