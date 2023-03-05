@@ -203,7 +203,7 @@ namespace test4sql
 
             Globals.cIPPR1 = PARAGGELIES.ReadSQL("select IP from MEM  where ID=2");
             Globals.cIPPR2 = PARAGGELIES.ReadSQL("select AFM from MEM  where ID=2");
-
+            Globals.cIPPR3 = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=2");
 
 
 
@@ -1519,9 +1519,9 @@ NewMethod(e),
             }
             try
             {
-                PrintSmall();
-                LF();
-                LF();
+                PrintSmall(ipAddress);
+                LF(ipAddress);
+                LF(ipAddress);
                 printer.Print(ipAddress, portNumber, mytext);
             }
 
@@ -1530,7 +1530,7 @@ NewMethod(e),
                 await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
                 // await DisplayAlert("error2", "", "");
             }
-            CutPaper();
+            CutPaper(ipAddress);
         }
 
 
@@ -1551,7 +1551,7 @@ NewMethod(e),
         }
 
 
-        private void PrintSmall()
+        private void PrintSmall(string ipAddress)
         {
            List<byte> outputList1 = new List<byte>();
                     outputList1.Add(0x1B);
@@ -1562,14 +1562,14 @@ NewMethod(e),
             //outputList1.Add(0x00);
             Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
            // Connect to the printer
-          pSocket1.Connect(Globals.cIPPR1 , 9100);
+          pSocket1.Connect(ipAddress, 9100);
           pSocket1.Send(outputList1.ToArray());
           pSocket1.Close();
 
 
         }
 
- public static void CutPaper()
+ public static void CutPaper(string ipAddress)
         {
             List<byte> outputList1 = new List<byte>();
             
@@ -1579,7 +1579,7 @@ NewMethod(e),
 
             Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
             // Connect to the printer
-            pSocket1.Connect(Globals.cIPPR1, 9100);
+            pSocket1.Connect(ipAddress, 9100);
             pSocket1.Send(outputList1.ToArray());
             pSocket1.Close();
 
@@ -1589,7 +1589,7 @@ NewMethod(e),
 
         
 
-public static void BigLetters()
+public static void BigLetters(string ipAddress)
         {
             List<byte> outputList1 = new List<byte>();
 
@@ -1600,7 +1600,7 @@ public static void BigLetters()
 
             Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
             // Connect to the printer
-            pSocket1.Connect(Globals.cIPPR1, 9100);
+            pSocket1.Connect(ipAddress, 9100);
             pSocket1.Send(outputList1.ToArray());
             pSocket1.Close();
 
@@ -1617,7 +1617,7 @@ public static void BigLetters()
 
 
 
-        public static void LF()
+        public static void LF(string ipAddress)
         {
             List<byte> outputList1 = new List<byte>();
 
@@ -1627,7 +1627,7 @@ public static void BigLetters()
 
             Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
             // Connect to the printer
-            pSocket1.Connect(Globals.cIPPR1, 9100);
+            pSocket1.Connect(ipAddress, 9100);
             pSocket1.Send(outputList1.ToArray());
             pSocket1.Close();
 

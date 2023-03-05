@@ -487,34 +487,77 @@ namespace oncar
             i1 = 0;
             i2 = 0;
             i3 = 0;
-            for (int k = 0; k <= dt.Rows.Count - 1; k++)
+            string KANON = "";
+           for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
-               // if (dt.Rows[k]["ONO"].ToString()=="1")
-               // {
-                    myText.Add( MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
-                                                                                           // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                // if (dt.Rows[k]["ONO"].ToString()=="1")
+                // {
+                KANON=(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
-                    PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
-                if (PROS.Trim().Length > 0)
+
+                if (dt.Rows[k]["PRINTER"].ToString() == "1")
                 {
-                    if (dt.Rows[k]["ONO"].ToString() == "1")
-                        myText.Add(PROS.Trim());
+                    myText.Add(KANON.Trim());
                     i1 = i1 + 1;
                 }
-                else
                 {
-                    if (dt.Rows[k]["ONO"].ToString() == "3")
+                    if (dt.Rows[k]["PRINTER"].ToString() == "2")
+                    {
+                        myText2.Add(KANON.Trim());
+                        i2 = i2 + 1;
+                    }
+                    if (dt.Rows[k]["PRINTER"].ToString() == "3")
+                    {
+                        myText3.Add(KANON.Trim());
+                        i3 = i3 + 1;
+                    }
+                }
+
+
+
+
+
+                // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+
+                PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
+             if (PROS.Trim().Length > 0)
+               
+                
+                
+                
+                
+                {
+                    //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
+                    //      myText.Add(PROS.Trim());
+                    //  i1 = i1 + 1;
+
+
+                    if (dt.Rows[k]["PRINTER"].ToString() == "1")
+                    {
+                        myText.Add(PROS.Trim());
+                        i1 = i1 + 1;
+                    }
+                    {
+                    if (dt.Rows[k]["PRINTER"].ToString() == "2")
                     {
                         myText2.Add(PROS.Trim());
                         i2 = i2 + 1;
                     }
-                    else
-                    {
+                        if (dt.Rows[k]["PRINTER"].ToString() == "3")
+                        {
                         myText3.Add(PROS.Trim());
                         i3 = i3 + 1;
-                    }
+                        }
                 }
-                 
+
+
+
+                }
+
+
+               
+               
+               
                     
                      
                    
@@ -526,7 +569,7 @@ namespace oncar
               //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
                // myText.Add("\r\n");
 
-            }
+           }
           //  if (part == 1) 
           //  {
                 string cc1="                                                                          "+MainPage.ToGreek737( ss.ToString());
@@ -588,9 +631,14 @@ namespace oncar
             }
             try
             {
-                if (i1>0)  printthis(myText);
-                if(i2>0) printthis(myText2);
-                if (i3 > 0) printthis(myText3);
+                if (i1 > 0){ printthis(myText, Globals.cIPPR1);
+                   
+                }
+
+                
+                if (i2 > 0) { printthis(myText2, Globals.cIPPR2); }
+               
+                if (i3 > 0) { printthis(myText3, Globals.cIPPR3); }
 
                 Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
                 //List<byte> outputList1 = new List<byte>();
@@ -692,11 +740,11 @@ namespace oncar
 
         }
 
-        private async void printthis(List<string> mytext)
+        private async void printthis(List<string> mytext,string ipAddress)
         {
 
 
-            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            //string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
@@ -707,10 +755,10 @@ namespace oncar
             try
             {
                 
-                MainPage.LF();
+                MainPage.LF(ipAddress);
                 
-                MainPage.LF();
-                MainPage.BigLetters();
+                MainPage.LF(ipAddress);
+                MainPage.BigLetters(ipAddress);
                 printer.Print(ipAddress, portNumber, mytext);
             }
 
@@ -719,7 +767,7 @@ namespace oncar
                 await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
                 // await DisplayAlert("error2", "", "");
             }
-            MainPage.CutPaper();
+            MainPage.CutPaper(ipAddress);
         }
 
 

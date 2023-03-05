@@ -36,7 +36,7 @@ namespace test4sql
 
             CIPPR1.Text = Globals.cIPPR1;
             CIPPR2.Text = Globals.cIPPR2;
-
+            CIPPR3.Text = Globals.cIPPR3;
 
 
 
