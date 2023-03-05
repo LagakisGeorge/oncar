@@ -109,7 +109,7 @@
                  />
 
             <Button x:Name="test" 
-                Text="Λιστα τραπεζιων"
+                Text="Λιστα τραπεζιων-"
                 Clicked="testprint"
                  />
         </StackLayout>

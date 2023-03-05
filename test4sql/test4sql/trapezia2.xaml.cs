@@ -7,6 +7,26 @@ using System.Data.SqlClient;
 using System.IO;
 using System;
 
+using Xamarin.Forms.Xaml;
+
+using System.Net.Sockets;
+using System.Text;
+
+using Mono.Data.Sqlite;
+using Org.Apache.Http.Authentication;
+using SharpCifs.Util.Sharpen;
+
+
+
+
+
+
+
+
+
+
+
+
 namespace oncar
 {
     public partial class trapezia2 : ContentPage
@@ -85,7 +105,7 @@ namespace oncar
             AddItems();
         }
 
-        private void AddItems()
+        private async void AddItems()
 
         {
 
@@ -145,7 +165,8 @@ namespace oncar
             }
             catch (Exception ex)
             {
-                // await DisplayAlert("Error", ex.ToString(), "OK");
+                string error=ex.ToString();
+                //await  DisplayAlert("Error", ex.ToString(), "OK");
             }
 
             con.Close();

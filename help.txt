@@ -1,0 +1,3 @@
+  trapparagg :
+ DataTable dt = ReadSQLServer("SELECT  I);
+

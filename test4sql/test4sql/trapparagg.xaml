@@ -8,7 +8,7 @@
 
 
     <StackLayout>
-        <Label Text="Tραπέζι " 
+        <Label Text="Tραπέζι-- " 
                 x:Name="titlos" 
            HorizontalOptions="Center"
             />
@@ -114,18 +114,21 @@
 
 
         <StackLayout Orientation="Horizontal" >
-            <Button Text="ΕΞΟΔΟΣ"   x:Name="ok"  Clicked="apoth" />
-            <Label x:Name="LID"  Text="" />
+            
+              <Button Text="ΤΥΠΩΝΩ Π"   x:Name="typoma"  Clicked="typlog" />
+            <Label x:Name="tem"  Text="" />
+          
 
             <Button Text="BILL"   x:Name="BILL"  Clicked="TYPLOGALL" />
             <Label x:Name="LID3"  Text="" />
 
-            <Button Text="τυπώνω λογ"   x:Name="typoma"  Clicked="typlog" />
-            <Label x:Name="tem"  Text="" />
-           
-            <Label x:Name="LID2"  Text="" />
+          
+         
              <Button Text="ΠΛΗΡΩΜΗ"   x:Name="PLIROMIOL"  Clicked="PLIROMI" />
-             <Button Text="-"  x:Name="exod" Clicked="exodos" />
+            
+           
+            <Button Text="ΕΞΟΔΟΣ"   x:Name="ok"  Clicked="apoth" />
+            <Label x:Name="LID"  Text="" />   
             
           </StackLayout>  
            

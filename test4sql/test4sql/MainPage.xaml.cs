@@ -1459,38 +1459,58 @@ NewMethod(e),
 
 
             DataTable DT2;
-            DT2 = trapparagg.ReadSQLServer("SELECT TRAPEZI,HME,AJIA,CASH,PIS1,PIS2,KERA  FROM PARAGGMASTER   where  IDBARDIA=" + Globals.gIDBARDIA);
+            DT2 = trapparagg.ReadSQLServer("SELECT TRAPEZI,HME,AJIA,isnull(CASH,0) as CASH,ISNULL(PIS1,0) AS PIS1,ISNULL(PIS2,0) AS PIS2,ISNULL(KERA,0) AS KERA  FROM PARAGGMASTER   where  IDBARDIA=" + Globals.gIDBARDIA);
 
             
             // string[] CASH;
             List<string> myText2 = new List<string>();
             string mm2 = "";
             myText2.Add("---");
+            myText2.Add("TΡΑΠΕΖΙ    ΗΜΕΡΟΜΗΝΙΑ   ΜΕΤΡΗΤΑ  ΚΑΡΤΑ1  ΚΑΡΤΑ2 ΚΕΡΑΣΜ");
+            //  Right("      " + r["POSO"].ToString(), 6)
+            float s1, s2, s3, s4;
+            s1 = 0;
+            s2 = 0;
+            s3 = 0;
+            s4 = 0;
+
             for (int K = 0; K <= DT2.Rows.Count - 1; K++)
             {
-                string v = DT2.Rows[K]["TRAPEZI"].ToString() + "----" + DT2.Rows[K]["HME"].ToString() + "----"+"\r\n" + MainPage.ToGreek737("Μετρ:") + DT2.Rows[K]["CASH"].ToString() + MainPage.ToGreek737(" Πιστ:") +DT2.Rows[K]["PIS1"].ToString() + MainPage.ToGreek737(" Κερ:") + DT2.Rows[K]["KERA"].ToString();
+                string v = (DT2.Rows[K]["TRAPEZI"].ToString()+"      ").Substring(0,5) + " " + DT2.Rows[K]["HME"].ToString().Substring(0,13) + " " +Right( DT2.Rows[K]["CASH"].ToString(),6) + " "+ Right(DT2.Rows[K]["PIS1"].ToString(),6) + " " + Right(DT2.Rows[K]["PIS2"].ToString(), 6) + Right( DT2.Rows[K]["KERA"].ToString(),6);
                 mm2 = mm2 + v;
                 myText2.Add(v);
+                s1 = float.Parse(DT2.Rows[K]["CASH"].ToString());
+                s2 = float.Parse(DT2.Rows[K]["PIS1"].ToString());
+                s3 = float.Parse(DT2.Rows[K]["PIS2"].ToString());
+                s4 = float.Parse(DT2.Rows[K]["KERA"].ToString());
 
             }
 
-            myText2.Add("\r\n");
+            myText2.Add(("          ").Substring(0, 5) + " " + "             " + " " + Right(s1.ToString(), 6) + " " + Right(s2.ToString(), 6) + " " + Right(s3.ToString(), 6) + Right(s4.ToString(), 6));
+
             await DisplayAlert(mm2, "   ", "OK");
             printing(myText2 );
 
+            string ss1, ss2, ss3, ss4;
+            ss1 = s1.ToString().Replace(",", ".");
+            ss2 = s2.ToString().Replace(",", ".");
+            ss3 = s3.ToString().Replace(",", ".");
+            ss4 = s4.ToString().Replace(",", ".");
 
 
 
 
-
-            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + CASHTOT.ToString().Replace (",",".") + ", CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID="  +Globals.gIDBARDIA);
+            Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + (s1+s2+s3+s4).ToString().Replace (",",".") + ",CASH1="+ss1 + ",CASH2="+ss2+",CASH3="+ ss3+",CASH4 = "+ ss4+ ",CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID="  +Globals.gIDBARDIA);
 
               
 
 
 
         }
-
+        public static string Right(string original, int numberCharacters)
+        {
+            return original.Substring(original.Length - numberCharacters);
+        }
 
         private async void printing(List<string> myText) //  object sender, EventArgs e)
         {
