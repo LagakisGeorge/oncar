@@ -15,6 +15,7 @@ using Mono.Data.Sqlite;
 
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Sockets;
 
 namespace test4sql
 {
@@ -272,5 +273,32 @@ namespace test4sql
 
 
         }
+
+        private void Testprinting(object sender, EventArgs e)
+        {
+               List<byte> outputList1 = new List<byte>();
+
+                outputList1.Add(Byte.Parse(PRINT.Text));
+
+               // outputList1.Add(0x0D);
+
+                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                // Connect to the printer
+                pSocket1.Connect(Globals.cIPPR1, 9100);
+                pSocket1.Send(outputList1.ToArray());
+                pSocket1.Close();
+
+
+            
+        }
+
+
+
+
+
+
+
+
+
     }
 }

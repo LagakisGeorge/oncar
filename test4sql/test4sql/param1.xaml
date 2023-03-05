@@ -59,7 +59,10 @@
                    Placeholder="IP PRINTER2" 
                     BackgroundColor="Azure"    
                    />
-
+            <Entry x:Name="CIPPR3"
+                   Placeholder="IP PRINTER3" 
+                    BackgroundColor="Azure"    
+                   />
 
 
 

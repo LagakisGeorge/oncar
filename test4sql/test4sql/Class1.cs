@@ -30,6 +30,7 @@ namespace test4sql
 
         public static string cIPPR1;
         public static string cIPPR2;
+        public static string cIPPR3;
 
         public static string GReadSQ(string Query)
         {

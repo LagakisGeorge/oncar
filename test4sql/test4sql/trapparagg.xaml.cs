@@ -4,6 +4,7 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -444,12 +445,14 @@ namespace oncar
             string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             List<string> myText = new List<string>();
+            List<string> myText2 = new List<string>();
+            List<string> myText3 = new List<string>();
             DataTable dt;
 
             // {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
             if (part == 1) // τα νεα μονο
             {
-                 dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where (ENERGOS IS NULL) AND IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+                 dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA ,(select KATHG.CH2 FROM EIDH INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID WHERE EIDH.ONO=PARAGG.ONO) AS PRINTER FROM PARAGG where (ENERGOS IS NULL) AND IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
             }
             else
             {     // ολα 
@@ -460,47 +463,82 @@ namespace oncar
             //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
             string DDD = MainPage.ToGreek737(titlos.Text+"  .");
             myText.Add(DDD);
+            myText2.Add(DDD);
+            myText3.Add(DDD);
+
             //myText.Add(Globals.gTrapezi.ToString() +MainPage.ToGreek737( " * TΡΑΠΕΖΙ * ") +Globals.gTrapezi.ToString ()  + ".                \r\n");
 
-            myText.Add("-\r\n");
             myText.Add("\r\n");
+            myText.Add("\r\n");
+
+            myText2.Add("\r\n");
+            myText2.Add("\r\n");
+
+            myText3.Add("\r\n");
+            myText3.Add("\r\n");
+
 
 
 
             //  string BIG="";
             float ss = 0;
             string PROS="";
+            int i1, i2, i3;
+            i1 = 0;
+            i2 = 0;
+            i3 = 0;
             for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
-                if (part == 1)
-                {
+               // if (dt.Rows[k]["ONO"].ToString()=="1")
+               // {
                     myText.Add( MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
                                                                                            // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
                     PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
-                    if (PROS.Trim().Length>0) 
-                    {
-                        myText.Add(PROS.Trim ()); 
-                    } 
-                   
-                } else
-                {    //ola
-                    myText.Add((dt.Rows[k]["POSO"].ToString() + " " + MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString()+"                              ").Substring(0, 30))+ "   " + (dt.Rows[k]["TIMH"].ToString()+"     ").Substring(0, 5) + "    " + (dt.Rows[k]["AXIA"].ToString()+"     ").Substring(0, 5)) ;
-                    ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
+                if (PROS.Trim().Length > 0)
+                {
+                    if (dt.Rows[k]["ONO"].ToString() == "1")
+                        myText.Add(PROS.Trim());
+                    i1 = i1 + 1;
                 }
+                else
+                {
+                    if (dt.Rows[k]["ONO"].ToString() == "3")
+                    {
+                        myText2.Add(PROS.Trim());
+                        i2 = i2 + 1;
+                    }
+                    else
+                    {
+                        myText3.Add(PROS.Trim());
+                        i3 = i3 + 1;
+                    }
+                }
+                 
+                    
+                     
+                   
+               // } else
+               // {    //ola
+                //    myText.Add((dt.Rows[k]["POSO"].ToString() + " " + MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString()+"                              ").Substring(0, 30))+ "   " + (dt.Rows[k]["TIMH"].ToString()+"     ").Substring(0, 5) + "    " + (dt.Rows[k]["AXIA"].ToString()+"     ").Substring(0, 5)) ;
+                 //   ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
+               // }
               //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
                // myText.Add("\r\n");
 
             }
-            if (part == 1) 
-            {
-                myText.Add("                                                                          "+MainPage.ToGreek737( ss.ToString()));
+          //  if (part == 1) 
+          //  {
+                string cc1="                                                                          "+MainPage.ToGreek737( ss.ToString());
+               myText.Add(cc1);
+               myText2.Add(cc1);
+               myText3.Add(cc1);
 
-            }
-            else
-            {
-                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "    " + ss.ToString());
-            }
+           // }
+           // else
+           // {
+            //    myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "    " + ss.ToString());
+           // }
                
             myText.Add( "\r\n");
             myText.Add("\r\n");
@@ -508,14 +546,37 @@ namespace oncar
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
-           
-          //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
-          //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
-          for (int ll = 128; ll < 255; ll++)
-            {
-               // myText.Add(ll.ToString()+" "+Convert.ToChar(ll).ToString());
 
-            }
+            myText2.Add("\r\n");
+            myText2.Add("\r\n");
+            myText2.Add("\r\n");
+            myText2.Add("\r\n");
+            myText2.Add("\r\n");
+            myText2.Add("\r\n");
+
+
+            myText3.Add("\r\n");
+            myText3.Add("\r\n");
+            myText3.Add("\r\n");
+            myText3.Add("\r\n");
+            myText3.Add("\r\n");
+            myText3.Add("\r\n");
+
+
+
+
+
+
+
+
+
+            //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
+            //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
+            // for (int ll = 128; ll < 255; ll++)
+            // {
+            // myText.Add(ll.ToString()+" "+Convert.ToChar(ll).ToString());
+
+            //  }
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
@@ -527,85 +588,89 @@ namespace oncar
             }
             try
             {
+                if (i1>0)  printthis(myText);
+                if(i2>0) printthis(myText2);
+                if (i3 > 0) printthis(myText3);
 
-                List<byte> outputList1 = new List<byte>();
-              
-                //outputList1.Add(141);
-                // BIG LETTERS
+                Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
+                //List<byte> outputList1 = new List<byte>();
 
-                if (part == 1)
-                {
-                 outputList1.Add(0x1D);
-                outputList1.Add(0x21);
-                outputList1.Add(0x11);
+                ////outputList1.Add(141);
+                //// BIG LETTERS
 
-                }else
-                {
-                    outputList1.Add(0x1D);
-                    outputList1.Add(0x21);
-                    outputList1.Add(0x01);
-                }
-                  
+                //if (part == 1)
+                //{
+                // outputList1.Add(0x1D);
+                //outputList1.Add(0x21);
+                //outputList1.Add(0x11);
 
-                // TEST ΒΓΔ  ΗΕΧ
-                //outputList1.Add(0x81);
-                //outputList1.Add(0x82);
-                //outputList1.Add(0x83);
-
-                //outputList1.Add(141);// ΤΕΣΤ ΝΕΧΤ 3  
-                //outputList1.Add(142);
-                //outputList1.Add(143);
+                //}else
+                //{
+                //    outputList1.Add(0x1D);
+                //    outputList1.Add(0x21);
+                //    outputList1.Add(0x01);
+                //}
 
 
+                //    // TEST ΒΓΔ  ΗΕΧ
+                //    //outputList1.Add(0x81);
+                //    //outputList1.Add(0x82);
+                //    //outputList1.Add(0x83);
 
-            //    byte[] bytes = Encoding.ASCII.GetBytes(BIG);
-
-                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-
-                // Connect to the printer
-                pSocket1.Connect(ipAddress, portNumber);
-
-                // ToDo: Send some commands to the printer
-                // Send the command to the printer
-                pSocket1.Send(outputList1.ToArray());
-             //  pSocket1.Send(bytes.ToArray());
-                // Close the socket connection when done
-                pSocket1.Close();
+                //    //outputList1.Add(141);// ΤΕΣΤ ΝΕΧΤ 3  
+                //    //outputList1.Add(142);
+                //    //outputList1.Add(143);
 
 
 
+                ////    byte[] bytes = Encoding.ASCII.GetBytes(BIG);
+
+                //    Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+
+                //    // Connect to the printer
+                //    pSocket1.Connect(ipAddress, portNumber);
+
+                //    // ToDo: Send some commands to the printer
+                //    // Send the command to the printer
+                //    pSocket1.Send(outputList1.ToArray());
+                // //  pSocket1.Send(bytes.ToArray());
+                //    // Close the socket connection when done
+                //    pSocket1.Close();
 
 
 
 
 
-                printer.Print(ipAddress, portNumber, myText);
-
-             List<byte> outputList = new List<byte>();
-             //  CUT PAPER NEXT 2 A);
-            outputList.Add(0x1B);
-            outputList.Add(0x69);
-                // BIG LETTERS ΨΑΝΨΕΚ
-                outputList1.Add(0x1D);
-                outputList1.Add(0x21);
-                outputList1.Add(0x00);
 
 
-               
+
+                //    printer.Print(ipAddress, portNumber, myText);
+
+                // List<byte> outputList = new List<byte>();
+                // //  CUT PAPER NEXT 2 A);
+                //outputList.Add(0x1B);
+                //outputList.Add(0x69);
+                //    // BIG LETTERS ΨΑΝΨΕΚ
+                //    outputList1.Add(0x1D);
+                //    outputList1.Add(0x21);
+                //    outputList1.Add(0x00);
 
 
-                Socket pSocket = new Socket(SocketType.Stream, ProtocolType.IP);
 
-            // Connect to the printer
-            pSocket.Connect(ipAddress, portNumber);
 
-            // ToDo: Send some commands to the printer
-            // Send the command to the printer
-            pSocket.Send(outputList.ToArray());
-            // Close the socket connection when done
-            pSocket.Close();
 
-             Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG );
+                //    Socket pSocket = new Socket(SocketType.Stream, ProtocolType.IP);
+
+                //// Connect to the printer
+                //pSocket.Connect(ipAddress, portNumber);
+
+                //// ToDo: Send some commands to the printer
+                //// Send the command to the printer
+                //pSocket.Send(outputList.ToArray());
+                //// Close the socket connection when done
+                //pSocket.Close();
+
+
 
             }
             
@@ -627,13 +692,41 @@ namespace oncar
 
         }
 
+        private async void printthis(List<string> mytext)
+        {
+
+
+            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            int portNumber = 9100;
+            var printer = DependencyService.Get<test4sql.iPrinter>();
+            if (printer == null)
+            {
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                return;
+            }
+            try
+            {
+                
+                MainPage.LF();
+                
+                MainPage.LF();
+                MainPage.BigLetters();
+                printer.Print(ipAddress, portNumber, mytext);
+            }
+
+            catch (Exception ex)
+            {
+                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("error2", "", "");
+            }
+            MainPage.CutPaper();
+        }
 
 
 
 
 
-
- public static DataTable ReadSQLServer(string cSQL)
+        public static DataTable ReadSQLServer(string cSQL)
 
         {
             DataTable dt = new DataTable();

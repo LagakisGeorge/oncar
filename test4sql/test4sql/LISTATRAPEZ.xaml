@@ -154,7 +154,11 @@
                 <Label  x:Name="EPO"   Text=""   />
                 <Label  x:Name="BCASH"   Text=""   />
 
-
+                <Entry x:Name="PRINT" Text="" Placeholder="    "   />
+                <Button x:Name="testprinter" 
+                Text="test print"
+                       Clicked="Testprinting"                
+                 />
 
             </StackLayout>
             

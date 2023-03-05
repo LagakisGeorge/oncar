@@ -52,7 +52,7 @@ namespace test4sql
 
             MainPage.ExecuteSqlite("update MEM SET IP='" + CIPPR1.Text + "' WHERE ID=2");
             MainPage.ExecuteSqlite("update MEM SET AFM='" + CIPPR2.Text + "' WHERE ID=2");
-
+            MainPage.ExecuteSqlite("update MEM SET DIE='" + CIPPR3.Text + "' WHERE ID=2");
 
 
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
@@ -62,7 +62,7 @@ namespace test4sql
 
             Globals.cIPPR1 = PARAGGELIES.ReadSQL("select IP  FROM MEM WHERE ID=2");
             Globals.cIPPR2 = PARAGGELIES.ReadSQL("select AFM FROM MEM WHERE ID=2");
-
+            Globals.cIPPR3 = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=2");
 
 
 

@@ -13,16 +13,6 @@
            HorizontalOptions="Center"
             />
 
-
-
-    
-
-
-
-
-
-
-
         <!--           Location = mTimh,
                         ImageUrl = mPoso,
                         idPEL = mPROSU+"  ~"+ midEggtim,
@@ -86,14 +76,12 @@
 
 
     <StackLayout Padding="6">
-        <flv:FlowListView FlowColumnCount="3"   
+            <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
                 HasUnevenRows="True"  
-                FlowItemTapped="doit2"          
-             
+                FlowItemTapped="doit2"                       
                 FlowItemsSource="{Binding Items}">
-           
-            <flv:FlowListView.FlowColumnTemplate>
+                <flv:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
                     <Frame BackgroundColor="Blue"
                      Margin="5">
