@@ -1,4 +1,5 @@
-﻿using Mono.Data.Sqlite;
+﻿using Android.Drm;
+using Mono.Data.Sqlite;
 using Org.Apache.Http.Authentication;
 using SharpCifs.Util.Sharpen;
 using System;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using test4sql;
 using Xamarin.Forms;
+using Xamarin.Forms.Markup;
 using Xamarin.Forms.Xaml;
 
 
@@ -343,7 +345,7 @@ namespace oncar
             {
                 //ola
                 myText.Add((MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString() + "                              ").Substring(0, 20)));
-                myText.Add( dt.Rows[k]["POSO"].ToString()  + "  X  " + (dt.Rows[k]["TIMH"].ToString() + "     ").Substring(0, 5) + "    " + (dt.Rows[k]["AXIA"].ToString() + "     ").Substring(0, 5));
+                myText.Add( dt.Rows[k]["POSO"].ToString()  + "  X  " + MainPage.Right("    "+String.Format("{0:0.00}", dt.Rows[k]["TIMH"]),5) + "       " + MainPage.Right("   "+String.Format("{0:0.00}", dt.Rows[k]["AXIA"]) ,6));
                     ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
                
                 //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
@@ -357,7 +359,7 @@ namespace oncar
             }
             else
             {
-                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "    " + ss.ToString());
+                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   "+String.Format("{0:0.00}", ss),6));
             }
             myText.Add("\r\n");
             myText.Add("\r\n");

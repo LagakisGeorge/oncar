@@ -9,7 +9,7 @@
 
     <StackLayout>
         <StackLayout Orientation="Horizontal" >
-            <Label Text="Tραπέζι-- " 
+            <Label Text="Tραπέζι-- " FontSize="Medium"
                 x:Name="titlos" 
            HorizontalOptions="CenterAndExpand"
             />

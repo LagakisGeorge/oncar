@@ -347,7 +347,7 @@ namespace oncar
                 for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
                     string fONO;
-                    fONO = dt.Rows[k]["ONO"].ToString();
+                    fONO = dt.Rows[k]["ONO"].ToString().Replace("*"," ");
                     string fID;
                     fID = dt.Rows[k]["ID"].ToString();
                     string ft;
