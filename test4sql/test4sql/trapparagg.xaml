@@ -8,10 +8,13 @@
 
 
     <StackLayout>
-        <Label Text="Tραπέζι-- " 
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Tραπέζι-- " 
                 x:Name="titlos" 
-           HorizontalOptions="Center"
+           HorizontalOptions="CenterAndExpand"
             />
+            <Button Text="Αλλαγή"  HorizontalOptions="EndAndExpand"  x:Name="allazoTrapezi"  Clicked="Allagh" />
+        </StackLayout>
 
         <!--           Location = mTimh,
                         ImageUrl = mPoso,

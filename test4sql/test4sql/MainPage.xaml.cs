@@ -1246,7 +1246,7 @@ NewMethod(e),
             try
             {
                 string ccg = "";
-                ccg = "SELECT STR(MAX(  ISNULL(ID,0)   ))   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
+                ccg = "SELECT isnull(STR(MAX(  ISNULL(ID,0)   )),'0')   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
                 dt2 = trapparagg.ReadSQLServer(ccg);
 
                 int n;
@@ -1254,6 +1254,8 @@ NewMethod(e),
                 if (dt2 == null || dt2.Rows.Count == 0)
                 {
                     // Throw the error or retrun the code 
+                         Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+                    return;
                     n = 0;
                 }
                 else

@@ -971,6 +971,38 @@ catch (Exception ex)
                 await DisplayAlert("Error", ex.ToString(), "OK");
             }
         }
+
+        private async void Allagh(object sender, EventArgs e)
+        {
+            string cc = await DisplayPromptAsync("Δώσε Αριθμό Νέου Τραπεζιού", "Μεταφορά σε τραπέζι");
+            string iskat = Globals.ReadSQLServer("SELECT  ISNULL(KATEILHMENO,0) AS KATEILHMENO FROM TABLES WHERE   ONO='" + cc+"'");
+            string user = Globals.ReadSQLServer("SELECT  ISNULL(NUM1,0) AS CC FROM TABLES WHERE   ONO='" + cc + "'");
+            if (Globals.gUserWaiter.ToString()== user.ToString())
+            {
+                //ok
+            }
+            else
+            {
+                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΜΕΤΑΦΟΡΑ", "ΕΙΝΑΙ ΣΕ ΑΛΛΟ ΣΕΡΒΙΤΟΡΟ", "OK");
+                return;
+            }
+
+            if (iskat == "0")
+            {
+                Globals.ExecuteSQLServer("update PARAGGMASTER SET TABLE="+cc+" WHERE ID="+ Globals.gIDPARAGG.ToString());
+                Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=0,IDPARAGG=0,CH1=''  WHERE IDPARAGG=" + Globals.gIDPARAGG.ToString());
+                Globals.ExecuteSQLServer("update TABLES SET CH1='',KATEILHMENO=1,IDPARAGG=" + Globals.gIDPARAGG.ToString()+" WHERE ONO='"+cc+"'");
+                Globals.gTrapezi = cc;
+                await Navigation.PopAsync(); // new PelReports());
+            }
+            else
+            {
+                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΜΕΤΑΦΟΡΑ", "ΕΙΝΑΙ ΚΑΤΕΙΛΗΜΕΝΟ ΤΟ "+cc, "OK");
+                return;
+            }
+            
+
+        }
     }
 
 
