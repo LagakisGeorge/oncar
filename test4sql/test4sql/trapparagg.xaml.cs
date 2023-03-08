@@ -378,6 +378,8 @@ namespace oncar
             try
             {
 
+                PrintSmall(ipAddress);
+             /*
                 List<byte> outputList1 = new List<byte>();
 
                 //outputList1.Add(141);
@@ -407,12 +409,12 @@ namespace oncar
                 pSocket1.Connect(ipAddress, portNumber);
                 pSocket1.Send(outputList1.ToArray());
                 pSocket1.Close();
-
+             */
                 //---------------------------------------------------------------------------
                 printer.Print(ipAddress, portNumber, myText);
                 //---------------------------------------------------------------------------
-
-
+                CutPaper(ipAddress);
+             /*
                 List<byte> outputList = new List<byte>();
                 //  CUT PAPER NEXT 2 A);
                 outputList.Add(0x1B);
@@ -430,7 +432,7 @@ namespace oncar
                 pSocket.Send(outputList.ToArray());
                 // Close the socket connection when done
                 pSocket.Close();
-
+             */
               //  Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
 
             }
@@ -442,6 +444,30 @@ namespace oncar
             }
         }
 
+
+
+        public static void CutPaper(string ipAddress)
+        {
+            List<byte> outputList1 = new List<byte>();
+
+            outputList1.Add(0x1B);
+            outputList1.Add(0x69);
+
+
+            Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+            // Connect to the printer
+            pSocket1.Connect(ipAddress, 9100);
+            pSocket1.Send(outputList1.ToArray());
+            pSocket1.Close();
+
+
+        }
+
+
+
+
+
+
         private async void printing(int part) //  object sender, EventArgs e)
         {
             string ipAddress = Globals.cIPPR1; // "192.168.1.120";
@@ -452,14 +478,14 @@ namespace oncar
             DataTable dt;
 
             // {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
-            if (part == 1) // τα νεα μονο
-            {
-                 dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA ,(select KATHG.CH2 FROM EIDH INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID WHERE EIDH.ONO=PARAGG.ONO) AS PRINTER FROM PARAGG where (ENERGOS IS NULL) AND IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
-            }
-            else
-            {     // ολα 
-                 dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
-            }
+           // if (part == 1) // τα νεα μονο
+           // {
+                 dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , KATHG.CH2 as PRINTER  FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by EIDH.KATHG ; ");
+            //}
+           // else
+           // {     // ολα 
+                // dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+           // }
             // Monkeys.Add(new Monkey
 
             //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
@@ -496,12 +522,19 @@ namespace oncar
                 // {
                 KANON=(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
+                // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
+                // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ
+                //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
+                //  {
+                //      myText.Add(KANON.Trim());
+                //      i1 = i1 + 1;
+                //  }
+                
+                // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
+                myText.Add(KANON.Trim());
+                      i1 = i1 + 1;
 
-                if (dt.Rows[k]["PRINTER"].ToString() == "1")
-                {
-                    myText.Add(KANON.Trim());
-                    i1 = i1 + 1;
-                }
+
                 {
                     if (dt.Rows[k]["PRINTER"].ToString() == "2")
                     {
@@ -741,6 +774,30 @@ namespace oncar
 
 
         }
+
+
+        private void PrintSmall(string ipAddress)
+        {
+            List<byte> outputList1 = new List<byte>();
+            outputList1.Add(0x1B);
+            outputList1.Add(0x40);
+
+            //outputList1.Add(0x1D);
+            //outputList1.Add(0x21);
+            //outputList1.Add(0x00);
+            Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+            // Connect to the printer
+            pSocket1.Connect(ipAddress, 9100);
+            pSocket1.Send(outputList1.ToArray());
+            pSocket1.Close();
+
+
+        }
+
+
+
+
+
 
         private async void printthis(List<string> mytext,string ipAddress)
         {
@@ -1055,7 +1112,7 @@ catch (Exception ex)
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID FROM KATHG   order by ONO ; ", con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID FROM KATHG   order by ID ; ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();

@@ -1,4 +1,5 @@
-﻿using Mono.Data.Sqlite;
+﻿using Android.Views.Animations;
+using Mono.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -339,7 +340,16 @@ namespace oncar
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID,TIMH FROM EIDH WHERE KATHG=" + Globals.gKathg +"  order by ONO ; ", con);
+                string CZ = "";
+                if (Globals.gTrapezi.Substring(0, 1) == "Π")
+                {
+                    CZ = "SELECT  ONO, ID,ISNULL(NUM2,0) AS TIMH FROM EIDH WHERE KATHG=" + Globals.gKathg + "  order by ONO ; ";
+                }
+                else
+                {
+                    CZ = "SELECT  ONO, ID,TIMH FROM EIDH WHERE KATHG=" + Globals.gKathg + "  order by ONO ; ";
+                }
+                    SqlCommand cmd3 = new SqlCommand(CZ, con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
@@ -452,7 +462,18 @@ namespace oncar
 
                 // ΒΡΙΣΚΩ ΤΟ CH2 POY EXEI TA PROSUETA TOY EIDOYS
                 DataTable dt0 = new DataTable();
-                SqlCommand cmd30 = new SqlCommand("select CH2 FROM EIDH WHERE ID="+Globals.gIDEIDOS,  con);
+                string CZ = "";
+                //if (Globals.gTrapezi.Substring(0, 1) == "Π")
+                //{
+                    CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
+               // }
+               // else
+               // {
+               //     CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
+              //  }
+
+
+                SqlCommand cmd30 = new SqlCommand(CZ,  con);
                 var adapter20 = new SqlDataAdapter(cmd30);
                 adapter20.Fill(dt0);
                 string cc = dt0.Rows[0][0].ToString()+"0";
@@ -460,6 +481,7 @@ namespace oncar
 
 
                 DataTable dt = new DataTable();
+                
                 SqlCommand cmd3 = new SqlCommand("SELECT    ONO, ID FROM XAR1 where ID IN ("+cc+") ; ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);

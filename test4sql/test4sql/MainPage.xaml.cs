@@ -100,15 +100,22 @@ namespace test4sql
                 if (Globals.cFORTHGO.Substring(0, 1) == "7")  // ΑΠΟΘΗΚΗ-ΤΙΜΟΛΟΓΗΣΗ-ΚΑΡΤΕΛΑ 
                 {
                     but1.IsVisible = false;
-                    but121.IsVisible = false;
+                    but121.IsVisible = true;
                     SUPER2.IsVisible = true;
-                    but1TIMOL.IsVisible = false;
+                    but1TIMOL.IsVisible = true;
                     APOTHIKI.IsVisible = true;
                     // param.IsVisible = false;
                     trapezia.IsVisible = false;
                     but1fort.IsVisible = true;
                     but1EPIST.IsVisible = true;
                     //  Globals.gUserWaiter = Globals.cFORTHGO.Substring(1, 1);
+                    kinpelath.IsVisible = false;
+                    reppelath.IsVisible = false;
+                    PELATHS.IsVisible = false;
+                    vardia.IsVisible = false;
+                    test.IsVisible = false;
+
+
 
                 }
 
