@@ -148,7 +148,7 @@ namespace oncar
             // PARAGG -> NUM1 = TROPOS PLHROMHS  1,2,3     -1=ΔΙΑΓΡΑΦΤΗΚΕ
             // ENERGOS=1  ΤΥΠΟΜΕΝΟ
 
-            string action = await DisplayActionSheet("Επιλογή", "Ακυρο", null, "1.Μετρητά Πληρωμή", "2.Κάρτα Πληρωμή", "3.Κάρτα2 Πληρωμή","4.Κερασμένα", "5.Διαγραφή");
+            string action = await DisplayActionSheet("Επιλογή", "Ακυρο", null, "1.Μετρητά Πληρωμή", "2.Κάρτα Πληρωμή", "3.Κάρτα2 Πληρωμή","4.Κερασμένα", "5.Διαγραφή","6.Αλλαγή Ποσότητας");
             if (action.Substring(0, 1) == "Α") { return; }
 
 
@@ -193,15 +193,44 @@ namespace oncar
           }
 
 
-            //------------- PLHRVMH ------------------------
-            if (cTYPOMENO == "0")
+            if (action.Substring(0, 1) == "6")  // αλλαγη βαρους
             {
-                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
-                return;
+
+                string cc2 = await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
+
+
+               
+               
+                
+
+                Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
+                
+
             }
+
+
+
+
+
+
+
+
+
+
+
+            //------------- PLHRVMH ------------------------
+           
 
             if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3" || action.Substring(0, 1) == "4")
             {
+
+                if (cTYPOMENO == "0")
+              {
+                  await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
+                  return;
+              }
+
+
                 if (cc.Substring(0, 2) == "**")
                 {
                     await DisplayAlert("αδυνατη η πληρωμή", "ειναι πληρωμένο", "OK");
