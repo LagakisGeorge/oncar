@@ -7,23 +7,15 @@
     
 
     <StackLayout>
-        <!--  <Image Source="https://commons.wikimedia.org/wiki/Main_Page#/media/File:Oranges_-_whole-halved-segment.jpg"
-       Aspect="Fill"
-       HeightRequest="{OnPlatform iOS=300, Android=250}"
-       WidthRequest="{OnPlatform iOS=300, Android=250}"
-       HorizontalOptions="Center" />  
 
-           <Image Source="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg" Opacity="0.3"
-                RelativeLayout.WidthConstraint=
-                  "{ConstraintExpression Type=RelativeToParent, Property=Width}"
-                RelativeLayout.HeightConstraint=
-                  "{ConstraintExpression Type=RelativeToParent, Property=Height}"/>
-          -->
-    
-   
+
+
+        <Image Source="dessert.jpg" />
+
+
 
         <!-- Place new controls here -->
-        <Label Text="Π ε λ α τ ο λ ό γ ι ο" 
+        <Label Text="Π ε λ α τ ο λ ό γ ι ο   v.2303b" 
            HorizontalOptions="Center"
             />
 

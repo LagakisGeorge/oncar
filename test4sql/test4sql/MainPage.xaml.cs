@@ -99,7 +99,7 @@ namespace test4sql
 
                 if (Globals.cFORTHGO.Substring(0, 1) == "7")  // ΑΠΟΘΗΚΗ-ΤΙΜΟΛΟΓΗΣΗ-ΚΑΡΤΕΛΑ 
                 {
-                    but1.IsVisible = false;
+                    but1.IsVisible = true;
                     but121.IsVisible = true;
                     SUPER2.IsVisible = true;
                     but1TIMOL.IsVisible = true;
@@ -119,10 +119,13 @@ namespace test4sql
 
                 }
 
+                var image = new Image();
+                
 
-
-
-
+                    image.Source = Device.RuntimePlatform == Device.Android
+                ? ImageSource.FromFile("dessert.jpg")
+                : ImageSource.FromFile("Images/dessert.jpg");
+                
 
 
 

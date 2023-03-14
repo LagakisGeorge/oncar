@@ -509,7 +509,7 @@ namespace oncar
             // {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
            // if (part == 1) // τα νεα μονο
            // {
-                 dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , KATHG.CH2 as PRINTER  FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by EIDH.KATHG ; ");
+                 dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by EIDH.KATHG ; ");
             //}
            // else
            // {     // ολα 
@@ -671,20 +671,6 @@ namespace oncar
 
 
 
-
-
-
-
-
-
-            //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
-            //  myText.Add(Convert.ToChar(27).ToString() + Convert.ToChar(105).ToString());
-            // for (int ll = 128; ll < 255; ll++)
-            // {
-            // myText.Add(ll.ToString()+" "+Convert.ToChar(ll).ToString());
-
-            //  }
-
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
@@ -695,92 +681,37 @@ namespace oncar
             }
             try
             {
-                if (i1 > 0){ printthis(myText, Globals.cIPPR1);
+                int Ok = 0;
+                int must = 0;
+                if (i1 > 0){ 
+                    Ok=Ok+printthis(myText, Globals.cIPPR1);
+                    
+                    must = must + 1;
+                    
                    
                 }
 
                 
-                if (i2 > 0) { printthis(myText2, Globals.cIPPR2); }
+                if (i2 > 0) {Ok=Ok+ printthis(myText2, Globals.cIPPR2); 
+                    
+                    must = must + 1;
+                }
                
-                if (i3 > 0) { printthis(myText3, Globals.cIPPR3); }
-
-                Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
-                //List<byte> outputList1 = new List<byte>();
-
-                ////outputList1.Add(141);
-                //// BIG LETTERS
-
-                //if (part == 1)
-                //{
-                // outputList1.Add(0x1D);
-                //outputList1.Add(0x21);
-                //outputList1.Add(0x11);
-
-                //}else
-                //{
-                //    outputList1.Add(0x1D);
-                //    outputList1.Add(0x21);
-                //    outputList1.Add(0x01);
-                //}
+                if (i3 > 0) {Ok=Ok+ printthis(myText3, Globals.cIPPR3);
+                    
+                    must = must + 1;
+                }
+                if (Ok == must)
+                {
+                    Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
+                }
+                else
+                {
+                    await DisplayAlert("αδυναμια εκτυπωσης ", "", "OK"); // ex.ToString()
+                }
+                             
 
 
-                //    // TEST ΒΓΔ  ΗΕΧ
-                //    //outputList1.Add(0x81);
-                //    //outputList1.Add(0x82);
-                //    //outputList1.Add(0x83);
-
-                //    //outputList1.Add(141);// ΤΕΣΤ ΝΕΧΤ 3  
-                //    //outputList1.Add(142);
-                //    //outputList1.Add(143);
-
-
-
-                ////    byte[] bytes = Encoding.ASCII.GetBytes(BIG);
-
-                //    Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-
-                //    // Connect to the printer
-                //    pSocket1.Connect(ipAddress, portNumber);
-
-                //    // ToDo: Send some commands to the printer
-                //    // Send the command to the printer
-                //    pSocket1.Send(outputList1.ToArray());
-                // //  pSocket1.Send(bytes.ToArray());
-                //    // Close the socket connection when done
-                //    pSocket1.Close();
-
-
-
-
-
-
-
-
-                //    printer.Print(ipAddress, portNumber, myText);
-
-                // List<byte> outputList = new List<byte>();
-                // //  CUT PAPER NEXT 2 A);
-                //outputList.Add(0x1B);
-                //outputList.Add(0x69);
-                //    // BIG LETTERS ΨΑΝΨΕΚ
-                //    outputList1.Add(0x1D);
-                //    outputList1.Add(0x21);
-                //    outputList1.Add(0x00);
-
-
-
-
-
-                //    Socket pSocket = new Socket(SocketType.Stream, ProtocolType.IP);
-
-                //// Connect to the printer
-                //pSocket.Connect(ipAddress, portNumber);
-
-                //// ToDo: Send some commands to the printer
-                //// Send the command to the printer
-                //pSocket.Send(outputList.ToArray());
-                //// Close the socket connection when done
-                //pSocket.Close();
 
 
 
@@ -828,17 +759,17 @@ namespace oncar
 
 
 
-        private async void printthis(List<string> mytext,string ipAddress)
+        private  int printthis(List<string> mytext,string ipAddress)
         {
-
+            int Ok = 0;
 
             //string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
-                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
-                return;
+               // await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                return Ok;
             }
             try
             {
@@ -848,14 +779,19 @@ namespace oncar
                 MainPage.LF(ipAddress);
                 MainPage.BigLetters(ipAddress);
                 printer.Print(ipAddress, portNumber, mytext);
+                MainPage.CutPaper(ipAddress);
+                Ok = 1;
+
             }
 
             catch (Exception ex)
             {
-                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("αδυναμια εκτυπωσης ", "", "OK"); // ex.ToString()
+                Ok = 0;
                 // await DisplayAlert("error2", "", "");
             }
-            MainPage.CutPaper(ipAddress);
+            return Ok;
+
         }
 
 

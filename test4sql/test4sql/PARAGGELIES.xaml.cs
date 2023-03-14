@@ -1525,7 +1525,7 @@ namespace test4sql
             listview.ItemsSource = Monkeys;
             BindingContext = this;
             fkauajiPro = s;
-            s = s - (s * fEKPTNUM1   ) / 100;
+           // DEN XREIAZETAI GIATI THN EXEI THN EKPTOSI  s = s - (s * fEKPTNUM1   ) / 100;
             fkauaji = s;
             faji = s * 113/100;
             connection.Close();
