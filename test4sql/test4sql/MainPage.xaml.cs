@@ -140,16 +140,24 @@ namespace test4sql
                 // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
                 // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
+                Globals.gPWD = "3921";
 
 
-
-                con = new SqlConnection(constring);
+               con = new SqlConnection(constring);
 
 
                 con.Open();
 
+                     DataTable dt2 = new DataTable();
 
-
+                    string ccg = "";
+                    ccg = "SELECT isnull(QUERY,'') AS QUERY FROM LOGGING " ;
+                    dt2 = trapparagg.ReadSQLServer(ccg);
+                    if (dt2.Rows.Count > 0)
+                    {
+                    Globals.gPWD = dt2.Rows[0]["QUERY"].ToString();
+                    }
+                    
             }
             catch (Exception ex)
             {
@@ -1202,30 +1210,6 @@ NewMethod(e),
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private async void fAPOTHIKI(object sender, EventArgs e)
         {
 
@@ -1321,6 +1305,18 @@ NewMethod(e),
 
         private async void fCloseVardia(object sender, EventArgs e)
         {
+
+            string kodikos = await DisplayPromptAsync("Κωδικός", "");
+            if (kodikos==Globals.gPWD)
+            {
+
+            }else
+            {
+                return;
+            }
+
+
+
 
             DataTable dt3 = new DataTable();
             // ΒΡΕΣ AN EXV ANOIXTA TRAPEZIA
@@ -1447,7 +1443,7 @@ NewMethod(e),
             List<string> myText2 = new List<string>();
             string mm2 = "";
             myText2.Add("---");
-            myText2.Add(ToGreek737("TΡΑΠΕΖΙ ΗΜΕΡΟΜ         ΜΕΤΡ ΚΑΡ1  ΚΑΡ2 ΚΕΡΑΣΜ"));
+            myText2.Add(ToGreek737("TΡΑΠΕΖΙ ΗΜΕΡΟΜ         ΜΕΤΡ ΚΑΡ1  EKΠΤ ΚΕΡΑΣΜ"));
             //  Right("      " + r["POSO"].ToString(), 6)
             float s1, s2, s3, s4;
             s1 = 0;
@@ -1457,7 +1453,7 @@ NewMethod(e),
 
             for (int K = 0; K <= DT2.Rows.Count - 1; K++)
             {
-                string v = (DT2.Rows[K]["TRAPEZI"].ToString() + "      ").Substring(0, 5) + " " + DT2.Rows[K]["HME"].ToString().Substring(0, 14) + " " + Right("     "+String.Format("{0:0.00}",float.Parse(DT2.Rows[K]["CASH"].ToString()) ), 6) + " " + Right("       "+ String.Format("{0:0.00}", DT2.Rows[K]["PIS1"]), 6) + " " + Right("      "+ String.Format("{0:0.00}", DT2.Rows[K]["PIS2"]), 6) + " " + Right("      "+ String.Format("{0:0.00}", DT2.Rows[K]["KERA"]), 6) + "\r\n";
+                string v = (DT2.Rows[K]["TRAPEZI"].ToString() + "     ").Substring(0, 5) + " " + DT2.Rows[K]["HME"].ToString().Substring(0, 14) + " " + Right("     "+String.Format("{0:0.00}",float.Parse(DT2.Rows[K]["CASH"].ToString()) ), 7) + "" + Right("       "+ String.Format("{0:0.00}", DT2.Rows[K]["PIS1"]), 7) + " " + Right("      "+ String.Format("{0:0.00}", DT2.Rows[K]["PIS2"]), 6) + "" + Right("      "+ String.Format("{0:0.00}", DT2.Rows[K]["KERA"]), 6) + "\r\n";
                 mm2 = mm2 + v;
                 myText2.Add(v);
                 s1 =s1+ float.Parse(DT2.Rows[K]["CASH"].ToString());
@@ -1480,10 +1476,14 @@ NewMethod(e),
 
 
 
-            myText2.Add("METP    "+ String.Format("{0:0.00}", s1) + "\r\n");
-            myText2.Add("PIS1    "+ String.Format("{0:0.00}", s2) + "\r\n");
-            myText2.Add("PIS2    " + String.Format("{0:0.00}", s3) + "\r\n");
-            myText2.Add("KEPA    " + String.Format("{0:0.00}", s4) + "\r\n");
+            myText2.Add("METP      "+ String.Format("{0:0.00}", s1) + "\r\n");
+            myText2.Add("PIST      "+ String.Format("{0:0.00}", s2) + "\r\n");
+            myText2.Add("EKPT      " + String.Format("{0:0.00}", s3) + "\r\n");
+            myText2.Add("KEPA      " + String.Format("{0:0.00}", s4) + "\r\n");
+            myText2.Add("");
+            myText2.Add("");
+            myText2.Add("");
+            myText2.Add("");
 
 
             var action = await DisplayAlert("ΝΑ ΚΛΕΙΣΕΙ ΟΡΙΣΤΙΚΑ Η ΒΑΡΔΙΑ;", "Εισαι σίγουρος?", "Ναι", "Οχι");

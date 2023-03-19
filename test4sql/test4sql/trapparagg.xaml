@@ -106,11 +106,11 @@
 
         <StackLayout Orientation="Horizontal" >
             
-              <Button Text="ΤΥΠΩΝΩ Π"   x:Name="typoma"  Clicked="typlog" />
+              <Button Text="ΤΥΠ-ΠΑΡ"   x:Name="typoma"  Clicked="typlog" />
             <Label x:Name="tem"  Text="" />
           
 
-            <Button Text="BILL"   x:Name="BILL"  Clicked="TYPLOGALL" />
+            <Button Text="ΛΟΓΑΡ"   x:Name="BILL"  Clicked="TYPLOGALL" />
             <Label x:Name="LID3"  Text="" />
 
           

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "oncar": {
+      "commandName": "Project",
+      "remoteDebugEnabled": true,
+      "nativeDebugging": true,
+      "sqlDebugging": true
+    }
+  }
+}

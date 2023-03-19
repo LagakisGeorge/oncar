@@ -148,7 +148,7 @@ namespace oncar
             // PARAGG -> NUM1 = TROPOS PLHROMHS  1,2,3     -1=ΔΙΑΓΡΑΦΤΗΚΕ
             // ENERGOS=1  ΤΥΠΟΜΕΝΟ
 
-            string action = await DisplayActionSheet("Επιλογή", "Ακυρο", null, "1.Μετρητά Πληρωμή", "2.Κάρτα Πληρωμή", "3.Κάρτα2 Πληρωμή","4.Κερασμένα", "5.Διαγραφή","6.Αλλαγή Ποσότητας");
+            string action = await DisplayActionSheet("Επιλογή", "Ακυρο", null, "1.Μετρητά Πληρωμή", "2.Κάρτα Πληρωμή", "3.Κερασμένα", "4.Διαγραφή","5.Αλλαγή Ποσότητας");
             if (action.Substring(0, 1) == "Α") { return; }
 
 
@@ -169,7 +169,7 @@ namespace oncar
            // string[] lines = cc.Split('~');
 
             string cTYPOMENO = Globals.ReadSQLServer("SELECT  ISNULL(ENERGOS,0) AS TYP FROM PARAGG WHERE   ID=" + cc);
-          if (action.Substring(0, 1) == "5")
+          if (action.Substring(0, 1) == "4")
           {
               
                  if (cTYPOMENO=="1")
@@ -193,7 +193,7 @@ namespace oncar
           }
 
 
-            if (action.Substring(0, 1) == "6")  // αλλαγη βαρους
+            if (action.Substring(0, 1) == "5")  // αλλαγη βαρους
             {
 
                 string cc2 = await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
@@ -221,7 +221,7 @@ namespace oncar
             //------------- PLHRVMH ------------------------
            
 
-            if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3" || action.Substring(0, 1) == "4")
+            if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3" )
             {
 
                 if (cTYPOMENO == "0")
@@ -248,12 +248,9 @@ namespace oncar
                     {
                     Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
                     }
-                    if (action.Substring(0, 1) == "3")
-                    {
-                      Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS2=ISNULL(PIS2,0)+" + mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
-                    }
+                    
 
-                    if (action.Substring(0, 1) == "4")
+                    if (action.Substring(0, 1) == "3")
                     {
                         Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET KERA=ISNULL(KERA,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
@@ -583,8 +580,8 @@ namespace oncar
 
                 // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
-                PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
-             if (PROS.Trim().Length > 0)
+                PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19).TrimEnd()) + "*" + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
+             if (PROS.Trim().Length > 0  )
                
                 
                 
@@ -949,9 +946,22 @@ catch (Exception ex)
                 await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
                 return;
             }
+           
 
-            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
-            string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα","3.Κάρτα 2", "3.Κερασμένα");
+           // string proekpt = "";
+            // float nproekpt = 0;
+            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) as aa FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+            // nproekpt = float.Parse(proekpt.Replace(",", "."));
+            //  float nekpt = 0;
+            // float  nekpt = float.Parse(ekpt);
+            // float ypol = (nproekpt -nekpt);
+
+            // string caji = ypol.ToString().Replace (",",".");
+            string ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " +caji + "€");
+            if (ekpt.Length == 0) { ekpt = "0"; }
+
+            string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα");
+
            if (action.Substring(0, 1) == "Α") { return; }
             Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
             Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
@@ -959,23 +969,23 @@ catch (Exception ex)
             if (action.Substring(0, 1) == "1")
             {
                 Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)+" + caji.Replace(",",".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             if (action.Substring(0, 1) == "2")
             {
                 Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             if (action.Substring(0, 1) == "3")
             {
                 Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
-
-
-
-
-
-
-
-
+            if (ekpt == "0") { }
+            else
+            {
+                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+            }
             Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
 
             await Navigation.PopAsync();

@@ -1510,9 +1510,11 @@ namespace test4sql
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             Single s = 0;
+            Single spro = 0;
             while (r.Read())
             {
-                s = s + (Single)r["POSO"]* (Single)r["TIMH"]*(100- (Single)r["EKPT"])/100;   
+                spro = spro + (Single)r["POSO"]* (Single)r["TIMH"];
+                s = s + (Single)r["POSO"] * (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
                 Monkeys.Add(new Monkey
                 {
                     Name = (r["KODE"].ToString()+";"+ r["PER"].ToString()+"                ").Substring(0,18),
@@ -1524,7 +1526,7 @@ namespace test4sql
 
             listview.ItemsSource = Monkeys;
             BindingContext = this;
-            fkauajiPro = s;
+            fkauajiPro = spro;
            // DEN XREIAZETAI GIATI THN EXEI THN EKPTOSI  s = s - (s * fEKPTNUM1   ) / 100;
             fkauaji = s;
             faji = s * 113/100;
