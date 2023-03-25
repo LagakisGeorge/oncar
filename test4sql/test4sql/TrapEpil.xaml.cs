@@ -113,7 +113,7 @@ namespace oncar
 
         private void subminus(object sender, EventArgs e)
         {
-            fTem = fTem + 1;
+            fTem = fTem - 1;
             tem.Text = fTem.ToString();
 
         }
