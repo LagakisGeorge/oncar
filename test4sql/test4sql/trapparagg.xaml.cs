@@ -1,4 +1,6 @@
-﻿using Android.Drm;
+﻿using Android.Content;
+using Android.Drm;
+using Java.Nio.Channels;
 using Mono.Data.Sqlite;
 using Org.Apache.Http.Authentication;
 using SharpCifs.Util.Sharpen;
@@ -46,7 +48,8 @@ namespace oncar
             Globals.gTrapezi = lines[0];
             Globals.gTrapezi = Globals.gTrapezi.TrimStart();
             Globals.gTrapezi = Globals.gTrapezi.TrimEnd();
-            Globals.gIDPARAGG = lines[1];
+            Globals.gIDPARAGG = Globals.ReadSQLServer("SELECT  STR(ISNULL(IDPARAGG,0)) FROM TABLES WHERE  ONO='" + Globals.gTrapezi+"'");
+           // Globals.gIDPARAGG = lines[1];
             titlos.Text = "Τραπέζι: " + Globals.gTrapezi;
 
 
@@ -283,21 +286,21 @@ namespace oncar
 
             // await DisplayAlert("Info", $"{SelectedItem.Description}}", "Ok");
             //where SelectedItem.Description is a field in my model
+            string cc= Globals.ReadSQLServer("SELECT STR(ISNULL(ID,0)) FROM KATHG WHERE ONO='" + e.Item.ToString() + "'");
+            Globals.gKathg = cc;
 
+            //string[] lines = Globals.gKathg.Split(';');
 
+            //// αδειο τρπαζζι  π.χ. 12 345
+            //if (lines.Length > 1)
+            //{
+            //    Globals.gKathg = lines[1];
 
-            string[] lines = Globals.gKathg.Split(';');
-
-            // αδειο τρπαζζι  π.χ. 12 345
-            if (lines.Length > 1)
-            {
-                Globals.gKathg = lines[1];
-
-            }
-            else
-            {
-                Globals.gKathg = "0";
-            }
+            //}
+            //else
+            //{
+            //    Globals.gKathg = "0";
+            //}
 
             // DisplayAlert("Τραπέζι Νο ", e.Item.ToString(), "Ok");
             await Navigation.PushAsync(new trapeziEpil());  //imports
@@ -352,10 +355,13 @@ namespace oncar
             string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             List<string> myText = new List<string>();
+            List<string> myTextTitlos = new List<string>();
             DataTable dt;          
                 dt = ReadSQLServer("SELECT   ONO, SUM(POSO) as POSO,  TIMH ,SUM(POSO*TIMH) AS AXIA FROM PARAGG  where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + " GROUP BY TIMH,ONO  ; ");
-           // }
+            // }
             // Monkeys.Add(new Monkey
+            myText.Add((MainPage.ToGreek737(Globals.gTITLOS)));
+
 
             //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
             string DDD = MainPage.ToGreek737(titlos.Text + "  .");
@@ -403,6 +409,11 @@ namespace oncar
             }
             try
             {
+               // 'τυπωνω τον τιτλο πρωτα'
+                //MainPage.BigLetters(ipAddress);
+                //myTextTitlos.Add((MainPage.ToGreek737(Globals.gTITLOS)));
+                //printer.Print(ipAddress, portNumber, myText);
+               
 
                 PrintSmall(ipAddress);
              /*
@@ -593,11 +604,11 @@ namespace oncar
                     //  i1 = i1 + 1;
 
 
-                    if (dt.Rows[k]["PRINTER"].ToString() == "1")
-                    {
+                  //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
+                  //  {
                         myText.Add(PROS.Trim());
                         i1 = i1 + 1;
-                    }
+                   // }
                     {
                     if (dt.Rows[k]["PRINTER"].ToString() == "2")
                     {
@@ -1087,7 +1098,7 @@ catch (Exception ex)
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID FROM KATHG   order by ID ; ", con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO, ID FROM KATHG   order by CH1 ; ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
@@ -1098,8 +1109,8 @@ catch (Exception ex)
                     fONO = dt.Rows[k]["ONO"].ToString();
                     string fID;
                     fID = dt.Rows[k]["ID"].ToString();
-                    Items.Add(string.Format("{0}",  fONO + ";" + fID));
-
+                    // Items.Add(string.Format("{0}",  fONO + ";" + fID));
+                    Items.Add(string.Format("{0}", fONO ));
 
 
                 } // FOR

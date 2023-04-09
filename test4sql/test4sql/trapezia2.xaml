@@ -15,7 +15,7 @@
             <flv:FlowListView.FlowColumnTemplate>  
                 <DataTemplate>  
                     
-                    <Frame BackgroundColor="Purple"  
+                    <Frame BackgroundColor="Blue"  
                     Margin="5">  
                    <Label HorizontalOptions="Fill"   
                     VerticalOptions="Fill"   

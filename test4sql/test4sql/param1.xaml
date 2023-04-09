@@ -15,14 +15,21 @@
 
                 
                 HorizontalOptions="CenterAndExpand" />
+              <StackLayout Orientation="Horizontal" >
 
-            <Entry x:Name="FORTHGO"
+                   <Entry x:Name="FORTHGO"
                    
                     BackgroundColor="Green"      
                    />
 
+                <Entry x:Name="TitlosEKTYP" Placeholder="Τίτλος Εκτύπωσης------------"    HorizontalOptions="CenterAndExpand"
+                   
+                    BackgroundColor="Gray"       
+                />
 
-            <Label Text="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES=1 ΕΙΔΩΝ=0 "
+            </StackLayout>
+
+                    <Label Text="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES=1 ΕΙΔΩΝ=0 "
 
                 
                 HorizontalOptions="CenterAndExpand" />

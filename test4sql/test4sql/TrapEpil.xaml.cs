@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using test4sql;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace oncar
@@ -31,17 +32,9 @@ namespace oncar
         {
             InitializeComponent();
 
-            Show_list_Eidon();
-
-
+          //  Show_list_Eidon();
             pageModel = new MainEIDHPageModel(this);
             BindingContext = pageModel;
-
-
-
-
-
-
         }
 
 
@@ -57,8 +50,17 @@ namespace oncar
                 Globals.PARAGGlines[Globals.indexParaggLine, 3] = "0"; // tem.Text;
                 Globals.PARAGGlines[Globals.indexParaggLine, 5] = COMMENTS.Text; // tem.Text;
             }
-            await Navigation.PopAsync();
-            //  App.Current.Mainpage.Navigation.PopModalAsync();
+            // await Navigation.PopAsync();
+
+
+            COMMENTS.Text = "";
+            PROSU.Text = "";
+            ok.IsEnabled = false;
+            tem.Text = "0";
+
+            // ΞΑΝΑΔΕΙΧΝΩ ΤΑ ΕΙΔΗ ΤΗΣ ΚΑΤΗΓΟΡΙΑΣ
+            pageModel = new MainEIDHPageModel(this);
+            BindingContext = pageModel;
         }
         
         private void addParagg()
@@ -95,11 +97,6 @@ namespace oncar
 
             Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
 
-
-
-
-
-
         }
 
 
@@ -118,72 +115,72 @@ namespace oncar
 
         }
 
-        void Show_list_Eidon()
-        {
-            Monkeys = new List<Monkey>();
-            BindingContext = null;
+        //void Show_list_Eidon()
+        //{
+        //    Monkeys = new List<Monkey>();
+        //    BindingContext = null;
 
-            string dbPath = Path.Combine(
-              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-              "adodemo.db3");
-            bool exists = File.Exists(dbPath);
-            if (!exists)
-            {
-                Console.WriteLine("Creating database");
-                // Need to create the database before seeding it with some data
-                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+        //    string dbPath = Path.Combine(
+        //      Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+        //      "adodemo.db3");
+        //    bool exists = File.Exists(dbPath);
+        //    if (!exists)
+        //    {
+        //        Console.WriteLine("Creating database");
+        //        // Need to create the database before seeding it with some data
+        //        Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
 
-            }
+        //    }
 
-            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-            // Open the database connection and create table with data
-            connection.Open();
-
-
-            var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(EPO,'') AS PER,ifnull(THL,'') as THL,KINHTO,ID from PEL   order by EPO ; "; // +BARCODE.Text +"'";
-                                                                                                                                                                                    // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-            var r = contents.ExecuteReader();
-            Console.WriteLine("Reading data");
-            while (r.Read())
-            {
+        //    SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+        //    // Open the database connection and create table with data
+        //    connection.Open();
 
 
-                Monkeys.Add(new Monkey
-                {
-                    Name = (r["PER"].ToString() + "                                   ").Substring(0, 28),
-
-                    Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
-                    ImageUrl = (r["THL"].ToString() + "              ").Substring(0, 11),
-                    idPEL = r["ID"].ToString()
-                });
-
-                /*  Monkeys.Add(new Monkey
-                  {
-                      Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
-
-                      Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
-                      ImageUrl = (r["THL"].ToString()+" "+ r["KINHTO"].ToString() + "                    ").Substring(0, 20),
-                      idPEL = r["ID"].ToString()
-                  });
-                */
+        //    var contents = connection.CreateCommand();
+        //    contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(EPO,'') AS PER,ifnull(THL,'') as THL,KINHTO,ID from PEL   order by EPO ; "; // +BARCODE.Text +"'";
+        //                                                                                                                                                                            // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+        //    var r = contents.ExecuteReader();
+        //    Console.WriteLine("Reading data");
+        //    while (r.Read())
+        //    {
 
 
-            }
+        //        Monkeys.Add(new Monkey
+        //        {
+        //            Name = (r["PER"].ToString() + "                                   ").Substring(0, 28),
 
-           // listview.ItemsSource = Monkeys;
-           // BindingContext = this;
+        //            Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
+        //            ImageUrl = (r["THL"].ToString() + "              ").Substring(0, 11),
+        //            idPEL = r["ID"].ToString()
+        //        });
+
+        //        /*  Monkeys.Add(new Monkey
+        //          {
+        //              Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
+
+        //              Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
+        //              ImageUrl = (r["THL"].ToString()+" "+ r["KINHTO"].ToString() + "                    ").Substring(0, 20),
+        //              idPEL = r["ID"].ToString()
+        //          });
+        //        */
 
 
-            connection.Close();
+        //    }
 
-            BindingContext = this;
-        }
+        //   // listview.ItemsSource = Monkeys;
+        //   // BindingContext = this;
 
-        private void YourSub()
-        {
 
-        }
+        //    connection.Close();
+
+        //    BindingContext = this;
+        //}
+
+        //private void YourSub()
+        //{
+
+        //}
 
 
 
@@ -191,18 +188,22 @@ namespace oncar
         {
             //  Show_list_Eidon();
 
-            // 
+            //  εχω σημαδεψει το ειδος και δειχνω την τιμη του=========================================
+     
             //string cID;
            // τσιμπαω αυτο που πατησε
             MainPageModel tappedItem = e.Item as MainPageModel;
             string c= e.Item.ToString();
+            ok.IsEnabled = true;
+           
+
             //  EIDOS.Text = c;
 
 
             string[] lines =c.Split('*');
             EIDOS.Text = lines[0];
-            timh.Text = lines[2];
-            Globals.gIDEIDOS = lines[1];
+            timh.Text = lines[1];
+            Globals.gIDEIDOS = EIDOS.Text; //  lines[1];
 
             // αδειο τρπαζζι  π.χ. 12 345
             //if (lines.Length > 1)
@@ -239,6 +240,8 @@ namespace oncar
           //  Globals.gIDEIDOS = cID ; // e.Item.ToString();
             // DisplayAlert("Τραπέζι Νο ", e.Item.ToString(), "Ok");
 
+
+            // δειχνω τα προσθετα
             pageModelx = new MainXAR1PageModel(this);
             BindingContext = pageModelx;
 
@@ -248,38 +251,41 @@ namespace oncar
 
         private void LISTXAR1(object sender, ItemTappedEventArgs e)
         {
-            // τσιμπαω αυτο που πατησε
+            // τσιμπαω TO PROSUETO  που πατησε
+            //----------------------------------------
             MainXAR1PageModel tappedItem = e.Item as MainXAR1PageModel;
             string c = e.Item.ToString();
-            string cID = "";
+            PROSU.Text = PROSU.Text + c;
 
-            string[] lines = c.Split(' ');
+           //string cID = "";
 
-            // αδειο τρπαζζι  π.χ. 12 345
-            if (lines.Length > 1)
-            {
-                cID = lines[lines.Length - 1];
-                if (lines.Length == 2)
-                {
-                    PROSU.Text =PROSU.Text +" "+ lines[0];
-                }
-                else
-                {
-                    if (lines.Length == 3)
-                    {
-                        PROSU.Text = PROSU.Text +" "+ lines[0] + " " + lines[1];
-                    }
-                    else
-                    {  // 4 kai anv
-                        PROSU.Text = PROSU.Text +" "+ lines[0] + " " + lines[1] + " " + lines[2];
-                    }
-                }
+           // string[] lines = c.Split(' ');
 
-            }
-            else
-            {
-                PROSU.Text = PROSU.Text + lines[0];
-            }
+           // // αδειο τρπαζζι  π.χ. 12 345
+           // if (lines.Length > 1)
+           // {
+           //     cID = lines[lines.Length - 1];
+           //     if (lines.Length == 2)
+           //     {
+           //         PROSU.Text =PROSU.Text +" "+ lines[0];
+           //     }
+           //     else
+           //     {
+           //         if (lines.Length == 3)
+           //         {
+           //             PROSU.Text = PROSU.Text +" "+ lines[0] + " " + lines[1];
+           //         }
+           //         else
+           //         {  // 4 kai anv
+           //             PROSU.Text = PROSU.Text +" "+ lines[0] + " " + lines[1] + " " + lines[2];
+           //         }
+           //     }
+
+           // }
+           // else
+           // {
+           //     PROSU.Text = PROSU.Text + lines[0];
+           // }
 
             COMMENTS.Focus();
 
@@ -362,7 +368,7 @@ namespace oncar
                     fID = dt.Rows[k]["ID"].ToString();
                     string ft;
                     ft = dt.Rows[k]["timh"].ToString();
-                    ItemsEidh.Add(string.Format("{0}", fONO + "*" + fID+"*"+ft));
+                    ItemsEidh.Add(string.Format("{0}", fONO + "*"+ft));
 
 
 
@@ -465,12 +471,16 @@ namespace oncar
                 string CZ = "";
                 //if (Globals.gTrapezi.Substring(0, 1) == "Π")
                 //{
-                    CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
-               // }
-               // else
-               // {
-               //     CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
-              //  }
+
+                // CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
+                CZ = "select CH2 FROM EIDH WHERE ONO='" + Globals.gIDEIDOS+"'";
+
+
+                // }
+                // else
+                // {
+                //     CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
+                //  }
 
 
                 SqlCommand cmd30 = new SqlCommand(CZ,  con);
@@ -493,8 +503,9 @@ namespace oncar
                     fONO = dt.Rows[k]["ONO"].ToString();
                     string fID;
                     fID = dt.Rows[k]["ID"].ToString();
-                    Itemsx.Add(string.Format("{0}", fONO + " " + fID));
+                    Itemsx.Add(string.Format("{0}", fONO ));
 
+                    //  Itemsx.Add(string.Format("{0}", fONO + " " + fID));
 
 
                 } // FOR

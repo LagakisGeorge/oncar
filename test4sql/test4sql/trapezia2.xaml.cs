@@ -29,6 +29,8 @@ using SharpCifs.Util.Sharpen;
 
 namespace oncar
 {
+
+   
     public partial class trapezia2 : ContentPage
     {
         MainPageModel pageModel;
@@ -135,7 +137,7 @@ namespace oncar
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES WHERE NUM1="+ Globals.gUserWaiter, con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES WHERE NUM1="+ Globals.gUserWaiter+" ORDER BY NUM2",con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
@@ -153,8 +155,9 @@ namespace oncar
                     fID = dt.Rows[k]["idparagg"].ToString();
                     string fkat = dt.Rows[k]["kateilhmeno"].ToString();
                     if (fkat == "0") { fkat = ""; } else { fkat = "# "; }
-                    Items.Add(string.Format(" {0} ", fkat + fONO + "*" + fID+"*   "+CH1));
-                   // Items.Add(string.Format(" {0} ", fkat + fONO + " " + fID));
+                    //  Items.Add(string.Format(" {0} ", fkat + fONO + "*" + fID+"*   "+CH1));
+                    Items.Add(string.Format(" {0} ", fkat + fONO + "*   " + CH1));
+                    // Items.Add(string.Format(" {0} ", fkat + fONO + " " + fID));
 
                     // Items.Add(string.Format("{0}", fONO + " " + fID));
 

@@ -55,13 +55,23 @@
                      BackgroundColor="Green"
                
                  />
+
+            <Button x:Name="CMDupdateWeb"
+                      Text="Αναβάθμιση"
+                       Clicked="updateWeb" 
+                     BackgroundColor="Green"
+               
+                 />
+
+
+
             <Button x:Name="IMPBAR"
                       Text="IMPORT BAR RESTAURANT"
                        Clicked="SUBIMPBAR" 
                      BackgroundColor="Green"
                
                  />
-
+           
 
 
 

@@ -10,62 +10,34 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
+using test4sql;
 
-namespace test4sql
-{
-    public class NumericValidationBehavior : Behavior<Entry>
-    {
-
-        protected override void OnAttachedTo(Entry entry)
-        {
-            entry.TextChanged += OnEntryTextChanged;
-            base.OnAttachedTo(entry);
-        }
-
-        protected override void OnDetachingFrom(Entry entry)
-        {
-            entry.TextChanged -= OnEntryTextChanged;
-            base.OnDetachingFrom(entry);
-        }
-
-        private static void OnEntryTextChanged(object sender, TextChangedEventArgs args)
-        {
-
-            if (!string.IsNullOrWhiteSpace(args.NewTextValue))
-            {
-                bool isValid = args.NewTextValue.ToCharArray().All(x => char.IsDigit(x)); //Make sure all characters are numbers  
-
-                ((Entry)sender).Text = isValid ? args.NewTextValue : args.NewTextValue.Remove(args.NewTextValue.Length - 1);
-            }
-        }
-    }
+namespace oncar 
+{ 
+   
 
 
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SUPER : ContentPage
+    public partial class Page3 : ContentPage
+
+
+
     {
+
         public IList<Monkey> Monkeys { get; private set; }
-        int f_man_barcode = 0;
+        int f_man_barcode = 1;
         string cc = "";
 
 
 
 
-        public SUPER()
+
+        public Page3()
         {
             InitializeComponent();
             lab1.Text = "ll";
-            //BARCODE.Completed += txtUserName_Completed;
-
         }
-       // public void txtUserName_Completed(object sender, EventArgs e)
-      //  {
-      //      find_eid(BARCODE.Text);
-      //  }
-
-
-       
 
 
         protected override void OnAppearing()
@@ -95,9 +67,9 @@ namespace test4sql
 
 
             var contents = connection.CreateCommand();
-           
-                contents.CommandText = "SELECT  count(*) as d from EID  ; "; // +BARCODE.Text +"'";
-            
+
+            contents.CommandText = "SELECT  count(*) as d from EID  ; "; // +BARCODE.Text +"'";
+
 
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
@@ -106,12 +78,13 @@ namespace test4sql
                 if (Globals.useBarcodes == "1")
                 {
                     lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. BARCODES";  // ****
-                } else
+                }
+                else
                 {
                     lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
                 }
             }
-           
+
             connection.Close();
 
 
@@ -120,13 +93,9 @@ namespace test4sql
 
         }
 
-        
 
 
-
-
-            // 
-            async void CHANGEBARCODE(object sender, EventArgs e)
+        async void CHANGEBARCODE(object sender, EventArgs e)
         {
             if (f_man_barcode == 1)
             {
@@ -141,7 +110,13 @@ namespace test4sql
 
 
         }
-        
+
+        private void lista(object sender, EventArgs e)
+        {
+            Show_list_Eidon("");
+        }
+
+
 
         async void barcfoc(object sender, EventArgs e)
         {
@@ -165,54 +140,63 @@ namespace test4sql
                     await Navigation.PopAsync();
                     // await DisplayAlert("Scanned Barcode", result.Text, "OK");
                     BARCODE.Text = result.Text;
-                   // Completed = "posothtaCompleted"
+                    // Completed = "posothtaCompleted"
                     find_eid("0");
                 });
             };
 
-           
+
 
         }
 
 
         async void savecodes(object sender, EventArgs e)
-        
+
         {
 
-         string   text = cc;
-            //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.csv");
-            // fine var file = new SmbFile("smb://User:1@192.168.2.7/backpel/New2FileName.txt");
-
-
-
-
-
-
-
-            try { 
-
-            if (file.Exists()) {
-                var answer = await DisplayAlert("Το αρχείο υπάρχει", "Να διαγραφεί;", "Ναι", "Οχι");
-                if (answer)
-                {
-                    file.Delete();
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-
-
-           
-               
-             
+            string text = cc;
+            try
+            {
+                Globals.ExecuteSQLServer(cc);
+                cc = "";
+                
             }
             catch
             {
-                DisplayAlert("δεν υπαρχει ο φακελος", "....", "OK");
+                await DisplayAlert("δεν εγινε συνδεση", "....", "OK");
+                return;
+            }
+
+            await Navigation.PopAsync(); // new PelReports());
+
+            //Get the SmbFile specifying the file name to be created.
+            var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.csv");
+            // fine var file = new SmbFile("smb://User:1@192.168.2.7/backpel/New2FileName.txt");
+            try
+            {
+
+                if (file.Exists())
+                {
+                    var answer = await DisplayAlert("Το αρχείο υπάρχει", "Να διαγραφεί;", "Ναι", "Οχι");
+                    if (answer)
+                    {
+                        file.Delete();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+
+
+
+
+
+            }
+            catch
+            {
+               await DisplayAlert("δεν υπαρχει ο φακελος", "....", "OK");
                 return;
             }
 
@@ -229,7 +213,7 @@ namespace test4sql
             }
             catch
             {
-                DisplayAlert("Αδυναμία δημιουργίας αρχείου ", "....", "OK");
+               await DisplayAlert("Αδυναμία δημιουργίας αρχείου ", "....", "OK");
                 return;
             }
 
@@ -245,14 +229,28 @@ namespace test4sql
 
             //Dispose writable stream.
             writeStream.Dispose();
-            DisplayAlert("Εγινε η δημιουργία του αρχείου ", "....", "OK");
+           await DisplayAlert("Εγινε η δημιουργία του αρχείου ", "....", "OK");
 
             cc = "";
+
+           await Navigation.PopAsync(); // new PelReports());
+
         }
 
-       
 
 
+
+
+
+        private void savepalioKaineo(object sender, FocusEventArgs e)
+        {
+            cc = cc + "delete from BARCODES WHERE ERG='"+BARCODE.Text+"';insert into BARCODES(ERG,KOD) VALUES('"+BARCODE.Text+"','" + KODIKOS.Text +"');";
+            BARCODE.Text = "";
+            posotita.Text = "";
+            mono.Text = "";
+            lper.Text = "";
+            BARCODE.Focus();
+        }
 
 
         async void BresEidos(object sender, EventArgs e)
@@ -262,11 +260,12 @@ namespace test4sql
 
         }
 
-        void find_eid(string fromTap) {
+        void find_eid(string fromTap)
+        {
 
 
 
-            
+
 
             // determine the path for the database file
             string dbPath = Path.Combine(
@@ -297,14 +296,16 @@ namespace test4sql
             if (fromTap == "0")
             {
 
-            
-              if (Globals.useBarcodes=="1") {
-                //contents.CommandText = "SELECT  E.ONO,E.XONDR,E.YPOL,E.BARCODE,E.KOD from EID E inner JOIN BARCODES B ON E.KOD=B.KOD   WHERE B.BARCODE like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
-                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
-              }
-              else {             
-                  contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD like '%" + BARCODE .Text + "%'  ; "; // +BARCODE.Text +"'";
-                 }
+
+                if (Globals.useBarcodes == "1")
+                {
+                    //contents.CommandText = "SELECT  E.ONO,E.XONDR,E.YPOL,E.BARCODE,E.KOD from EID E inner JOIN BARCODES B ON E.KOD=B.KOD   WHERE B.BARCODE like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+                    contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
+                }
+                else
+                {
+                    contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD like '%" + BARCODE.Text + "%'  ; "; // +BARCODE.Text +"'";
+                }
             }
             else
             {
@@ -316,25 +317,25 @@ namespace test4sql
             while (r.Read())
             {
                 lper.Text = r["ONO"].ToString();  // ****
-              //  ltimh.Text = r["XONDR"].ToString();
-             //   string ccc = r["XONDR"].ToString();
-               
+                                                  //  ltimh.Text = r["XONDR"].ToString();
+                                                  //   string ccc = r["XONDR"].ToString();
+
                 lkode.Text = r["KOD"].ToString();
                 lbarcode.Text = r["BARCODE"].ToString();  // ***
-               // cc4=r["XTI"].ToString();
-               // cc = cc + lkode.Text+";"+posotita.Text+ "\n";  // +lper.Text+";"+ltimh.Text+";"+ 
-               // xtimh.Text = "20-"+r["XTI"].ToString();
+                                                          // cc4=r["XTI"].ToString();
+                                                          // cc = cc + lkode.Text+";"+posotita.Text+ "\n";  // +lper.Text+";"+ltimh.Text+";"+ 
+                                                          // xtimh.Text = "20-"+r["XTI"].ToString();
 
             }
             // r["ONO"].ToString();
 
-           
+
 
             connection.Close();
 
             // System.Threading.Thread.Sleep(1000);
 
-           
+
 
             posotita.Focus();
 
@@ -346,6 +347,7 @@ namespace test4sql
 
         void Show_list_Eidon(string ono)
         {
+            ono = ono.ToUpper();
             Monkeys = new List<Monkey>();
             BindingContext = null;
 
@@ -377,9 +379,9 @@ namespace test4sql
 
                 Monkeys.Add(new Monkey
                 {
-                    Name = (r["PER"].ToString() + "                                     ").Substring(0, 30),
+                    Name = (r["PER"].ToString() + "                                               ").Substring(0, 40),
 
-                    Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
+                    Location = (r["KODI"].ToString() + "                      ").Substring(0, 20),
                     ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),
                     idPEL = r["ID"].ToString()
                 });
@@ -407,7 +409,8 @@ namespace test4sql
             {
                 //  BRESafm.IsEnabled = false;
                 mono.Text = tappedItem.Name;
-                string mmid =tappedItem.idPEL;
+                KODIKOS.Text = tappedItem.Location;
+                string mmid = tappedItem.idPEL;
                 find_eid(mmid);
 
             }
@@ -416,30 +419,19 @@ namespace test4sql
 
 
 
-            }
+        }
 
         private void okscann(object sender, FocusEventArgs e)
         {
             mono.Focus();
 
-            if (BARCODE.Text.Length >0)
-            {
-                find_eid("0");
-            }
-            
+           
+
         }
 
-        private void lista(object sender, EventArgs e)
+        private void breseidh(object sender, FocusEventArgs e)
         {
-            Show_list_Eidon("");
-        }
-
-        private void savepalioKaineo(object sender, FocusEventArgs e)
-        {
-            cc = cc + lkode.Text + ";" + posotita.Text + "\n";
-            BARCODE.Text = "";
-            posotita.Text = "";
-            BARCODE.Focus ();
+            Show_list_Eidon(mono.Text);
         }
     }
 }

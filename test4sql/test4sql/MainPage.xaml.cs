@@ -93,6 +93,7 @@ namespace test4sql
                     reppelath.IsVisible = false;
                     PELATHS.IsVisible = false;
                     test.IsVisible = true;
+                    APOTHIKI2.IsVisible = false;
                     Globals.gUserWaiter = Globals.cFORTHGO.Substring(1, 1);
 
                 }
@@ -223,7 +224,7 @@ namespace test4sql
             Globals.cIPPR2 = PARAGGELIES.ReadSQL("select AFM from MEM  where ID=2");
             Globals.cIPPR3 = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=2");
 
-
+            Globals.gTITLOS = PARAGGELIES.ReadSQL("select ifnull(EPO,' ') as EPO from MEM  where ID=2");
 
 
 
@@ -1761,6 +1762,15 @@ public static void BigLetters(string ipAddress)
 
 
 
+
+
+        }
+
+        private async void fANTIST(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Page3 ());
+
+            return;
 
 
         }

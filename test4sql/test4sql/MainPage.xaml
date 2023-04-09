@@ -15,7 +15,7 @@
 
 
         <!-- Place new controls here -->
-        <Label Text="Π ε λ α τ ο λ ό γ ι ο   v.2303b" 
+        <Label Text="Π ε λ α τ ο λ ό γ ι ο   v.2303c" 
            HorizontalOptions="Center"
             />
 
@@ -66,11 +66,25 @@
                 Text="ΠΑΡΑΜΕΤΡΟΙ"
                 Clicked="fparam"
                  />
-
-        <Button x:Name="APOTHIKI" 
+        
+        
+        
+        
+        <StackLayout Orientation="Horizontal" >
+            <Button x:Name="APOTHIKI" 
                 Text="ΑΠΟΘΗΚΗ"
                 Clicked="fAPOTHIKI"
                  />
+
+            <Button x:Name="APOTHIKI2" 
+                Text="BARCODES-ΑΝΤΙΣΤΟΙΧΙΣΗ"
+                Clicked="fANTIST"
+                 />
+        </StackLayout>
+    
+    
+    
+
         <Button x:Name="PELATHS" 
                 Text="ΠΕΛΑΤΗΣ"
                 Clicked="fPELATHS"

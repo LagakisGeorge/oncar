@@ -15,6 +15,9 @@ using System.Threading;
 using Xamarin.Forms.PlatformConfiguration;
 using System.Data.SqlClient;
 using System.Data;
+using System.Windows.Input;
+using Xamarin.Essentials;
+
 namespace test4sql
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -22,6 +25,7 @@ namespace test4sql
     {
 
         public SqlConnection con;
+        
 
         public IList<Monkey> Monkeys { get; private set; }
         public Page2()
@@ -46,7 +50,7 @@ namespace test4sql
              MainPage.ExecuteSqlite("delete FROM EGGTIM");
 
             await DisplayAlert("ΔΙΑΓΡΑΦΗΚΕ ΟΚ", "ΔΙΑΓΡΑΦΗΚΕ Η ΑΠΟΓΡΑΦΗ", "OK");
-
+            
 
 
         }
@@ -998,6 +1002,25 @@ namespace test4sql
 
 
            
+        }
+
+        private async void updateWeb(object sender, EventArgs e)
+        {
+            // public AboutViewModel()
+            //  {
+            // Title = "About";
+            // OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            // }
+
+            //var br = new WebView
+            //{
+            //    Source = "https://dotnet.microsoft.com/apps/xamarin"
+
+
+            //};
+            await Launcher.OpenAsync("https://www.lagakis.gr/apk/23031.apk");
+            // br.
+
         }
     }
 }
