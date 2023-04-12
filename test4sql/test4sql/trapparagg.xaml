@@ -13,6 +13,7 @@
                 x:Name="titlos" 
            HorizontalOptions="CenterAndExpand"
             />
+            <Button Text="Απόδειξη"  HorizontalOptions="EndAndExpand"  x:Name="cmdtimologio"  Clicked="timologio" />
             <Button Text="Αλλαγή"  HorizontalOptions="EndAndExpand"  x:Name="allazoTrapezi"  Clicked="Allagh" />
         </StackLayout>
 

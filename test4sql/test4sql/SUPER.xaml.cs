@@ -303,7 +303,7 @@ namespace test4sql
                 contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
               }
               else {             
-                  contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE KOD like '%" + BARCODE .Text + "%'  ; "; // +BARCODE.Text +"'";
+                  contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD,XTI from EID WHERE ONO like '%" + mono.Text + "%'  ; "; // +BARCODE.Text +"'";
                  }
             }
             else

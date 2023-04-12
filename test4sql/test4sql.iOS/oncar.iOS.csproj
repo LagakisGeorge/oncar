@@ -167,4 +167,7 @@
       <Name>oncar</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\dessert.jpg" />
+  </ItemGroup>
 </Project>

@@ -273,6 +273,9 @@ namespace oncar
 
             Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
             Show_listsql_Paragg(Globals.gIDPARAGG);
+            pageModel = new Main2PageModel(this);
+            BindingContext = pageModel;
+
         }
 
         private async void doit2(object sender, ItemTappedEventArgs e)
@@ -356,8 +359,8 @@ namespace oncar
             int portNumber = 9100;
             List<string> myText = new List<string>();
             List<string> myTextTitlos = new List<string>();
-            DataTable dt;          
-                dt = ReadSQLServer("SELECT   ONO, SUM(POSO) as POSO,  TIMH ,SUM(POSO*TIMH) AS AXIA FROM PARAGG  where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + " GROUP BY TIMH,ONO  ; ");
+            DataTable dt;
+            dt = ReadSQLServer("SELECT   ONO, SUM(POSO) as POSO,  TIMH ,SUM(POSO*TIMH) AS AXIA FROM PARAGG  where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + " GROUP BY TIMH,ONO  ; ");
             // }
             // Monkeys.Add(new Monkey
             myText.Add((MainPage.ToGreek737(Globals.gTITLOS)));
@@ -370,16 +373,16 @@ namespace oncar
 
             myText.Add("-\r\n");
             myText.Add("\r\n");
-           //  string BIG="";
+            //  string BIG="";
             float ss = 0;
             string PROS = "";
             for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
                 //ola
                 myText.Add((MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString() + "                              ").Substring(0, 20)));
-                myText.Add( dt.Rows[k]["POSO"].ToString()  + "  X  " + MainPage.Right("    "+String.Format("{0:0.00}", dt.Rows[k]["TIMH"]),5) + "       " + MainPage.Right("   "+String.Format("{0:0.00}", dt.Rows[k]["AXIA"]) ,6));
-                    ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
-               
+                myText.Add(dt.Rows[k]["POSO"].ToString() + "  X  " + MainPage.Right("    " + String.Format("{0:0.00}", dt.Rows[k]["TIMH"]), 5) + "       " + MainPage.Right("   " + String.Format("{0:0.00}", dt.Rows[k]["AXIA"]), 6));
+                ss = ss +  float.Parse(dt.Rows[k]["AXIA"].ToString());
+
                 //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
                 // myText.Add("\r\n");
 
@@ -391,8 +394,59 @@ namespace oncar
             }
             else
             {
-                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   "+String.Format("{0:0.00}", ss),6));
+                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", ss), 6));
             }
+
+
+            DataTable dt2;
+            string ekpt = "0";
+            dt2 = ReadSQLServer("SELECT   str(ISNULL(PIS2,0),10,2) AS PIS2 FROM PARAGGMASTER  where   ID = " + Globals.gIDPARAGG + " ; ");
+            ekpt = dt2.Rows[0]["PIS2"].ToString();
+            ekpt = ekpt.Replace(".", ",");
+
+            if (float.Parse(ekpt) == 0)
+            {
+
+                // string caji = ypol.ToString().Replace (",",".");
+                ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " + ss + "€");
+                if (ekpt.Length == 0) { ekpt = "0"; } else
+                {
+                    ekpt = ekpt.Replace(".", ",");
+                }
+
+                if (ekpt == "0") { }
+                else
+                {
+                    Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                    
+
+                }
+
+
+
+            }
+
+            if (ekpt == "0") { }
+            else
+            {
+                //Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+
+                float nekpt = 0;
+                nekpt = float.Parse(ekpt);
+                myText.Add(MainPage.ToGreek737("εκπτωση") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", nekpt), 6));
+            //if (ss - nekpt < 0)
+            //    {
+            //        await DisplayAlert("Error", "Λάθος έκπτωση", "");
+            //        return;
+            //    }
+                myText.Add(MainPage.ToGreek737("Πληρωτέο ") + "         " + MainPage.Right("   " + String.Format("{0:0.00}", ss-nekpt), 6));
+
+                string synolon = String.Format("{0:0.00}", ss - nekpt);
+                
+                Globals.ExecuteSQLServer("UPDATE TABLES SET CH1='"+synolon+"' WHERE ONO='" + Globals.gTrapezi + "'");
+
+            }
+
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
@@ -527,7 +581,7 @@ namespace oncar
 
             //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
             string DDD = MainPage.ToGreek737(titlos.Text+"  .");
-            myText.Add(DDD);
+            myText.Add(DDD+"  "+ MainPage.ToGreek737(cmdtimologio.Text + "  ."));
             myText2.Add(DDD);
             myText3.Add(DDD);
 
@@ -557,7 +611,7 @@ namespace oncar
             {
                 // if (dt.Rows[k]["ONO"].ToString()=="1")
                 // {
-                KANON=(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                KANON= dt.Rows[k]["POSO"].ToString().Trim()+"X"+(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
                 // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
                 // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ
@@ -961,15 +1015,15 @@ catch (Exception ex)
 
            // string proekpt = "";
             // float nproekpt = 0;
-            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) as aa FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+            string caji = Globals.ReadSQLServer("SELECT STR(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0),10,2) AS AA FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
             // nproekpt = float.Parse(proekpt.Replace(",", "."));
             //  float nekpt = 0;
             // float  nekpt = float.Parse(ekpt);
             // float ypol = (nproekpt -nekpt);
 
             // string caji = ypol.ToString().Replace (",",".");
-            string ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " +caji + "€");
-            if (ekpt.Length == 0) { ekpt = "0"; }
+          //  string ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " +caji + "€");
+           // if (ekpt.Length == 0) { ekpt = "0"; }
 
             string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα");
 
@@ -980,23 +1034,23 @@ catch (Exception ex)
             if (action.Substring(0, 1) == "1")
             {
                 Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)+" + caji.Replace(",",".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+               // Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             if (action.Substring(0, 1) == "2")
             {
                 Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+              //  Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             if (action.Substring(0, 1) == "3")
             {
                 Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+              //  Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
-            if (ekpt == "0") { }
-            else
-            {
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-            }
+            //if (ekpt == "0") { }
+            //else
+            //{
+            //    Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+            //}
             Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
 
             await Navigation.PopAsync();
@@ -1006,6 +1060,11 @@ catch (Exception ex)
 
         private async void TYPLOGALL(object sender, EventArgs e)
         {
+
+
+           
+
+
             try
             {
                 printingBill(2);
@@ -1047,6 +1106,18 @@ catch (Exception ex)
             }
             
 
+        }
+
+        private void timologio(object sender, EventArgs e)
+        {
+           if(cmdtimologio.Text == "Απόδειξη")
+            {
+                cmdtimologio.Text = "Τιμολόγιο";
+            }
+            else
+            {
+                cmdtimologio.Text = "Απόδειξη";
+            }
         }
     }
 

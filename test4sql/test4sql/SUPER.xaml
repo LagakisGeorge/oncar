@@ -29,7 +29,7 @@
                 <StackLayout    Orientation="Vertical">
 
                     <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Medium" 
-                   Placeholder="BARCODE     " Focused="barcfoc"  Unfocused="okscann"    />
+                   Placeholder="BARCODE     " Focused="barcfoc"    />
               
 
 

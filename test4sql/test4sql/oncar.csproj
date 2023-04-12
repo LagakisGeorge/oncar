@@ -40,10 +40,12 @@
 
   <ItemGroup>
     <None Remove="beep.mp3" />
+    <None Remove="dessert.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="beep.mp3" />
+    <EmbeddedResource Include="dessert.jpg" />
   </ItemGroup>
 
   <ItemGroup>

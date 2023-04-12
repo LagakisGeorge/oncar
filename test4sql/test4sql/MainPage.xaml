@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:test4sql"
             NavigationPage.HasNavigationBar="False" 
+             BackgroundImageSource="dessert.jpg"
              x:Class="test4sql.MainPage" >
     
 
@@ -10,9 +11,10 @@
 
 
 
-        <Image Source="dessert.jpg" />
+        <Image Source="test4sq.Images.dessert.jpg" />
 
 
+        
 
         <!-- Place new controls here -->
         <Label Text="Π ε λ α τ ο λ ό γ ι ο   v.2303c" 
@@ -119,9 +121,10 @@
                 Clicked="testprint"
                  />
         </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            
+        <StackLayout  >
 
+           <!--  its OK!!!  but down of screen  <Image Source="dessert.jpg"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  />  -->
+            
            
         </StackLayout>
         
