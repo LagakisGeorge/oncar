@@ -51,10 +51,10 @@ namespace oncar
             Globals.gIDPARAGG = Globals.ReadSQLServer("SELECT  STR(ISNULL(IDPARAGG,0)) FROM TABLES WHERE  ONO='" + Globals.gTrapezi+"'");
            // Globals.gIDPARAGG = lines[1];
             titlos.Text = "Τραπέζι: " + Globals.gTrapezi;
+            cmdtimologio.Text= Globals.ReadSQLServer("SELECT  ISNULL(CH2,'') AS CH2 FROM TABLES WHERE  ONO='" + Globals.gTrapezi + "'");
 
 
 
-          
 
             //}
             //  Globals.gTrapezi = trapezi;
@@ -1028,7 +1028,7 @@ catch (Exception ex)
             string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα");
 
            if (action.Substring(0, 1) == "Α") { return; }
-            Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
+            Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH2='',CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
             Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
 
             if (action.Substring(0, 1) == "1")
@@ -1118,6 +1118,10 @@ catch (Exception ex)
             {
                 cmdtimologio.Text = "Απόδειξη";
             }
+            Globals.ExecuteSQLServer("UPDATE TABLES SET CH2='" + cmdtimologio.Text + "' WHERE ONO='" + Globals.gTrapezi + "'");
+
+
+
         }
     }
 
