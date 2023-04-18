@@ -1522,7 +1522,7 @@ NewMethod(e),
         {
 
 
-            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            string ipAddress = Globals.gIPKleis; // cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)

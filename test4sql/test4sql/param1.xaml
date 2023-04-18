@@ -58,18 +58,27 @@
                    Placeholder="SQLSERVER INSTANCE" 
                     BackgroundColor="Azure"    
                    />
-            <Entry x:Name="CIPPR1"
+            <StackLayout Orientation="Horizontal" >
+                <Entry x:Name="CIPPR1"
                    Placeholder="IP PRINTER1" 
                     BackgroundColor="Azure"    
                    />
-            <Entry x:Name="CIPPR2"
+                <Entry x:Name="CIPPR2"
                    Placeholder="IP PRINTER2" 
                     BackgroundColor="Azure"    
                    />
-            <Entry x:Name="CIPPR3"
+                <Entry x:Name="CIPPR3"
                    Placeholder="IP PRINTER3" 
                     BackgroundColor="Azure"    
                    />
+            </StackLayout >
+
+            <StackLayout Orientation="Horizontal" >
+                <Entry x:Name="cIPKleis"
+                   Placeholder="IP ΚΛΕΙΣΙΜΑΤΟΣ" 
+                    BackgroundColor="Azure"    
+                   />
+            </StackLayout >
 
 
 
