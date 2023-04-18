@@ -404,7 +404,7 @@ namespace oncar
             ekpt = dt2.Rows[0]["PIS2"].ToString();
             ekpt = ekpt.Replace(".", ",");
 
-            if (float.Parse(ekpt) == 0)
+            if (float.Parse(ekpt) == 0) // ΔΕΝ ΕΧΕΙ ΑΠΟΘΗΚΕΥΜΕΝΗ ΕΚΠΤΩΣΗ
             {
 
                 // string caji = ypol.ToString().Replace (",",".");
@@ -432,7 +432,7 @@ namespace oncar
                 //Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
 
                 float nekpt = 0;
-                nekpt = float.Parse(ekpt);
+                nekpt = float.Parse(ekpt.Replace(".",","));
                 myText.Add(MainPage.ToGreek737("εκπτωση") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", nekpt), 6));
             //if (ss - nekpt < 0)
             //    {
