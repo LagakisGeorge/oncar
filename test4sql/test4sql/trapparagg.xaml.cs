@@ -360,7 +360,19 @@ namespace oncar
             List<string> myText = new List<string>();
             List<string> myTextTitlos = new List<string>();
             DataTable dt;
-            dt = ReadSQLServer("SELECT   ONO, SUM(POSO) as POSO,  TIMH ,SUM(POSO*TIMH) AS AXIA FROM PARAGG  where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + " GROUP BY TIMH,ONO  ; ");
+            string que;
+                que= "SELECT   P.ONO AS ONO, SUM(P.POSO) as POSO,  P.TIMH AS TIMH ,SUM(P.POSO*P.TIMH) AS AXIA ,K.CH1 " +
+                " FROM PARAGG P  inner join EIDH  E ON E.ONO=P.ONO  " +
+                " INNER JOIN KATHG K ON E.KATHG=K.ID " +
+                " where P.NUM1=0 AND  IDPARAGG =  " + Globals.gIDPARAGG + " GROUP BY P.TIMH,P.ONO,K.CH1 ORDER BY K.CH1";
+
+            //que = "SELECT   P.ONO, SUM(P.POSO) as POSO,  P.TIMH ,SUM(P.POSO*P.TIMH) AS AXIA  " +
+            //    "FROM PARAGG P    " +               
+            //    "where P.NUM1=0 AND  P.IDPARAGG =  " + Globals.gIDPARAGG + " GROUP BY P.TIMH,P.ONO";
+
+
+
+            dt = ReadSQLServer(que); 
             // }
             // Monkeys.Add(new Monkey
             myText.Add((MainPage.ToGreek737(Globals.gTITLOS)));
@@ -379,8 +391,8 @@ namespace oncar
             for (int k = 0; k <= dt.Rows.Count - 1; k++)
             {
                 //ola
-                myText.Add((MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString() + "                              ").Substring(0, 20)));
-                myText.Add(dt.Rows[k]["POSO"].ToString() + "  X  " + MainPage.Right("    " + String.Format("{0:0.00}", dt.Rows[k]["TIMH"]), 5) + "       " + MainPage.Right("   " + String.Format("{0:0.00}", dt.Rows[k]["AXIA"]), 6));
+                myText.Add((MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString() + "                                               ").Substring(0, 40)));
+                myText.Add("              "+dt.Rows[k]["POSO"].ToString() + "  X  " + MainPage.Right("    " + String.Format("{0:0.00}", dt.Rows[k]["TIMH"]), 5) + "       " + MainPage.Right("   " + String.Format("{0:0.00}", dt.Rows[k]["AXIA"]), 6));
                 ss = ss +  float.Parse(dt.Rows[k]["AXIA"].ToString());
 
                 //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
@@ -389,12 +401,13 @@ namespace oncar
             }
             if (part == 1)
             {
-                myText.Add("                                                                          " + MainPage.ToGreek737(ss.ToString()));
+                myText.Add("              " + "                                                                          " + MainPage.ToGreek737(ss.ToString()));
 
             }
             else
             {
-                myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", ss), 6));
+                myText.Add("\r\n");
+                myText.Add("              "+MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", ss), 6));
             }
 
 
@@ -433,13 +446,13 @@ namespace oncar
 
                 float nekpt = 0;
                 nekpt = float.Parse(ekpt.Replace(".",","));
-                myText.Add(MainPage.ToGreek737("εκπτωση") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", nekpt), 6));
+                myText.Add("              " + MainPage.ToGreek737( "εκπτωση") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", nekpt), 6));
             //if (ss - nekpt < 0)
             //    {
             //        await DisplayAlert("Error", "Λάθος έκπτωση", "");
             //        return;
             //    }
-                myText.Add(MainPage.ToGreek737("Πληρωτέο ") + "         " + MainPage.Right("   " + String.Format("{0:0.00}", ss-nekpt), 6));
+                myText.Add("              " + MainPage.ToGreek737("Πληρωτέο ") + "         " + MainPage.Right("   " + String.Format("{0:0.00}", ss-nekpt), 6));
 
                 string synolon = String.Format("{0:0.00}", ss - nekpt);
                 
@@ -569,9 +582,23 @@ namespace oncar
             DataTable dt;
 
             // {PARAGGELIES.toGreek( "ΓΕΙΑ ΣΟΥ ΜΕΓΑΛΕ ΜΟΥ"),"From","Replace","MrNashad","Please Like"};
-           // if (part == 1) // τα νεα μονο
-           // {
-                 dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by EIDH.KATHG ; ");
+            // if (part == 1) // τα νεα μονο
+            // {
+
+            string que;
+            //que= "SELECT   P.ONO, SUM(P.POSO) as POSO,  P.TIMH ,SUM(P.POSO*P.TIMH) AS AXIA ,K.CH1 " +
+            //"FROM PARAGG P  inner join EIDH  E ON E.ONO=P.ONO  " +
+            //"INNER JOIN KATHG K ON E.KATHG=K.ID " +
+            //"where P.NUM1=0 AND  IDPARAGG =  " + Globals.gIDPARAGG + " GROUP BY P.TIMH,P.ONO,K.CH1 ORDER BY K.CH1";
+
+
+
+
+
+
+            dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  " +
+                " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
+                " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ");
             //}
            // else
            // {     // ολα 

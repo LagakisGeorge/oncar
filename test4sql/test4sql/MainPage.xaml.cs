@@ -1157,6 +1157,8 @@ NewMethod(e),
 
                     if (m == "ι") { t += Convert.ToChar(160).ToString(); }
                     if (m == "ί") { t += Convert.ToChar(229).ToString(); }
+                    if (m == "ΐ") { t += Convert.ToChar(229).ToString(); }
+                    if (m == "ϊ") { t += Convert.ToChar(160).ToString(); }
 
                     if (m == "κ") { t += Convert.ToChar(161).ToString(); }
                     if (m == "λ") { t += Convert.ToChar(162).ToString(); }

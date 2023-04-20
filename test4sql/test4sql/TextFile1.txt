@@ -1,4 +1,9 @@
-﻿CREATE TABLE [dbo].[PARAGG](
+﻿ΚΩΔΙΚΟΣ ΑΡΚ 123456
+
+
+
+
+CREATE TABLE [dbo].[PARAGG](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[TRAPEZI] [nvarchar](255) NULL,
 	[HME] [datetime] NULL,
