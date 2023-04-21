@@ -57,7 +57,66 @@ namespace test4sql
         public static string[,] PARAGGlines = new string[100, 6];
         public static int indexParaggLine;
 
+        public static float FReadSQLServer(string sql)
+        {
 
+
+
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                // await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return 0;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            SqlConnection con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+
+            string SYNT = "";
+
+            try
+            {
+
+
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand(sql, con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+
+
+                float ret;
+                string cc;
+                cc = dt.Rows[0][0].ToString();
+                if (cc.Length == 0) { ret = 0; }
+                else
+                {
+                    ret = float.Parse(cc);
+                }
+                    con.Close();
+                return ret;
+
+
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+        }
 
         public static string ReadSQLServer(string sql)
         {
@@ -114,7 +173,60 @@ namespace test4sql
             
         }
 
+        public static string ReadSQLServerWithError(string sql)
+        {
 
+
+
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                // await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return "";
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            SqlConnection con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+
+            string SYNT = "";
+
+            try
+            {
+
+
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand(sql, con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+
+
+                string ret;
+                ret = dt.Rows[0][0].ToString();
+                con.Close();
+                return ret;
+
+
+            }
+            catch (Exception ex)
+            {
+                return "ERROR ΜΗ ΣΥΝΔΕΣΗ";
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+        }
         public static void ExecuteSQLServer(string sql)
         {
 

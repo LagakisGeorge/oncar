@@ -79,6 +79,12 @@ namespace oncar
         }
 
 
+        public bool IsNumeric(string input)
+        {
+            float test;
+            return float.TryParse(input, out test);
+        }
+
         //void Show_list_Paragg(string ono)
         //{
         //    Monkeys = new List<Monkey>();
@@ -422,8 +428,23 @@ namespace oncar
 
                 // string caji = ypol.ToString().Replace (",",".");
                 ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " + ss + "€");
-                if (ekpt.Length == 0) { ekpt = "0"; } else
+                
+
+
+
+                if (ekpt == null) ekpt = "0";
+
+                if (ekpt.Length == 0) { ekpt = "0"; 
+                } else
                 {
+                    if (IsNumeric(ekpt)) { }
+                    else
+                    {
+                        ekpt = "0";
+                        await DisplayAlert("Error", "λαθος εκπτωση", "..");
+                        return;
+                    }
+
                     ekpt = ekpt.Replace(".", ",");
                 }
 
@@ -457,21 +478,21 @@ namespace oncar
                 string synolon = String.Format("{0:0.00}", ss - nekpt);
                 
                 Globals.ExecuteSQLServer("UPDATE TABLES SET CH1='"+synolon+"' WHERE ONO='" + Globals.gTrapezi + "'");
-
+               
             }
-
+            Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  NUM2=1 WHERE ID=" + Globals.gIDPARAGG.ToString());
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
-
+            MainPage.SaveFile(myText);
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
-                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", ".");
                 return;
             }
             try
@@ -758,13 +779,13 @@ namespace oncar
             myText3.Add("\r\n");
             myText3.Add("\r\n");
 
-
+            MainPage.SaveFile(myText);
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
 
-                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", ".");
                 return;
 
             }
@@ -887,7 +908,7 @@ namespace oncar
 
 
 
-        public static DataTable ReadSQLServer(string cSQL)
+        public static  DataTable ReadSQLServer(string cSQL)
 
         {
             DataTable dt = new DataTable();
@@ -911,7 +932,7 @@ namespace oncar
             }
             catch (Exception ex)
             {
-                // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                 // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
             }
 try
 {
@@ -1038,11 +1059,21 @@ catch (Exception ex)
                 await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
                 return;
             }
-           
 
-           // string proekpt = "";
+
+            float catyp2 = Globals.FReadSQLServer("SELECT ISNULL(NUM2,0) AS ISTYP FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
+            if (catyp2== 0)
+            {
+                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΤΥΠΩΘΗΚΕ ΛΟΓΑΡΙΑΣΜΟΣ", "OK");
+                return;
+            }
+
+
+
+
+            // string proekpt = "";,ISNULL(NUM2,0) AS ISTYP
             // float nproekpt = 0;
-            string caji = Globals.ReadSQLServer("SELECT STR(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0),10,2) AS AA FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
+            string caji = Globals.ReadSQLServer("SELECT STR(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0),10,2) AS AA  FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
             // nproekpt = float.Parse(proekpt.Replace(",", "."));
             //  float nekpt = 0;
             // float  nekpt = float.Parse(ekpt);
@@ -1052,9 +1083,9 @@ catch (Exception ex)
           //  string ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " +caji + "€");
            // if (ekpt.Length == 0) { ekpt = "0"; }
 
-            string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα");
+            string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα","4.Ακυρο");
 
-           if (action.Substring(0, 1) == "Α") { return; }
+           if (action.Substring(0, 1) == "4") { return; }
             Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH2='',CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
             Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
 

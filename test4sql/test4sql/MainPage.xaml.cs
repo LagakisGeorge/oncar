@@ -18,6 +18,7 @@ using oncar;
 using Android.Views.Animations;
 using System.Net;
 using System.Net.Sockets;
+using SharpCifs.Smb;
 //  using SharpCifs.Util.Sharpen;
 
 namespace test4sql
@@ -318,6 +319,45 @@ namespace test4sql
             }
             connection.Close();
         }
+
+
+      public static  void SaveFile(List<string> text)
+        {
+            if (Globals.cIP.Length < 5) return;
+            //Get the SmbFile specifying the file name to be created.
+            var file = new SmbFile("smb://" + Globals.cIP + "/"+ Globals.gIDPARAGG+ DateTime.Now.ToString("HH-mm") + ".txt");
+            // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+            try
+            {
+                //Create file.
+                file.CreateNewFile();
+            }
+            catch
+            {
+                // await DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
+                return;
+            }
+
+
+            //Get writable stream.
+            var writeStream = file.GetOutputStream();
+           
+
+            //Write bytes.
+            for (int k = 1; k<text.Count ; k++)
+            {
+                string cc = text[k]+ Convert.ToChar(13).ToString();
+                writeStream.Write(Encoding.UTF8.GetBytes(cc));
+            }
+
+            //Dispose writable stream.
+            writeStream.Dispose();
+        }
+
+
+
+
+
 
 
         public async void PARAGG(object sender, EventArgs e)
@@ -1236,31 +1276,56 @@ NewMethod(e),
             await Navigation.PushAsync(new Pelkin());
         }
 
+
+
+
+
+
+
         private async void ftrapezia(object sender, EventArgs e)
         {
             DataTable dt2 = new DataTable();
+            string ERR = Globals.ReadSQLServerWithError("select top 1 ONO from TABLES");
+            ERR = ERR + ".....";
+            if (ERR.Substring(0, 5) == "ERROR") { 
+                await DisplayAlert("Αδυναμία Σύνδεσης", "", "οκ");
+                return;
+            }
 
             try
             {
-                string ccg = "";
-                ccg = "SELECT isnull(STR(MAX(  ISNULL(ID,0)   )),'0')   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
-                dt2 = trapparagg.ReadSQLServer(ccg);
-
                 int n;
+                string ccg = "";
                 string cc = "0";
-                if (dt2 == null || dt2.Rows.Count == 0)
+                try
                 {
-                    // Throw the error or retrun the code 
-                         Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
-                    return;
-                    n = 0;
-                }
-                else
-                {
+                   
+                    ccg = "SELECT isnull(STR(MAX(  ISNULL(ID,0)   )),'0')   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
+                    dt2 = trapparagg.ReadSQLServer(ccg);
 
-                    cc = dt2.Rows[0]["aa"].ToString();
-                    n = Int32.Parse(cc);
+                    
+                   
+                    if (dt2 == null || dt2.Rows.Count == 0)
+                    {
+                        // Throw the error or retrun the code 
+                        Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+                        return;
+                        n = 0;
+                    }
+                    else
+                    {
+
+                        cc = dt2.Rows[0]["aa"].ToString();
+                        n = Int32.Parse(cc);
+                    }
+
                 }
+                catch
+                {
+                    await DisplayAlert("λαθος", "οκ2", "οκ");
+                    return;
+                }
+
 
 
                 if (n == 0)
@@ -1294,7 +1359,8 @@ NewMethod(e),
             }
             catch
             {
-                await DisplayAlert("λαθος", "", "");
+                await DisplayAlert("λαθος", "οκ1", "οκ");
+                    return;
             }
 
 
