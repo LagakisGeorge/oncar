@@ -361,7 +361,7 @@ namespace oncar
 
         private async void printingBill(int part) //  object sender, EventArgs e)
         {
-            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            string ipAddress = Globals.gIPKleis;//cFORTcIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             List<string> myText = new List<string>();
             List<string> myTextTitlos = new List<string>();
@@ -487,12 +487,12 @@ namespace oncar
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
-            MainPage.SaveFile(myText);
+            MainPage.SaveFile(myText,"Bill");
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
-                await DisplayAlert("Error", "δεν υπαρχει συνδεση", ".");
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "ok");
                 return;
             }
             try
@@ -779,7 +779,7 @@ namespace oncar
             myText3.Add("\r\n");
             myText3.Add("\r\n");
 
-            MainPage.SaveFile(myText);
+            MainPage.SaveFile(myText,"kitch");
 
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)

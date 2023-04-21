@@ -224,6 +224,7 @@ namespace test4sql
             Globals.cIPPR1 = PARAGGELIES.ReadSQL("select IP from MEM  where ID=2");
             Globals.cIPPR2 = PARAGGELIES.ReadSQL("select AFM from MEM  where ID=2");
             Globals.cIPPR3 = PARAGGELIES.ReadSQL("select DIE from MEM  where ID=2");
+            Globals.gIPKleis  = PARAGGELIES.ReadSQL("select POL from MEM  where ID=2");
 
             Globals.gTITLOS = PARAGGELIES.ReadSQL("select ifnull(EPO,' ') as EPO from MEM  where ID=2");
 
@@ -321,11 +322,11 @@ namespace test4sql
         }
 
 
-      public static  void SaveFile(List<string> text)
+      public static  void SaveFile(List<string> text,string typosekt)
         {
             if (Globals.cIP.Length < 5) return;
             //Get the SmbFile specifying the file name to be created.
-            var file = new SmbFile("smb://" + Globals.cIP + "/"+ Globals.gIDPARAGG+ DateTime.Now.ToString("HH-mm") + ".txt");
+            var file = new SmbFile("smb://"+ Globals.cIP.TrimStart()  + "/" + typosekt + Globals.gIDPARAGG+ DateTime.Now.ToString("HH-mm") + ".txt");
             // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
             try
             {
@@ -1558,45 +1559,34 @@ NewMethod(e),
             var action = await DisplayAlert("ΝΑ ΚΛΕΙΣΕΙ ΟΡΙΣΤΙΚΑ Η ΒΑΡΔΙΑ;", "Εισαι σίγουρος?", "Ναι", "Οχι");
             if (action)
             {
-                Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + (s1 + s2 + s3 + s4).ToString().Replace(",", ".") + ",CASH1=" + ss1 + ",CASH2=" + ss2 + ",CASH3=" + ss3 + ",CASH4 = " + ss4 + ",CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID=" + Globals.gIDBARDIA);
-                
+                try
+                {
+
+                    printthis(myText2);
+                    Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + (s1 + s2 + s3 + s4).ToString().Replace(",", ".") + ",CASH1=" + ss1 + ",CASH2=" + ss2 + ",CASH3=" + ss3 + ",CASH4 = " + ss4 + ",CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID=" + Globals.gIDBARDIA);
+                    
+                }
+                catch 
+                {
+                    await DisplayAlert("αδυναμια εκτυπωσης ", "δεν εκλεισε η βαρδια", "OK");
+                    // await DisplayAlert("error2", "", "");
+                }
             }
-            else
-            {
-                
-            }
-
-
-
-
-           
-
-
-
-            printthis(myText2);
-
-
-
-
-
-
-
-
-
+            
         }
 
 
-        private async void  printthis(List<string>mytext)
+        private  int  printthis(List<string>mytext)
         {
 
 
-            string ipAddress = Globals.gIPKleis; // cIPPR1; // "192.168.1.120";
+            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
             {
-                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
-                return;
+                //await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                return 0;
             }
             try
             {
@@ -1604,14 +1594,17 @@ NewMethod(e),
                 LF(ipAddress);
                 LF(ipAddress);
                 printer.Print(ipAddress, portNumber, mytext);
+                CutPaper(ipAddress);
+                return 1;
             }
 
             catch (Exception ex)
             {
-                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                //await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                return 0;
                 // await DisplayAlert("error2", "", "");
             }
-            CutPaper(ipAddress);
+            
         }
 
 
@@ -1634,36 +1627,55 @@ NewMethod(e),
 
         private void PrintSmall(string ipAddress)
         {
+
+            try
+            {
+
+            
            List<byte> outputList1 = new List<byte>();
-                    outputList1.Add(0x1B);
-                    outputList1.Add(0x40);
-                    
+            outputList1.Add(0x1B);
+            outputList1.Add(0x40);
+
             //outputList1.Add(0x1D);
             //outputList1.Add(0x21);
             //outputList1.Add(0x00);
-            Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-           // Connect to the printer
-          pSocket1.Connect(ipAddress, 9100);
-          pSocket1.Send(outputList1.ToArray());
-          pSocket1.Close();
-
-
-        }
-
- public static void CutPaper(string ipAddress)
-        {
-            List<byte> outputList1 = new List<byte>();
-            
-             outputList1.Add(0x1B);
-            outputList1.Add(0x69);
-
-
             Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
             // Connect to the printer
             pSocket1.Connect(ipAddress, 9100);
             pSocket1.Send(outputList1.ToArray());
             pSocket1.Close();
+            }
+            catch (Exception ex)
+            {
+                //await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("error2", "", "");
+            }
 
+        }
+
+ public static void CutPaper(string ipAddress)
+        {
+            try
+            {
+
+
+                List<byte> outputList1 = new List<byte>();
+
+                outputList1.Add(0x1B);
+                outputList1.Add(0x69);
+
+
+                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                // Connect to the printer
+                pSocket1.Connect(ipAddress, 9100);
+                pSocket1.Send(outputList1.ToArray());
+                pSocket1.Close();
+            }
+            catch (Exception ex)
+            {
+                //await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("error2", "", "");
+            }
 
         }
 
@@ -1700,17 +1712,27 @@ public static void BigLetters(string ipAddress)
 
         public static void LF(string ipAddress)
         {
-            List<byte> outputList1 = new List<byte>();
+            try
+            {
 
-            outputList1.Add(0x0A);
 
-            outputList1.Add(0x0D);
+                List<byte> outputList1 = new List<byte>();
 
-            Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-            // Connect to the printer
-            pSocket1.Connect(ipAddress, 9100);
-            pSocket1.Send(outputList1.ToArray());
-            pSocket1.Close();
+                outputList1.Add(0x0A);
+
+                outputList1.Add(0x0D);
+
+                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                // Connect to the printer
+                pSocket1.Connect(ipAddress, 9100);
+                pSocket1.Send(outputList1.ToArray());
+                pSocket1.Close();
+            }
+            catch (Exception ex)
+            {
+                //await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("error2", "", "");
+            }
 
 
         }
