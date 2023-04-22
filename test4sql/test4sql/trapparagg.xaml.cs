@@ -216,7 +216,7 @@ namespace oncar
 
 
 
-               // string cc2 = await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
+               // string cc2 =  await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
 
 
                
