@@ -41,7 +41,7 @@ namespace oncar
         private async void okdone(object sender, EventArgs e)
         {
             addParagg();
-           // for (int n = 1; n <= (Int32.Parse(tem.Text)); n++)
+           // for (int n = 1; n <= (Int32.Parse(tem.Text));  n++)
            // {
                 Globals.indexParaggLine = Globals.indexParaggLine + 1;
                 Globals.PARAGGlines[Globals.indexParaggLine, 0] = EIDOS.Text;

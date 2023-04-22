@@ -39,7 +39,7 @@ namespace test4sql
         
         //IBluetoothLE ble;
         //IAdapter adapter;
-        //ObservableCollection<IDevice> devicelist;
+        //ObservableCollection<IDevice>   devicelist;
 
         public BluetoothDevice mmDevice;
         private int nn = 1;

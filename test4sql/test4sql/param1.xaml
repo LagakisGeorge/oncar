@@ -22,7 +22,7 @@
                     BackgroundColor="Green"      
                    />
 
-                <Entry x:Name="TitlosEKTYP" Placeholder="Τίτλος Εκτύπωσης------------"    HorizontalOptions="CenterAndExpand"
+                <Entry x:Name="TitlosEKTYP" Placeholder="Τίτλος Εκτύπωσης-----------"    HorizontalOptions="CenterAndExpand"
                    
                     BackgroundColor="Gray"       
                 />

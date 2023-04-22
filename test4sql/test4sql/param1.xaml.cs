@@ -21,6 +21,7 @@ namespace test4sql
         public SqlConnection con;
         public param1()
         {
+
             InitializeComponent();
             Globals.cIP = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=1");
             fakelos.Text = Globals.cIP;

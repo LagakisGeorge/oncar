@@ -33,11 +33,13 @@ namespace oncar
 
 
 
+
         public Page3()
         {
             InitializeComponent();
             lab1.Text = "ll";
         }
+
 
 
         protected override void OnAppearing()
