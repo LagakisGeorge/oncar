@@ -206,13 +206,24 @@ namespace oncar
             {
 
                 string cc2 = await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
+                Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO=" + cc2.Replace(",", ".") + " WHERE ID=" + cc);
+              //  string caji2 = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+                Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET AJIA=(SELECT SUM(POSO*TIMH) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG+" ) WHERE  ID=" + Globals.gIDPARAGG + ";");
+
+
+
+
+
+
+
+               // string cc2 = await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
 
 
                
                
                 
 
-                Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
+             //   Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
                 
 
             }

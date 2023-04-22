@@ -116,7 +116,7 @@
 
           
          
-             <Button Text="ΠΛΗΡΩΜΗ"   x:Name="PLIROMIOL"  Clicked="PLIROMI" />
+             <Button Text="ΠΛΗΡ-"   x:Name="PLIROMIOL"  Clicked="PLIROMI" />
             
            
             <Button Text="ΕΞΟΔΟΣ"   x:Name="ok"  Clicked="apoth" />
