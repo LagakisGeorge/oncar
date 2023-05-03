@@ -12,7 +12,7 @@
             <StackLayout >
                
                 <Button Text="Aποστ.Αρχ απο pc" Clicked="WriteFile"/>
-
+                <Button Text="Aποστ.Αρχ απο pc(ΕΝΕΡΓΑ ΕΙΔΗ+BARC)" Clicked="Write2File"/>
                 <Button x:Name="EID" Text="ΕΙΔΗ" />
                 <Button x:Name="PEL" Text="ΠΕΛΑΤΕΣ" />
                 <Button x:Name="TIMOKAT" Text="ΤΙΜΟΚΑΤΑΛΟΓΟΙ" />

@@ -59,22 +59,22 @@
                     BackgroundColor="Azure"    
                    />
             <StackLayout Orientation="Horizontal" >
-                <Entry x:Name="CIPPR1"
-                   Placeholder="IP PRINTER1" 
+                <Entry x:Name="CIPPR1" 
+                   Placeholder="IP PRINTER1" Unfocused="testprint"
                     BackgroundColor="Azure"    
                    />
                 <Entry x:Name="CIPPR2"
-                   Placeholder="IP PRINTER2" 
+                   Placeholder="IP PRINTER2" Unfocused="testprint2"
                     BackgroundColor="Azure"    
                    />
-                <Entry x:Name="CIPPR3"
+                <Entry x:Name="CIPPR3"  Unfocused="testprint3"
                    Placeholder="IP PRINTER3" 
                     BackgroundColor="Azure"    
                    />
             </StackLayout >
 
             <StackLayout Orientation="Horizontal" >
-                <Entry x:Name="cIPKleis"
+                <Entry x:Name="cIPKleis" Unfocused="testprint4"
                    Placeholder="IP ΚΛΕΙΣΙΜΑΤΟΣ" 
                     BackgroundColor="Azure"    
                    />

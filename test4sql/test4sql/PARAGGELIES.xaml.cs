@@ -1248,7 +1248,7 @@ namespace test4sql
 
 
                                     printt(outStream, "\n");
-                                    printt(outStream, "\n");
+                                    // printt(outStream, "\n");
                                     for (int kk = 0; kk < 17; kk++)
                                     {
                                         printt(outStream, "\n");

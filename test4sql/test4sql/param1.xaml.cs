@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
+using System.Net;
 
 namespace test4sql
 {
@@ -181,5 +182,63 @@ namespace test4sql
 
         }
 
+        private void testprint(object sender, FocusEventArgs e)
+        {
+            printthis(CIPPR1.Text);
+        }
+
+
+
+        private async void printthis(string ipAddress)
+        {
+
+            List<string> mytext;
+            mytext = new List<string>();
+
+            mytext.Add(MainPage.ToGreek737("11ΑΒΓΔΕ ") + "\r\n");
+            mytext.Add("12ABCDE" + "\r\n");
+            mytext.Add(MainPage.ToGreek737("13αβγδ abcd") + "\r\n");
+            //string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            int portNumber = 9100;
+            var printer = DependencyService.Get<test4sql.iPrinter>();
+            if (printer == null)
+            {
+                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "");
+                return;
+            }
+            try
+            {
+
+                printer.Print(ipAddress, portNumber, mytext);
+                 await DisplayAlert("Ok", "ok", "ok");
+                return;
+            }
+
+            catch (Exception ex)
+            {
+                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                return;
+                // await DisplayAlert("error2", "", "");
+            }
+
+        }
+
+        private void testprint2(object sender, FocusEventArgs e)
+        {
+            printthis(CIPPR2.Text);
+        }
+
+        private void testprint3(object sender, FocusEventArgs e)
+        {
+            printthis(CIPPR3.Text);
+        }
+
+        private void testprint4(object sender, FocusEventArgs e)
+        {
+            printthis(cIPKleis.Text);
+        }
     }
+
+
+
 }

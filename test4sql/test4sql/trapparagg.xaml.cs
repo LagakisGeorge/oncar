@@ -584,18 +584,26 @@ namespace oncar
 
         public static void CutPaper(string ipAddress)
         {
-            List<byte> outputList1 = new List<byte>();
-
-            outputList1.Add(0x1B);
-            outputList1.Add(0x69);
+            try
+            {
 
 
-            Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-            // Connect to the printer
-            pSocket1.Connect(ipAddress, 9100);
-            pSocket1.Send(outputList1.ToArray());
-            pSocket1.Close();
+                List<byte> outputList1 = new List<byte>();
 
+                outputList1.Add(0x1B);
+                outputList1.Add(0x69);
+
+
+                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                // Connect to the printer
+                pSocket1.Connect(ipAddress, 9100);
+                pSocket1.Send(outputList1.ToArray());
+                pSocket1.Close();
+            }
+            catch
+            {
+
+            }
 
         }
 
@@ -859,19 +867,26 @@ namespace oncar
 
         private void PrintSmall(string ipAddress)
         {
-            List<byte> outputList1 = new List<byte>();
-            outputList1.Add(0x1B);
-            outputList1.Add(0x40);
+            try
+            {
 
-            //outputList1.Add(0x1D);
-            //outputList1.Add(0x21);
-            //outputList1.Add(0x00);
-            Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-            // Connect to the printer
-            pSocket1.Connect(ipAddress, 9100);
-            pSocket1.Send(outputList1.ToArray());
-            pSocket1.Close();
 
+                List<byte> outputList1 = new List<byte>();
+                outputList1.Add(0x1B);
+                outputList1.Add(0x40);
+
+                //outputList1.Add(0x1D);
+                //outputList1.Add(0x21);
+                //outputList1.Add(0x00);
+                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                // Connect to the printer
+                pSocket1.Connect(ipAddress, 9100);
+                pSocket1.Send(outputList1.ToArray());
+                pSocket1.Close();
+            } catch
+            {
+
+            }
 
         }
 

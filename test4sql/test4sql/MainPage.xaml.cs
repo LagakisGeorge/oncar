@@ -1562,7 +1562,7 @@ NewMethod(e),
                 try
                 {
 
-                    printthis(myText2);
+                    printthis(myText2, Globals.cIPPR1);
                     Globals.ExecuteSQLServer("UPDATE BARDIA SET CASHTOT=" + (s1 + s2 + s3 + s4).ToString().Replace(",", ".") + ",CASH1=" + ss1 + ",CASH2=" + ss2 + ",CASH3=" + ss3 + ",CASH4 = " + ss4 + ",CLOSEH=substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16) , ISOPEN=0 WHERE ID=" + Globals.gIDBARDIA);
                     
                 }
@@ -1576,11 +1576,11 @@ NewMethod(e),
         }
 
 
-        private  int  printthis(List<string>mytext)
+   private int  printthis(List<string>mytext, string ipAddress)
         {
 
 
-            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+            //string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             var printer = DependencyService.Get<test4sql.iPrinter>();
             if (printer == null)
@@ -1590,7 +1590,9 @@ NewMethod(e),
             }
             try
             {
-                PrintSmall(ipAddress);
+                string IP;
+                IP = ipAddress;
+                PrintSmall(IP);
                 LF(ipAddress);
                 LF(ipAddress);
                 printer.Print(ipAddress, portNumber, mytext);

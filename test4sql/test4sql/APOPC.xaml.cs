@@ -340,6 +340,318 @@ namespace test4sql
 
         }
 
+
+        async void Write2File(object sender, EventArgs e)
+        {
+
+
+
+
+
+
+
+
+
+
+
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                // SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                // cmd.Connection = con;
+                // cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+
+
+
+            var action = await DisplayAlert("Θα διαγραφουν τα τιμολόγια του κινητού", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+
+
+            MainPage.ExecuteSqlite("delete from EID;");
+            MainPage.ExecuteSqlite("delete from TIM;");
+            MainPage.ExecuteSqlite("delete from EGGTIM;");
+
+            String SYNT = "";
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                SYNT = " TOP 20 ";
+
+
+
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(BARCODES.ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA,ISNULL(XTI,0) AS MXTI  FROM EID LEFT JOIN BARCODES ON EID.KOD=BARCODES.KOD WHERE ENERGO=1 ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String mF = dt.Rows[k]["MONO"].ToString();
+                    mF = mF.Replace("'", "`");
+
+                    String MMON = dt.Rows[k]["MMON"].ToString();
+                    MMON = MMON.Replace("'", "`");
+
+                    string MFPA = dt.Rows[k]["MFPA"].ToString();
+                    MFPA = MFPA.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["MLTI"].ToString();
+                    mTYP = mTYP.Replace(",", ".");
+
+
+
+
+                    string mXTI = dt.Rows[k]["MXTI"].ToString();
+                    mXTI = mXTI.Replace(",", ".");
+
+
+
+                    /* Monkeys.Add(new Monkey
+                    {
+                        Name = mF,
+                        Location = dt.Rows[k]["MKOD"].ToString(),
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
+                    });
+                    */
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mERG = dt.Rows[k]["MERG"].ToString();
+                    mERG = mERG.Replace("'", "`");
+
+                    mTYP = mTYP.Replace(",", ".");
+                    int n2 = MainPage.ExecuteSqlite("insert into EID (XTI,XONDR,KOD,ONO,BARCODE,MON,FPA) VALUES (" + mXTI + "," + mTYP + ",'" + mKOD + "','" + mF + "','" + mERG + "','" + MMON + "'," + MFPA + ");");
+                } // FOR
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+                EID.Text = " ΕΙΔΗ:" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("EIΔΗ ΟΚ", "", "OK");
+
+            MainPage.ExecuteSqlite("delete from PEL;");
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " LEFT(ISNULL(DOY,''),20) AS MDOY,ID,isnull(KOD,'') AS MKOD,LEFT(ISNULL(EPO,''),25) AS MEPO,LEFT(ISNULL(EPA,''),20) AS MEPA," +
+                    "ISNULL(DIE,'') AS MDIE,ISNULL(TYP,0) AS MYPOL ,ISNULL(DOY,'') AS MDOY,ISNULL(AFM,'') AS MAFM,ISNULL(POL,'') AS MPOL,ISNULL(PEK,0) AS MPEK,ISNULL(NUM1,0) AS MNUM1 ,ISNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ') AS PARAD ,ISNULL(AYP,0) AS AYP  " +
+                    "FROM PEL WHERE EIDOS='e' ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                //List<string> MyList = new List<string>();
+                int k = 0;
+
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    // String mF = dt.Rows[k]["MEPO"].ToString();
+                    // mF = mF.Replace("'", "`");
+                    // MyList.Add(mF);
+                    string mTYP2;
+                    mTYP2 = dt.Rows[k]["MYPOL"].ToString();
+
+                    if (mTYP2 == null)
+                    {
+                        mTYP2 = "0";
+                    }
+                    //else
+                    mTYP2 = mTYP2.Replace(",", ".");
+
+                    string mAYP2;
+                    mAYP2 = dt.Rows[k]["AYP"].ToString();
+
+                    if (mAYP2 == null)
+                    {
+                        mAYP2 = "0";
+                    }
+                    //else
+                    mAYP2 = mAYP2.Replace(",", ".");
+
+
+
+
+
+
+                    /* Monkeys.Add(new Monkey
+                    {
+                       Name = mF,
+                       Location = dt.Rows[k]["MKOD"].ToString(),
+                       ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                       idPEL = dt.Rows[k]["ID"].ToString()
+                     });
+                      */
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+                    string mDIE = dt.Rows[k]["MDIE"].ToString();
+                    mDIE = mDIE.Replace("'", "`");
+
+                    string mEPO = dt.Rows[k]["MEPO"].ToString();
+                    mEPO = mEPO.Replace("'", "`");
+
+                    string mPOL = dt.Rows[k]["MPOL"].ToString();
+                    mPOL = mPOL.Replace("'", "`");
+
+                    string mAFM = dt.Rows[k]["MAFM"].ToString();
+                    mAFM = mAFM.Replace("'", "`");
+
+                    string mDOY = dt.Rows[k]["MDOY"].ToString();
+                    mDOY = mDOY.Replace("'", "`");
+
+                    string mPEK = dt.Rows[k]["MPEK"].ToString();
+
+                    string mEPA = dt.Rows[k]["MEPA"].ToString();
+                    mEPA = mEPA.Replace("'", "`");
+
+                    string mPARAD = dt.Rows[k]["PARAD"].ToString();
+                    mPARAD = mPARAD.Replace("'", "`");
+
+
+                    string mNUM1 = dt.Rows[k]["MNUM1"].ToString();
+                    if (mNUM1.All(char.IsNumber) == false) { mNUM1 = "0"; }
+                    mNUM1 = mNUM1.Replace(",", ".");
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into PEL (R1,KOD,EPA,AFM,DOY,EPO,DIE,TYP,PEK,NUM1,CH3) VALUES ("
+                     + mAYP2 + ",'" + mKOD + "','" + mEPA + "','" + mAFM + "','" + mDOY + "','" + mEPO + "','" + mDIE + "'," + mTYP2 + "," + mPEK + "," + mNUM1 + ",'" + mPARAD + "' );");
+                    // FOR
+                }
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+                //  await DisplayAlert("ΠΕΛΑΤΕΣ", " Πελάτες:" + dt.Rows.Count, "OK");
+                PEL.Text = " ΠΕΛΑΤΕΣ:" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("ΠΕΛΑΤΕΣ ΟΚ", "", "OK");
+
+
+            //   TIMOKAT( [KOD][nvarchar](14) NOT NULL,"+
+            //       "[EKPT] [decimal](5, 2) NOT NULL, [TIMOK]
+
+
+            MainPage.ExecuteSqlite("delete from TIMOKAT;");
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select  isnull(KOD,'') AS MKOD,ISNULL(EKPT,0) AS MEKPT,ISNULL(TIMOK,0) AS MTIMOK  FROM TIMOKAT ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                    //string mONO = dt.Rows[k]["MONO"].ToString();
+
+                    // MyList.Add(mF);
+                    string mTYP = dt.Rows[k]["MEKPT"].ToString();
+
+                    if (mTYP == null)
+                    {
+                        mTYP = "0";
+                    }
+
+
+
+                    mTYP = mTYP.Replace(",", ".");
+
+                    string mTIMOK = dt.Rows[k]["MTIMOK"].ToString();
+                    mTIMOK = mTIMOK.Replace(",", ".");
+
+
+                    /* Monkeys.Add(new Monkey
+                    {
+                        Name = mF,
+                        Location = dt.Rows[k]["MKOD"].ToString(),
+                        ImageUrl = mTYP, // "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                        idPEL = dt.Rows[k]["ID"].ToString()
+                    });
+                    */
+
+                    int n2 = MainPage.ExecuteSqlite("insert into TIMOKAT(TIMOKID,EKPT,KOD,TIMOK) VALUES (0," + mTYP + ",'" + mKOD + "'," + mTIMOK + ");");
+                } // FOR
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+                // await DisplayAlert("TIMOK", " TIMOK:" + dt.Rows.Count, "OK");
+                TIMOKAT.Text = " TIMOK:" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("ΤΙΜΟΚΑΤΑΛΟΓΟΙ ΟΚ", "", "OK");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
         private void dokimi(object sender, EventArgs e)
         {
 
