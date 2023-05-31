@@ -86,7 +86,7 @@ namespace oncar
             {
                 Globals.ExecuteSQLServer("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
                 string cIDParagg = "";
-                cIDParagg =Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
+                cIDParagg =Globals.ReadSQLServer("select max(ID) from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
 
                 Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
 

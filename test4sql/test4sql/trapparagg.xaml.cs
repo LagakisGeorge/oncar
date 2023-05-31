@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Drm;
+using Java.IO;
 using Java.Nio.Channels;
 using Mono.Data.Sqlite;
 using Org.Apache.Http.Authentication;
@@ -199,6 +200,7 @@ namespace oncar
                 {
                     Globals.ExecuteSQLServer("delete from PARAGG WHERE ID=" + cc);
                 }
+                return;
           }
 
 
@@ -210,21 +212,24 @@ namespace oncar
               //  string caji2 = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
                 Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET AJIA=(SELECT SUM(POSO*TIMH) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG+" ) WHERE  ID=" + Globals.gIDPARAGG + ";");
 
+                Show_listsql_Paragg(Globals.gIDPARAGG);
+                pageModel = new Main2PageModel(this);
+                BindingContext = pageModel;
 
 
 
 
 
 
-               // string cc2 =  await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
+                // string cc2 =  await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
 
 
-               
-               
-                
 
-             //   Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
-                
+
+
+
+                //   Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
+
 
             }
 
@@ -239,16 +244,16 @@ namespace oncar
 
 
             //------------- PLHRVMH ------------------------
-           
 
-            if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3" )
+
+            if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3")
             {
 
                 if (cTYPOMENO == "0")
-              {
-                  await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
-                  return;
-              }
+                {
+                    await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
+                    return;
+                }
 
 
                 if (cc.Substring(0, 2) == "**")
@@ -259,39 +264,42 @@ namespace oncar
                 {
 
 
-                    Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**"+ action.Substring(0, 1)+"-'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + cc);
+                    Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**" + action.Substring(0, 1) + "-'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + cc);
                     if (action.Substring(0, 1) == "1")
                     {
-                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" +mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
+                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
                     if (action.Substring(0, 1) == "2")
                     {
-                    Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + mt+ " WHERE ID=" + Globals.gIDPARAGG.ToString() );
+                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
-                    
+
 
                     if (action.Substring(0, 1) == "3")
                     {
                         Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET KERA=ISNULL(KERA,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
                 }
-                   
+
+
+
+
+                // ΑΞΙΑ ΧΩΡΙΣ ΤΟ ΠΛΗΡΩΜΕΝΟ
+                string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+                // ΑΞΙΑ ΗΔΗ ΠΛΗΡΩΜΕΝΩΝ
+                string cPLIR = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+
+                Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".") + ",NUM1=" + cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
+
+                // Globals.ExecuteSQLServer("update PARAGGMASTER SET NUM1=" + caji.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
+
+                Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+                Show_listsql_Paragg(Globals.gIDPARAGG);
+                pageModel = new Main2PageModel(this);
+                BindingContext = pageModel;
             }
 
 
-            // ΑΞΙΑ ΧΩΡΙΣ ΤΟ ΠΛΗΡΩΜΕΝΟ
-            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
-            // ΑΞΙΑ ΗΔΗ ΠΛΗΡΩΜΕΝΩΝ
-            string cPLIR = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
-
-            Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".") + ",NUM1=" + cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
-
-            // Globals.ExecuteSQLServer("update PARAGGMASTER SET NUM1=" + caji.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
-
-            Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
-            Show_listsql_Paragg(Globals.gIDPARAGG);
-            pageModel = new Main2PageModel(this);
-            BindingContext = pageModel;
 
         }
 
@@ -678,7 +686,7 @@ namespace oncar
             {
                 // if (dt.Rows[k]["ONO"].ToString()=="1")
                 // {
-                KANON= dt.Rows[k]["POSO"].ToString().Trim()+"X"+(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
+                KANON= dt.Rows[k]["POSO"].ToString().Trim()+"x"+(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
                 // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
                 // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ
@@ -897,6 +905,16 @@ namespace oncar
 
         private  int printthis(List<string> mytext,string ipAddress)
         {
+
+
+            
+
+
+
+
+
+
+
             int Ok = 0;
 
             //string ipAddress = Globals.cIPPR1; // "192.168.1.120";
@@ -909,7 +927,11 @@ namespace oncar
             }
             try
             {
-                
+                int l = MainPage.LF2(ipAddress);
+                if (l==0)  {
+                    Ok = 0;
+                    return 0;
+                }
                 MainPage.LF(ipAddress);
                 
                 MainPage.LF(ipAddress);
@@ -1066,9 +1088,16 @@ catch (Exception ex)
             }
             listERG.ItemsSource = Monkeys2;
             BindingContext = this;
-            con.Close();
 
+            // listERG.ScrollTo(viewModel.DataCollection[viewModel.DataCollection.Count - 1], ScrollToPosition.End, true);
+            con.Close();
             BindingContext = this;
+
+            if (listERG.ItemsSource != null)
+            {
+                var lastItem = listERG.ItemsSource.Cast<object>().LastOrDefault();
+                listERG.ScrollTo(lastItem, ScrollToPosition.End, true);
+            }
 
 
 
@@ -1112,6 +1141,7 @@ catch (Exception ex)
             string action = await DisplayActionSheet("Τρόπος Πληρωμής", caji+"€", null, "1.μετρητα", "2.Κάρτα", "3.Κερασμένα","4.Ακυρο");
 
            if (action.Substring(0, 1) == "4") { return; }
+           if (action.Substring(0, 1) == " ") { return; }
             Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH2='',CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
             Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
 
@@ -1207,6 +1237,8 @@ catch (Exception ex)
 
 
         }
+
+       
     }
 
 

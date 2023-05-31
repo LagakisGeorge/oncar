@@ -23,14 +23,15 @@
                         Prood="/",
                         Name = mOno,
                         ID=mCOMMENTS   -->
+        <StackLayout Padding="6" HeightRequest="500">
 
-        <ListView ItemsSource="{Binding Monkeys2}"
+              <ListView ItemsSource="{Binding Monkeys2}"
                   HasUnevenRows="true"
                    x:Name="listERG"
                 
                   ItemTapped="OnListViewItemTapped">
-            <ListView.ItemTemplate>
-                <DataTemplate>
+                <ListView.ItemTemplate>
+                  <DataTemplate>
                     <ViewCell>
 
                        <StackLayout>
@@ -69,40 +70,42 @@
                        
                     </ViewCell>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+              </ListView.ItemTemplate>
+          </ListView>
+
+         </StackLayout>
 
 
 
 
-   
 
 
-
-    <StackLayout Padding="6">
-            <flv:FlowListView FlowColumnCount="3"   
+        <StackLayout Padding="6" HeightRequest="1500">
+             <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
-                HasUnevenRows="True"  
+                
+                HasUnevenRows="false" 
+                RowHeight="80"
                 FlowItemTapped="doit2"                       
                 FlowItemsSource="{Binding Items}">
                 <flv:FlowListView.FlowColumnTemplate>
-                <DataTemplate>
-                    <Frame BackgroundColor="Blue"
-                     Margin="5">
-                    <Label HorizontalOptions="Center"   
-                    VerticalOptions="Center"   
-                    TextColor="White"  
-                    XAlign="Center"  
-                    YAlign="Center"   
-                    Text="{Binding }"/>
+                  <DataTemplate>
+                     <Frame BackgroundColor="Blue"
+                       Margin="5">
+                       <Label HorizontalOptions="Center"   
+                         VerticalOptions="Center"   
+                         TextColor="White"  
+                         XAlign="Center"  
+                         YAlign="Center"    
+                         Text="{Binding }"/>
                     </Frame>
                 </DataTemplate>
-            </flv:FlowListView.FlowColumnTemplate>
-        </flv:FlowListView>
+             </flv:FlowListView.FlowColumnTemplate>
+           </flv:FlowListView>
 
    
 
-    </StackLayout>
+         </StackLayout>
 
 
         <StackLayout Orientation="Horizontal" >
@@ -112,6 +115,10 @@
           
 
             <Button Text="ΛΟΓΑΡ"   x:Name="BILL"  Clicked="TYPLOGALL" />
+
+           
+
+
             <Label x:Name="LID3"  Text="" />
 
           

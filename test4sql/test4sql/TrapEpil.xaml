@@ -28,12 +28,15 @@
                 <StackLayout Orientation="Horizontal" >
                     <Label x:Name="PROSU"  Text="" />
                     <Button Text="-"  x:Name="bdeleprosu" WidthRequest="30" Clicked="deleprosu" />
-                </StackLayout >
-
-                        <Entry x:Name="COMMENTS"
+                    
+                    <Entry x:Name="COMMENTS"
                    Placeholder="ΣΧΟΛΙΑ" 
                     BackgroundColor="Azure"    
                    />
+                    
+                </StackLayout >
+
+                        
 
 
             </StackLayout>
@@ -90,10 +93,11 @@
             </ListView.ItemTemplate>
             </ListView>-->
 
-            <StackLayout Padding="6">
+            <StackLayout HeightRequest="300" Padding="6">
                 <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
-                HasUnevenRows="True"  
+               HasUnevenRows="false" 
+                RowHeight="90"
                 FlowItemTapped="LISTXAR1"   
                 x:Name="listXAR1"
              
@@ -104,11 +108,11 @@
                             <Frame BackgroundColor="Purple"  
                             Margin="5">
                                 <Label HorizontalOptions="Fill"   
-                    VerticalOptions="Fill"   
-                    TextColor="White"  
-                    XAlign="Center"  
+                                 VerticalOptions="Fill"   
+                                 TextColor="White"  
+                                 XAlign="Center"  
                   
-                    Text="{Binding  }"/>
+                           Text="{Binding  }"/>
                             </Frame>
                         </DataTemplate>
                     </flv:FlowListView.FlowColumnTemplate>
@@ -117,12 +121,14 @@
 
 
 
- <!--FlowItemTappedCommand="{Binding ItemTappedCommand}"--> 
-            <StackLayout Padding="6">
+
+            <StackLayout Padding="6" HeightRequest="1500" VerticalOptions="CenterAndExpand" >
                 <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
                  x:Name="listEIDH"                                 
-                HasUnevenRows="True"  
+                Margin="3"
+                HasUnevenRows="false" 
+                RowHeight="90"
                   FlowItemTapped="LISTEIDH"   
                 
                 FlowItemsSource="{Binding ItemsEidh}">
@@ -138,16 +144,23 @@
                     Text="{Binding }"/>
                             </Frame>
                         </DataTemplate>
-                        
-                        
-                        
-                        
+
+
+
+
                     </flv:FlowListView.FlowColumnTemplate>
                 </flv:FlowListView>
 
 
 
             </StackLayout>
+
+          
+
+
+
+ <!--FlowItemTappedCommand="{Binding ItemTappedCommand}"--> 
+
 
             <Label  Text="--------------------------" />
 

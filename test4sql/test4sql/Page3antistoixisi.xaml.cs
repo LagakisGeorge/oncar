@@ -153,7 +153,11 @@ namespace oncar
 
 
         async void savecodes(object sender, EventArgs e)
+        {
+            TOSQLSERVER("","");
+        }
 
+        private async void TOSQLSERVER(string KOD,string BARCODE)
         {
 
             string text = cc;
@@ -161,7 +165,8 @@ namespace oncar
             {
                 Globals.ExecuteSQLServer(cc);
                 cc = "";
-                
+                MainPage.ExecuteSqlite("UPDATE EID SET BARCODE='"+BARCODE+"' WHERE KOD='"+KOD+"'");
+
             }
             catch
             {
@@ -169,7 +174,8 @@ namespace oncar
                 return;
             }
 
-            await Navigation.PopAsync(); // new PelReports());
+           // await Navigation.PopAsync(); // new PelReports());
+            return;
 
             //Get the SmbFile specifying the file name to be created.
             var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.csv");
@@ -247,10 +253,12 @@ namespace oncar
         private void savepalioKaineo(object sender, FocusEventArgs e)
         {
             cc = cc + "delete from BARCODES WHERE ERG='"+BARCODE.Text+"';insert into BARCODES(ERG,KOD) VALUES('"+BARCODE.Text+"','" + KODIKOS.Text +"');";
+            TOSQLSERVER(KODIKOS.Text,BARCODE.Text );
             BARCODE.Text = "";
             posotita.Text = "";
             mono.Text = "";
             lper.Text = "";
+            
             BARCODE.Focus();
         }
 
@@ -371,7 +379,7 @@ namespace oncar
 
 
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ifnull(BARCODE,'') as KODI,ifnull(ONO,'') AS PER,ifnull(XONDR,0) as timh,ID from EID where KOD LIKE '%" + ono + "%' OR ONO LIKE '%" + ono + "%' order by ONO ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ifnull(KOD,'') as KOD,ifnull(ONO,'') AS PER,ifnull(BARCODE,'') as BARCODE,IFNULL(XONDR,'0') AS XONDR,ID from EID where KOD LIKE '%" + ono + "%' OR ONO LIKE '%" + ono + "%' order by ONO ; "; // +BARCODE.Text +"'";
                                                                                                                                                                                                           // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
@@ -383,8 +391,8 @@ namespace oncar
                 {
                     Name = (r["PER"].ToString() + "                                               ").Substring(0, 40),
 
-                    Location = (r["KODI"].ToString() + "                      ").Substring(0, 20),
-                    ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),
+                    Location = (r["KOD"].ToString() + "                      ").Substring(0, 20),
+                    ImageUrl = r["XONDR"].ToString()+"--"+(r["BARCODE"].ToString() + "                 ").Substring(0, 13),
                     idPEL = r["ID"].ToString()
                 });
 
@@ -434,6 +442,11 @@ namespace oncar
         private void breseidh(object sender, FocusEventArgs e)
         {
             Show_list_Eidon(mono.Text);
+        }
+
+        private void AKYROEidos(object sender, EventArgs e)
+        {
+            lper .Text = "";
         }
     }
 }

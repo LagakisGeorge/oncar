@@ -7,11 +7,12 @@
     <StackLayout Padding="10">  
         <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
-                HasUnevenRows="True"  
+                HasUnevenRows="true" 
+                
                 FlowItemTapped="doit"          
              
                 FlowItemsSource="{Binding Items}">
-            <!--  FlowItemTappedCommand="{Binding ItemTappedCommand}"  -->
+           
             <flv:FlowListView.FlowColumnTemplate>  
                 <DataTemplate>  
                     
@@ -30,26 +31,7 @@
             </flv:FlowListView.FlowColumnTemplate>  
         </flv:FlowListView>
 
-        <!--<flv:FlowListView FlowColumnCount="3"   
-                SeparatorVisibility="Default"   
-                HasUnevenRows="True"  
-                FlowItemTappedCommand="{Binding ItemTappedCommand}"  
-                FlowItemsSource="{Binding Items}">
-
-            <flv:FlowListView.FlowColumnTemplate>
-                <DataTemplate>
-                    <Frame BackgroundColor="Purple"  
-                Margin="5">
-                        <Label HorizontalOptions="Fill"   
-                    VerticalOptions="Fill"   
-                    TextColor="White"  
-                    XAlign="Center"  
-                    YAlign="Center"   
-                    Text="{Binding }"/>
-                    </Frame>
-                </DataTemplate>
-            </flv:FlowListView.FlowColumnTemplate>
-        </flv:FlowListView>-->
+       
 
 
 

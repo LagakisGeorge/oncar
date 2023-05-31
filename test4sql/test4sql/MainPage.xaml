@@ -83,6 +83,17 @@
                 Text="BARCODES-ΑΝΤΙΣΤΟΙΧΙΣΗ"
                 Clicked="fANTIST"
                  />
+            
+            
+            <Button x:Name="APOTHIKI3" 
+                Text="PACKING"
+                Clicked="CMDPACKING"
+                 />
+
+
+
+
+
         </StackLayout>
     
     

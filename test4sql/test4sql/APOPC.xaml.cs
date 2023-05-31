@@ -406,7 +406,7 @@ namespace test4sql
             {
                 Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(BARCODES.ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA,ISNULL(XTI,0) AS MXTI  FROM EID LEFT JOIN BARCODES ON EID.KOD=BARCODES.KOD WHERE ENERGO=1 ", con);
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " EID.ID,isnull(EID.KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(BARCODES.ERG,'') AS MERG,ISNULL(LTI,0) AS MLTI,ISNULL(MON,'TEM') AS MMON,ISNULL(FPA,1) AS MFPA,ISNULL(XTI,0) AS MXTI  FROM EID LEFT JOIN BARCODES ON EID.KOD=BARCODES.KOD WHERE ENERGO=1 ", con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();

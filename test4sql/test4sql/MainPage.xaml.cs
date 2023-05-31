@@ -1739,7 +1739,34 @@ public static void BigLetters(string ipAddress)
 
         }
 
+        public static int LF2(string ipAddress)
+        {
+            try
+            {
 
+
+                List<byte> outputList1 = new List<byte>();
+
+                outputList1.Add(0x0A);
+
+                outputList1.Add(0x0D);
+
+                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                // Connect to the printer
+                pSocket1.Connect(ipAddress, 9100);
+                pSocket1.Send(outputList1.ToArray());
+                pSocket1.Close();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                //await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                // await DisplayAlert("error2", "", "");
+            }
+
+
+        }
 
 
         private async void printing(List<string> myText) //  object sender, EventArgs e)
@@ -1865,6 +1892,13 @@ public static void BigLetters(string ipAddress)
             return;
 
 
+        }
+
+        private async  void CMDPACKING(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Page4());
+
+            return;
         }
     }  // public partial class MainPage : ContentPage
 

@@ -69,6 +69,12 @@
     <Compile Update="LISTATRAPEZ.xaml.cs">
       <DependentUpon>LISTATRAPEZ.xaml</DependentUpon>
     </Compile>
+    <Compile Update="PACKINGpage4.xaml.cs">
+      <DependentUpon>PACKINGpage4.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Page3antistoixisi.xaml.cs">
+      <DependentUpon>Page3antistoixisi.xaml</DependentUpon>
+    </Compile>
     <Compile Update="TrapEpil.xaml.cs">
       <DependentUpon>TrapEpil.xaml</DependentUpon>
     </Compile>
@@ -90,7 +96,10 @@
     <EmbeddedResource Update="Imports.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Page3.xaml">
+    <EmbeddedResource Update="Page3antistoixisi.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PACKINGpage4.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="TrapEpil.xaml">

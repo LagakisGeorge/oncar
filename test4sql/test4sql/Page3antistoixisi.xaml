@@ -44,11 +44,19 @@
             <Entry x:Name="mono"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
                    Placeholder="ONOMA"   Unfocused="breseidh"    />
 
-
-            <Button x:Name="but10" 
+            <StackLayout    Orientation="Horizontal" >
+                <Button x:Name="but10" 
                         Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="3" Grid.Column="0"
                          TextColor="Purple" 
                        Clicked="BresEidos"  />
+                <Button x:Name="AKYROEIDOS" 
+                        Text="ΑΚΥΡΟ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="AKYROEidos"  />
+
+
+
+            </StackLayout> 
 
             <Label    x:Name="lper"   Grid.Row="3" Grid.Column="1" Grid.ColumnSpan ="3"
                 Text="............................" FontSize="Large"  />
@@ -83,41 +91,45 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition  Width="*" />
-                                    <ColumnDefinition  Width="*"  />
-                                </Grid.ColumnDefinitions >
+                            <StackLayout>
 
+                                <StackLayout   Orientation="Horizontal">
 
-
-
-
-
-
-
-                                <Label Grid.Column="0" 
-                                   Text="{Binding Name}"
-                                   FontAttributes="Bold" FontSize="Small" />
-                                <Label 
-                                    Grid.Column="1"
+                                     <Label Grid.Column="0" 
+                                            Text="{Binding Name}"
+                                               FontAttributes="Bold" FontSize="Small" />
+                                    <Label 
+                                  
                                     
-                                   Text="{Binding Location}"
-                                    />
+                                     Text="{Binding Location}"
+                                      />
 
+                                </StackLayout>
 
-                                <Label                                    
+                                <StackLayout   Orientation="Horizontal">
+
+ <Label                                    
                                    Text="{Binding ImageUrl}" 
-                                    Grid.Column="2"
+                                    
                                     />
                                 <Label                                    
                                    Text="{Binding idPEL}"
-                                    Grid.Column="3"
+                                    IsVisible="false"
                                     />
-                            </Grid>
 
+                                </StackLayout>
+
+
+
+
+
+                              
+
+
+                               
+                           
+                            </StackLayout> 
+                            
 
 
 
