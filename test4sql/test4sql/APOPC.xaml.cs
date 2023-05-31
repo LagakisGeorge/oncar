@@ -32,16 +32,6 @@ namespace test4sql
         async void WriteFile(object sender, EventArgs e)
         {
 
-           
-
-
-
-
-
-
-
-
-
                 //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
                 if (Globals.cSQLSERVER.Length<2)
             {
@@ -772,212 +762,222 @@ namespace test4sql
 
         }
 
+        private async void BarWriteFile(object sender, EventArgs e)
+        {
+
+
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                // SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                // cmd.Connection = con;
+                // cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+
+
+
+            var action = await DisplayAlert("Θα διαγραφουν τα ειδη του κινητού", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+
+
+            MainPage.ExecuteSqlite("delete from EIDH;");
+            MainPage.ExecuteSqlite("delete from KATHG;");
+            MainPage.ExecuteSqlite("delete from TABLES;");
+
+            String SYNT = "";
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                SYNT = " TOP 20 ";
+
+      //  CH2    ,[NUM1]
+      //,[NUM2]
+      //,[TIMH]
+      //,[KATHG]
+
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ID,isnull(KOD,'') AS MKOD,ISNULL(ONO,'') AS MONO,ISNULL(CH2,'') AS MCH2,ISNULL(TIMH,0) AS MTIMH,ISNULL(NUM1,0) AS MNUM1,ISNULL(NUM2,0) AS MNUM2,ISNULL(KATHG,0) AS MKATHG  FROM EIDH ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String mF = dt.Rows[k]["MONO"].ToString();
+                    mF = mF.Replace("'", "`");
+
+                    String MCH2 = dt.Rows[k]["MCH2"].ToString();
+                    MCH2 = MCH2.Replace("'", "`");
+
+                    string MTIMH = dt.Rows[k]["MTIMH"].ToString();
+                    MTIMH = MTIMH.Replace(",", ".");
+
+                    string MKATHG = dt.Rows[k]["MKATHG"].ToString();
+                    MKATHG = MKATHG.Replace(",", ".");
+
+                    // MyList.Add(mF);
+                    string mNUM1 = dt.Rows[k]["MNUM1"].ToString();
+                    mNUM1 = mNUM1.Replace(",", ".");
+
+                    string mNUM2 = dt.Rows[k]["MNUM2"].ToString();
+                    mNUM2 = mNUM2.Replace(",", ".");
+
+
+                    string mKOD = dt.Rows[k]["MKOD"].ToString();
+                   int n2 = MainPage.ExecuteSqlite("insert into EIDH (NUM2,TIMH,NUM1,ONO,KATHG) VALUES ("+mNUM2+"," + MTIMH + "," + mNUM1 + ",'" + mF + "'," + MKATHG + ");");
+                } // FOR
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+                // await DisplayAlert("EIΔΗ", " Eιδη:" + dt.Rows.Count, "OK");
+                EID.Text = " ΕΙΔΗ:" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("EIΔΗ ΟΚ", "", "OK");
+
+
+            //-------------------------------------------------------------------------------
+
+            MainPage.ExecuteSqlite("delete from KATHG;");
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " LEFT(ISNULL(ONO,''),20) AS MONO,ID as KOD FROM KATHG", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                //List<string> MyList = new List<string>();
+                int k = 0;
+
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    // String mF = dt.Rows[k]["MEPO"].ToString();
+                    // mF = mF.Replace("'", "`");
+                    // MyList.Add(mF);
+                    string MKOD;
+                    MKOD = dt.Rows[k]["KOD"].ToString();
+                    MKOD = MKOD.Replace(",", ".");
+
+
+                    string MONO = dt.Rows[k]["MONO"].ToString();
+                    MONO = MONO.Replace("'", "`");
+
+                  
+                    int n2 = MainPage.ExecuteSqlite("insert into KATHG (KOD,ONO) VALUES (" +MKOD+",'"+MONO+ "' );");
+                    
+                }
+
+                PEL.Text = " KATHGORIES:" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("ΠΕΛΑΤΕΣ ΟΚ", "", "OK");
+
+
+
+
+            //------------------------------------------------------------------------------------
+            // [ONO],[KATEILHMENO],[NUM1],[NUM2],[CH1],[IDPARAGG]
+            MainPage.ExecuteSqlite("delete from TABLES;");
+            try
+            {
+                Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select  isnull(ONO,'') AS MONO,ISNULL(KATEILHMENO,0) AS MKAT,ISNULL(NUM1,0) AS MNUM1,ISNULL(NUM2,0) AS MNUM2,ISNULL(CH1,'') AS MCH1,ISNULL(IDPARAGG,0) AS MIDPARAGG  FROM TABLES ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+
+                    string MONO = dt.Rows[k]["MONO"].ToString();
+                    MONO = MONO.Replace("'", "`");
+
+                    string MKAT = dt.Rows[k]["MKAT"].ToString();
+                    MKAT = MKAT.Replace(",", ".");
+
+                    string MNUM1 = dt.Rows[k]["MNUM1"].ToString();
+                    MNUM1 = MNUM1.Replace(",", ".");
+
+                    string MNUM2 = dt.Rows[k]["MNUM2"].ToString();
+                    MNUM2 = MNUM2.Replace(",", ".");
+
+                    string MIDPARAGG = dt.Rows[k]["MIDPARAGG"].ToString();
+                    MIDPARAGG = MIDPARAGG.Replace(",", ".");
+
+                    int n2 = MainPage.ExecuteSqlite("insert into TABLES(ONO,KATEILHMENO,NUM1,NUM2,IDPARAGG) VALUES ('"+MONO+"',"+MKAT+"," +MNUM1 + "," + MNUM2 + "," + MIDPARAGG  + ");");
+                } // FOR
+
+                // watch.Stop();
+                //  var elapsedMs = watch.ElapsedMilliseconds;
+                // await DisplayAlert("TIMOK", " TIMOK:" + dt.Rows.Count, "OK");
+                TIMOKAT.Text = " ΤΡΑΠΕΖΙΑ :" + dt.Rows.Count;
+
+                BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+            if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+                await DisplayAlert("ΤΡΑΠΕΖΙΑ ΟΚ", "", "OK");
+
+
+
+
+        }
 
 
 
 
 
 
-        /*  protected override bool OnBackButtonPressed()
-          {
-              return false;
-          }
-          void  OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
-          {
-              Monkey selectedItem = e.SelectedItem as Monkey;
-              string c = selectedItem.idPEL;
-              f_cid = c;
-          }        
-           async void diag_barcode(object sender, EventArgs e)
-          {
 
-              var action = await DisplayAlert("Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
-              if (action )
-              {
-                  //  Navigate to first page
-                  MainPage.ExecuteSqlite("delete from PARALABES WHERE ID=" + f_cid );
-                  await DisplayAlert("διαγραφτηκε", "", "OK");
-                  show_list();
-              }
-
-
-
-
-          }
-          async void delete_all(object sender, EventArgs e)
-          {
-              var action = await DisplayAlert("Να διαγραφoύν όλα τα τιμολόγια?", "Εισαι σίγουρος?", "Ναι", "Οχι");
-              if (action)
-              {
-                  //  Navigate to first page
-                  MainPage.ExecuteSqlite("delete from PARALABES ");
-                  await DisplayAlert("διαγραφτηκε", "", "OK");
-                  show_list();
-              }
-          }
-          void SaveFile(string text)
-          {
-              //Get the SmbFile specifying the file name to be created.
-              var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
-              // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
-
-              if (file.Exists())
-              {
-                  DisplayAlert("Θα διαγραφει το ηδη το αρχειο", "....", "OK");
-                  file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
-              }
-              else
-              {
-                  //Create file.
-                  file.CreateNewFile();
-              }
-
-
-  /*            try
-              {
-                  //Create file.
-                  file.CreateNewFile();
-              }
-              catch
-              {
-                  DisplayAlert("Θα διαγραφει το ηδη το αρχειο", "....", "OK");
-                  file.Delete();  // https://csharpdoc.hotexamples.com/class/SharpCifs.Smb/SmbFile#
-              }
-
-
-              //Get writable stream.
-              var writeStream = file.GetOutputStream();
-
-              //Write bytes.
-              writeStream.Write(Encoding.UTF8.GetBytes(text));
-
-              //Dispose writable stream.
-              writeStream.Dispose();
-          }
-          async void  CloseInvoice(object sender, EventArgs e)
-          {
-              await Navigation.PopAsync();
-
-
-
-          }
-          void show_list()
-          {
-              Monkeys = new List<Monkey>();
-              BindingContext = null;
-
-              string dbPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                "adodemo.db3");
-              bool exists = File.Exists(dbPath);
-              if (!exists)
-              {
-                  Console.WriteLine("Creating database");
-                  // Need to create the database before seeding it with some data
-                  Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
-
-              }
-
-              SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-              // Open the database connection and create table with data
-              connection.Open();
-
-
-              var contents = connection.CreateCommand();
-               contents.CommandText = "SELECT  * from PARALABES where ATIM ='"+cATIM.Text  +"' order by ID DESC ; "; // +BARCODE.Text +"'";
-               // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-              var r = contents.ExecuteReader();
-              Console.WriteLine("Reading data");
-              while (r.Read())
-              {
-
-
-                  Monkeys.Add(new Monkey
-                  {
-                      Name = r["BARCODE"].ToString(),
-
-                      Location = r["ATIM"].ToString(),
-                      ImageUrl = "",
-                      idPEL = r["id"].ToString ()
-                  });
-
-
-
-              }
-
-
-
-
-              connection.Close();
-
-              BindingContext = this;
-          }
-
-          async void PaletaChanged(object sender, EventArgs e)
-          {
-
-              if (Paleta.Text.Length == 0) return;
-
-              BindingContext = null;
-              Monkeys.Add(new Monkey
-              {
-                  Name = Paleta.Text,
-
-                  Location = "***",
-                  ImageUrl = "---",
-                  idPEL = "///"
-              });
-
-              BindingContext = this;
-
-              Paleta.Text = ""; // to ekana etsi gia na mporei na pairnei 2 fores tin idia paleta
-              MainPage.ExecuteSqlite("INSERT INTO PARALABES (ATIM,BARCODE) VALUES ('" + cATIM.Text + "','" + Paleta.Text + "')");
-              show_list();
-              Paleta.Focus();
-
-          }
-          async void barcfoc(object sender, EventArgs e)
-          {
-              string cc = "";
-              var scanPage = new ZXingScannerPage();
-              // Navigate to our scanner page
-              await Navigation.PushAsync(scanPage);
-
-              scanPage.OnScanResult += (result) =>
-              {
-
-                  // Stop scanning
-                  scanPage.IsScanning = false;
-
-                  // Pop the page and show the result
-                  Device.BeginInvokeOnMainThread(async () =>
-                  {
-
-
-                      await Navigation.PopAsync();
-                      // await DisplayAlert("Scanned Barcode", result.Text, "OK");
-                      Thread.Sleep(500);
-                      Paleta.Text = result.Text;
-
-                      cc = Paleta.Text;
-
-
-
-
-                  });
-              };
-
-          }
-          void KataxTimol(object sender, EventArgs e)
-          {
-             // show_list();
-              Paleta.Focus();
-
-
-
-
-          }
-      */
 
 
 

@@ -107,9 +107,67 @@ namespace oncar
             AddItems();
         }
 
+        private  void addItemsSqlite()
+        {
+            string dbPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+            string ff = "";
+            try
+            {
+
+
+                var contents = connection.CreateCommand();
+                contents.CommandText = "SELECT  ONO,ifNULL(KATEILHMENO,0) AS KATEILHMENO,ifNULL(IDPARAGG,0) AS IDPARAGG,ifNULL(CH1,'') AS CH1 from TABLES WHERE NUM1=" + Globals.gUserWaiter + " ORDER BY NUM2";
+                var r = contents.ExecuteReader();
+                while (r.Read())
+                {
+                    //// EPO.Text = r["EPO"].ToString();  gia na kanei klik sto listview
+                    //fTIMOK = r["PEK2"].ToString();
+                    //fEKPTNUM1 = float.Parse(r["NUM12"].ToString());
+                    //fYPOLPEL = float.Parse(r["TYP2"].ToString());
+                    //LPLIR.Text = r["ID"].ToString() + " Εκπ:" + r["NUM12"].ToString();
+
+                    string fONO;
+                    fONO = r["ONO"].ToString();
+                    string CH1;
+                    CH1 = r["CH1"].ToString();
+                    if (CH1.Length == 0)
+                    { CH1 = ""; }
+                    else { CH1 = CH1 + "€"; }
+                    string fID;
+                    fID = r["idparagg"].ToString();
+                    string fkat = r["kateilhmeno"].ToString();
+                    if (fkat == "0") { fkat = ""; } else { fkat = "# "; }
+                    //  Items.Add(string.Format(" {0} ", fkat + fONO + "*" + fID+"*   "+CH1));
+                    Items.Add(string.Format(" {0} ", fkat + fONO + "*   " + CH1));
+
+
+                }
+            }
+            catch
+            {
+                ff = "error";
+            }
+            connection.Close();
+
+
+
+        }
+
         private async void AddItems()
 
         {
+            if ( Globals.gLocal  == "1")  // global sqlite or sqlserver
+            {
+                addItemsSqlite();
+                return;
+            }
+
+
+
 
             if (Globals.cSQLSERVER.Length < 2)
             {

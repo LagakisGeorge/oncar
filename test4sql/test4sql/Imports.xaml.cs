@@ -17,6 +17,8 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Input;
 using Xamarin.Essentials;
+using Mono.Data.Sqlite;
+using System.Linq.Expressions;
 
 namespace test4sql
 {
@@ -377,7 +379,7 @@ namespace test4sql
                        "[AFM] [nvarchar](15) )";
             
 
-            if (PARAGGELIES.NReadSQL("select count(*) from MEM") < 2)
+            if (PARAGGELIES.NReadSQL("select count(*) from MEM") < 5)
             {
                 MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
                 MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
@@ -441,6 +443,26 @@ namespace test4sql
 
 
             // Toast.makeText(getApplicationContext(), "2.KATHG ok", Toast.LENGTH_SHORT).show();
+
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS EIDH (ID  INTEGER PRIMARY KEY ," +
+                   "[ONO] [nvarchar](55) ," +
+                   "[TIMH] [real] ," +
+                   "[SYNOLO] [int] ," +
+                   "[NUM1] [real] ," +
+                   "[NUM2] [real] ," +
+                   "[CH1] [nvarchar](55), " +
+                   "[CH2] [nvarchar](55)" +
+                   " );");
+
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EIDH') WHERE name='KATHG' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table EIDH ADD KATHG INT");
+
+            }
+
+
 
 
 
@@ -598,7 +620,83 @@ namespace test4sql
         // SQLQUERYF
         async void SQLQUERYF(object sender, EventArgs e)
         {
-            RESULTS.Text=PARAGGELIES.ReadSQL(QUERY.Text );
+           // RESULTS.Text=PARAGGELIES.ReadSQL(QUERY.Text );
+           try
+            {
+
+            
+
+
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+
+            string dbPath = Path.Combine(
+              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+              "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+
+            var contents = connection.CreateCommand();
+            contents.CommandText = QUERY.Text;
+                                                                                                                                                           // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            
+            while (r.Read())
+            {
+                
+                Monkeys.Add(new Monkey
+                {
+                    Name = r[0].ToString(),
+                    Location = r[1].ToString() ,
+                    ImageUrl = r[2].ToString(),
+                    idPEL = r[3].ToString() 
+                });
+            }
+
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
+            
+            connection.Close();
+
+           
+
+            BindingContext = this;
+
+            }
+            catch
+            {
+                BindingContext = this;
+                await DisplayAlert("λαθος", "....", "OK");
+                return;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         }
 

@@ -33,6 +33,8 @@ namespace test4sql
         public static string cIPPR3;
         public static string gTITLOS;
 
+        public static string gLocal;
+
         public static string GReadSQ(string Query)
         {
             string dbPath = Path.Combine(

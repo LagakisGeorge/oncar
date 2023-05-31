@@ -49,10 +49,10 @@ namespace oncar
             Globals.gTrapezi = lines[0];
             Globals.gTrapezi = Globals.gTrapezi.TrimStart();
             Globals.gTrapezi = Globals.gTrapezi.TrimEnd();
-            Globals.gIDPARAGG = Globals.ReadSQLServer("SELECT  STR(ISNULL(IDPARAGG,0)) FROM TABLES WHERE  ONO='" + Globals.gTrapezi+"'");
+            Globals.gIDPARAGG = AllRead("SELECT  STR(ISNULL(IDPARAGG,0)) FROM TABLES WHERE  ONO='" + Globals.gTrapezi+"'");
            // Globals.gIDPARAGG = lines[1];
             titlos.Text = "Τραπέζι: " + Globals.gTrapezi;
-            cmdtimologio.Text= Globals.ReadSQLServer("SELECT  ISNULL(CH2,'') AS CH2 FROM TABLES WHERE  ONO='" + Globals.gTrapezi + "'");
+            cmdtimologio.Text= AllRead("SELECT  ISNULL(CH2,'') AS CH2 FROM TABLES WHERE  ONO='" + Globals.gTrapezi + "'");
 
 
 
@@ -178,7 +178,7 @@ namespace oncar
 
            // string[] lines = cc.Split('~');
 
-            string cTYPOMENO = Globals.ReadSQLServer("SELECT  ISNULL(ENERGOS,0) AS TYP FROM PARAGG WHERE   ID=" + cc);
+            string cTYPOMENO = AllRead("SELECT  ISNULL(ENERGOS,0) AS TYP FROM PARAGG WHERE   ID=" + cc);
           if (action.Substring(0, 1) == "4")
           {
               
@@ -198,7 +198,7 @@ namespace oncar
                 }
                 else
                 {
-                    Globals.ExecuteSQLServer("delete from PARAGG WHERE ID=" + cc);
+                   AllExecute("delete from PARAGG WHERE ID=" + cc);
                 }
                 return;
           }
@@ -208,9 +208,9 @@ namespace oncar
             {
 
                 string cc2 = await DisplayPromptAsync("Δώσε Ποσότητα/Βάρος σε Kιλ", "π.χ. 500γρ=> 0,5");
-                Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO=" + cc2.Replace(",", ".") + " WHERE ID=" + cc);
-              //  string caji2 = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
-                Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET AJIA=(SELECT SUM(POSO*TIMH) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG+" ) WHERE  ID=" + Globals.gIDPARAGG + ";");
+               AllExecute("UPDATE  PARAGG SET POSO=" + cc2.Replace(",", ".") + " WHERE ID=" + cc);
+              //  string caji2 = AllRead("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+               AllExecute("UPDATE PARAGGMASTER SET AJIA=(SELECT SUM(POSO*TIMH) FROM PARAGG WHERE IDPARAGG=" + Globals.gIDPARAGG+" ) WHERE  ID=" + Globals.gIDPARAGG + ";");
 
                 Show_listsql_Paragg(Globals.gIDPARAGG);
                 pageModel = new Main2PageModel(this);
@@ -228,7 +228,7 @@ namespace oncar
 
 
 
-                //   Globals.ExecuteSQLServer("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
+                //  AllExecute("UPDATE  PARAGG SET POSO="+cc2.Replace(",",".")+" WHERE ID=" + cc);
 
 
             }
@@ -264,20 +264,20 @@ namespace oncar
                 {
 
 
-                    Globals.ExecuteSQLServer("UPDATE  PARAGG SET ONO='**" + action.Substring(0, 1) + "-'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + cc);
+                   AllExecute("UPDATE  PARAGG SET ONO='**" + action.Substring(0, 1) + "-'+ONO , NUM1=" + action.Substring(0, 1) + " WHERE ID=" + cc);
                     if (action.Substring(0, 1) == "1")
                     {
-                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                       AllExecute("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
                     if (action.Substring(0, 1) == "2")
                     {
-                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                       AllExecute("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
 
 
                     if (action.Substring(0, 1) == "3")
                     {
-                        Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET KERA=ISNULL(KERA,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                       AllExecute("UPDATE  PARAGGMASTER SET KERA=ISNULL(KERA,0)+" + mt + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     }
                 }
 
@@ -285,15 +285,15 @@ namespace oncar
 
 
                 // ΑΞΙΑ ΧΩΡΙΣ ΤΟ ΠΛΗΡΩΜΕΝΟ
-                string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+                string caji = AllRead("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
                 // ΑΞΙΑ ΗΔΗ ΠΛΗΡΩΜΕΝΩΝ
-                string cPLIR = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+                string cPLIR = AllRead("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
 
-                Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".") + ",NUM1=" + cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
+               AllExecute("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".") + ",NUM1=" + cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
 
-                // Globals.ExecuteSQLServer("update PARAGGMASTER SET NUM1=" + caji.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
+                //AllExecute("update PARAGGMASTER SET NUM1=" + caji.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
 
-                Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+               AllExecute("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
                 Show_listsql_Paragg(Globals.gIDPARAGG);
                 pageModel = new Main2PageModel(this);
                 BindingContext = pageModel;
@@ -314,7 +314,7 @@ namespace oncar
 
             // await DisplayAlert("Info", $"{SelectedItem.Description}}", "Ok");
             //where SelectedItem.Description is a field in my model
-            string cc= Globals.ReadSQLServer("SELECT STR(ISNULL(ID,0)) FROM KATHG WHERE ONO='" + e.Item.ToString() + "'");
+            string cc= AllRead("SELECT STR(ISNULL(ID,0)) FROM KATHG WHERE ONO='" + e.Item.ToString() + "'");
             Globals.gKathg = cc;
 
             //string[] lines = Globals.gKathg.Split(';');
@@ -470,7 +470,7 @@ namespace oncar
                 if (ekpt == "0") { }
                 else
                 {
-                    Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                   AllExecute("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
                     
 
                 }
@@ -482,7 +482,7 @@ namespace oncar
             if (ekpt == "0") { }
             else
             {
-                //Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+                //Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
 
                 float nekpt = 0;
                 nekpt = float.Parse(ekpt.Replace(".",","));
@@ -496,10 +496,10 @@ namespace oncar
 
                 string synolon = String.Format("{0:0.00}", ss - nekpt);
                 
-                Globals.ExecuteSQLServer("UPDATE TABLES SET CH1='"+synolon+"' WHERE ONO='" + Globals.gTrapezi + "'");
+               AllExecute("UPDATE TABLES SET CH1='"+synolon+"' WHERE ONO='" + Globals.gTrapezi + "'");
                
             }
-            Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  NUM2=1 WHERE ID=" + Globals.gIDPARAGG.ToString());
+           AllExecute("UPDATE  PARAGGMASTER SET  NUM2=1 WHERE ID=" + Globals.gIDPARAGG.ToString());
             myText.Add("\r\n");
             myText.Add("\r\n");
             myText.Add("\r\n");
@@ -577,7 +577,7 @@ namespace oncar
                 // Close the socket connection when done
                 pSocket.Close();
              */
-              //  Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
+              // AllExecute("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
 
             }
 
@@ -644,13 +644,13 @@ namespace oncar
 
 
 
-            dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  " +
+            dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, ISNULL(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  " +
                 " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
                 " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ");
             //}
            // else
            // {     // ολα 
-                // dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, isnull(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
+                // dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, ISNULL(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
            // }
             // Monkeys.Add(new Monkey
 
@@ -840,7 +840,7 @@ namespace oncar
                 }
                 if (Ok == must)
                 {
-                    Globals.ExecuteSQLServer("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
+                   AllExecute("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
                 }
                 else
                 {
@@ -1001,10 +1001,81 @@ catch (Exception ex)
 }
             return dt;
 }
-        
 
 
 
+        private void ShowItemsSqlite(string ono)
+        {
+            string dbPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+            string ff = "";
+            Monkeys2 = new List<Monkey2>();
+            BindingContext = null;
+            try
+            {
+                Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
+                string Q = "SELECT  ISNULL(ONO,'') AS ONO, POSO, TIMH,ID,ISNULL(PROSUETA,'') AS PROSUETA,ISNULL(CH1,'') AS SXOLIA  FROM PARAGG where IDPARAGG = " + ono + "  order by ID ; ";
+                Q = Q.ReplaceAll("ISNULL", "ifnull");
+
+                var contents = connection.CreateCommand();
+                contents.CommandText = Q;
+                var r = contents.ExecuteReader();
+                int k = 0;
+                while (r.Read())
+                {
+
+                    string mPoso = (r["POSO"].ToString() + "                                   ").Substring(0, 3);
+                    string mOno = (r["ONO"].ToString() + "                                   ").Substring(0, 28);
+                    string midEggtim = (r["ID"].ToString() + "              ").Substring(0, 5);
+                    string mTimh = (r["TIMH"].ToString() + "              ").Substring(0, 5);
+                    string mPROSU = (r["PROSUETA"].ToString() + "              ").Substring(0, 11);
+                    string mCOMMENTS = (r["SXOLIA"].ToString() + "                                           ").Substring(0, 31);
+                    Monkeys2.Add(new Monkey2
+                    {  // dt.Rows[k]["ONO"].ToString();
+                        Name = mOno,
+
+                        Location = mTimh,
+                        ImageUrl = mPoso,
+                        idPEL = mPROSU,   //+"  ~"+ midEggtim,
+                        Prood = midEggtim,
+                        ID = mCOMMENTS
+                    });
+
+                    Globals.PARAGGlines[k, 0] = mOno;
+                    Globals.PARAGGlines[k, 1] = mPoso;
+                    Globals.PARAGGlines[k, 2] = mTimh;
+                    Globals.PARAGGlines[k, 3] = mPROSU;
+                    Globals.PARAGGlines[k, 4] = midEggtim;
+                    Globals.PARAGGlines[k, 5] = mCOMMENTS;
+                    Globals.indexParaggLine = k;
+                    k = k + 1;
+
+                }
+            }
+            catch
+            {
+                ff = "error";
+            }
+            connection.Close();
+            listERG.ItemsSource = Monkeys2;
+            BindingContext = this;
+
+            // listERG.ScrollTo(viewModel.DataCollection[viewModel.DataCollection.Count - 1], ScrollToPosition.End, true);
+            con.Close();
+            BindingContext = this;
+
+            if (listERG.ItemsSource != null)
+            {
+                var lastItem = listERG.ItemsSource.Cast<object>().LastOrDefault();
+                listERG.ScrollTo(lastItem, ScrollToPosition.End, true);
+            }
+
+
+
+        }
 
 
 
@@ -1014,6 +1085,16 @@ catch (Exception ex)
 
         private  async void  Show_listsql_Paragg(string ono)
          {
+
+            if (Globals.gLocal == "1")  // global sqlite or sqlserver
+            {
+                ShowItemsSqlite(ono);
+                return;
+            }
+
+
+
+
             Monkeys2 = new List<Monkey2>();
             BindingContext = null;
             //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
@@ -1038,7 +1119,7 @@ catch (Exception ex)
             }
 
 
-            String SYNT = "";
+           // String SYNT = "";
 
             try
             {
@@ -1108,7 +1189,7 @@ catch (Exception ex)
 
         private async void PLIROMI(object sender, EventArgs e)
         {
-            string catyp = Globals.ReadSQLServer("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
+            string catyp = AllRead("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
             if (Int32.Parse(catyp) > 0)
             {
                 await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
@@ -1128,7 +1209,7 @@ catch (Exception ex)
 
             // string proekpt = "";,ISNULL(NUM2,0) AS ISTYP
             // float nproekpt = 0;
-            string caji = Globals.ReadSQLServer("SELECT STR(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0),10,2) AS AA  FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
+            string caji = AllRead("SELECT STR(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0),10,2) AS AA  FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
             // nproekpt = float.Parse(proekpt.Replace(",", "."));
             //  float nekpt = 0;
             // float  nekpt = float.Parse(ekpt);
@@ -1142,28 +1223,28 @@ catch (Exception ex)
 
            if (action.Substring(0, 1) == "4") { return; }
            if (action.Substring(0, 1) == " ") { return; }
-            Globals.ExecuteSQLServer("UPDATE TABLES SET KATEILHMENO=0,CH2='',CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
-            Globals.ExecuteSQLServer("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
+           AllExecute("UPDATE TABLES SET KATEILHMENO=0,CH2='',CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
+           AllExecute("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
 
             if (action.Substring(0, 1) == "1")
             {
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)+" + caji.Replace(",",".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-               // Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET CASH=isnull(CASH,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+               AllExecute("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" + caji.Replace(",",".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+               //AllExecute("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             if (action.Substring(0, 1) == "2")
             {
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-              //  Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET PIS1=isnull(PIS1,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+               AllExecute("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+              // AllExecute("UPDATE  PARAGGMASTER SET PIS1=ISNULL(PIS1,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             if (action.Substring(0, 1) == "3")
             {
-                Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-              //  Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  KERA=isnull(KERA,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+               AllExecute("UPDATE  PARAGGMASTER SET  KERA=ISNULL(KERA,0)+" + caji.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+              // AllExecute("UPDATE  PARAGGMASTER SET  KERA=ISNULL(KERA,0)-" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             }
             //if (ekpt == "0") { }
             //else
             //{
-            //    Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=isnull(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+            //   AllExecute("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
             //}
             Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
 
@@ -1171,6 +1252,38 @@ catch (Exception ex)
 
 
         }
+
+
+
+        private void AllExecute (string Query)
+        {
+            if (Globals.gLocal=="1") {
+                Query = Query.ReplaceAll("ISNULL", "ifnull");
+                       MainPage.ExecuteSqlite(Query);
+            }
+            else
+            {
+                Globals.ExecuteSQLServer(Query);
+            }
+           
+        }
+        // AllRead
+        private string AllRead(string Query)
+        {
+            if (Globals.gLocal == "1")
+            {
+                Query = Query.ReplaceAll("ISNULL", "ifnull");
+               return PARAGGELIES.ReadSQL(Query); ;
+            }
+            else
+            {
+                return Globals.ReadSQLServer(Query);
+            }
+
+        }
+
+
+
 
         private async void TYPLOGALL(object sender, EventArgs e)
         {
@@ -1193,8 +1306,8 @@ catch (Exception ex)
         private async void Allagh(object sender, EventArgs e)
         {
             string cc = await DisplayPromptAsync("Δώσε Αριθμό Νέου Τραπεζιού", "Μεταφορά σε τραπέζι");
-            string iskat = Globals.ReadSQLServer("SELECT  ISNULL(KATEILHMENO,0) AS KATEILHMENO FROM TABLES WHERE   ONO='" + cc+"'");
-            string user = Globals.ReadSQLServer("SELECT  ISNULL(NUM1,0) AS CC FROM TABLES WHERE   ONO='" + cc + "'");
+            string iskat = AllRead("SELECT  ISNULL(KATEILHMENO,0) AS KATEILHMENO FROM TABLES WHERE   ONO='" + cc+"'");
+            string user = AllRead("SELECT  ISNULL(NUM1,0) AS CC FROM TABLES WHERE   ONO='" + cc + "'");
             if (Globals.gUserWaiter.ToString()== user.ToString())
             {
                 //ok
@@ -1207,9 +1320,9 @@ catch (Exception ex)
 
             if (iskat == "0")
             {
-                Globals.ExecuteSQLServer("update PARAGGMASTER SET TABLE="+cc+" WHERE ID="+ Globals.gIDPARAGG.ToString());
-                Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=0,IDPARAGG=0,CH1=''  WHERE IDPARAGG=" + Globals.gIDPARAGG.ToString());
-                Globals.ExecuteSQLServer("update TABLES SET CH1='',KATEILHMENO=1,IDPARAGG=" + Globals.gIDPARAGG.ToString()+" WHERE ONO='"+cc+"'");
+               AllExecute("update PARAGGMASTER SET TABLE="+cc+" WHERE ID="+ Globals.gIDPARAGG.ToString());
+               AllExecute("update TABLES SET KATEILHMENO=0,IDPARAGG=0,CH1=''  WHERE IDPARAGG=" + Globals.gIDPARAGG.ToString());
+               AllExecute("update TABLES SET CH1='',KATEILHMENO=1,IDPARAGG=" + Globals.gIDPARAGG.ToString()+" WHERE ONO='"+cc+"'");
                 Globals.gTrapezi = cc;
                 await Navigation.PopAsync(); // new PelReports());
             }
@@ -1232,7 +1345,7 @@ catch (Exception ex)
             {
                 cmdtimologio.Text = "Απόδειξη";
             }
-            Globals.ExecuteSQLServer("UPDATE TABLES SET CH2='" + cmdtimologio.Text + "' WHERE ONO='" + Globals.gTrapezi + "'");
+           AllExecute("UPDATE TABLES SET CH2='" + cmdtimologio.Text + "' WHERE ONO='" + Globals.gTrapezi + "'");
 
 
 
@@ -1258,11 +1371,55 @@ catch (Exception ex)
             AddItems();
         }
 
-      
+        private void addItemsSqlite()
+        {
+            string dbPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+            string ff = "";
+            try
+            {
+
+
+                var contents = connection.CreateCommand();
+                contents.CommandText = "SELECT  ONO, ID FROM KATHG   order by CH1 ;";
+                var r = contents.ExecuteReader();
+                while (r.Read())
+                {
+                    
+
+                    string fONO;
+                    fONO = r["ONO"].ToString();
+
+                    Items.Add(string.Format("{0}", fONO));
+
+
+                }
+            }
+            catch
+            {
+                ff = "error";
+            }
+            connection.Close();
+
+
+
+        }
 
         private async void AddItems()
 
         {
+
+            if (Globals.gLocal == "1")  // global sqlite or sqlserver
+            {
+                addItemsSqlite();
+                return;
+            }
+
+
+
             if (Globals.cSQLSERVER.Length < 2)
             {
                // await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");

@@ -228,7 +228,7 @@ namespace test4sql
 
             Globals.gTITLOS = PARAGGELIES.ReadSQL("select ifnull(EPO,' ') as EPO from MEM  where ID=2");
 
-
+            Globals.gLocal = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=3");
 
 
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )

@@ -18,6 +18,7 @@
                 <Button x:Name="TIMOKAT" Text="ΤΙΜΟΚΑΤΑΛΟΓΟΙ" />
                 <Button x:Name="KARTELA32" Text="ΚΙΝΗΣΕΙΣ ΚΑΡΤΕΛΑΣ"  Clicked="CKARTELA32"/>
                 <Button x:Name="TEST2" Clicked="dokimi"    Text="TEST ΑΠΟΣΤΟΛΗΣ 10 ΕΓΓΡ" />
+                <Button Text="Aποστ.Αρχ bar απο pc" Clicked="BarWriteFile"/>
             </StackLayout> 
             
            

@@ -41,6 +41,7 @@ namespace test4sql
             CIPPR3.Text = Globals.cIPPR3;
             TitlosEKTYP.Text = Globals.gTITLOS;
 
+            local.Text = Globals.gLocal;
 
             Globals.gIPKleis = PARAGGELIES.ReadSQL("select ifnull(POL,'') FROM MEM WHERE ID=2");
             cIPKleis.Text = Globals.gIPKleis;
@@ -67,6 +68,9 @@ namespace test4sql
             MainPage.ExecuteSqlite("update MEM SET EPO='" + TitlosEKTYP.Text + "' WHERE ID=2");
             MainPage.ExecuteSqlite("update MEM SET POL='" + cIPKleis.Text + "' WHERE ID=2");
 
+            MainPage.ExecuteSqlite("update MEM SET IP='" + local.Text + "' WHERE ID=3");
+
+
             Globals.cSQLSERVER = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=1");
             Globals.cIP = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=1");
             Globals.useBarcodes = PARAGGELIES.ReadSQL("select DIE FROM MEM WHERE ID=1");
@@ -78,6 +82,7 @@ namespace test4sql
             Globals.gTITLOS = PARAGGELIES.ReadSQL("select EPO FROM MEM WHERE ID=2");
             Globals.gIPKleis = PARAGGELIES.ReadSQL("select POL FROM MEM WHERE ID=2");
 
+            Globals.gLocal = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=3");
 
 
         }
