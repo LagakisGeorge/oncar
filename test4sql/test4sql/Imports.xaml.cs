@@ -19,6 +19,8 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Mono.Data.Sqlite;
 using System.Linq.Expressions;
+using oncar;
+using static Android.Provider.Telephony.Mms;
 
 namespace test4sql
 {
@@ -501,7 +503,24 @@ namespace test4sql
 
 
 
-
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS   PARAGGMASTER ("+
+     "[TRAPEZI][nvarchar](55) ,"+
+	"[IDERGAZ][int] ,"+
+	"[HME][datetime] ,"+
+	"[IDBARDIA][int] ,"+
+	"[AJIA][real] ,"+
+	"[TROPOS][int] ,"+
+	"[NUM1][int] ,"+
+	"[NUM2][int] ,"+
+	"[CH1][nvarchar] (255) ,"+
+	"[CH2][nvarchar] (255) ,"+
+	"[TABLETN][int] ,"+
+	"[IDPARAGG][int] ,"+
+	"[CASH][real] ,"+
+	"[PIS1][real] ,"+
+	"[PIS2][real] ,"+
+	"[KERA][real] ,"+
+    "[ID] INTEGER PRIMARY KEY )");
 
 
 

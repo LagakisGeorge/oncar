@@ -49,7 +49,7 @@ namespace oncar
             Globals.gTrapezi = lines[0];
             Globals.gTrapezi = Globals.gTrapezi.TrimStart();
             Globals.gTrapezi = Globals.gTrapezi.TrimEnd();
-            Globals.gIDPARAGG = AllRead("SELECT  STR(ISNULL(IDPARAGG,0)) FROM TABLES WHERE  ONO='" + Globals.gTrapezi+"'");
+            Globals.gIDPARAGG = AllRead("SELECT  cast(ISNULL(IDPARAGG,0) as varchar ) FROM TABLES WHERE  ONO='" + Globals.gTrapezi+"'");
            // Globals.gIDPARAGG = lines[1];
             titlos.Text = "Τραπέζι: " + Globals.gTrapezi;
             cmdtimologio.Text= AllRead("SELECT  ISNULL(CH2,'') AS CH2 FROM TABLES WHERE  ONO='" + Globals.gTrapezi + "'");
@@ -285,9 +285,9 @@ namespace oncar
 
 
                 // ΑΞΙΑ ΧΩΡΙΣ ΤΟ ΠΛΗΡΩΜΕΝΟ
-                string caji = AllRead("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+                string caji = AllRead("SELECT cast(round(SUM(POSO*TIMH),2) as varchar ) FROM PARAGG WHERE NUM1=0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
                 // ΑΞΙΑ ΗΔΗ ΠΛΗΡΩΜΕΝΩΝ
-                string cPLIR = AllRead("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
+                string cPLIR = AllRead("SELECT cast(round(SUM(POSO*TIMH),2) as varchar ) FROM PARAGG WHERE NUM1>0 AND  IDPARAGG=" + Globals.gIDPARAGG + "");
 
                AllExecute("update PARAGGMASTER SET AJIA=" + caji.Replace(",", ".") + ",NUM1=" + cPLIR.Replace(",", ".") + " WHERE  WHERE ID=" + Globals.gIDPARAGG + ";");
 
@@ -314,7 +314,7 @@ namespace oncar
 
             // await DisplayAlert("Info", $"{SelectedItem.Description}}", "Ok");
             //where SelectedItem.Description is a field in my model
-            string cc= AllRead("SELECT STR(ISNULL(ID,0)) FROM KATHG WHERE ONO='" + e.Item.ToString() + "'");
+            string cc= AllRead("SELECT CAST(ISNULL(ID,0) AS VARCHAR ) FROM KATHG WHERE ONO='" + e.Item.ToString() + "'");
             Globals.gKathg = cc;
 
             //string[] lines = Globals.gKathg.Split(';');
@@ -438,7 +438,7 @@ namespace oncar
 
             DataTable dt2;
             string ekpt = "0";
-            dt2 = ReadSQLServer("SELECT   str(ISNULL(PIS2,0),10,2) AS PIS2 FROM PARAGGMASTER  where   ID = " + Globals.gIDPARAGG + " ; ");
+            dt2 = ReadSQLServer("SELECT   cast(ISNULL(PIS2,0) as varchar ) AS PIS2 FROM PARAGGMASTER  where   ID = " + Globals.gIDPARAGG + " ; ");
             ekpt = dt2.Rows[0]["PIS2"].ToString();
             ekpt = ekpt.Replace(".", ",");
 
@@ -1064,7 +1064,7 @@ catch (Exception ex)
             BindingContext = this;
 
             // listERG.ScrollTo(viewModel.DataCollection[viewModel.DataCollection.Count - 1], ScrollToPosition.End, true);
-            con.Close();
+            //con.Close();
             BindingContext = this;
 
             if (listERG.ItemsSource != null)
@@ -1209,7 +1209,7 @@ catch (Exception ex)
 
             // string proekpt = "";,ISNULL(NUM2,0) AS ISTYP
             // float nproekpt = 0;
-            string caji = AllRead("SELECT STR(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0),10,2) AS AA  FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
+            string caji = AllRead("SELECT CAST(ISNULL(AJIA,0)-ISNULL(CASH,0)-ISNULL(PIS1,0)-ISNULL(PIS2,0)-ISNULL(KERA,0) AS varchar ) AS AA  FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
             // nproekpt = float.Parse(proekpt.Replace(",", "."));
             //  float nekpt = 0;
             // float  nekpt = float.Parse(ekpt);
@@ -1259,7 +1259,8 @@ catch (Exception ex)
         {
             if (Globals.gLocal=="1") {
                 Query = Query.ReplaceAll("ISNULL", "ifnull");
-                       MainPage.ExecuteSqlite(Query);
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                MainPage.ExecuteSqlite(Query);
             }
             else
             {
@@ -1273,7 +1274,8 @@ catch (Exception ex)
             if (Globals.gLocal == "1")
             {
                 Query = Query.ReplaceAll("ISNULL", "ifnull");
-               return PARAGGELIES.ReadSQL(Query); ;
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                return PARAGGELIES.ReadSQL(Query); ;
             }
             else
             {

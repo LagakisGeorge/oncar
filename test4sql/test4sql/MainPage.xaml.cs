@@ -1286,86 +1286,112 @@ NewMethod(e),
         private async void ftrapezia(object sender, EventArgs e)
         {
             DataTable dt2 = new DataTable();
-            string ERR = Globals.ReadSQLServerWithError("select top 1 ONO from TABLES");
-            ERR = ERR + ".....";
-            if (ERR.Substring(0, 5) == "ERROR") { 
-                await DisplayAlert("Αδυναμία Σύνδεσης", "", "οκ");
-                return;
-            }
-
-            try
+            if (Globals.gLocal == "0")
             {
-                int n;
-                string ccg = "";
-                string cc = "0";
+                string ERR = Globals.ReadSQLServerWithError("select top 1 ONO from TABLES");
+                ERR = ERR + ".....";
+                if (ERR.Substring(0, 5) == "ERROR")
+                {
+                    await DisplayAlert("Αδυναμία Σύνδεσης", "", "οκ");
+                    return;
+                }
+
+
+
+
+
                 try
                 {
-                   
-                    ccg = "SELECT isnull(STR(MAX(  ISNULL(ID,0)   )),'0')   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
-                    dt2 = trapparagg.ReadSQLServer(ccg);
-
-                    
-                   
-                    if (dt2 == null || dt2.Rows.Count == 0)
+                    int n;
+                    string ccg = "";
+                    string cc = "0";
+                    try
                     {
-                        // Throw the error or retrun the code 
-                        Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+
+                        ccg = "SELECT isnull(  CAST(MAX(ISNULL(ID,0)) AS VARCHAR )        ,'0')   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
+                        dt2 = trapparagg.ReadSQLServer(ccg);
+
+
+
+                        if (dt2 == null || dt2.Rows.Count == 0)
+                        {
+                            // Throw the error or retrun the code 
+                            Globals.AllExecute("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+                            return;
+                            n = 0;
+                        }
+                        else
+                        {
+
+                            cc = dt2.Rows[0]["aa"].ToString();
+                            n = Int32.Parse(cc);
+                        }
+
+                    }
+                    catch
+                    {
+                        await DisplayAlert("λαθος", "οκ2", "οκ");
                         return;
-                        n = 0;
+                    }
+
+
+
+                    if (n == 0)
+                    {
+                        Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, GETDATE(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
                     }
                     else
                     {
 
-                        cc = dt2.Rows[0]["aa"].ToString();
-                        n = Int32.Parse(cc);
+
+                        DataTable dt3 = trapparagg.ReadSQLServer("SELECT * FROM BARDIA WHERE ID= " + cc);
+                        if (dt3.Rows[0]["ISOPEN"].ToString() == "1")
+                        {
+                            Globals.gIDBARDIA = dt3.Rows[0]["ID"].ToString();
+
+                        }
+                        else
+                        {
+                            Globals.gIDBARDIA = "0";
+                            await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ", "   ", "OK");
+                            return;
+                        }
+
+
+
                     }
+
+
+                    await Navigation.PushAsync(new trapezia2());
 
                 }
                 catch
                 {
-                    await DisplayAlert("λαθος", "οκ2", "οκ");
+                    await DisplayAlert("λαθος", "οκ1", "οκ");
                     return;
                 }
-
-
-
-                if (n == 0)
-                {
-                    Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
-                }
-                else
-                {
-
-
-                    DataTable dt3 = trapparagg.ReadSQLServer("SELECT * FROM BARDIA WHERE ID= " + cc);
-                    if (dt3.Rows[0]["ISOPEN"].ToString() == "1")
-                    {
-                        Globals.gIDBARDIA = dt3.Rows[0]["ID"].ToString();
-
-                    }
-                    else
-                    {
-                        Globals.gIDBARDIA = "0";
-                        await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ", "   ", "OK");
-                        return;
-                    }
-
-
-
-                }
-
-
-                await Navigation.PushAsync(new trapezia2());
-
             }
-            catch
+            else
             {
-                await DisplayAlert("λαθος", "οκ1", "οκ");
-                    return;
-            }
 
+            }
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private async void fPELREP(object sender, EventArgs e)
         {

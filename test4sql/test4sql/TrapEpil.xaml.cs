@@ -1,5 +1,6 @@
 ﻿using Android.Views.Animations;
 using Mono.Data.Sqlite;
+using SharpCifs.Util.Sharpen;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -77,18 +78,52 @@ namespace oncar
             pageModel = new MainEIDHPageModel(this);
             BindingContext = pageModel;
         }
-        
+
+
+        private void AllExecute(string Query)
+        {
+            if (Globals.gLocal == "1")
+            {
+                Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                MainPage.ExecuteSqlite(Query);
+            }
+            else
+            {
+                Globals.ExecuteSQLServer(Query);
+            }
+
+        }
+        // AllRead
+        private string AllRead(string Query)
+        {
+            if (Globals.gLocal == "1")
+            {
+                Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                return PARAGGELIES.ReadSQL(Query); ;
+            }
+            else
+            {
+                return Globals.ReadSQLServer(Query);
+            }
+
+        }
+
+
+
+
         private void addParagg()
         {
 
 
             if (Globals.indexParaggLine == -1)  // νεα παραγγελια
             {
-                Globals.ExecuteSQLServer("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
+                AllExecute("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
                 string cIDParagg = "";
                 cIDParagg =Globals.ReadSQLServer("select max(ID) from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
 
-                Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
+                AllExecute("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
 
 
           
@@ -101,19 +136,19 @@ namespace oncar
             }
           //  for (int n = 1; n <= (Int32.Parse(tem.Text)); n++)
            // {
-                Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "'," + tem.Text + "," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
-               // ENA ENA  Globals.ExecuteSQLServer("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "',1," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
+                AllExecute("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "'," + tem.Text + "," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
+               // ENA ENA  AllExecute("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "',1," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
           //  }
   
             
             
             //  cIDParagg = Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
             // TA APLHRVTA  EINAI TO ΝUΜ1=0
-            string caji = Globals.ReadSQLServer("SELECT str(round(SUM(POSO*TIMH),2),6,2 ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
+            string caji = Globals.ReadSQLServer("SELECT cast(round(SUM(POSO*TIMH),2) as varchar ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
 
-            Globals.ExecuteSQLServer("update PARAGGMASTER SET AJIA="+caji.Replace(",",".")+" WHERE   ID="+ Globals.gIDPARAGG +  ";");
+            AllExecute("update PARAGGMASTER SET AJIA="+caji.Replace(",",".")+" WHERE   ID="+ Globals.gIDPARAGG +  ";");
 
-            Globals.ExecuteSQLServer("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+            AllExecute("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
 
         }
 

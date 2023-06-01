@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 using Mono.Data.Sqlite;
+using SharpCifs.Util.Sharpen;
 
 namespace test4sql
 {
@@ -34,6 +35,40 @@ namespace test4sql
         public static string gTITLOS;
 
         public static string gLocal;
+
+
+        public static void AllExecute(string Query)
+        {
+            if (Globals.gLocal == "1")
+            {
+                Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                MainPage.ExecuteSqlite(Query);
+            }
+            else
+            {
+                Globals.ExecuteSQLServer(Query);
+            }
+
+        }
+        // AllRead
+        public static string AllRead(string Query)
+        {
+            if (Globals.gLocal == "1")
+            {
+                Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                return PARAGGELIES.ReadSQL(Query); ;
+            }
+            else
+            {
+                return Globals.ReadSQLServer(Query);
+            }
+
+        }
+
+
+
 
         public static string GReadSQ(string Query)
         {
