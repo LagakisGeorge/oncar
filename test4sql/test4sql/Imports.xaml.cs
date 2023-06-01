@@ -388,16 +388,26 @@ namespace test4sql
                 
             }
 
+            await DisplayAlert("MEM ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
+
+            MainPage.ExecuteSqlite(c);
+
+            c = "CREATE TABLE IF NOT EXISTS BARDIA( [HME] [datetime]  , " +
+                "[IDERGAZ] [int]  , [NUM1] [int]  , [NUM2] [int]  , [CH1] [nvarchar](55)  ," +
+                " [CH2] [nvarchar](55)  , [ISOPEN] [int]  , [OPENH] [nvarchar](55)  , " +
+                "[CLOSEH] [nvarchar](55)  , [CASHTOT] [int]  , " +
+                "[CASH1] [int]  , [CASH2] [int]  , [CASH3] [int]  , [CASH4] [int]  ," +
+                " [CASH5] [int]  , [ID]  INTEGER PRIMARY KEY )  ";
 
 
 
 
 
-
-
-            await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
+            await DisplayAlert("BARDIA", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
              MainPage.ExecuteSqlite(c);
+
+
 
             c = " CREATE TABLE  IF NOT EXISTS TIMOKAT ( [KOD] [nvarchar](14) NOT NULL,"+
                 "[EKPT] [decimal](5, 2) NOT NULL, [TIMOK] [int] NOT NULL,[ONO] [nvarchar](35) NULL,"+
