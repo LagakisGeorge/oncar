@@ -395,197 +395,243 @@ namespace oncar
             //    "FROM PARAGG P    " +               
             //    "where P.NUM1=0 AND  P.IDPARAGG =  " + Globals.gIDPARAGG + " GROUP BY P.TIMH,P.ONO";
 
-
-
-            dt = ReadSQLServer(que); 
-            // }
-            // Monkeys.Add(new Monkey
-            myText.Add((MainPage.ToGreek737(Globals.gTITLOS)));
-
-
-            //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
-            string DDD = MainPage.ToGreek737(titlos.Text + "  .");
-            myText.Add(DDD);
-            //myText.Add(Globals.gTrapezi.ToString() +MainPage.ToGreek737( " * TΡΑΠΕΖΙ * ") +Globals.gTrapezi.ToString ()  + ".                \r\n");
-
-            myText.Add("-\r\n");
-            myText.Add("\r\n");
-            //  string BIG="";
-            float ss = 0;
-            string PROS = "";
-            for (int k = 0; k <= dt.Rows.Count - 1; k++)
+            try
             {
-                //ola
-                myText.Add((MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString() + "                                               ").Substring(0, 40)));
-                myText.Add("              "+dt.Rows[k]["POSO"].ToString() + "  X  " + MainPage.Right("    " + String.Format("{0:0.00}", dt.Rows[k]["TIMH"]), 5) + "       " + MainPage.Right("   " + String.Format("{0:0.00}", dt.Rows[k]["AXIA"]), 6));
-                ss = ss +  float.Parse(dt.Rows[k]["AXIA"].ToString());
 
-                //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
-                // myText.Add("\r\n");
 
-            }
-            if (part == 1)
-            {
-                myText.Add("              " + "                                                                          " + MainPage.ToGreek737(ss.ToString()));
 
-            }
-            else
-            {
+                // dt = ReadSQLServer (que); 
+                // }
+                // Monkeys.Add(new Monkey
+                myText.Add((MainPage.ToGreek737(Globals.gTITLOS)));
+
+
+                //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
+                string DDD = MainPage.ToGreek737(titlos.Text + "  .");
+                myText.Add(DDD);
+                //myText.Add(Globals.gTrapezi.ToString() +MainPage.ToGreek737( " * TΡΑΠΕΖΙ * ") +Globals.gTrapezi.ToString ()  + ".                \r\n");
+
+                myText.Add("-\r\n");
                 myText.Add("\r\n");
-                myText.Add("              "+MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", ss), 6));
-            }
+                //  string BIG="";
+                float ss = 0;
+                string PROS = "";
 
-
-            DataTable dt2;
-            string ekpt = "0";
-            dt2 = ReadSQLServer("SELECT   cast(ISNULL(PIS2,0) as varchar ) AS PIS2 FROM PARAGGMASTER  where   ID = " + Globals.gIDPARAGG + " ; ");
-            ekpt = dt2.Rows[0]["PIS2"].ToString();
-            ekpt = ekpt.Replace(".", ",");
-
-            if (float.Parse(ekpt) == 0) // ΔΕΝ ΕΧΕΙ ΑΠΟΘΗΚΕΥΜΕΝΗ ΕΚΠΤΩΣΗ
-            {
-
-                // string caji = ypol.ToString().Replace (",",".");
-                ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " + ss + "€");
-                
-
-
-
-                if (ekpt == null) ekpt = "0";
-
-                if (ekpt.Length == 0) { ekpt = "0"; 
-                } else
-                {
-                    if (IsNumeric(ekpt)) { }
-                    else
+                if (Globals.gLocal == "0")
+                {  //=======================sqlserver=========
+                    dt = ReadSQLServer(que);
+                    for (int k = 0; k <= dt.Rows.Count - 1; k++)
                     {
-                        ekpt = "0";
-                        await DisplayAlert("Error", "λαθος εκπτωση", "..");
-                        return;
+                        //ola
+                        myText.Add((MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString() + "                                               ").Substring(0, 40)));
+                        myText.Add("              " + dt.Rows[k]["POSO"].ToString() + "  X  " + MainPage.Right("    " + String.Format("{0:0.00}", dt.Rows[k]["TIMH"]), 5) + "       " + MainPage.Right("   " + String.Format("{0:0.00}", dt.Rows[k]["AXIA"]), 6));
+                        ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
+                        //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
+                        // myText.Add("\r\n");
+                    }
+                }
+                else
+                {
+                    string dbPath = Path.Combine(
+                                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                                    "adodemo.db3");
+                    SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                    connection.Open();
+                    var contents = connection.CreateCommand();
+                    contents.CommandText = que;
+                    var r = contents.ExecuteReader();
+                    int k = 0;
+                    while (r.Read())
+                    {
+                        //ola
+                        myText.Add((MainPage.ToGreek737(r["ONO"].ToString() + "                                               ").Substring(0, 40)));
+                        myText.Add("              " + r["POSO"].ToString() + "  X  " + MainPage.Right("    " + String.Format("{0:0.00}", r["TIMH"]), 5) + "       " + MainPage.Right("   " + String.Format("{0:0.00}", r["AXIA"]), 6));
+                        ss = ss + float.Parse(r["AXIA"].ToString());
+
                     }
 
-                    ekpt = ekpt.Replace(".", ",");
+
+                }
+
+
+
+
+
+                if (part == 1)
+                {
+                    myText.Add("              " + "                                                                          " + MainPage.ToGreek737(ss.ToString()));
+
+                }
+                else
+                {
+                    myText.Add("\r\n");
+                    myText.Add("              " + MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", ss), 6));
+                }
+
+
+                DataTable dt2;
+                string ekpt = "0";
+                ekpt = Globals.AllRead("SELECT   cast(ISNULL(PIS2,0) as varchar ) AS PIS2 FROM PARAGGMASTER  where   ID = " + Globals.gIDPARAGG + " ; ");
+                // ekpt = dt2.Rows[0]["PIS2"].ToString();
+                if (ekpt.Length == 0) { ekpt = "0"; }
+                ekpt = ekpt.Replace(".", ",");
+
+                if (float.Parse(ekpt) == 0) // ΔΕΝ ΕΧΕΙ ΑΠΟΘΗΚΕΥΜΕΝΗ ΕΚΠΤΩΣΗ
+                {
+
+                    // string caji = ypol.ToString().Replace (",",".");
+                    ekpt = await DisplayPromptAsync("Ποσό Εκπτωσης/Στρογγυλοποίησης", "Συνολο " + ss + "€");
+
+
+
+
+                    if (ekpt == null) ekpt = "0";
+
+                    if (ekpt.Length == 0)
+                    {
+                        ekpt = "0";
+                    }
+                    else
+                    {
+                        if (IsNumeric(ekpt)) { }
+                        else
+                        {
+                            ekpt = "0";
+                            await DisplayAlert("Error", "λαθος εκπτωση", "..");
+                            return;
+                        }
+
+                        ekpt = ekpt.Replace(".", ",");
+                    }
+
+                    if (ekpt == "0") { }
+                    else
+                    {
+                        AllExecute("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+
+
+                    }
+
+
+
                 }
 
                 if (ekpt == "0") { }
                 else
                 {
-                   AllExecute("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-                    
+                    //Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
+
+                    float nekpt = 0;
+                    nekpt = float.Parse(ekpt.Replace(".", ","));
+                    myText.Add("              " + MainPage.ToGreek737("εκπτωση") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", nekpt), 6));
+                    //if (ss - nekpt < 0)
+                    //    {
+                    //        await DisplayAlert("Error", "Λάθος έκπτωση", "");
+                    //        return;
+                    //    }
+                    myText.Add("              " + MainPage.ToGreek737("Πληρωτέο ") + "         " + MainPage.Right("   " + String.Format("{0:0.00}", ss - nekpt), 6));
+
+                    string synolon = String.Format("{0:0.00}", ss - nekpt);
+
+                    AllExecute("UPDATE TABLES SET CH1='" + synolon + "' WHERE ONO='" + Globals.gTrapezi + "'");
+
+                }
+                AllExecute("UPDATE  PARAGGMASTER SET  NUM2=1 WHERE ID=" + Globals.gIDPARAGG.ToString());
+                myText.Add("\r\n");
+                myText.Add("\r\n");
+                myText.Add("\r\n");
+                myText.Add("\r\n");
+                myText.Add("\r\n");
+                myText.Add("\r\n");
+                MainPage.SaveFile(myText, "Bill");
+
+                var printer = DependencyService.Get<test4sql.iPrinter>();
+                if (printer == null)
+                {
+                    await DisplayAlert("Error", "δεν υπαρχει συνδεση", "ok");
+                    return;
+                }
+                try
+                {
+                    // 'τυπωνω τον τιτλο πρωτα'
+                    //MainPage.BigLetters(ipAddress);
+                    //myTextTitlos.Add((MainPage.ToGreek737(Globals.gTITLOS)));
+                    //printer.Print(ipAddress, portNumber, myText);
+
+
+                    PrintSmall(ipAddress);
+                    /*
+                       List<byte> outputList1 = new List<byte>();
+
+                       //outputList1.Add(141);
+                       // BIG LETTERS  2H
+
+
+                       outputList1.Add(0x1D);
+                       outputList1.Add(0x21);
+                       outputList1.Add(0x11);  // 01 BIG HEIGHT   10 BIG WIDTH  11 BOTH BIGG   00 NOTHING BIG
+
+
+                       //outputList1.Add(0x1B);
+                       //outputList1.Add(0x4C);
+
+
+
+                       // TEST ΒΓΔ  ΗΕΧ
+                       //outputList1.Add(0x81);
+                       //outputList1.Add(0x82);
+                       //outputList1.Add(0x83);
+                       //outputList1.Add(141);// ΤΕΣΤ ΝΕΧΤ 3  
+                       //outputList1.Add(142);
+                       //outputList1.Add(143);
+                       //    byte[] bytes = Encoding.ASCII.GetBytes(BIG);
+
+                       Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
+                       pSocket1.Connect(ipAddress, portNumber);
+                       pSocket1.Send(outputList1.ToArray());
+                       pSocket1.Close();
+                    */
+                    //---------------------------------------------------------------------------
+                    printer.Print(ipAddress, portNumber, myText);
+                    //---------------------------------------------------------------------------
+                    CutPaper(ipAddress);
+                    /*
+                       List<byte> outputList = new List<byte>();
+                       //  CUT PAPER NEXT 2 A);
+                       outputList.Add(0x1B);
+                       outputList.Add(0x69);
+                       // BIG LETTERS ΨΑΝΨΕΚ
+                       outputList1.Add(0x1D);
+                       outputList1.Add(0x21);
+                       outputList1.Add(0x00);
+                       Socket pSocket = new Socket(SocketType.Stream, ProtocolType.IP);
+                       // Connect to the printer
+                       pSocket.Connect(ipAddress, portNumber);
+
+                       // ToDo: Send some commands to the printer
+                       // Send the command to the printer
+                       pSocket.Send(outputList.ToArray());
+                       // Close the socket connection when done
+                       pSocket.Close();
+                    */
+                    // AllExecute("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
 
                 }
 
+                catch (Exception ex)
+                {
+                    await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
+                    // await DisplayAlert("error2", "", "");
+                }
 
 
             }
-
-            if (ekpt == "0") { }
-            else
+            catch
             {
-                //Globals.ExecuteSQLServer("UPDATE  PARAGGMASTER SET  PIS2=ISNULL(PIS2,0)+" + ekpt.Replace(",", ".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());
-
-                float nekpt = 0;
-                nekpt = float.Parse(ekpt.Replace(".",","));
-                myText.Add("              " + MainPage.ToGreek737( "εκπτωση") + "           " + MainPage.Right("   " + String.Format("{0:0.00}", nekpt), 6));
-            //if (ss - nekpt < 0)
-            //    {
-            //        await DisplayAlert("Error", "Λάθος έκπτωση", "");
-            //        return;
-            //    }
-                myText.Add("              " + MainPage.ToGreek737("Πληρωτέο ") + "         " + MainPage.Right("   " + String.Format("{0:0.00}", ss-nekpt), 6));
-
-                string synolon = String.Format("{0:0.00}", ss - nekpt);
-                
-               AllExecute("UPDATE TABLES SET CH1='"+synolon+"' WHERE ONO='" + Globals.gTrapezi + "'");
-               
-            }
-           AllExecute("UPDATE  PARAGGMASTER SET  NUM2=1 WHERE ID=" + Globals.gIDPARAGG.ToString());
-            myText.Add("\r\n");
-            myText.Add("\r\n");
-            myText.Add("\r\n");
-            myText.Add("\r\n");
-            myText.Add("\r\n");
-            myText.Add("\r\n");
-            MainPage.SaveFile(myText,"Bill");
-
-            var printer = DependencyService.Get<test4sql.iPrinter>();
-            if (printer == null)
-            {
-                await DisplayAlert("Error", "δεν υπαρχει συνδεση", "ok");
-                return;
-            }
-            try
-            {
-               // 'τυπωνω τον τιτλο πρωτα'
-                //MainPage.BigLetters(ipAddress);
-                //myTextTitlos.Add((MainPage.ToGreek737(Globals.gTITLOS)));
-                //printer.Print(ipAddress, portNumber, myText);
-               
-
-                PrintSmall(ipAddress);
-             /*
-                List<byte> outputList1 = new List<byte>();
-
-                //outputList1.Add(141);
-                // BIG LETTERS  2H
-
-
-                outputList1.Add(0x1D);
-                outputList1.Add(0x21);
-                outputList1.Add(0x11);  // 01 BIG HEIGHT   10 BIG WIDTH  11 BOTH BIGG   00 NOTHING BIG
-
-
-                //outputList1.Add(0x1B);
-                //outputList1.Add(0x4C);
-
-
-
-                // TEST ΒΓΔ  ΗΕΧ
-                //outputList1.Add(0x81);
-                //outputList1.Add(0x82);
-                //outputList1.Add(0x83);
-                //outputList1.Add(141);// ΤΕΣΤ ΝΕΧΤ 3  
-                //outputList1.Add(142);
-                //outputList1.Add(143);
-                //    byte[] bytes = Encoding.ASCII.GetBytes(BIG);
-
-                Socket pSocket1 = new Socket(SocketType.Stream, ProtocolType.IP);
-                pSocket1.Connect(ipAddress, portNumber);
-                pSocket1.Send(outputList1.ToArray());
-                pSocket1.Close();
-             */
-                //---------------------------------------------------------------------------
-                printer.Print(ipAddress, portNumber, myText);
-                //---------------------------------------------------------------------------
-                CutPaper(ipAddress);
-             /*
-                List<byte> outputList = new List<byte>();
-                //  CUT PAPER NEXT 2 A);
-                outputList.Add(0x1B);
-                outputList.Add(0x69);
-                // BIG LETTERS ΨΑΝΨΕΚ
-                outputList1.Add(0x1D);
-                outputList1.Add(0x21);
-                outputList1.Add(0x00);
-                Socket pSocket = new Socket(SocketType.Stream, ProtocolType.IP);
-                // Connect to the printer
-                pSocket.Connect(ipAddress, portNumber);
-
-                // ToDo: Send some commands to the printer
-                // Send the command to the printer
-                pSocket.Send(outputList.ToArray());
-                // Close the socket connection when done
-                pSocket.Close();
-             */
-              // AllExecute("update PARAGG set ENERGOS=1 where IDPARAGG = " + Globals.gIDPARAGG);
 
             }
 
-            catch (Exception ex)
-            {
-                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ToString(), "OK");
-                // await DisplayAlert("error2", "", "");
-            }
+
         }
 
 
@@ -644,10 +690,7 @@ namespace oncar
 
 
 
-            dt = ReadSQLServer("SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, ISNULL(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  " +
-                " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
-                " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ");
-            //}
+                      //}
            // else
            // {     // ολα 
                 // dt = ReadSQLServer("SELECT  ISNULL(ONO,'')+SPACE(32) AS ONO, ISNULL(POSO,0) as POSO, ISNULL(TIMH,0) AS TIMH,ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*TIMH,0) AS AXIA  FROM PARAGG where NUM1=0 AND  IDPARAGG = " + Globals.gIDPARAGG + "  order by ID ; ");
@@ -682,107 +725,167 @@ namespace oncar
             i2 = 0;
             i3 = 0;
             string KANON = "";
-           for (int k = 0; k <= dt.Rows.Count - 1; k++)
-            {
-                // if (dt.Rows[k]["ONO"].ToString()=="1")
-                // {
-                KANON= dt.Rows[k]["POSO"].ToString().Trim()+"x"+(MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
-                // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
-                // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ
-                //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
-                //  {
-                //      myText.Add(KANON.Trim());
-                //      i1 = i1 + 1;
-                //  }
-                
-                // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
-                myText.Add(KANON.Trim());
-                      i1 = i1 + 1;
+            string sqlq1 = "SELECT  ISNULL(PARAGG.ONO,'')+SPACE(32) AS ONO, ISNULL(POSO,0) as POSO, ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')+SPACE(22) AS PROSUETA,LEFT(ISNULL(PARAGG.CH1,'')+SPACE(31),31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA , ISNULL(EIDH.NUM1,1) as PRINTER  " +
+                           " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
+                           " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ";
+            //dt = ReadSQLServer(sqlq1);
 
-
+            if (Globals.gLocal == "0") {  //=======================sqlserver==============================
+                dt = ReadSQLServer(sqlq1);
+                for (int k = 0; k <= dt.Rows.Count - 1; k++)
                 {
-                    if (dt.Rows[k]["PRINTER"].ToString() == "2")
-                    {
-                        myText2.Add(KANON.Trim());
-                        i2 = i2 + 1;
-                    }
-                    if (dt.Rows[k]["PRINTER"].ToString() == "3")
-                    {
-                        myText3.Add(KANON.Trim());
-                        i3 = i3 + 1;
-                    }
-                }
+                    // if (dt.Rows[k]["ONO"].ToString()=="1")
+                    // {
+                    KANON = dt.Rows[k]["POSO"].ToString().Trim() + "x" + (MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
-
-
-
-
-                // myText.Add(dt.Rows[k]["POSO"].ToString() + " " + PARAGGELIES.toGreek(dt.Rows[k]["ONO"].ToString().Substring(0, 30))); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
-
-                PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19).TrimEnd()) + "*" + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
-             if (PROS.Trim().Length > 0  )
-               
-                
-                
-                
-                
-                {
+                    // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
+                    // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ
                     //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
-                    //      myText.Add(PROS.Trim());
-                    //  i1 = i1 + 1;
+                    //  {
+                    //      myText.Add(KANON.Trim());
+                    //      i1 = i1 + 1;
+                    //  }
 
-
-                  //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
-                  //  {
-                        myText.Add(PROS.Trim());
-                        i1 = i1 + 1;
-                   // }
-                    {
-                    if (dt.Rows[k]["PRINTER"].ToString() == "2")
-                    {
-                        myText2.Add(PROS.Trim());
-                        i2 = i2 + 1;
-                    }
+                    // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
+                    myText.Add(KANON.Trim());
+                    i1 = i1 + 1;
+                    
+                        if (dt.Rows[k]["PRINTER"].ToString() == "2")
+                        {
+                            myText2.Add(KANON.Trim());
+                            i2 = i2 + 1;
+                        }
                         if (dt.Rows[k]["PRINTER"].ToString() == "3")
                         {
-                        myText3.Add(PROS.Trim());
-                        i3 = i3 + 1;
+                            myText3.Add(KANON.Trim());
+                            i3 = i3 + 1;
                         }
-                }
-
-
-
-                }
-
-
-               
-               
-               
                     
-                     
-                   
-               // } else
-               // {    //ola
-                //    myText.Add((dt.Rows[k]["POSO"].ToString() + " " + MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString()+"                              ").Substring(0, 30))+ "   " + (dt.Rows[k]["TIMH"].ToString()+"     ").Substring(0, 5) + "    " + (dt.Rows[k]["AXIA"].ToString()+"     ").Substring(0, 5)) ;
-                 //   ss = ss + float.Parse(dt.Rows[k]["AXIA"].ToString());
-               // }
-              //  BIG = BIG + MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19)) + " " + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
-               // myText.Add("\r\n");
 
-           }
-          //  if (part == 1) 
-          //  {
+                    PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19).TrimEnd()) + "*" + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
+                    if (PROS.Trim().Length > 0)
+                    {
+                        myText.Add(PROS.Trim());
+                        i1 = i1 + 1;
+                        
+                            if (dt.Rows[k]["PRINTER"].ToString() == "2")
+                            {
+                                myText2.Add(PROS.Trim());
+                                i2 = i2 + 1;
+                            }
+                            if (dt.Rows[k]["PRINTER"].ToString() == "3")
+                            {
+                                myText3.Add(PROS.Trim());
+                                i3 = i3 + 1;
+                            }
+                        
+                    }
+                }
+            } else  { //==============  sqlite =============================
+                      //sqlq1 = "SELECT  IfNULL(PARAGG.ONO,'') AS ONO, IfnULL(POSO,0) as POSO, IfNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,IfNULL(PROSUETA,'') AS PROSUETA,IfNULL(PARAGG.CH1,'') AS SXOLIA,IfNULL(POSO*PARAGG.TIMH,0) AS AXIA , IfNULL(EIDH.NUM1,1) as PRINTER  " +
+                      //          " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
+                      //          " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ";
+
+
+                sqlq1 = "SELECT  ISNULL(PARAGG.ONO,'') || printf('%*s', 32, ' ') AS ONO, ISNULL(POSO,0) as POSO " +
+                    ", ISNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,ISNULL(PROSUETA,'')|| printf('%*s', 22, ' ') AS PROSUETA " +
+                   ", substr(ISNULL(PARAGG.CH1,'')|| printf('%*s', 31, ' '),1,31) AS SXOLIA,ISNULL(POSO*PARAGG.TIMH,0) AS AXIA  " +
+                    ", ISNULL(EIDH.NUM1,1) as PRINTER  " +
+                          " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
+                          " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where (ENERGOS IS NULL) AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ";
+
+
+
+
+
+                string dbPath = Path.Combine(
+                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                 "adodemo.db3");
+                SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                connection.Open();
+               
+               
+                try
+                {
+                    Globals.indexParaggLine = -1;  // για να καταλαβαίνω αν ειναι αδεια η παραγγελία
+
+                    sqlq1 = sqlq1.ReplaceAll("ISNULL", "ifnull");
+                    //sqlq1 = sqlq1.ReplaceAll("+", " || ");
+
+                    var contents = connection.CreateCommand();
+                    contents.CommandText = sqlq1;
+                    var r = contents.ExecuteReader();
+                    int k = 0;
+                    while (r.Read())
+                    {
+                        KANON = r["POSO"].ToString().Trim() + "x" + (MainPage.ToGreek737(r["ONO"].ToString().Trim()));
+                        // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
+                        myText.Add(KANON.Trim());
+                        i1 = i1 + 1;
+                        
+                            if (r["PRINTER"].ToString() == "2")
+                            {
+                                myText2.Add (KANON.Trim());
+                                i2 = i2 + 1;
+                            }
+                            if (r["PRINTER"].ToString() == "3")
+                            {
+                                myText3.Add(KANON.Trim());
+                                i3 = i3 + 1;
+                            }
+
+                        PROS = MainPage.ToGreek737(r["PROSUETA"].ToString().Substring(0, 19).TrimEnd()) + "*" + MainPage.ToGreek737(r["SXOLIA"].ToString().Substring(0, 29));
+                        if (PROS.Trim().Length > 0)
+                        { 
+                            myText.Add(PROS.Trim());
+                            i1 = i1 + 1;
+                            
+                                if (r["PRINTER"].ToString() == "2")
+                                {
+                                    myText2.Add(PROS.Trim());
+                                    i2 = i2 + 1;
+                                }
+                                if (r["PRINTER"].ToString() == "3")
+                                {
+                                    myText3.Add(PROS.Trim());
+                                    i3 = i3 + 1;
+                                }
+                            
+                        }
+
+
+                    }
+
+
+
+}
+                //catch
+                //{
+                //    //ff = "error";
+                //}
+                catch (Exception ex)
+                {
+                    await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                }
+                connection.Close();
+
+            }
+
+
+
+
+
+
+
+
+          
                 string cc1="                                                                          "+MainPage.ToGreek737( ss.ToString());
                myText.Add(cc1);
                myText2.Add(cc1);
                myText3.Add(cc1);
 
-           // }
-           // else
-           // {
-            //    myText.Add(MainPage.ToGreek737("ΣΥΝΟΛΟ ") + "    " + ss.ToString());
-           // }
+           
                
             myText.Add( "\r\n");
             myText.Add("\r\n");
@@ -1183,28 +1286,37 @@ catch (Exception ex)
 
 
 
-
+           
 
         }
 
         private async void PLIROMI(object sender, EventArgs e)
         {
-            string catyp = AllRead("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
-            if (Int32.Parse(catyp) > 0)
+            try
             {
-                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
-                return;
+
+
+                string catyp = AllRead("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
+                if (Int32.Parse(catyp) > 0)
+                {
+                    await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
+                    return;
+                }
+
+
+                catyp = AllRead("SELECT  cast(ISNULL(NUM2,0) as varchar ) AS ISTYP FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
+                if (catyp.Length == 0) { catyp = "0"; }
+                if (Int32.Parse(catyp) == 0)
+                {
+                    await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΤΥΠΩΘΗΚΕ ΛΟΓΑΡΙΑΣΜΟΣ", "OK");
+                    return;
+                }
+
             }
-
-
-            float catyp2 = Globals.FReadSQLServer("SELECT ISNULL(NUM2,0) AS ISTYP FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
-            if (catyp2== 0)
+            catch
             {
-                await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΤΥΠΩΘΗΚΕ ΛΟΓΑΡΙΑΣΜΟΣ", "OK");
-                return;
+
             }
-
-
 
 
             // string proekpt = "";,ISNULL(NUM2,0) AS ISTYP
@@ -1224,8 +1336,16 @@ catch (Exception ex)
            if (action.Substring(0, 1) == "4") { return; }
            if (action.Substring(0, 1) == " ") { return; }
            AllExecute("UPDATE TABLES SET KATEILHMENO=0,CH2='',CH1='',IDPARAGG=0 WHERE ONO='" + Globals.gTrapezi  + "'");
-           AllExecute("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
+           if(Globals.gLocal == "0")
+            {
+                 AllExecute("UPDATE PARAGGMASTER SET CH2= CONVERT(CHAR(10),GETDATE(),103),TROPOS="+action.Substring(0,1)+"   WHERE ID=" + Globals.gIDPARAGG );
 
+            }
+            else
+            {
+                AllExecute("update PARAGGMASTER SET CH2=DATE(),TROPOS="+action.Substring(0,1)+"    WHERE ID=" + Globals.gIDPARAGG);
+            }
+        
             if (action.Substring(0, 1) == "1")
             {
                AllExecute("UPDATE  PARAGGMASTER SET CASH=ISNULL(CASH,0)+" + caji.Replace(",",".") + " WHERE ID=" + Globals.gIDPARAGG.ToString());

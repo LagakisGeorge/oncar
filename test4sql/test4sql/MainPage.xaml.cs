@@ -1286,7 +1286,7 @@ NewMethod(e),
         private async void ftrapezia(object sender, EventArgs e)
         {
             DataTable dt2 = new DataTable();
-            if (Globals.gLocal == "0")
+            if (Globals.gLocal == "0")  // sqlserver
             {
                 string ERR = Globals.ReadSQLServerWithError("select top 1 ONO from TABLES");
                 ERR = ERR + ".....";
@@ -1372,7 +1372,84 @@ NewMethod(e),
                 }
             }
             else
-            {
+            {   //----------------  SQLLITE ----------------------------
+
+                try
+                {
+                    int n;
+                    string ccg = "";
+                    string cc = "0";
+                    try
+                    {
+
+                        ccg = "SELECT IFnull(  CAST(   MAX(ID)   AS VARCHAR )        ,'0')   as aa FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString();
+                        cc = Globals.AllRead(ccg);
+                        n = Int32.Parse(cc);                      
+
+                    }
+                    catch
+                    {
+                        await DisplayAlert("λαθος", "οκ12", "οκ");
+                        return;
+                    }
+
+
+
+                    if (n == 0)
+                    {
+                        Globals.AllExecute("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(DATE(), 1, DATE(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+                    }
+                    else
+                    {
+
+                        string c3 = "";
+                        c3=Globals.AllRead("SELECT CAST(ISOPEN AS VARCHAR) FROM BARDIA WHERE ID= " + cc);
+                        if (c3 == "1")
+                        {
+                            Globals.gIDBARDIA =  Globals.AllRead("SELECT cast(ID AS VARCHAR) FROM BARDIA WHERE ID= " + cc);
+
+                        }
+                        else
+                        {
+                            Globals.gIDBARDIA = "0";
+                            await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ", "   ", "OK");
+                            return;
+                        }
+
+
+
+                    }
+
+
+                    await Navigation.PushAsync(new trapezia2());
+
+                }
+                catch
+                {
+                    await DisplayAlert("λαθος", "οκ1", "οκ");
+                    return;
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             }
 
@@ -1414,14 +1491,21 @@ NewMethod(e),
 
 
 
-            DataTable dt3 = new DataTable();
-            // ΒΡΕΣ AN EXV ANOIXTA TRAPEZIA
-            dt3 = trapparagg.ReadSQLServer("SELECT * FROM TABLES where KATEILHMENO=1 AND  NUM1=" + Globals.gUserWaiter.ToString());
+            //DataTable dt3 = new DataTable();
+            //// ΒΡΕΣ AN EXV ANOIXTA TRAPEZIA
+            //dt3 = trapparagg.ReadSQLServer("SELECT * FROM TABLES where KATEILHMENO=1 AND  NUM1=" + Globals.gUserWaiter.ToString());
 
 
-            if (dt3.Rows.Count > 0)
+            //if (dt3.Rows.Count > 0)
+            //{
+            //    await DisplayAlert("ΚΛΕΙΣΤΕ ΤΑ ΑΝΟΙΧΤΑ ΤΡΑΠΕΖΙΑ", dt3.Rows.Count.ToString() + " ανοικτα", "OK");
+            //    return;
+            //}
+
+            string cc4=Globals.AllRead("select cast(count(*) as varchar from TABLES where KATEILHMENO=1 AND  NUM1=" + Globals.gUserWaiter.ToString());
+            if (Int32.Parse (cc4) > 0)
             {
-                await DisplayAlert("ΚΛΕΙΣΤΕ ΤΑ ΑΝΟΙΧΤΑ ΤΡΑΠΕΖΙΑ", dt3.Rows.Count.ToString() + " ανοικτα", "OK");
+                await DisplayAlert("ΚΛΕΙΣΤΕ ΤΑ ΑΝΟΙΧΤΑ ΤΡΑΠΕΖΙΑ", cc4 + " ανοικτα", "OK");
                 return;
             }
 
@@ -1429,43 +1513,59 @@ NewMethod(e),
 
 
 
-
-
-            DataTable dt2 = new DataTable();
+            //DataTable dt2 = new DataTable();
             // ΒΡΕΣ ΤΗΝ ΤΕΛΕΥΤΑΙΑ ΒΑΡΔΙΑ ΤΟΥ ΣΕΡΒΙΤΟΡΟΥ ν
-            dt2 = trapparagg.ReadSQLServer("SELECT TOP 1 * FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString()+" ORDER BY ID DESC" );
+            //dt2 = trapparagg.ReadSQLServer("SELECT TOP 1 * FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString()+" ORDER BY ID DESC" );
+            cc4 = Globals.AllRead("select cast(count(*) as varchar from BARDIA where NUM1=" + Globals.gUserWaiter.ToString()+" " );
 
-
-            if (dt2.Rows.Count == 0)   // EINAI NEOS SERBITOROS ΠΑΡΘΕΝΙΚΗ ΕΜΦΑΝΙΣΗ
-            {
-                Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + "0" + ", " + Globals.gUserWaiter.ToString() + ")");
+            if  (Int32.Parse(cc4) == 0)  // EINAI NEOS SERBITOROS ΠΑΡΘΕΝΙΚΗ ΕΜΦΑΝΙΣΗ
+                {
+                if (Globals.gLocal == "0")
+                {
+                    Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, GETDATE(), " + "0" + ", " + Globals.gUserWaiter.ToString() + ")");
+                }else{
+                    Globals.AllExecute ("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(DATE(),DATE(), 1, DATE(), " + "0" + ", " + Globals.gUserWaiter.ToString() + ")");
+                }
+           
                 //   Globals.gIDBARDIA = cc;
                 await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ.ΤΩΡΑ ΜΟΛΙΣ ΑΝΟΙΞΕ ΝΕΑ", "   ", "OK");
                 return;
             }
             else // βρηκε βαρδια να δω αν ειναι ανοιχτη
             {
-
-                string cc = dt2.Rows[0]["ISOPEN"].ToString();
-                int n = Int32.Parse(cc);
-                if (n == 0)  // ΕΙΝΑΙ ΚΛΕΙΣΤΗ Η ΒΑΡΔΙΑ
+                if (Globals.gLocal == "0")
                 {
-                    await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ ΓΙΑ ΝΑ ΚΛΕΙΣΕΙ.", "   ", "OK");
+                    DataTable dt2 = new DataTable();
+                    // ΒΡΕΣ ΤΗΝ ΤΕΛΕΥΤΑΙΑ ΒΑΡΔΙΑ ΤΟΥ ΣΕΡΒΙΤΟΡΟΥ ν
+                    dt2 = trapparagg.ReadSQLServer("SELECT TOP 1 * FROM BARDIA where NUM1=" + Globals.gUserWaiter.ToString() + " ORDER BY ID DESC");
 
-                    var action2 = await DisplayAlert("ΕΝΑΡΞΗ ΝΕΑΣ ΒΑΡΔΙΑΣ;", "Εισαι σίγουρος?", "Ναι", "Οχι");
-                    if (action2)
+                    string cc = dt2.Rows[0]["ISOPEN"].ToString();
+                    int n = Int32.Parse(cc);
+                    if (n == 0)  // ΕΙΝΑΙ ΚΛΕΙΣΤΗ Η ΒΑΡΔΙΑ
                     {
-                        Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
-                        //   Globals.gIDBARDIA = cc;
-                        await DisplayAlert("ΜΟΛΙΣ ΑΝΟΙΞΕ ΝΕΑ", "   ", "OK");
-                        return;
+                        await DisplayAlert("ΔΕΝ ΥΠΗΡΧΕ ΑΝΟΙΧΤΗ ΒΑΡΔΙΑ ΓΙΑ ΝΑ ΚΛΕΙΣΕΙ.", "   ", "OK");
+
+                        var action2 = await DisplayAlert("ΕΝΑΡΞΗ ΝΕΑΣ ΒΑΡΔΙΑΣ;", "Εισαι σίγουρος?", "Ναι", "Οχι");
+                        if (action2)
+                        {
+                            Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
+                            //   Globals.gIDBARDIA = cc;
+                            await DisplayAlert("ΜΟΛΙΣ ΑΝΟΙΞΕ ΝΕΑ", "   ", "OK");
+                            return;
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
-                    else
-                    {
-                        return;
-                    }
+                    Globals.gIDBARDIA = dt2.Rows[0]["ID"].ToString();
+                }else
+                {
+                  //--------------------------------------------------------------------------
+                    // ---------------------------sqlite --------------------------------
+
+
                 }
-                Globals.gIDBARDIA = dt2.Rows[0]["ID"].ToString();
             }
 
             // ΟΚ Η ΒΑΡΔΙΑ ΕΙΝΑΙ ΑΝΟΙΧΤΗ

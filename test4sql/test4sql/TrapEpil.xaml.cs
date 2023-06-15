@@ -15,6 +15,7 @@ using test4sql;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
+using static Android.Content.ClipData;
 
 namespace oncar
 {
@@ -105,7 +106,7 @@ namespace oncar
             }
             else
             {
-                return Globals.ReadSQLServer(Query);
+                return Globals.AllRead(Query);
             }
 
         }
@@ -121,7 +122,7 @@ namespace oncar
             {
                 AllExecute("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
                 string cIDParagg = "";
-                cIDParagg =Globals.ReadSQLServer("select max(ID) from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
+                cIDParagg =Globals.AllRead ("select max(ID) from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
 
                 AllExecute("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
 
@@ -142,9 +143,9 @@ namespace oncar
   
             
             
-            //  cIDParagg = Globals.ReadSQLServer("select max(ID) from PARAGGMASTER");
+            //  cIDParagg = Globals.AllRead("select max(ID) from PARAGGMASTER");
             // TA APLHRVTA  EINAI TO ΝUΜ1=0
-            string caji = Globals.ReadSQLServer("SELECT cast(round(SUM(POSO*TIMH),2) as varchar ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
+            string caji = Globals.AllRead("SELECT cast(round(SUM(POSO*TIMH),2) as varchar ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
 
             AllExecute("update PARAGGMASTER SET AJIA="+caji.Replace(",",".")+" WHERE   ID="+ Globals.gIDPARAGG +  ";");
 
@@ -368,11 +369,80 @@ namespace oncar
             AddItems();
         }
 
+        private void addItemsSqlite()
+
+
+        {
+
+            try
+            {
+                string dbPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                        "adodemo.db3");
+                SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                connection.Open();
+                string CZ = "";
+                if (Globals.gTrapezi.Substring(0, 1) == "Π")
+                {
+                    CZ = "SELECT  ONO, ID,IfNULL(NUM2,0) AS TIMH FROM EIDH WHERE KATHG=" + Globals.gKathg + "  order by ONO ; ";
+                }
+                else
+                {
+                    CZ = "SELECT  ONO, ID,TIMH FROM EIDH WHERE KATHG=" + Globals.gKathg + "  order by ONO ; ";
+                }
+
+
+
+
+                var contents = connection.CreateCommand();
+                contents.CommandText =CZ;
+
+                var r = contents.ExecuteReader();
+                while (r.Read())
+                {
+
+
+                    string fONO;
+                    fONO = r["ONO"].ToString().Replace("*", " ");
+                    string ft;
+                    ft = r["timh"].ToString();
+                    ItemsEidh.Add(string.Format("{0}", fONO + "*" + ft));
+
+
+
+                    
+
+
+                }
+                connection.Close();
+            }
+            catch
+            {
+                //ff = "error";
+            }
+
+
+
+
+        }
+
+
+
 
 
         private async void AddItems()
 
         {
+
+            if (Globals.gLocal == "1")  // global sqlite or sqlserver
+            {
+                addItemsSqlite();
+                return;
+            }
+
+
+
+
             if (Globals.cSQLSERVER.Length < 2)
             {
                 // await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
@@ -488,11 +558,88 @@ namespace oncar
            // ItemTappedCommand = new Command(() => YourSub());
         }
 
-      
+        private void addItemsSqlite()
 
-        private  void AddItems()
 
         {
+
+        try 
+         { 
+            string dbPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+
+            // ΒΡΙΣΚΩ ΤΟ CH2 POY EXEI TA PROSUETA TOY EIDOYS
+         //   DataTable dt0 = new DataTable();
+            string CZ = "";
+            string cc = "";
+            CZ = "select CH2 FROM EIDH WHERE ONO='" + Globals.gIDEIDOS + "'";
+
+            var contents1 = connection.CreateCommand();
+            contents1.CommandText = CZ;
+            var r1 = contents1.ExecuteReader();
+            while (r1.Read())
+            {
+                 cc = r1["CH2"].ToString() + "0";
+
+            }
+
+
+
+
+                //string ff = "";
+           
+
+
+                var contents = connection.CreateCommand();
+                contents.CommandText = "SELECT    ONO, ID FROM XAR1 where ID IN (" + cc + ") ; ";
+                var r = contents.ExecuteReader();
+                while (r.Read())
+                {
+
+
+                    string fONO;
+                    fONO = r["ONO"].ToString();
+
+                    Itemsx.Add(string.Format("{0}", fONO));
+
+
+                } 
+                connection.Close();
+            }
+            catch
+            {
+                //ff = "error";
+            }
+           
+
+
+
+        }
+
+    
+
+        
+
+            
+
+
+
+            private void AddItems()
+
+        {
+
+            if (Globals.gLocal == "1")  // global sqlite or sqlserver
+            {
+                addItemsSqlite();
+                return;
+            }
+
+
+
+
             if (Globals.cSQLSERVER.Length < 2)
             {
                 // await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");

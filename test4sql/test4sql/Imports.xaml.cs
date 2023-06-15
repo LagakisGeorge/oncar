@@ -406,6 +406,11 @@ namespace test4sql
             await DisplayAlert("BARDIA", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
              MainPage.ExecuteSqlite(c);
+            if (PARAGGELIES.NReadSQL("select count(*) from BARDIA") < 1)
+            {
+                MainPage.ExecuteSqlite("INSERT INTO BARDIA (ISOPEN) VALUES (0)");
+         
+            }
 
 
 
