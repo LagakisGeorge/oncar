@@ -661,14 +661,57 @@ namespace oncar
 
         }
 
+        private async void PrintParWin(int part)
+        {
 
+            // ΔΙΑΒΑΖΩ ΤΟ SQLITE GIA NA TA METAFERC STO SQLSERVER
+            Globals.gconnection.Open();
+            // query the database to prove data was inserted!
+            var contents = Globals.gconnection.CreateCommand();
+           string Query="SELECT  IFNULL(IDPARAGG,0) AS IDPARAGG,IFNULL(TRAPEZI,0) AS TRAPEZI,IFNULL(PARAGG.ONO,'') AS ONO, IfnULL(POSO,0) as POSO, IfNULL(PARAGG.TIMH,0) AS TIMH,PARAGG.ID,IfNULL(PROSUETA,'') AS PROSUETA,IfNULL(PARAGG.CH1,'') AS CH1,IfNULL(POSO*PARAGG.TIMH,0) AS AXIA , IfNULL(EIDH.NUM1,1) as PRINTER  " +
+                          " FROM PARAGG INNER JOIN EIDH ON PARAGG.ONO=EIDH.ONO " +
+                          " INNER JOIN KATHG ON EIDH.KATHG=KATHG.ID where ifnull(ENERGOS,0)=0 AND PARAGG.IDPARAGG = " + Globals.gIDPARAGG + "  order by KATHG.CH1 ; ";
+            contents.CommandText = Query;
+            var r = contents.ExecuteReader();
+            
+            string cc = "";
+            int ncount = 0;
+            string mCASH = "", mPIS1 = "", mPIS2 = "", mKERA = "";
+
+            string Q = "";
+            while (r.Read())
+            {
+                ncount = ncount + 1;
+                Q = "INSERT INTO PARAGGPDA (PRINTER,IDPARAGG,TRAPEZI,ONO,PROSUETA,CH1SXOLIA,HME,POSO,TIMH) VALUES (";
+                Q = Q + r["printer"].ToString ()+"," +r["idparagg"].ToString ()+",'"+r["trapezi"].ToString()+ "','" + r["ONO"].ToString() + "','" + r["PROSUETA"].ToString();
+                Q = Q + "','" + r["CH1"].ToString() + "',GETDATE()," + r["poso"].ToString() + "," + r["timh"].ToString ()+")";
+                Globals.ExecuteSQLServer(Q);
+
+            }
+            Globals.gconnection.Close();
+
+
+
+
+
+        }
 
 
 
 
         private async void printing(int part) //  object sender, EventArgs e)
         {
-            string ipAddress = Globals.cIPPR1; // "192.168.1.120";
+
+
+            if (Globals.gLocal == "3")
+            {  //=============
+                PrintParWin(1);
+                return;
+            }
+
+
+
+                string ipAddress = Globals.cIPPR1; // "192.168.1.120";
             int portNumber = 9100;
             List<string> myText = new List<string>();
             List<string> myText2 = new List<string>();
@@ -1189,8 +1232,9 @@ catch (Exception ex)
         private  async void  Show_listsql_Paragg(string ono)
          {
 
-            if (Globals.gLocal == "1")  // global sqlite or sqlserver
-            {
+            if (Globals.gLocal == "0")  // global sqlite or sqlserver
+            { }
+            else { 
                 ShowItemsSqlite(ono);
                 return;
             }
@@ -1377,29 +1421,33 @@ catch (Exception ex)
 
         private void AllExecute (string Query)
         {
-            if (Globals.gLocal=="1") {
-                Query = Query.ReplaceAll("ISNULL", "ifnull");
-                Query = Query.ReplaceAll("GETDATE", "DATE");
-                MainPage.ExecuteSqlite(Query);
+            if (Globals.gLocal=="0") {
+                
+
+                Globals.ExecuteSQLServer(Query);
             }
             else
             {
-                Globals.ExecuteSQLServer(Query);
+            Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                MainPage.ExecuteSqlite(Query);    
             }
            
         }
         // AllRead
         private string AllRead(string Query)
         {
-            if (Globals.gLocal == "1")
+            if (Globals.gLocal == "0")
             {
-                Query = Query.ReplaceAll("ISNULL", "ifnull");
-                Query = Query.ReplaceAll("GETDATE", "DATE");
-                return PARAGGELIES.ReadSQL(Query); ;
+return Globals.ReadSQLServer(Query);
+
+               
             }
             else
             {
-                return Globals.ReadSQLServer(Query);
+               Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                return PARAGGELIES.ReadSQL(Query); ;  
             }
 
         }
@@ -1534,7 +1582,7 @@ catch (Exception ex)
 
         {
 
-            if (Globals.gLocal == "1")  // global sqlite or sqlserver
+            if (Globals.gLocal != "0")  // global sqlite or sqlserver
             {
                 addItemsSqlite();
                 return;

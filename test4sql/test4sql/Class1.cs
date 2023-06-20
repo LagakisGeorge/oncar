@@ -35,34 +35,89 @@ namespace test4sql
         public static string gTITLOS;
 
         public static string gLocal;
+        // public connection για SQLITE
+        public static SqliteConnection gconnection = new SqliteConnection("Data Source=" + Path.Combine(
+                  Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                  "adodemo.db3"));
+
+
+        public static string ReadSQL(string Query)
+        {
+            string dbPath = Path.Combine(
+                  Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                  "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            // query the database to prove data was inserted!
+            var contents = connection.CreateCommand();
+            contents.CommandText = Query;
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            string cc = "";
+            while (r.Read())
+            { cc = r[0].ToString(); }
+            connection.Close();
+            return cc;
+        }
+
+       
+
+
+            public static int NReadSQL(string Query)
+        {
+            string dbPath = Path.Combine(
+                  Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                  "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+            // query the database to prove data was inserted!
+            var contents = connection.CreateCommand();
+            contents.CommandText = Query;
+            var r = contents.ExecuteReader();
+
+            int cc = 0;
+            while (r.Read())
+            { cc = Convert.ToInt32(r[0].ToString()); }
+            connection.Close();
+            return cc;
+
+        }
+
+
+
 
 
         public static void AllExecute(string Query)
         {
-            if (Globals.gLocal == "1")
+            if (Globals.gLocal == "0")
             {
-                Query = Query.ReplaceAll("ISNULL", "ifnull");
-                Query = Query.ReplaceAll("GETDATE", "DATE");
-                MainPage.ExecuteSqlite(Query);
+                Globals.ExecuteSQLServer(Query);               
             }
             else
             {
-                Globals.ExecuteSQLServer(Query);
+              Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                MainPage.ExecuteSqlite(Query);   
             }
 
         }
         // AllRead
         public static string AllRead(string Query)
         {
-            if (Globals.gLocal == "1")
-            {
-                Query = Query.ReplaceAll("ISNULL", "ifnull");
-                Query = Query.ReplaceAll("GETDATE", "DATE");
-                return PARAGGELIES.ReadSQL(Query); ;
+            if (Globals.gLocal == "0") { 
+
+                return Globals.ReadSQLServer(Query);
+
+            
+                
             }
             else
             {
-                return Globals.ReadSQLServer(Query);
+             Query = Query.ReplaceAll("ISNULL", "ifnull");
+                Query = Query.ReplaceAll("GETDATE", "DATE");
+                return ReadSQL(Query); ;   
             }
 
         }

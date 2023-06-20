@@ -83,30 +83,35 @@ namespace oncar
 
         private void AllExecute(string Query)
         {
-            if (Globals.gLocal == "1")
+            if (Globals.gLocal == "0")
+            {
+                Globals.ExecuteSQLServer(Query);
+
+               
+            }
+            else
             {
                 Query = Query.ReplaceAll("ISNULL", "ifnull");
                 Query = Query.ReplaceAll("GETDATE", "DATE");
                 MainPage.ExecuteSqlite(Query);
-            }
-            else
-            {
-                Globals.ExecuteSQLServer(Query);
+                
             }
 
         }
         // AllRead
         private string AllRead(string Query)
         {
-            if (Globals.gLocal == "1")
+            if (Globals.gLocal == "0")
+            {
+                return Globals.AllRead(Query);
+
+               
+            }
+            else
             {
                 Query = Query.ReplaceAll("ISNULL", "ifnull");
                 Query = Query.ReplaceAll("GETDATE", "DATE");
                 return PARAGGELIES.ReadSQL(Query); ;
-            }
-            else
-            {
-                return Globals.AllRead(Query);
             }
 
         }
@@ -122,7 +127,9 @@ namespace oncar
             {
                 AllExecute("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
                 string cIDParagg = "";
-                cIDParagg =Globals.AllRead ("select max(ID) from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
+                cIDParagg =Globals.AllRead ("select CAST( ISNULL(max(ID),0) AS VARCHAR)  from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
+              
+
 
                 AllExecute("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
 
@@ -134,23 +141,34 @@ namespace oncar
             {
                 tem.Text = "0";
                 fTem = 0.0;
+
             }
-          //  for (int n = 1; n <= (Int32.Parse(tem.Text)); n++)
-           // {
+            else { 
+
+            //  for (int n = 1; n <= (Int32.Parse(tem.Text)); n++)
+            // {
                 AllExecute("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "'," + tem.Text + "," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
                // ENA ENA  AllExecute("INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1,CH1) VALUES (" + Globals.gIDPARAGG + ",'" + Globals.gTrapezi + "','" + EIDOS.Text + "',1," + timh.Text.Replace(",", ".") + ",'" + PROSU.Text + "','',0,'" + COMMENTS.Text + "')");
-          //  }
+            //  }
   
             
             
             //  cIDParagg = Globals.AllRead("select max(ID) from PARAGGMASTER");
             // TA APLHRVTA  EINAI TO ΝUΜ1=0
-            string caji = Globals.AllRead("SELECT cast(round(SUM(POSO*TIMH),2) as varchar ) FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
+            string caji = Globals.AllRead("SELECT cast(round(SUM(   ISNULL(POSO*TIMH,0) )  ,2) as varchar)  FROM PARAGG WHERE NUM1=0 AND IDPARAGG=" + Globals.gIDPARAGG + "");
 
             AllExecute("update PARAGGMASTER SET AJIA="+caji.Replace(",",".")+" WHERE   ID="+ Globals.gIDPARAGG +  ";");
 
             AllExecute("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
 
+
+
+
+
+
+
+            }
+         
         }
 
 
@@ -434,7 +452,10 @@ namespace oncar
 
         {
 
-            if (Globals.gLocal == "1")  // global sqlite or sqlserver
+            if (Globals.gLocal == "0")  // global sqlite or sqlserver{
+            {
+
+            } else
             {
                 addItemsSqlite();
                 return;
@@ -631,8 +652,9 @@ namespace oncar
 
         {
 
-            if (Globals.gLocal == "1")  // global sqlite or sqlserver
-            {
+            if (Globals.gLocal == "0")  // global sqlite or sqlserver
+            { }
+            else { 
                 addItemsSqlite();
                 return;
             }
