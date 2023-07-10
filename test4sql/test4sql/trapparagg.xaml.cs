@@ -685,7 +685,10 @@ namespace oncar
                 Q = "INSERT INTO PARAGGPDA (PRINTER,IDPARAGG,TRAPEZI,ONO,PROSUETA,CH1SXOLIA,HME,POSO,TIMH) VALUES (";
                 Q = Q + r["printer"].ToString ()+"," +r["idparagg"].ToString ()+",'"+r["trapezi"].ToString()+ "','" + r["ONO"].ToString() + "','" + r["PROSUETA"].ToString();
                 Q = Q + "','" + r["CH1"].ToString() + "',GETDATE()," + r["poso"].ToString() + "," + r["timh"].ToString ()+")";
-                Globals.ExecuteSQLServer(Q);
+                if(Globals.ExecuteSQLServer(Q, 1) == 1)
+                {
+                    MainPage.ExecuteSqlite("update PARAGG SET ENERGOS=1 where  IDPARAGG = " + Globals.gIDPARAGG);
+                }
 
             }
             Globals.gconnection.Close();
@@ -1521,7 +1524,25 @@ return Globals.ReadSQLServer(Query);
 
         }
 
-       
+        private void OnClick4(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnClick1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnClick2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnClick3(object sender, EventArgs e)
+        {
+
+        }
     }
 
 

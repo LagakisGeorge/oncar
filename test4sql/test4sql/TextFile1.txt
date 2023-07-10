@@ -1,4 +1,29 @@
-﻿ΚΩΔΙΚΟΣ ΑΡΚ 123456
+﻿gia να αλλαξω ονομα στο apk
+
+android=>Androidmanifest.xml kai bazo neo onoma to oncar23f   <application android:label="oncar23F.Android"></application>
+
+Android project => properties => Package=> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+com.companyname.oncar23F
+
+                               application name => oncar23F.Android
+
+
+ΚΩΔΙΚΟΣ ΑΡΚ 123456
 
 
 

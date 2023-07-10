@@ -354,6 +354,49 @@ namespace test4sql
 
         }
 
+        public static int ExecuteSQLServer(string sql,int ok )
+        {
+
+
+            // public static SqlConnection con;
+            // DESKTOP-MPGU8SB\SQL17
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            //            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+            // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            SqlConnection con = new SqlConnection(constring);
+
+            try
+            {
+                con.Open();
+
+                // await DisplayAlert("Συνδεθηκε", "οκ", "OK");
+
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                SqlCommand cmd = new SqlCommand(sql);
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                string cv = "";
+                // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                return 0;
+            }
+
+        }
+
+
+
+
+
+
+
     }
 
     public class Monkey2

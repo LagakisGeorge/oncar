@@ -290,7 +290,8 @@ namespace test4sql
                                 {
 
 
-                                    printt(outStream, (PAR2.Text + spac40).Substring(0, 50) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy   HH:mm tt") + "\n");
+                                    printt(outStream, (PAR2.Text + spac40).Substring(0, 49) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy HH:mm tt") + "\n");
+                                    printt(outStream, "\n");
                                     printt(outStream, "\n");
                                     printt(outStream, "\n");
                                     printt(outStream, "\n");
@@ -382,6 +383,7 @@ namespace test4sql
                                     {
 
                                         float NEO;
+                                        NEO = (float)fYPOLPEL;
                                         if (BCASH.Text.Substring(0, 1) == "Μ")
                                         {
                                             NEO = (float)fYPOLPEL;
@@ -846,7 +848,7 @@ namespace test4sql
 
 
                 MainPage.ExecuteSqlite("delete from    TIM where ATIM='" + mATIM + "'");
-                await DisplayAlert("διαγραφτηκε", "", "OK");
+                await DisplayAlert("διαγραφηκε", "", "OK");
                 Show_list();
             }
 
@@ -1016,7 +1018,7 @@ namespace test4sql
             Single s = 0;
             while (r.Read())
             {
-                s = s + (Single)r["POSO"] * (Single)r["TIMH"] * (100 - (Single)r["EKPT"]) / 100;
+                s = s + (Single)r["POSO"] * (Single)r["TIMH"];  // * (100 - (Single)r["EKPT"]) / 100;
                
             }
 

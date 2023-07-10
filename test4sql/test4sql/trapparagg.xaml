@@ -4,9 +4,14 @@
               NavigationPage.HasNavigationBar="False" 
               xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"  
              x:Class="oncar.trapparagg">
-    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text ="Search"  Activated="OnClick1" Order="Primary" Priority="0" />
+        <ToolbarItem Text ="Call"  Activated="OnClick2" Order="Primary" Priority="1" />
+        <ToolbarItem Text="Additional1" Activated="OnClick3" Order="Secondary" Priority="0" />
+        <ToolbarItem Text ="Additional2"  Activated="OnClick4" Order="Secondary" Priority="1" />
+    </ContentPage.ToolbarItems> 
 
-
+ 
     <StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Tραπέζι-- " FontSize="Medium"

@@ -89,7 +89,7 @@ namespace test4sql
                     APOTHIKI.IsVisible = false;
                     // param.IsVisible = false;
                     trapezia.IsVisible = true;
-                    but1fort.IsVisible = false;
+                    but1fort.IsVisible = true;
                     but1EPIST.IsVisible = false;
                     kinpelath.IsVisible = false;
                     reppelath.IsVisible = false;

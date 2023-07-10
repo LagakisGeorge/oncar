@@ -383,7 +383,7 @@ namespace test4sql
 
             // query the database to prove data was inserted!
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  * from PEL WHERE EPO LIKE '%" + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT TYP,PEK,NUM1,EPO,KOD,ID from PEL WHERE EPO LIKE '%" + AFM.Text.ToUpper() + "%' OR KOD like '%" + AFM.Text.ToUpper() + "%' LIMIT 100 ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
@@ -975,7 +975,7 @@ namespace test4sql
 
 
 
-                                //Printing
+                                /*   //Printing
 
                                 // = Encoding.UTF8.GetBytes("αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ  MY TEXT TO PRINT");
                                 //  outStream.Write(toBytes, 0, toBytes.Length);
@@ -1028,7 +1028,7 @@ namespace test4sql
 
                                 //                            // You can convert it back to an array if you would like to
                                 //                            int[] terms = termsList.ToArray();
-
+                                */
 
 
                                 string spac40 = "                                        ";
@@ -1055,6 +1055,7 @@ namespace test4sql
                                 var r = contents.ExecuteReader();
                                 Console.WriteLine("Reading data");
                                 int nseira = 0;
+                                float synKAUaxias = 0;
                                 //   Single ssum = 0;
                                 // String.Format("{0:0.0#}", 123.4567)       // "123.46"
                                 while (r.Read())
@@ -1075,6 +1076,7 @@ namespace test4sql
                                     {
                                         te = float.Parse(r["TIMH"].ToString());  //.Replace(",",".") );  //  * (100 - (Single)r["EKPT"]) / 100;
                                         tt = float.Parse(r["AXIA"].ToString()); //.Replace(",", "."));   //   * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
+                                        synKAUaxias = synKAUaxias + tt;
                                     }
                                     //  ssum = ssum + tt;
                                     string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM";
@@ -1105,7 +1107,10 @@ namespace test4sql
                                 {
 
 
-                                    printt(outStream, (PAR2.Text + spac40).Substring(0, 50) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy   HH:mm tt") + "\n");
+                                    printt(outStream, (PAR2.Text + spac40).Substring(0, 49) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy HH:mm tt") + "\n");
+                                   
+                                    
+                                    printt(outStream, "\n");
                                     printt(outStream, "\n");
                                     printt(outStream, "\n");
                                     printt(outStream, "\n");
@@ -1211,10 +1216,25 @@ namespace test4sql
                                         cold = String.Format("{0:0.00}", fYPOLPEL);
                                         cneo = String.Format("{0:0.00}", NEO);
 
+
+                                        // fEKPTNUM1   synKAUaxias
+                                        fkauaji = synKAUaxias - synKAUaxias * fEKPTNUM1 / 100;
+
+                                        //printt(outStream, spac40 + "            ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", synKAUaxias), 7) + "\n");
+                                        //printt(outStream, spac40 + "            ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", synKAUaxias*fEKPTNUM1/100 ), 7) + "\n");
+                                        //printt(outStream, Right("               " + cold, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji), 7) + "\n");
+                                        //printt(outStream, Right("               " + cneo, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 7) + "\n");
+
+
                                         printt(outStream, spac40 + "            ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 7) + "\n");
                                         printt(outStream, spac40 + "            ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 7) + "\n");
                                         printt(outStream, Right("               " + cold, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji), 7) + "\n");
                                         printt(outStream, Right("               " + cneo, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 7) + "\n");
+
+
+
+
+
                                         printt(outStream, "\n");
                                         printt(outStream, spac40 + "                          " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 7) + "\n");
                                     }
@@ -1589,7 +1609,7 @@ namespace test4sql
 
             }else
             {            
-                MainPage.ExecuteSqlite("UPDATE PEL SET TYP=TYP+" + SAJIA.Text.Replace(",", ".") + " WHERE KOD='" + AFM.Text + "'");
+                MainPage.ExecuteSqlite("UPDATE PEL SET TYP=ifnull(TYP,0)+" + SAJIA.Text.Replace(",", ".") + " WHERE KOD='" + AFM.Text + "'");
              }
 
             btnScan.IsEnabled = true;
