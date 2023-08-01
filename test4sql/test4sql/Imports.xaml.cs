@@ -654,6 +654,12 @@ namespace test4sql
         // SQLQUERYF
         async void SQLQUERYF(object sender, EventArgs e)
         {
+            DOSQLQUERY(4);
+        }
+
+    async void DOSQLQUERY(int num1 )
+
+        {
            // RESULTS.Text=PARAGGELIES.ReadSQL(QUERY.Text );
            try
             {
@@ -689,14 +695,24 @@ namespace test4sql
             
             while (r.Read())
             {
-                
-                Monkeys.Add(new Monkey
-                {
-                    Name = r[0].ToString(),
-                    Location = r[1].ToString() ,
-                    ImageUrl = r[2].ToString(),
-                    idPEL = r[3].ToString() 
-                });
+                    if (num1 == 1)
+                    {
+                       await DisplayAlert(r[0].ToString(),"ok","ok");
+
+                        break;
+
+                    }
+                    else
+                    {
+
+                        Monkeys.Add(new Monkey
+                        {
+                            Name = r[0].ToString(),
+                            Location = r[1].ToString(),
+                            ImageUrl = r[2].ToString(),
+                            idPEL = r[3].ToString()
+                        });
+                    }
             }
 
             listview.ItemsSource = Monkeys;
@@ -1074,7 +1090,7 @@ namespace test4sql
             //    SYNT = " TOP 20 ";
 
 
-
+            //--------------------------------------  TRAPEZIA -----------------------------------------------------------
             try
             {
                //Monkeys = new List<Monkey>();
@@ -1133,7 +1149,119 @@ namespace test4sql
             }
 
 
-           
+            //-------------------------   KATHG  --------------------------------------------
+            try
+            {
+                //Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ISNULL(ONO,'') AS ONO,ISNULL(CH1,'') AS CH1,ISNULL(CH2,'') AS CH2   FROM KATHG ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String ONO = dt.Rows[k]["ONO"].ToString();
+                    ONO = ONO.Replace("'", "`");
+
+                    String CH1 = dt.Rows[k]["CH1"].ToString();
+                    CH1 = CH1.Replace("'", "`");
+
+                    String CH2 = dt.Rows[k]["CH2"].ToString();
+                    CH2 = CH2.Replace("'", "`");
+
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into KATHG (ONO,CH1,CH2) VALUES ('" + ONO + "','" + CH1 + "','" + CH2 + "');");
+                } // FOR
+
+
+
+
+                //  BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+            //--------------------------------------  EIDH -----------------------------------------------------------
+            try
+            {
+                //Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ISNULL(ONO,'') AS ONO,ISNULL(CH1,'') AS CH1,ISNULL(CH2,'') AS CH2,ISNULL(NUM2,0) AS NUM2 ,ISNULL(TIMH,0) AS TIMH,ISNULL(NUM1,0) AS NUM1,ISNULL(KATHG,0) AS KATHG  FROM EIDH ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String ONO = dt.Rows[k]["ONO"].ToString();
+                    ONO = ONO.Replace("'", "`");
+
+                    String CH1 = dt.Rows[k]["CH1"].ToString();
+                    CH1 = CH1.Replace("'", "`");
+
+                    String CH2 = dt.Rows[k]["CH2"].ToString();
+                    CH2 = CH2.Replace("'", "`");
+
+
+
+                    string TIMH = dt.Rows[k]["TIMH"].ToString();
+                    TIMH = TIMH.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
+                    string KATHG = dt.Rows[k]["KATHG"].ToString();
+                    KATHG = KATHG.Replace(",", ".");
+
+
+
+
+                    string NUM1 = dt.Rows[k]["NUM1"].ToString();
+                    NUM1 = NUM1.Replace(",", ".");
+
+                    string NUM2 = dt.Rows[k]["NUM2"].ToString();
+                    NUM2 = NUM2.Replace(",", ".");
+
+                 
+
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into EIDH (ONO,CH1,CH2,TIMH,KATHG,NUM1,NUM2) VALUES ('" + ONO + "','" + CH1 + "','" + CH2 + "'," + TIMH + "," + KATHG + "," + NUM1 + "," + NUM2 + ");");
+                } // FOR
+
+
+
+
+                //  BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         private async void updateWeb(object sender, EventArgs e)
@@ -1153,6 +1281,13 @@ namespace test4sql
             await Launcher.OpenAsync("https://www.lagakis.gr/apk/23031.apk");
             // br.
 
+        }
+
+
+
+        private void SQLQUERYF1(object sender, EventArgs e)
+        {
+            DOSQLQUERY(1);
         }
     }
 }

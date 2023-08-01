@@ -682,9 +682,9 @@ namespace oncar
             while (r.Read())
             {
                 ncount = ncount + 1;
-                Q = "INSERT INTO PARAGGPDA (PRINTER,IDPARAGG,TRAPEZI,ONO,PROSUETA,CH1SXOLIA,HME,POSO,TIMH) VALUES (";
+                Q = "INSERT INTO PARAGGPDA (PRINTER,IDPARAGG,TRAPEZI,ONO,PROSUETA,CH1SXOLIA,HME,POSO,TIMH,PDA) VALUES (";
                 Q = Q + r["printer"].ToString ()+"," +r["idparagg"].ToString ()+",'"+r["trapezi"].ToString()+ "','" + r["ONO"].ToString() + "','" + r["PROSUETA"].ToString();
-                Q = Q + "','" + r["CH1"].ToString() + "',GETDATE()," + r["poso"].ToString() + "," + r["timh"].ToString ()+")";
+                Q = Q + "','" + r["CH1"].ToString() + "',GETDATE()," + r["poso"].ToString() + "," + r["timh"].ToString ()+"," + Globals.gUserWaiter + ")";
                 if(Globals.ExecuteSQLServer(Q, 1) == 1)
                 {
                     MainPage.ExecuteSqlite("update PARAGG SET ENERGOS=1 where  IDPARAGG = " + Globals.gIDPARAGG);

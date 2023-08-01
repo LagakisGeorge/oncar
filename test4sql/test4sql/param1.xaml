@@ -17,7 +17,9 @@
                 HorizontalOptions="CenterAndExpand" />
               <StackLayout Orientation="Horizontal" >
 
-                   <Entry x:Name="FORTHGO"
+                <Label Text="user" />
+
+                <Entry x:Name="FORTHGO"
                    
                     BackgroundColor="Green"      
                    />

@@ -83,8 +83,10 @@
 
             <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
                 <Button x:Name="SQLQUERY" Clicked="SQLQUERYF"
-                      Text="SQLQUERY-4FIELDS"/>
-
+                      Text="QUERY-4FIELDS"/>
+                
+                <Button x:Name="SQLQUERY1" Clicked="SQLQUERYF1"
+                      Text="QUERY1"/>
 
                 <Button x:Name="SQLEXECUTE" Clicked="SQLEXECUTEF"
                       Text="SQLEXECUTE" />

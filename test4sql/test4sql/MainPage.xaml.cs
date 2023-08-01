@@ -229,7 +229,28 @@ namespace test4sql
 
             Globals.gTITLOS = PARAGGELIES.ReadSQL("select ifnull(EPO,' ') as EPO from MEM  where ID=2");
 
-            Globals.gLocal = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=3");
+            Globals.gLocal = PARAGGELIES.ReadSQL("select IP FROM MEM WHERE ID=3");  // 3=SE SERVER ΕΝΩ ΕΙΝΑΙ LOCAL  0=SQLSERVER ΤΥΠΩΝΕΙ ANDROID 1=LOCAL ANDROID PRINT
+                                                                                    // if (Globals.gLocal == "0") {  //=======================sqlserver==============================
+
+            //if (Globals.gLocal == "3")
+            //{  //=============
+            //    PrintParWin(1);
+            //    return;
+            //}
+
+
+            //if (Globals.gLocal == "0")  // global sqlite or sqlserver
+            //{ }
+            //else
+            //{
+            //    ShowItemsSqlite(ono);
+            //    return;
+            //}
+
+
+
+
+
 
 
             // l = MainPage.ExecuteSqlite("");  CAST(ARITMISI AS VARCHAR(10) )
