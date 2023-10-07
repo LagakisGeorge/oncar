@@ -416,7 +416,7 @@ namespace test4sql
 
        
 
-             await Navigation.PushAsync(new Page1());
+            // await Navigation.PushAsync(new Page1());
 
 
             // await Navigation.PushAsync(new Page2 { });

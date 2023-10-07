@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZXing.Net.Mobile.Forms;
-using System.Threading;
 using Mono.Data.Sqlite;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.IO;
-using Plugin.Toast;
-using SharpCifs.Smb;
-using System.Data.SqlClient;
 using test4sql;
-using Javax.Xml.Xpath;
 
 namespace oncar
 {

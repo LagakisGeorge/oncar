@@ -4,28 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Plugin.BLE.Abstractions.Contracts ;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
-
-using Plugin.Toast;
-using System.Data.SqlClient;
 //<<<<<<< HEAD
 // ' using ZXing.Net.Mobile.Forms;....
 //'=======
-using ZXing.Net.Mobile.Forms;
 //>>>>>>> 846966aea3c06d66db1f7d414f0bbcdce34bb4a5
 
 
 
 
-using Mono.Data.Sqlite;
-using System.Data;
-using System.Collections.ObjectModel;
-using Plugin.BLE;
-using Android.Bluetooth;
 //using Java.Util;
 
 // using Android.OS;
@@ -41,7 +29,7 @@ namespace test4sql
         //IAdapter adapter;
         //ObservableCollection<IDevice> devicelist;
 
-        public BluetoothDevice mmDevice;
+      
         private int nn = 1;
        public int fisEIDH = 0;
         private string EIDOSPAR = "";
@@ -919,412 +907,412 @@ namespace test4sql
         {
 
         
-            string af = AFM.Text;
+            //string af = AFM.Text;
 
-            //  BluetoothDevice mmDevice;   ATIM.Text(Τ000012) ,epo.text ,BCASH.Text(ΜΕΤΡΗΤΑ), Par2.Text(ΤΙΤΛΟΣ ΠΑΡ/ΚΟΥ)  ,AFM.TEXT (0001)
-            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.DefaultAdapter;
+            ////  BluetoothDevice mmDevice;   ATIM.Text(Τ000012) ,epo.text ,BCASH.Text(ΜΕΤΡΗΤΑ), Par2.Text(ΤΙΤΛΟΣ ΠΑΡ/ΚΟΥ)  ,AFM.TEXT (0001)
+            //BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.DefaultAdapter;
 
-            if (mBluetoothAdapter == null)
-            {
-                // await MyFavHelper.InformUser("No bluetooth adapter found", "Bluetooth");
-                await DisplayAlert("Scanned Barcode", "not ok", "OK");
+            //if (mBluetoothAdapter == null)
+            //{
+            //    // await MyFavHelper.InformUser("No bluetooth adapter found", "Bluetooth");
+            //    await DisplayAlert("Scanned Barcode", "not ok", "OK");
 
-                return;
-            }
-            else
-            {
-               // await DisplayAlert("Αdαpter  ΟΚ", " ok", "OK");
-            }
+            //    return;
+            //}
+            //else
+            //{
+            //   // await DisplayAlert("Αdαpter  ΟΚ", " ok", "OK");
+            //}
 
-            if (!mBluetoothAdapter.IsEnabled)
-            {mBluetoothAdapter.Enable();}
-            else
-            {    //await DisplayAlert("is enabled", " not ok", "OK");
-            }
+            //if (!mBluetoothAdapter.IsEnabled)
+            //{mBluetoothAdapter.Enable();}
+            //else
+            //{    //await DisplayAlert("is enabled", " not ok", "OK");
+            //}
 
-            ICollection<BluetoothDevice> pairedDevices = mBluetoothAdapter.BondedDevices;
-            try
-            {
+            //ICollection<BluetoothDevice> pairedDevices = mBluetoothAdapter.BondedDevices;
+            //try
+            //{
 
 
-                if (pairedDevices.Count > 0)
-                {
-                    foreach (BluetoothDevice device in pairedDevices)
-                    {
+            //    if (pairedDevices.Count > 0)
+            //    {
+            //        foreach (BluetoothDevice device in pairedDevices)
+            //        {
 
-                        // await DisplayAlert(device.Name, " not ok", "OK");
+            //            // await DisplayAlert(device.Name, " not ok", "OK");
 
-                        if (device.Name.Contains("ADT") || device.Name.Contains("DDA6"))
-                        {
-                            mmDevice = device;
+            //            if (device.Name.Contains("ADT") || device.Name.Contains("DDA6"))
+            //            {
+            //                mmDevice = device;
 
-                            Stream outStream;
+            //                Stream outStream;
 
-                            Android.OS.ParcelUuid uuid = mmDevice.GetUuids().ElementAt(0);
-                            BluetoothSocket socket = mmDevice.CreateInsecureRfcommSocketToServiceRecord(uuid.Uuid);
-                            try
-                            {
-                                socket.Connect();
+            //                Android.OS.ParcelUuid uuid = mmDevice.GetUuids().ElementAt(0);
+            //                BluetoothSocket socket = mmDevice.CreateInsecureRfcommSocketToServiceRecord(uuid.Uuid);
+            //                try
+            //                {
+            //                    socket.Connect();
 
 
 
-                                outStream = socket.OutputStream;
-
-
-
-                                //Printing
-
-                                // = Encoding.UTF8.GetBytes("αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ  MY TEXT TO PRINT");
-                                //  outStream.Write(toBytes, 0, toBytes.Length);
-                                // char[] ccc;
-
-                                //  string llll = Convert.ToChar(921) + Convert.ToChar(922)+ "ελληνικα ΕΛΛΗΝΙΚΑ";
-
-                                //= Convert.ToChar(915);// + Convert.ToChar(916) + Convert.ToChar(917);
-                                //  toBytes =     Encoding.Unicode.GetBytes("lowew aα bβ cγ dδ eε zζ hη uθ iι kκ lλ mμ nν xξ oο pπ rρ sσ tτ yυ fφ cχ psψ oω lower");
-                                // outStream.Write(toBytes, 0, toBytes.Length);
-                                //  string b = "\u03a0";// ι
-                                //  string c = "\u03a1";  // κ
-                                //  string d = "\u03a3";  // μ
-                                //  Ρ     Σ    Τ     Υ      β    γ      δ
-                                // llll ="///"+ b + c + d+ "/\u0390\u0391\u0392\u0393\u0399\u039a\u039b //";
-                                //  Encoding unicode = Encoding.Unicode;
-                                // Convert the string into a byte array.
-
-
-                                //  byte[] unicodeBytes = unicode.GetBytes(llll);
-                                //  outStream.Write(unicodeBytes, 0, unicodeBytes.Length);
-                                //DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")	05/29/2015 05:50 AM
-
-
-
-                                //int i = 3;
-                                //Console.WriteLine(i);   // output: 3
-                                //Console.WriteLine(i++); // output: 3
-                                //Console.WriteLine(i);   // output: 4
-
-
-                                //Prefix increment operator
-                                //double a = 1.5;
-                                //Console.WriteLine(a);   // output: 1.5
-                                //Console.WriteLine(++a); // output: 2.5
-                                //Console.WriteLine(a);   // output: 2.5
-
-                                //                            int[] terms = new int[400];
-                                //                            for (int runs = 0; runs < 400; runs++)
-                                //                            {
-                                //                                terms[runs] = value;
-                                //                            }
-                                //                            Alternatively, you can use Lists -the advantage with lists being, you don't need to know the array size when instantiating the list.
-
-                                //List<int> termsList = new List<int>();
-                                //                            for (int runs = 0; runs < 400; runs++)
-                                //                            {
-                                //                                termsList.Add(value);
-                                //                            }
-
-                                //                            // You can convert it back to an array if you would like to
-                                //                            int[] terms = termsList.ToArray();
-
-
-
-                                string spac40 = "                                        ";
-                                // diabazo lines apo timologio
-                                string[] cLine = new string[400];
-                                string dbPath = Path.Combine(
-                                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                                 "adodemo.db3");
-
-                                SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-                                // Open the database connection and create table with data
-                                connection.Open();
-                                var contents = connection.CreateCommand();
-                                //   if (IsSygkEpistr ==0)
-                                //   {
-                                contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,ifnull(POSO,0) as POSO,IFNULL(TIMH,0 ) AS TIMH ,IFNULL(EKPT,0) AS EKPT ,ID ,IFNULL(TIMH*POSO,0) AS AXIA,ifnull(POSO,0)-ifnull(TIMH,0) as EPISTRPOSO  from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-
-                                //  }
-                                //  else
-                                //  {
-                                //     contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,EID.YPOL AS POSO,IFNULL(EID.DESM,0) AS TIMH,EGGTIM.EKPT from EGGTIM inner join EID ON EGGTIM.KODE=EID.KOD  where ATIM ='" + ATIM.Text + "';";   // order by EGGTIM.ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-
-                                // }
-                                var r = contents.ExecuteReader();
-                                Console.WriteLine("Reading data");
-                                int nseira = 0;
-                                //   Single ssum = 0;
-                                // String.Format("{0:0.0#}", 123.4567)       // "123.46"
-                                while (r.Read())
-                                {
-                                    nseira++;
-                                    Single tt;
-                                    Single te;
-
-                                    if (IsSygkEpistr == 1)
-                                    {
-                                        string MPOL = PARAGGELIES.ReadSQL("select IFNULL(DESM,0) AS DESM from EID where KOD='" + r["KODE"].ToString() + "'");
-                                        // te = Convert.ToInt64(Convert.ToDouble(MPOL));
-                                        te = float.Parse(r["TIMH"].ToString());
-                                        tt = float.Parse(r["EPISTRPOSO"].ToString());
-                                        //  tt = Convert.ToInt64(Convert.ToDouble(r["POSO"])) - te;        //(Single)r["POSO"] - te ;
-                                    }
-                                    else
-                                    {
-                                        te = float.Parse(r["TIMH"].ToString());  //.Replace(",",".") );  //  * (100 - (Single)r["EKPT"]) / 100;
-                                        tt = float.Parse(r["AXIA"].ToString()); //.Replace(",", "."));   //   * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
-                                    }
-                                    //  ssum = ssum + tt;
-                                    string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM";
-                                    lin = lin + Right("      " + r["POSO"].ToString(), 6) + " ";
-                                    lin = lin + Right("      " + String.Format("{0:0.00}", te), 6) + " ";
-                                    lin = lin + "" + "13" + "  " + Right("       " + String.Format("{0:0.00}", tt), 7) + " ";
-                                    cLine[nseira] = lin;
-                                }
-                                // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-                                int nCount = nseira;   // posa records exei to timologio
-                                int RecPerPage = 26;
-                                int nPages = nCount / RecPerPage;
-                                if (nCount % RecPerPage > 0) // exei ypoloipo
-                                {
-                                    ++nPages;
-                                };
-
-                                int quotient = 5 / 3;
-                                //Console.WriteLine(13 / 5);    // output: 2
-                                //Console.WriteLine(17 % 4);   // output: 1
-
-
-
-
-                                //==========================================================================================================
-                                int nCurRow = 0;
-                                for (int nCurPage = 1; nCurPage <= nPages; nCurPage++)
-                                {
-
-
-                                    printt(outStream, (PAR2.Text + spac40).Substring(0, 50) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy   HH:mm tt") + "\n");
-                                    printt(outStream, "\n");
-                                    printt(outStream, "\n");
-                                    printt(outStream, "\n");
-                                    printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                                   ").Substring(0, 40) + "                              " + (PARAGGELIES.toGreek(Globals.cFORTHGO) + "          ").Substring(0, 9) + "\n");
-
-
-
-
-                                    string EPA = PARAGGELIES.ReadSQL("select  IFNULL(EPA,'')  FROM PEL where KOD='" + af + "'");
-                                    string DIE = PARAGGELIES.ReadSQL("select  IFNULL(DIE,'')  FROM PEL where KOD='" + af + "'");
-                                    string AFM = PARAGGELIES.ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
-                                    string POL = PARAGGELIES.ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
-                                    string DOY = PARAGGELIES.ReadSQL("select  IFNULL(DOY,'')  FROM PEL where KOD='" + af + "'");
-                                    string PARAD = PARAGGELIES.ReadSQL("select  IFNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ')  FROM PEL where KOD='" + af + "'");
-
-
-                                    printt(outStream, ("ΕΠΑΓΓΕΛΜΑ: " + EPA + "                         ").Substring(0, 30) + "\n");
-                                    printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: " + DIE + "                              ").Substring(0, 36) + "              " + (PARAD+"                              ").Substring(0,30)+ "\n");
-                                    printt(outStream, ("     ΠΟΛΗ: " + POL + "                              ").Substring(0, 25) + "\n");
-                                    printt(outStream, ("      ΑΦΜ: " + AFM + "                              ").Substring(0, 30) + "                       " + BCASH.Text + "\n");  // 3 ARISTERA PHGE APO ARXIKO
-                                    printt(outStream, ("      ΔΟΥ: " + DOY + "                              " + "                            " + fEKPTNUM1.ToString()) + "\n"); //fYPOLPEL
-
-                                    //string dbPath = Path.Combine(
-                                    //Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                                    //"adodemo.db3");
-                                    //SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-                                    //// Open the database connection and create table with data
-                                    //connection.Open();
-                                    //var contents = connection.CreateCommand();
-                                    //contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-                                    //var r = contents.ExecuteReader();
-                                    //Console.WriteLine("Reading data");
-
-
-                                    printt(outStream, "\n");
-                                    printt(outStream, "\n");
-
-                                    // εαν ειναι συγκεντρωτικό να τυπωνει και επικεφαλιδα αλλοιώς κενο
-                                    if (IsSygkEpistr == 1)
-                                    {
-                                        string lin = ("ΚΩΔΙΚΟΣ          ").Substring(0, 10) + " " + ("ΠΕΡΙΓΡΑΦΗ" + spac40).Substring(0, 35) + "TEM ";
-                                        lin = lin + "ΦΟΡΤΩΣΗ";
-                                        lin = lin + "ΠΩΛΗΣΗ";
-                                        lin = lin + "" + "  " + "    " + "ΥΠΟΛΟΙΠΟ ";
-                                        printt(outStream, lin + "\n");
-                                    }
-                                    else
-                                    {
-                                        printt(outStream, "\n");
-                                    }
-
-                                    int seir = 13;
-                                    // Single ssum = 0;
-                                    // String.Format("{0:0.0#}", 123.4567)       // "123.46"
-
-
-                                    int nSeiresSelidas = 0;
-                                    if (nCurPage == nPages)
-                                    {
-                                        nSeiresSelidas = RecPerPage;
-                                    }
-                                    else
-                                    {
-                                        nSeiresSelidas = RecPerPage;
-                                    }
-
-                                    for (int k = 1; k <= nSeiresSelidas; k++)
-                                    {
-
-                                        nCurRow++;
-                                        seir++;
-                                        printt(outStream, cLine[nCurRow] + "\n");
-
-
-
-                                    }
-
-
-
-                                    for (int kk = seir; kk < 40; kk++)
-                                    {
-                                        printt(outStream, "\n");
-
-                                    }
-                                    //  fkauajiPro = s;
-                                    //   s = s - (s * fEKPTNUM1) / 100;
-                                    //  fkauaji = s;
-                                    if (nCurPage == nPages)
-
-
-                                    {
-
-                                        float NEO;
-                                        if (BCASH.Text.Substring(0, 1) == "Μ")
-                                        {
-                                            NEO = (float)fYPOLPEL;
-                                        }
-                                        else
-                                        {
-                                            NEO = (float)fYPOLPEL + (float)fkauaji * 113 / 100;
-                                        }
-                                        string cold, cneo;
-                                        cold = String.Format("{0:0.00}", fYPOLPEL);
-                                        cneo = String.Format("{0:0.00}", NEO);
-
-                                        printt(outStream, spac40 + "            ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 7) + "\n");
-                                        printt(outStream, spac40 + "            ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 7) + "\n");
-                                        printt(outStream, Right("               " + cold, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji), 7) + "\n");
-                                        printt(outStream, Right("               " + cneo, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 7) + "\n");
-                                        printt(outStream, "\n");
-                                        printt(outStream, spac40 + "                          " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 7) + "\n");
-                                    }
-                                    else
-                                    {
-
-                                        for (int kk = 1; kk <= 5; kk++)
-                                        {
-                                            printt(outStream, "\n");
-                                        }
-                                        printt(outStream, "\n");
-
-                                    }
-                                    if (nCurPage > 1)
-                                    {
-                                        printt(outStream, "ΣΕΛ." + nCurPage.ToString() + "\n");
-                                    }
-                                    else
-                                    {
-                                        if (nPages > 1)
-                                        {
-                                            printt(outStream, "ΣΕΛ." + nCurPage.ToString() + "\n");
-                                        }
-                                        else
-                                        {
-                                            printt(outStream, "\n");
-                                        }
-
-
-                                    }
-
-
-                                    printt(outStream, "\n");
-                                    printt(outStream, "\n");
-                                    for (int kk = 0; kk < 17; kk++)
-                                    {
-                                        printt(outStream, "\n");
-
-                                    }
-                                }
-
-
-
-
-                                //fff=toGreek ("ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n");
-
-                                //toBytes = Encoding.Unicode.GetBytes(fff);
-                                //outStream.Write(toBytes, 0, toBytes.Length);
-                                ////            "ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n"
-                                //fff = toGreek("I I I I IIIIIIIIIIIIIIIIIIII\n");
-                                //toBytes = Encoding.Unicode.GetBytes(fff);
-                                //outStream.Write(toBytes, 0, toBytes.Length);
-
-
-
-
-                                //fff = toGreek("                          II\n");
-                                //toBytes = Encoding.Unicode.GetBytes(fff);
-                                //outStream.Write(toBytes, 0, toBytes.Length);
-
-
-                                //string ddd = (char)920+(char)921+ (char)922 + (char)923 + "--ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ PRINT/n";
-                                //toBytes = Encoding.GetEncoding("windows-1253").GetBytes(ddd);
-                                //   string eee = Encoding.GetEncoding("windows-1253").GetString(toBytes);
-
-                                //   outStream.Write( toBytes, 0, toBytes.Length);
-                                // toBytes = Encoding.UTF8 .GetBytes("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ PRINT/n");
-                                //  outStream.Write(toBytes, 0, toBytes.Length);
-
-
-
-                            }
-                            catch (SqliteException ex)
-                            {
-
-                                await DisplayAlert("αδυναμια εκτυπωσης ", ex.ErrorCode.ToString(), "OK");
-                            };
-
-
-                            //    toBytes = Encoding.Default .GetBytes("αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ   MY TEXT TO PRINT");
-                            //   outStream.Write(toBytes, 0, toBytes.Length);
-                            try
-                            {
-
-                                socket.Close();
-                            }
-                            catch
-
-                            {
-
-                            }
-                            //
-
-
-                            break;
-                        }
-
-
-                    }
-                }
-                else
-                {
-
-                    await DisplayAlert("Paired Devices not found", " not ok", "OK");
-                    // await MyFavHelper.InformUser("Paired Devices not found", "Bluetooth");
-                    return;
-                }
-
-            } catch
-            {
-                await DisplayAlert("ΑΝΕΠΙΤΥΧΗΣ ΕΚΤΥΠΩΣΗ", " not ok", "OK");
-
-            }
+            //                    outStream = socket.OutputStream;
+
+
+
+            //                    //Printing
+
+            //                    // = Encoding.UTF8.GetBytes("αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ  MY TEXT TO PRINT");
+            //                    //  outStream.Write(toBytes, 0, toBytes.Length);
+            //                    // char[] ccc;
+
+            //                    //  string llll = Convert.ToChar(921) + Convert.ToChar(922)+ "ελληνικα ΕΛΛΗΝΙΚΑ";
+
+            //                    //= Convert.ToChar(915);// + Convert.ToChar(916) + Convert.ToChar(917);
+            //                    //  toBytes =     Encoding.Unicode.GetBytes("lowew aα bβ cγ dδ eε zζ hη uθ iι kκ lλ mμ nν xξ oο pπ rρ sσ tτ yυ fφ cχ psψ oω lower");
+            //                    // outStream.Write(toBytes, 0, toBytes.Length);
+            //                    //  string b = "\u03a0";// ι
+            //                    //  string c = "\u03a1";  // κ
+            //                    //  string d = "\u03a3";  // μ
+            //                    //  Ρ     Σ    Τ     Υ      β    γ      δ
+            //                    // llll ="///"+ b + c + d+ "/\u0390\u0391\u0392\u0393\u0399\u039a\u039b //";
+            //                    //  Encoding unicode = Encoding.Unicode;
+            //                    // Convert the string into a byte array.
+
+
+            //                    //  byte[] unicodeBytes = unicode.GetBytes(llll);
+            //                    //  outStream.Write(unicodeBytes, 0, unicodeBytes.Length);
+            //                    //DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")	05/29/2015 05:50 AM
+
+
+
+            //                    //int i = 3;
+            //                    //Console.WriteLine(i);   // output: 3
+            //                    //Console.WriteLine(i++); // output: 3
+            //                    //Console.WriteLine(i);   // output: 4
+
+
+            //                    //Prefix increment operator
+            //                    //double a = 1.5;
+            //                    //Console.WriteLine(a);   // output: 1.5
+            //                    //Console.WriteLine(++a); // output: 2.5
+            //                    //Console.WriteLine(a);   // output: 2.5
+
+            //                    //                            int[] terms = new int[400];
+            //                    //                            for (int runs = 0; runs < 400; runs++)
+            //                    //                            {
+            //                    //                                terms[runs] = value;
+            //                    //                            }
+            //                    //                            Alternatively, you can use Lists -the advantage with lists being, you don't need to know the array size when instantiating the list.
+
+            //                    //List<int> termsList = new List<int>();
+            //                    //                            for (int runs = 0; runs < 400; runs++)
+            //                    //                            {
+            //                    //                                termsList.Add(value);
+            //                    //                            }
+
+            //                    //                            // You can convert it back to an array if you would like to
+            //                    //                            int[] terms = termsList.ToArray();
+
+
+
+            //                    string spac40 = "                                        ";
+            //                    // diabazo lines apo timologio
+            //                    string[] cLine = new string[400];
+            //                    string dbPath = Path.Combine(
+            //                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+            //                     "adodemo.db3");
+
+            //                    SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            //                    // Open the database connection and create table with data
+            //                    connection.Open();
+            //                    var contents = connection.CreateCommand();
+            //                    //   if (IsSygkEpistr ==0)
+            //                    //   {
+            //                    contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,ifnull(POSO,0) as POSO,IFNULL(TIMH,0 ) AS TIMH ,IFNULL(EKPT,0) AS EKPT ,ID ,IFNULL(TIMH*POSO,0) AS AXIA,ifnull(POSO,0)-ifnull(TIMH,0) as EPISTRPOSO  from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+
+            //                    //  }
+            //                    //  else
+            //                    //  {
+            //                    //     contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,EID.YPOL AS POSO,IFNULL(EID.DESM,0) AS TIMH,EGGTIM.EKPT from EGGTIM inner join EID ON EGGTIM.KODE=EID.KOD  where ATIM ='" + ATIM.Text + "';";   // order by EGGTIM.ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+
+            //                    // }
+            //                    var r = contents.ExecuteReader();
+            //                    Console.WriteLine("Reading data");
+            //                    int nseira = 0;
+            //                    //   Single ssum = 0;
+            //                    // String.Format("{0:0.0#}", 123.4567)       // "123.46"
+            //                    while (r.Read())
+            //                    {
+            //                        nseira++;
+            //                        Single tt;
+            //                        Single te;
+
+            //                        if (IsSygkEpistr == 1)
+            //                        {
+            //                            string MPOL = PARAGGELIES.ReadSQL("select IFNULL(DESM,0) AS DESM from EID where KOD='" + r["KODE"].ToString() + "'");
+            //                            // te = Convert.ToInt64(Convert.ToDouble(MPOL));
+            //                            te = float.Parse(r["TIMH"].ToString());
+            //                            tt = float.Parse(r["EPISTRPOSO"].ToString());
+            //                            //  tt = Convert.ToInt64(Convert.ToDouble(r["POSO"])) - te;        //(Single)r["POSO"] - te ;
+            //                        }
+            //                        else
+            //                        {
+            //                            te = float.Parse(r["TIMH"].ToString());  //.Replace(",",".") );  //  * (100 - (Single)r["EKPT"]) / 100;
+            //                            tt = float.Parse(r["AXIA"].ToString()); //.Replace(",", "."));   //   * (Single)r["POSO"] * (100 - (Single)r["EKPT"]) / 100;
+            //                        }
+            //                        //  ssum = ssum + tt;
+            //                        string lin = (r["KODE"].ToString() + "          ").Substring(0, 10) + " " + (r["PER"].ToString() + spac40).Substring(0, 35) + "TEM";
+            //                        lin = lin + Right("      " + r["POSO"].ToString(), 6) + " ";
+            //                        lin = lin + Right("      " + String.Format("{0:0.00}", te), 6) + " ";
+            //                        lin = lin + "" + "13" + "  " + Right("       " + String.Format("{0:0.00}", tt), 7) + " ";
+            //                        cLine[nseira] = lin;
+            //                    }
+            //                    // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            //                    int nCount = nseira;   // posa records exei to timologio
+            //                    int RecPerPage = 26;
+            //                    int nPages = nCount / RecPerPage;
+            //                    if (nCount % RecPerPage > 0) // exei ypoloipo
+            //                    {
+            //                        ++nPages;
+            //                    };
+
+            //                    int quotient = 5 / 3;
+            //                    //Console.WriteLine(13 / 5);    // output: 2
+            //                    //Console.WriteLine(17 % 4);   // output: 1
+
+
+
+
+            //                    //==========================================================================================================
+            //                    int nCurRow = 0;
+            //                    for (int nCurPage = 1; nCurPage <= nPages; nCurPage++)
+            //                    {
+
+
+            //                        printt(outStream, (PAR2.Text + spac40).Substring(0, 50) + (ATIM.Text + "          ").Substring(0, 9) + DateTime.Now.ToString("dd/MM/yyyy   HH:mm tt") + "\n");
+            //                        printt(outStream, "\n");
+            //                        printt(outStream, "\n");
+            //                        printt(outStream, "\n");
+            //                        printt(outStream, (" ΕΠΩΝΥΜΙΑ:" + EPO.Text + "                                   ").Substring(0, 40) + "                              " + (PARAGGELIES.toGreek(Globals.cFORTHGO) + "          ").Substring(0, 9) + "\n");
+
+
+
+
+            //                        string EPA = PARAGGELIES.ReadSQL("select  IFNULL(EPA,'')  FROM PEL where KOD='" + af + "'");
+            //                        string DIE = PARAGGELIES.ReadSQL("select  IFNULL(DIE,'')  FROM PEL where KOD='" + af + "'");
+            //                        string AFM = PARAGGELIES.ReadSQL("select  IFNULL(AFM,'')  FROM PEL where KOD='" + af + "'");
+            //                        string POL = PARAGGELIES.ReadSQL("select  IFNULL(POL,'')  FROM PEL where KOD='" + af + "'");
+            //                        string DOY = PARAGGELIES.ReadSQL("select  IFNULL(DOY,'')  FROM PEL where KOD='" + af + "'");
+            //                        string PARAD = PARAGGELIES.ReadSQL("select  IFNULL(CH3,'ΕΔΡΑ ΠΕΛΑΤΗ')  FROM PEL where KOD='" + af + "'");
+
+
+            //                        printt(outStream, ("ΕΠΑΓΓΕΛΜΑ: " + EPA + "                         ").Substring(0, 30) + "\n");
+            //                        printt(outStream, ("ΔΙΕΥΘΥΝΣΗ: " + DIE + "                              ").Substring(0, 36) + "              " + (PARAD+"                              ").Substring(0,30)+ "\n");
+            //                        printt(outStream, ("     ΠΟΛΗ: " + POL + "                              ").Substring(0, 25) + "\n");
+            //                        printt(outStream, ("      ΑΦΜ: " + AFM + "                              ").Substring(0, 30) + "                       " + BCASH.Text + "\n");  // 3 ARISTERA PHGE APO ARXIKO
+            //                        printt(outStream, ("      ΔΟΥ: " + DOY + "                              " + "                            " + fEKPTNUM1.ToString()) + "\n"); //fYPOLPEL
+
+            //                        //string dbPath = Path.Combine(
+            //                        //Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+            //                        //"adodemo.db3");
+            //                        //SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            //                        //// Open the database connection and create table with data
+            //                        //connection.Open();
+            //                        //var contents = connection.CreateCommand();
+            //                        //contents.CommandText = "SELECT  KODE,ifnull(ONO,'') AS PER,POSO,TIMH,EKPT,ID from EGGTIM where ATIM ='" + ATIM.Text + "' order by ID DESC ; ";                                                                                                                                                                          // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            //                        //var r = contents.ExecuteReader();
+            //                        //Console.WriteLine("Reading data");
+
+
+            //                        printt(outStream, "\n");
+            //                        printt(outStream, "\n");
+
+            //                        // εαν ειναι συγκεντρωτικό να τυπωνει και επικεφαλιδα αλλοιώς κενο
+            //                        if (IsSygkEpistr == 1)
+            //                        {
+            //                            string lin = ("ΚΩΔΙΚΟΣ          ").Substring(0, 10) + " " + ("ΠΕΡΙΓΡΑΦΗ" + spac40).Substring(0, 35) + "TEM ";
+            //                            lin = lin + "ΦΟΡΤΩΣΗ";
+            //                            lin = lin + "ΠΩΛΗΣΗ";
+            //                            lin = lin + "" + "  " + "    " + "ΥΠΟΛΟΙΠΟ ";
+            //                            printt(outStream, lin + "\n");
+            //                        }
+            //                        else
+            //                        {
+            //                            printt(outStream, "\n");
+            //                        }
+
+            //                        int seir = 13;
+            //                        // Single ssum = 0;
+            //                        // String.Format("{0:0.0#}", 123.4567)       // "123.46"
+
+
+            //                        int nSeiresSelidas = 0;
+            //                        if (nCurPage == nPages)
+            //                        {
+            //                            nSeiresSelidas = RecPerPage;
+            //                        }
+            //                        else
+            //                        {
+            //                            nSeiresSelidas = RecPerPage;
+            //                        }
+
+            //                        for (int k = 1; k <= nSeiresSelidas; k++)
+            //                        {
+
+            //                            nCurRow++;
+            //                            seir++;
+            //                            printt(outStream, cLine[nCurRow] + "\n");
+
+
+
+            //                        }
+
+
+
+            //                        for (int kk = seir; kk < 40; kk++)
+            //                        {
+            //                            printt(outStream, "\n");
+
+            //                        }
+            //                        //  fkauajiPro = s;
+            //                        //   s = s - (s * fEKPTNUM1) / 100;
+            //                        //  fkauaji = s;
+            //                        if (nCurPage == nPages)
+
+
+            //                        {
+
+            //                            float NEO;
+            //                            if (BCASH.Text.Substring(0, 1) == "Μ")
+            //                            {
+            //                                NEO = (float)fYPOLPEL;
+            //                            }
+            //                            else
+            //                            {
+            //                                NEO = (float)fYPOLPEL + (float)fkauaji * 113 / 100;
+            //                            }
+            //                            string cold, cneo;
+            //                            cold = String.Format("{0:0.00}", fYPOLPEL);
+            //                            cneo = String.Format("{0:0.00}", NEO);
+
+            //                            printt(outStream, spac40 + "            ΣΥΝ.ΑΞΙΑ      " + Right("     " + String.Format("{0:0.00}", fkauajiPro), 7) + "\n");
+            //                            printt(outStream, spac40 + "            ΣΥΝ.ΕΚΠΤΩΣΗ   " + Right("     " + String.Format("{0:0.00}", fkauajiPro - fkauaji), 7) + "\n");
+            //                            printt(outStream, Right("               " + cold, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji), 7) + "\n");
+            //                            printt(outStream, Right("               " + cneo, 15) + spac40 + "           " + Right("     " + String.Format("{0:0.00}", fkauaji * 0.13), 7) + "\n");
+            //                            printt(outStream, "\n");
+            //                            printt(outStream, spac40 + "                          " + Right("     " + String.Format("{0:0.00}", fkauaji * 1.13), 7) + "\n");
+            //                        }
+            //                        else
+            //                        {
+
+            //                            for (int kk = 1; kk <= 5; kk++)
+            //                            {
+            //                                printt(outStream, "\n");
+            //                            }
+            //                            printt(outStream, "\n");
+
+            //                        }
+            //                        if (nCurPage > 1)
+            //                        {
+            //                            printt(outStream, "ΣΕΛ." + nCurPage.ToString() + "\n");
+            //                        }
+            //                        else
+            //                        {
+            //                            if (nPages > 1)
+            //                            {
+            //                                printt(outStream, "ΣΕΛ." + nCurPage.ToString() + "\n");
+            //                            }
+            //                            else
+            //                            {
+            //                                printt(outStream, "\n");
+            //                            }
+
+
+            //                        }
+
+
+            //                        printt(outStream, "\n");
+            //                        printt(outStream, "\n");
+            //                        for (int kk = 0; kk < 17; kk++)
+            //                        {
+            //                            printt(outStream, "\n");
+
+            //                        }
+            //                    }
+
+
+
+
+            //                    //fff=toGreek ("ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n");
+
+            //                    //toBytes = Encoding.Unicode.GetBytes(fff);
+            //                    //outStream.Write(toBytes, 0, toBytes.Length);
+            //                    ////            "ΠΑΜΕ ΠΟΛΥ ΚΑΛΑ ΚΑΛΗΝΥΧΤΑ ΑΒΓΔ\n"
+            //                    //fff = toGreek("I I I I IIIIIIIIIIIIIIIIIIII\n");
+            //                    //toBytes = Encoding.Unicode.GetBytes(fff);
+            //                    //outStream.Write(toBytes, 0, toBytes.Length);
+
+
+
+
+            //                    //fff = toGreek("                          II\n");
+            //                    //toBytes = Encoding.Unicode.GetBytes(fff);
+            //                    //outStream.Write(toBytes, 0, toBytes.Length);
+
+
+            //                    //string ddd = (char)920+(char)921+ (char)922 + (char)923 + "--ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ PRINT/n";
+            //                    //toBytes = Encoding.GetEncoding("windows-1253").GetBytes(ddd);
+            //                    //   string eee = Encoding.GetEncoding("windows-1253").GetString(toBytes);
+
+            //                    //   outStream.Write( toBytes, 0, toBytes.Length);
+            //                    // toBytes = Encoding.UTF8 .GetBytes("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ PRINT/n");
+            //                    //  outStream.Write(toBytes, 0, toBytes.Length);
+
+
+
+            //                }
+            //                catch (SqliteException ex)
+            //                {
+
+            //                    await DisplayAlert("αδυναμια εκτυπωσης ", ex.ErrorCode.ToString(), "OK");
+            //                };
+
+
+            //                //    toBytes = Encoding.Default .GetBytes("αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ   MY TEXT TO PRINT");
+            //                //   outStream.Write(toBytes, 0, toBytes.Length);
+            //                try
+            //                {
+
+            //                    socket.Close();
+            //                }
+            //                catch
+
+            //                {
+
+            //                }
+            //                //
+
+
+            //                break;
+            //            }
+
+
+            //        }
+            //    }
+            //    else
+            //    {
+
+            //        await DisplayAlert("Paired Devices not found", " not ok", "OK");
+            //        // await MyFavHelper.InformUser("Paired Devices not found", "Bluetooth");
+            //        return;
+            //    }
+
+            //} catch
+            //{
+            //    await DisplayAlert("ΑΝΕΠΙΤΥΧΗΣ ΕΚΤΥΠΩΣΗ", " not ok", "OK");
+
+            //}
 
             /*
             UUID uuid = UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
