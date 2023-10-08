@@ -56,11 +56,11 @@
                    Placeholder="ONOMA"       />
 
 
-            <Entry x:Name="FPA"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+            <Entry x:Name="FPA"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
                    Placeholder="ΦΠΑ 1=13% 2=24%"       />
 
 
-            <Entry x:Name="LTI5"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+            <Entry x:Name="LTI5"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
                    Placeholder="TIMH ME ΦΠΑ"       />
 
 
