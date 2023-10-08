@@ -367,7 +367,9 @@ namespace test4sql
 
         private void UPDATEKOD(object sender, EventArgs e)
         {
-
+            string C;
+            C ="('"+ BARCODE.Text + "','" + ONO.Text + "'," + FPA.Text + "," + LTI5.Text.Replace(",",".") + ")";
+            Globals.ExecuteSQLServer("insert into EID(KOD,ONO,FPA,LTI5) VA;UES "+C);
         }
     }
 }
