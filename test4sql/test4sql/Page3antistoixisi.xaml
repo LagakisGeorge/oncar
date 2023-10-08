@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              NavigationPage.HasNavigationBar="False" 
+             x:Class="oncar.Page3">
+    <ContentPage.Content>
+
+
+        <StackLayout>
+            <Label x:Name="lab1" Text="Welcome to Xamarin.Forms!"             
+                HorizontalOptions="CenterAndExpand" />
+
+
+
+
+
+            <StackLayout    Orientation="Horizontal" >
+
+
+                <Button x:Name="butbarcode" 
+                    Text="BARCODE ΜΕ ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
+                <Button x:Name="CMDsavecodes" 
+                    Text="ΑΠΟΘΗΚΕΥΣΗ"  Grid.Row="1" Grid.Column="0" Clicked="savecodes" />
+
+
+                <Button x:Name="CMDshow" 
+                    Text="λιστα" Clicked="lista" />
+            </StackLayout>
+
+
+            
+
+            <StackLayout    Orientation="Vertical">
+
+                <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Medium" 
+                   Placeholder="BARCODE     " Focused="barcfoc"  Unfocused="okscann"    />
+
+
+
+            </StackLayout>
+
+
+
+            <Entry x:Name="mono"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+                   Placeholder="ONOMA"   Unfocused="breseidh"    />
+
+            <StackLayout    Orientation="Horizontal" >
+                <Button x:Name="but10" 
+                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="BresEidos"  />
+                <Button x:Name="AKYROEIDOS" 
+                        Text="ΑΚΥΡΟ"  Grid.Row="3" Grid.Column="0"
+                         TextColor="Purple" 
+                       Clicked="AKYROEidos"  />
+
+
+
+            </StackLayout> 
+
+            <Label    x:Name="lper"   Grid.Row="3" Grid.Column="1" Grid.ColumnSpan ="3"
+                Text="............................" FontSize="Large"  />
+            <Label    x:Name="KODIKOS"   Grid.Row="3" Grid.Column="1" Grid.ColumnSpan ="3"
+                Text="............................" FontSize="Large"  />
+
+
+            <Entry x:Name="posotita" Unfocused="savepalioKaineo"
+                 VerticalOptions="FillAndExpand"  
+                 HorizontalOptions="FillAndExpand"  
+                 Keyboard="Numeric">
+                
+            </Entry>
+
+
+
+           
+
+
+
+
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                      HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                                ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+
+                                <StackLayout   Orientation="Horizontal">
+
+                                     <Label Grid.Column="0" 
+                                            Text="{Binding Name}"
+                                               FontAttributes="Bold" FontSize="Small" />
+                                    <Label 
+                                  
+                                    
+                                     Text="{Binding Location}"
+                                      />
+
+                                </StackLayout>
+
+                                <StackLayout   Orientation="Horizontal">
+
+ <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    
+                                    />
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    IsVisible="false"
+                                    />
+
+                                </StackLayout>
+
+
+
+
+
+                              
+
+
+                               
+                           
+                            </StackLayout> 
+                            
+
+
+
+
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+            <StackLayout    Orientation="Horizontal">
+
+                <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
+                Text=".............."  />
+                <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
+                Text="..............."  />
+
+
+                <Label     Grid.Row="4" Grid.Column="0" 
+                  Text="ΤΙΜΗ    " 
+                  TextColor="Blue"     />
+
+                <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
+                  Text="0"  />
+                <Label            Grid.Row="4" Grid.Column="2" FontSize="Large" 
+                  Text="0"  />
+
+                <Label   x:Name="xtimh"   Grid.Row="4" Grid.Column="3" FontSize="Large" 
+                  Text="0"  
+                   />
+
+            </StackLayout>
+
+
+
+        </StackLayout>
+
+
+
+
+
+    </ContentPage.Content>
+</ContentPage>

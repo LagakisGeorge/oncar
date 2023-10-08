@@ -1003,6 +1003,11 @@ NewMethod(e),
         {
             await Navigation.PushAsync(new Pelkin());
         }
+
+        private async void antist(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Page3());
+        }
     }  // public partial class MainPage : ContentPage
 
 }  // namespace

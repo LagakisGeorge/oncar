@@ -74,6 +74,13 @@
                 Text="ΑΠΟΘΗΚΗ"
                 Clicked="fAPOTHIKI"
                  />
+
+        <Button x:Name="APOTHIKI" 
+                Text="ΑΝΤΙΣΤΟΙΧΙΣΗ"
+                Clicked="antist"
+                 />
+
+
         <Button x:Name="PELATHS" 
                 Text="ΠΕΛΑΤΗΣ"
                 Clicked="fPELATHS"

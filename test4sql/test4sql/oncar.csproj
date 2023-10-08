@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Page1.xaml.cs" />
     <Compile Remove="printingBT.xaml.cs" />
     <Compile Remove="ViewModels\PrintPageViewModel.cs" />
   </ItemGroup>
