@@ -75,7 +75,7 @@
                 Clicked="fAPOTHIKI"
                  />
 
-        <Button x:Name="APOTHIKI" 
+        <Button x:Name="APOTHIKI2" 
                 Text="ΑΝΤΙΣΤΟΙΧΙΣΗ"
                 Clicked="antist"
                  />
