@@ -13,6 +13,14 @@ using System.IO;
 using Plugin.Toast;
 using System.Threading;
 using Xamarin.Forms.PlatformConfiguration;
+using System.Data.SqlClient;
+using System.Data;
+using System.Windows.Input;
+using Xamarin.Essentials;
+using Mono.Data.Sqlite;
+using System.Linq.Expressions;
+using oncar;
+using static Android.Provider.Telephony.Mms;
 
 namespace test4sql
 {
@@ -20,7 +28,8 @@ namespace test4sql
     public partial class Page2 : ContentPage
     {
 
-
+        public SqlConnection con;
+        
 
         public IList<Monkey> Monkeys { get; private set; }
         public Page2()
@@ -45,7 +54,7 @@ namespace test4sql
              MainPage.ExecuteSqlite("delete FROM EGGTIM");
 
             await DisplayAlert("ΔΙΑΓΡΑΦΗΚΕ ΟΚ", "ΔΙΑΓΡΑΦΗΚΕ Η ΑΠΟΓΡΑΦΗ", "OK");
-
+            
 
 
         }
@@ -79,7 +88,15 @@ namespace test4sql
 
             }
 
+            // αν δεν υπαρχει το πεδιο "MON" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EID') WHERE name='XTI' ");
+            if (Int16.Parse(nc) == 0)
+            {
 
+                MainPage.ExecuteSqlite("alter table EID ADD XTI [real] ");
+               
+
+            }
 
 
 
@@ -113,6 +130,7 @@ namespace test4sql
                 MainPage.ExecuteSqlite("alter table PEL ADD TYP REAL");
                 MainPage.ExecuteSqlite("alter table PEL ADD DOY [varchar](20)");
                 MainPage.ExecuteSqlite("alter table PEL ADD PEK [INT] ");
+                MainPage.ExecuteSqlite("alter table PEL ADD MEMO  [varchar](250)");
 
             }
 
@@ -221,7 +239,7 @@ namespace test4sql
 
    MainPage.ExecuteSqlite(c);
 
-            MainPage.ExecuteSqlite("alter table PEL ADD MEMO  [varchar](250)");
+            
 
 
 
@@ -361,10 +379,40 @@ namespace test4sql
                        "[POL] [nvarchar](35) ," +
                          "[THL] [nvarchar](35) ," +
                        "[AFM] [nvarchar](15) )";
-             MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
-            await DisplayAlert("ΑΡΙΘΜΗΣΗ ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
+            
+
+            if (PARAGGELIES.NReadSQL("select count(*) from MEM") < 5)
+            {
+                MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+                MainPage.ExecuteSqlite("INSERT INTO MEM (IP) VALUES ('*')");
+                
+            }
+
+            await DisplayAlert("MEM ΟΚ", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
+
+            MainPage.ExecuteSqlite(c);
+
+            c = "CREATE TABLE IF NOT EXISTS BARDIA( [HME] [datetime]  , " +
+                "[IDERGAZ] [int]  , [NUM1] [int]  , [NUM2] [int]  , [CH1] [nvarchar](55)  ," +
+                " [CH2] [nvarchar](55)  , [ISOPEN] [int]  , [OPENH] [nvarchar](55)  , " +
+                "[CLOSEH] [nvarchar](55)  , [CASHTOT] [int]  , " +
+                "[CASH1] [int]  , [CASH2] [int]  , [CASH3] [int]  , [CASH4] [int]  ," +
+                " [CASH5] [int]  , [ID]  INTEGER PRIMARY KEY )  ";
+
+
+
+
+
+            await DisplayAlert("BARDIA", " ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
              MainPage.ExecuteSqlite(c);
+            if (PARAGGELIES.NReadSQL("select count(*) from BARDIA") < 1)
+            {
+                MainPage.ExecuteSqlite("INSERT INTO BARDIA (ISOPEN) VALUES (0)");
+         
+            }
+
+
 
             c = " CREATE TABLE  IF NOT EXISTS TIMOKAT ( [KOD] [nvarchar](14) NOT NULL,"+
                 "[EKPT] [decimal](5, 2) NOT NULL, [TIMOK] [int] NOT NULL,[ONO] [nvarchar](35) NULL,"+
@@ -401,6 +449,116 @@ namespace test4sql
 
 
             }
+
+
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS KATHG (ID  INTEGER PRIMARY KEY ," +
+                   "[KOD] [int] ," +
+                   "[ONO] [nvarchar](55) ," +
+                   "[PICTURE] [nvarchar](55) ," +
+                   "[CH1] [nvarchar](55) ," +
+                   "[CH2] [nvarchar](55)  ); ");
+
+
+            // Toast.makeText(getApplicationContext(), "2.KATHG ok", Toast.LENGTH_SHORT).show();
+
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS EIDH (ID  INTEGER PRIMARY KEY ," +
+                   "[ONO] [nvarchar](55) ," +
+                   "[TIMH] [real] ," +
+                   "[SYNOLO] [int] ," +
+                   "[NUM1] [real] ," +
+                   "[NUM2] [real] ," +
+                   "[CH1] [nvarchar](55), " +
+                   "[CH2] [nvarchar](55)" +
+                   " );");
+
+            // αν δεν υπαρχει το πεδιο "EPA" ΠΡΟΣΘΕΣΕ ΤΟ
+            nc = PARAGGELIES.ReadSQL("SELECT COUNT(*) AS CNTREC FROM pragma_table_info('EIDH') WHERE name='KATHG' ");
+            if (Int16.Parse(nc) == 0)
+            {
+                MainPage.ExecuteSqlite("alter table EIDH ADD KATHG INT");
+
+            }
+
+
+
+
+
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS TABLES (ID  INTEGER PRIMARY KEY ," +
+                    "[ONO] [nvarchar](55) ," +
+                    "[KATEILHMENO] [int] ," +
+                    "[SYNOLO] [int] ," +
+                    "[NUM1] [int] ," +
+                    "[NUM2] [int] ," +
+                    "[CH1] [nvarchar](55) ," +
+                    "[CH2] [nvarchar](55)," +
+                    "[IDPARAGG] [int] );");
+
+
+            // Toast.makeText(getApplicationContext(), "3.TABLES ok", Toast.LENGTH_SHORT).show();
+
+
+
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS PARAGG (" +
+                    "[TRAPEZI] [varchar](55)," +
+                    "[HME] [datetime] ," +
+                    "[IDPARAGG] [int] ," +
+                    "[KOD] [nvarchar](55) ," +
+                    "[POSO] [real] ," +
+                    "[TIMH] [real] ," +
+                    "[ONO] [varchar](55) ," +
+                    "[PROSUETA] [varchar](55) ," +
+                    "[CH1] [varchar](55) ," +
+                    "[CH2] [varchar](55) ," +
+                    "[NUM1] [int] ," +
+                    "[NUM2] [int] ," +
+                    "[ENERGOS] [int] ," +
+                    "[KERASMENOAPO] [varchar](55) ," +
+                    "[KERASMENOSE] [varchar](55) ," +
+                    "[ID]  INTEGER PRIMARY KEY )");
+
+
+
+            MainPage.ExecuteSqlite("CREATE TABLE IF NOT EXISTS   PARAGGMASTER ("+
+     "[TRAPEZI][nvarchar](55) ,"+
+	"[IDERGAZ][int] ,"+
+	"[HME][datetime] ,"+
+	"[IDBARDIA][int] ,"+
+	"[AJIA][real] ,"+
+	"[TROPOS][int] ,"+
+	"[NUM1][int] ,"+
+	"[NUM2][int] ,"+
+	"[CH1][nvarchar] (255) ,"+
+	"[CH2][nvarchar] (255) ,"+
+	"[TABLETN][int] ,"+
+	"[IDPARAGG][int] ,"+
+	"[CASH][real] ,"+
+	"[PIS1][real] ,"+
+	"[PIS2][real] ,"+
+	"[KERA][real] ,"+
+    "[ID] INTEGER PRIMARY KEY )");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -496,7 +654,99 @@ namespace test4sql
         // SQLQUERYF
         async void SQLQUERYF(object sender, EventArgs e)
         {
-            RESULTS.Text=PARAGGELIES.ReadSQL(QUERY.Text );
+            DOSQLQUERY(4);
+        }
+
+    async void DOSQLQUERY(int num1 )
+
+        {
+           // RESULTS.Text=PARAGGELIES.ReadSQL(QUERY.Text );
+           try
+            {
+
+            
+
+
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+
+            string dbPath = Path.Combine(
+              Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+              "adodemo.db3");
+            bool exists = File.Exists(dbPath);
+            if (!exists)
+            {
+                Console.WriteLine("Creating database");
+                // Need to create the database before seeding it with some data
+                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+            }
+
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            // Open the database connection and create table with data
+            connection.Open();
+
+
+            var contents = connection.CreateCommand();
+            contents.CommandText = QUERY.Text;
+                                                                                                                                                           // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            
+            while (r.Read())
+            {
+                    if (num1 == 1)
+                    {
+                       await DisplayAlert(r[0].ToString(),"ok","ok");
+
+                        break;
+
+                    }
+                    else
+                    {
+
+                        Monkeys.Add(new Monkey
+                        {
+                            Name = r[0].ToString(),
+                            Location = r[1].ToString(),
+                            ImageUrl = r[2].ToString(),
+                            idPEL = r[3].ToString()
+                        });
+                    }
+            }
+
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
+            
+            connection.Close();
+
+           
+
+            BindingContext = this;
+
+            }
+            catch
+            {
+                BindingContext = this;
+                await DisplayAlert("λαθος", "....", "OK");
+                return;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         }
 
@@ -791,7 +1041,262 @@ namespace test4sql
 
         }
 
+        private async void SUBIMPBAR(object sender, EventArgs e)
+        {
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+                // ***************  demo πως τρεχω εντολη στον sqlserver ********************************
+                // SqlCommand cmd = new SqlCommand("insert into PALETES(PALET) values (1)");
+                // cmd.Connection = con;
+                // cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
 
 
+
+
+            var action = await DisplayAlert("Θα διαγραφουν τα τιμολόγια του κινητού", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+
+
+            MainPage.ExecuteSqlite("delete from TABLES;");
+            MainPage.ExecuteSqlite("delete from PARAGG;");
+            MainPage.ExecuteSqlite("delete from KATHG;");
+
+            String SYNT = "";
+          //  if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
+            //    SYNT = " TOP 20 ";
+
+
+            //--------------------------------------  TRAPEZIA -----------------------------------------------------------
+            try
+            {
+               //Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ISNULL(ONO,'') AS ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(SYNOLO,0) AS SYNOLO,ISNULL(NUM1,'') AS NUM1,ISNULL(NUM2,0) AS NUM2,ISNULL(CH1,'') AS CH1,ISNULL(CH2,'') AS CH2,ISNULL(IDPARAGG,0) AS IDPARAGG   FROM TABLES ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String ONO = dt.Rows[k]["ONO"].ToString();
+                    ONO = ONO.Replace("'", "`");
+
+                    String CH1 = dt.Rows[k]["CH1"].ToString();
+                    CH1 = CH1.Replace("'", "`");
+
+                    String CH2 = dt.Rows[k]["CH2"].ToString();
+                    CH2 = CH2.Replace("'", "`");
+
+
+
+                    string KATEILHMENO = dt.Rows[k]["KATEILHMENO"].ToString();
+                    KATEILHMENO = KATEILHMENO.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
+                    string SYNOLO = dt.Rows[k]["SYNOLO"].ToString();
+                    SYNOLO = SYNOLO.Replace(",", ".");
+
+
+
+
+                    string NUM1 = dt.Rows[k]["NUM1"].ToString();
+                    NUM1 = NUM1.Replace(",", ".");
+
+                    string NUM2 = dt.Rows[k]["NUM2"].ToString();
+                    NUM2 = NUM2.Replace(",", ".");
+
+                    string IDPARAGG = dt.Rows[k]["IDPARAGG"].ToString();
+                    IDPARAGG = IDPARAGG.Replace(",", ".");
+
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into TABLES (ONO,CH1,CH2,KATEILHMENO,SYNOLO,NUM1,NUM2,IDPARAGG) VALUES ('" + ONO + "','" + CH1 + "','" + CH2 + "'," + KATEILHMENO + "," + SYNOLO + "," + NUM1 + "," + NUM2 +","+ IDPARAGG+ ");");
+                } // FOR
+
+               
+               
+
+              //  BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+            //-------------------------   KATHG  --------------------------------------------
+            try
+            {
+                //Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ISNULL(ONO,'') AS ONO,ISNULL(CH1,'') AS CH1,ISNULL(CH2,'') AS CH2   FROM KATHG ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String ONO = dt.Rows[k]["ONO"].ToString();
+                    ONO = ONO.Replace("'", "`");
+
+                    String CH1 = dt.Rows[k]["CH1"].ToString();
+                    CH1 = CH1.Replace("'", "`");
+
+                    String CH2 = dt.Rows[k]["CH2"].ToString();
+                    CH2 = CH2.Replace("'", "`");
+
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into KATHG (ONO,CH1,CH2) VALUES ('" + ONO + "','" + CH1 + "','" + CH2 + "');");
+                } // FOR
+
+
+
+
+                //  BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+            //--------------------------------------  EIDH -----------------------------------------------------------
+            try
+            {
+                //Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand("select " + SYNT + " ISNULL(ONO,'') AS ONO,ISNULL(CH1,'') AS CH1,ISNULL(CH2,'') AS CH2,ISNULL(NUM2,0) AS NUM2 ,ISNULL(TIMH,0) AS TIMH,ISNULL(NUM1,0) AS NUM1,ISNULL(KATHG,0) AS KATHG  FROM EIDH ", con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String ONO = dt.Rows[k]["ONO"].ToString();
+                    ONO = ONO.Replace("'", "`");
+
+                    String CH1 = dt.Rows[k]["CH1"].ToString();
+                    CH1 = CH1.Replace("'", "`");
+
+                    String CH2 = dt.Rows[k]["CH2"].ToString();
+                    CH2 = CH2.Replace("'", "`");
+
+
+
+                    string TIMH = dt.Rows[k]["TIMH"].ToString();
+                    TIMH = TIMH.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
+                    string KATHG = dt.Rows[k]["KATHG"].ToString();
+                    KATHG = KATHG.Replace(",", ".");
+
+
+
+
+                    string NUM1 = dt.Rows[k]["NUM1"].ToString();
+                    NUM1 = NUM1.Replace(",", ".");
+
+                    string NUM2 = dt.Rows[k]["NUM2"].ToString();
+                    NUM2 = NUM2.Replace(",", ".");
+
+                 
+
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into EIDH (ONO,CH1,CH2,TIMH,KATHG,NUM1,NUM2) VALUES ('" + ONO + "','" + CH1 + "','" + CH2 + "'," + TIMH + "," + KATHG + "," + NUM1 + "," + NUM2 + ");");
+                } // FOR
+
+
+
+
+                //  BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        private async void updateWeb(object sender, EventArgs e)
+        {
+            // public AboutViewModel()
+            //  {
+            // Title = "About";
+            // OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            // }
+
+            //var br = new WebView
+            //{
+            //    Source = "https://dotnet.microsoft.com/apps/xamarin"
+
+
+            //};
+            await Launcher.OpenAsync("https://www.lagakis.gr/apk/23031.apk");
+            // br.
+
+        }
+
+
+
+        private void SQLQUERYF1(object sender, EventArgs e)
+        {
+            DOSQLQUERY(1);
+        }
     }
 }
+
+
+
+
+
+
+           
+        
+ 

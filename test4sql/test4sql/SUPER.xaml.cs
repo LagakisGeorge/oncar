@@ -20,7 +20,7 @@ namespace test4sql
         int f_man_barcode = 0;
         string cc = "";
 
-
+       // Globals.ExecuteSQLServer(cc);
 
 
         public SUPER()
@@ -217,7 +217,7 @@ namespace test4sql
         async void BresEidos(object sender, EventArgs e)
         {
 
-            Show_list_Eidon(mono.Text);
+            Show_list_Eidon(ONO.Text);
 
         }
 
@@ -258,21 +258,21 @@ namespace test4sql
             }
             else
             {             
-            contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE ONO like '%" + mono .Text + "%'  ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE ONO like '%" + ONO .Text + "%'  ; "; // +BARCODE.Text +"'";
             }
             
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
             {
-                lper.Text = r["ONO"].ToString();  // ****
-                ltimh.Text = r["XONDR"].ToString();
+                //lper.Text = r["ONO"].ToString();  // ****
+                // ltimh.Text = r["XONDR"].ToString();
                 string ccc = r["XONDR"].ToString();
                
-                lkode.Text = r["KOD"].ToString();
-                lbarcode.Text = r["BARCODE"].ToString();  // ***
+              //  lkode.Text = r["KOD"].ToString();
+              //  lbarcode.Text = r["BARCODE"].ToString();  // ***
 
-                 cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
+               //  cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
 
             }
             // r["ONO"].ToString();
@@ -354,7 +354,7 @@ namespace test4sql
             //if (fisEIDH == 0)
             {
                 //  BRESafm.IsEnabled = false;
-                mono.Text = tappedItem.Name;
+                ONO.Text = tappedItem.Name;
                 find_eid();
 
             }
@@ -364,5 +364,10 @@ namespace test4sql
 
 
             }
+
+        private void UPDATEKOD(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -56,6 +56,22 @@
                
                  />
 
+            <Button x:Name="CMDupdateWeb"
+                      Text="Αναβάθμιση"
+                       Clicked="updateWeb" 
+                     BackgroundColor="Green"
+               
+                 />
+
+
+
+            <Button x:Name="IMPBAR"
+                      Text="IMPORT BAR RESTAURANT"
+                       Clicked="SUBIMPBAR" 
+                     BackgroundColor="Green"
+               
+                 />
+           
 
 
 
@@ -67,8 +83,10 @@
 
             <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
                 <Button x:Name="SQLQUERY" Clicked="SQLQUERYF"
-                      Text="SQLQUERY"/>
-
+                      Text="QUERY-4FIELDS"/>
+                
+                <Button x:Name="SQLQUERY1" Clicked="SQLQUERYF1"
+                      Text="QUERY1"/>
 
                 <Button x:Name="SQLEXECUTE" Clicked="SQLEXECUTEF"
                       Text="SQLEXECUTE" />

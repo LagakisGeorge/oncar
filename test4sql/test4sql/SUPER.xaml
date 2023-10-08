@@ -38,8 +38,10 @@
                  
            
                    <Button x:Name="butbarcode" 
-                    Text="BARCODE ΜΕ ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
+                    Text="BARCODE-- ΜΕ ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
+                 
           
+                 
                  
             
                   <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
@@ -50,45 +52,27 @@
 
 
 
-                    <Entry x:Name="mono"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+                    <Entry x:Name="ONO"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
                    Placeholder="ONOMA"       />
 
 
-            <Button x:Name="but10" 
-                        Text="ΑΝΑΖΗΤΗΣΗ"  Grid.Row="3" Grid.Column="0"
-                         TextColor="Purple" 
-                       Clicked="BresEidos"  />
+            <Entry x:Name="FPA"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+                   Placeholder="ΦΠΑ 1=13% 2=24%"       />
 
-                <Label    x:Name="lper"   Grid.Row="3" Grid.Column="1" Grid.ColumnSpan ="3"
-                Text="............................" FontSize="Large"  />
 
+            <Entry x:Name="LTI5"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+                   Placeholder="TIMH ME ΦΠΑ"       />
 
 
 
-             
+            <Button x:Name="KATAX" 
+                    Text="ΚΑΤΑΧΩΡΗΣΗ"  Grid.Row="1" Grid.Column="0" Clicked="UPDATEKOD" />
 
 
-            <StackLayout    Orientation="Horizontal">
-                
-                   <Label   x:Name="lkode"  Grid.Row="2" Grid.Column="0" 
-                Text=".............."  />
-                <Label   x:Name="lbarcode"  Grid.Row="2" Grid.Column="1" 
-                Text="..............."  />
-                
 
-                 <Label     Grid.Row="4" Grid.Column="0" 
-                  Text="ΤΙΜΗ    " 
-                  TextColor="BlueViolet"    />
 
-                <Label   x:Name="ltimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
-                  Text="0"  />
-                <Label   x:Name="xtimh"   Grid.Row="4" Grid.Column="1" FontSize="Large" 
-                  Text="0"  
-                   />
-
-            </StackLayout>
             
-            
+           
 
 
 
