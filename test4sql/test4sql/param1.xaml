@@ -11,26 +11,42 @@
 
 
 
-            <Label Text="ΑΡΙΘΜΟΣ ΦΟΡΤΗΓΟΥ "
+            <Label Text="82=βαρ-σερβιτ2  7=τιμολ 99=πελ "
 
                 
                 HorizontalOptions="CenterAndExpand" />
+              <StackLayout Orientation="Horizontal" >
 
-            <Entry x:Name="FORTHGO"
+                <Label Text="user" />
+
+                <Entry x:Name="FORTHGO"
                    
                     BackgroundColor="Green"      
                    />
 
+                <Entry x:Name="TitlosEKTYP" Placeholder="Τίτλος Εκτύπωσης-----------"    HorizontalOptions="CenterAndExpand"
+                   
+                    BackgroundColor="Gray"       
+                />
 
-            <Label Text="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES=1 ΕΙΔΩΝ=0 "
+            </StackLayout>
 
-                
-                HorizontalOptions="CenterAndExpand" />
+               <StackLayout Orientation="Horizontal" >
 
-            <Entry x:Name="BARCODES"
-                   Placeholder="SCAN BARCODE ΑΠΟ ΠINAKA BARCODES" 
+                <Label Text="Barc=1 Eιδ=0" />
+                <Entry x:Name="BARCODES"
+                   Placeholder=" " 
                     BackgroundColor="Azure"    
                    />
+                <Label Text="Local=1" />
+                <Entry x:Name="local"
+                   Placeholder=" " 
+                    BackgroundColor="Azure"    
+                   />
+
+               </StackLayout >
+
+                
 
 
 
@@ -51,6 +67,30 @@
                    Placeholder="SQLSERVER INSTANCE" 
                     BackgroundColor="Azure"    
                    />
+            <StackLayout Orientation="Horizontal" >
+                <Entry x:Name="CIPPR1" 
+                   Placeholder="IP PRINTER1" Unfocused="testprint"
+                    BackgroundColor="Azure"    
+                   />
+                <Entry x:Name="CIPPR2"
+                   Placeholder="IP PRINTER2" Unfocused="testprint2"
+                    BackgroundColor="Azure"    
+                   />
+                <Entry x:Name="CIPPR3"  Unfocused="testprint3"
+                   Placeholder="IP PRINTER3" 
+                    BackgroundColor="Azure"    
+                   />
+            </StackLayout >
+
+            <StackLayout Orientation="Horizontal" >
+                <Entry x:Name="cIPKleis" Unfocused="testprint4"
+                   Placeholder="IP ΚΛΕΙΣΙΜΑΤΟΣ" 
+                    BackgroundColor="Azure"    
+                   />
+            </StackLayout >
+
+
+
             <Button x:Name="katax" 
                     Text="ΚΑΤΑΧΩΡΗΣΗ"
                         Clicked="fkatax" 
