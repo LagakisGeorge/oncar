@@ -38,14 +38,14 @@
                  
            
                    <Button x:Name="butbarcode" 
-                    Text="BARCODE-- ΜΕ ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
+                    Text="BARCODE ΦΩΤΟ"  Grid.Row="1" Grid.Column="0" Clicked="CHANGEBARCODE" />
                  
           
                  
                  
             
                   <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
-                   Placeholder="BARCODE " Focused="barcfoc"      />
+                   Placeholder="BARCODE               " Focused="barcfoc"      />
 
             
          </StackLayout>
@@ -70,9 +70,11 @@
 
 
 
+            <Label x:Name="yparxei" Text="0"             
+                HorizontalOptions="CenterAndExpand" />
 
-            
-           
+
+
 
 
 

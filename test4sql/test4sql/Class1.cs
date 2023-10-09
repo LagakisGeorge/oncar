@@ -313,13 +313,15 @@ namespace test4sql
             }
             catch (Exception ex)
             {
-                return "ERROR ΜΗ ΣΥΝΔΕΣΗ";
+                return "ERROR";
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
 
 
         }
+
+
         public static void ExecuteSQLServer(string sql)
         {
 
@@ -350,7 +352,7 @@ namespace test4sql
             catch (Exception ex)
             {
                 string cv = "";
-                // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+              //  DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
             }
 
         }
@@ -381,15 +383,15 @@ namespace test4sql
                 cmd.Connection = con;
                 cmd.ExecuteNonQuery();
                 con.Close();
-                return 1;
+                ok= 1;
             }
             catch (Exception ex)
             {
                 string cv = "";
                 // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
-                return 0;
+               ok= 0;
             }
-
+            return ok;
         }
 
 

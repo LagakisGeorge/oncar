@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
+using ZXing.Mobile;
 
 namespace test4sql
 {
@@ -125,7 +126,7 @@ namespace test4sql
                     // await DisplayAlert("Scanned Barcode", result.Text, "OK");
                     BARCODE.Text = result.Text;
                    // Completed = "posothtaCompleted"
-                    find_eid();
+                    sqlfind_eid(result.Text);
                 });
             };
 
@@ -221,7 +222,33 @@ namespace test4sql
 
         }
 
-        void find_eid() {
+        void sqlfind_eid(string MBAR)
+
+        {
+            string c = "";
+            c = Globals.ReadSQLServerWithError("select ISNULL(ONO,'')+';'+STR(ISNULL(FPA,'0'))+';'+STR(ISNULL(LTI5,0),10,2) FROM EID WHERE KOD='" + MBAR + "'");
+            yparxei.Text = "1";
+            if (c== "ERROR")
+            {
+                ONO.Text = "";
+                yparxei.Text = "0";
+            }else
+            {
+                string[] lines = c.Split(';');
+                ONO.Text = lines[0];
+                FPA.Text= lines[1];
+                LTI5.Text = lines[2];   
+
+
+
+            }
+           
+
+
+        }
+
+
+            void find_eid() {
 
 
 
@@ -365,11 +392,39 @@ namespace test4sql
 
             }
 
-        private void UPDATEKOD(object sender, EventArgs e)
+        private async void UPDATEKOD(object sender, EventArgs e)
         {
-            string C;
-            C ="('"+ BARCODE.Text + "','" + ONO.Text + "'," + FPA.Text + "," + LTI5.Text.Replace(",",".") + ")";
-            Globals.ExecuteSQLServer("insert into EID(KOD,ONO,FPA,LTI5) VA;UES "+C);
+            if (yparxei.Text == "1")
+            {
+                string C;
+                C =  " ONO='" + ONO.Text + "', FPA=" + FPA.Text + ",LTI5=" + LTI5.Text.Replace(",", ".") + "  ";
+                int ok = 0;
+                Globals.ExecuteSQLServer("update EID set " + C + " where KOD='"+BARCODE.Text +"'", ok);
+                if (ok == 1)
+                {
+                    DisplayAlert("ok", " ok ", " ok ");
+                }
+                else
+                {
+                    DisplayAlert("Δεν αποθηκευτηκε", " ok ", " ok ");
+                }
+
+            }
+            else
+            {
+                string C;
+                C = "('" + BARCODE.Text + "','" + ONO.Text + "'," + FPA.Text + "," + LTI5.Text.Replace(",", ".") + ")";
+                int ok = 0;
+                Globals.ExecuteSQLServer("insert into EID(KOD,ONO,FPA,LTI5) VALUES " + C, ok);
+                if (ok == 1)
+                {
+                    DisplayAlert("ok", " ok ", " ok ");
+                }
+                else
+                {
+                    DisplayAlert("Δεν αποθηκευτηκε", " ok ", " ok ");
+                }
+            }
         }
     }
 }
