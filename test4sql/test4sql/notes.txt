@@ -1,0 +1,6 @@
+﻿
+
+για να συνδεεται με sqlserver :
+In the the Android project, go to Properties -> Android Options
+
+Then Linker Options, in the "Additional supported encodings" check "West".
