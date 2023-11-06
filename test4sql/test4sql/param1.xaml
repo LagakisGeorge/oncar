@@ -51,17 +51,20 @@
                    Placeholder="SQLSERVER INSTANCE" 
                     BackgroundColor="Azure"    
                    />
-            <Button x:Name="katax" 
+             <StackLayout  Orientation="Horizontal">
+                 <Button x:Name="katax" 
                     Text="ΚΑΤΑΧΩΡΗΣΗ"
                         Clicked="fkatax" 
                   />
 
-            <Button x:Name="bftest" 
+                  <Button x:Name="bftest" 
                     Text="ΔΟΚΙΜΗ ΣΥΝΔΕΣΗΣ SQLSERVER"
                         Clicked="ftest" 
                   />
+             </StackLayout >
 
-            <Button x:Name="ListServers" 
+
+                    <Button x:Name="ListServers" 
                     Text="ΛΙΣΤΑ ΣΥΝΔΕΜΕΝΩΝ SERVER"
                         Clicked="fLISTSERVER" 
                   />

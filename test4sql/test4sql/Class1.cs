@@ -39,7 +39,8 @@ namespace test4sql
         public static SqliteConnection gconnection = new SqliteConnection("Data Source=" + Path.Combine(
                   Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                   "adodemo.db3"));
-
+      
+        
 
         public static string ReadSQL(string Query)
         {

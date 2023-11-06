@@ -38,7 +38,8 @@
         <Button Text="ΤΙΜΟΛΟΓΗΣΗ"
                 Clicked="PARAGG" />
 
-
+        <Button Text="ΦΥΣΙΚΗ ΑΠΟΓΡΑΦΗ"
+          Clicked="FISIKI" />
 
         <Button x:Name="but1" 
                 Text="Ενημερωση από Αρχεία"

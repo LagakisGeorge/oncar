@@ -1008,6 +1008,13 @@ NewMethod(e),
         {
             await Navigation.PushAsync(new Page3());
         }
+
+        private async void FISIKI(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new APOTtsism());
+
+        }
     }  // public partial class MainPage : ContentPage
 
 }  // namespace

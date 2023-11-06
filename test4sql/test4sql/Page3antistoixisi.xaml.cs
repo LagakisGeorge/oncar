@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data.SqlClient;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
@@ -109,6 +109,7 @@ namespace oncar
                 f_man_barcode = 1;
                 butbarcode.Text = "ΧΕΙΡ.BARCODE";
             }
+           
 
 
         }
