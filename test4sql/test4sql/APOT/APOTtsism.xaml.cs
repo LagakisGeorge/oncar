@@ -10,11 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
-
-
-
-
-
+using System.Data;
 namespace test4sql
 { 
 [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -327,50 +323,50 @@ public partial class APOTtsism : ContentPage
         Monkeys = new List<Monkey>();
         BindingContext = null;
 
-        string dbPath = Path.Combine(
-          Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-          "adodemo.db3");
-        bool exists = File.Exists(dbPath);
-        if (!exists)
-        {
-            Console.WriteLine("Creating database");
-            // Need to create the database before seeding it with some data
-            Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
-
-        }
-
-        SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-        // Open the database connection and create table with data
-        connection.Open();
-
-
-        var contents = connection.CreateCommand();
-        contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(ONO,'') AS PER,ifnull(XONDR,0) as timh,ID from EID where KOD LIKE '%" + ono + "%' OR ONO LIKE '%" + ono + "%' order by ONO ; "; // +BARCODE.Text +"'";
+         DataTable dt=new DataTable() ;
+        
+       string sql = "select top 50  HENAME,HECODE,HEID from HEITEMS where HENAME LIKE '%" + ono + "%'  order by ONO ; "; 
                                                                                                                                                                                                       // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-        var r = contents.ExecuteReader();
-        Console.WriteLine("Reading data");
-        while (r.Read())
+  
+
+            dt = LReadSQLServer(sql);
+            //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();
+            int k;
+            for ( k=0; k<=dt.Rows.Count - 1; k++)
         {
 
 
-            Monkeys.Add(new Monkey
-            {
-                Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
+                //Monkeys.Add(new Monkey
+                //{
+                //    Name = (dt.Rows[k]["HENAME"].ToString() ,
 
-                Location = (r["KODI"].ToString() + "      ").Substring(0, 5),
-                ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),
-                idPEL = r["ID"].ToString()
-            });
+                //    Location = "",
+                //    ImageUrl = "",
+                //    idPEL = ""
+                //});
+
+
+                Monkeys.Add(new Monkey
+                {
+                    Name = (dt.Rows[k]["HENAME"].ToString() + "                         ").Substring(0, 18),
+
+                    Location = (dt.Rows[k]["HECODE"].ToString() + "      ").Substring(0, 5),
+                    ImageUrl = ( "      ").Substring(0, 5),
+                    idPEL = dt.Rows[k]["HEID"].ToString()
+                });
 
 
 
-        }
 
-        listview.ItemsSource = Monkeys;
+
+
+            }
+
+            listview.ItemsSource = Monkeys;
         BindingContext = this;
 
 
-        connection.Close();
+        
 
         BindingContext = this;
     }
@@ -438,6 +434,60 @@ public partial class APOTtsism : ContentPage
                 string cv = "";
                 // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
             }
+
+        }
+
+       private DataTable LReadSQLServer(string sql)
+        {
+
+
+
+            if (Globals.cSQLSERVER.Length < 2)
+            {
+                // await DisplayAlert("ΔΕΝ ΔΗΛΩΘΗΚΕ Ο SERVER", "ΠΑΤΕ ΠΑΡΑΜΕΤΡΟΙ", "OK");
+                return null; ;
+            }
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            SqlConnection con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+            }
+
+
+            string SYNT = "";
+
+            try
+            {
+
+
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand(sql, con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+
+
+               
+                con.Close();
+                return dt;
+
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
 
         }
 
