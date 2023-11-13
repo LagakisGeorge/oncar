@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               NavigationPage.HasNavigationBar="False"
              x:Class="test4sql.APOTtsism">
     <ContentPage.Content>
         <StackLayout>
@@ -72,19 +73,19 @@
 
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="REAL" Text="ΥΠΟΛ.ΠΡΑΓΜ"              />
+                <Label x:Name="REAL" Text="ΠΡΑΓΜ"              />
 
                 <Entry x:Name="LTI5"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
                    Placeholder="ΠΡΑΓΜ ΥΠΟΛ"       />
-            </StackLayout>
+           
 
 
                     <Button x:Name="KATAX" 
                     Text="ΚΑΤΑΧΩΡΗΣΗ"  Grid.Row="1" Grid.Column="0" Clicked="UPDATEKOD" />
+ </StackLayout>
 
 
-
-            <Label x:Name="labold" Text=""              />
+           
 
 
 
@@ -105,7 +106,7 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
                                     <ColumnDefinition  Width="*" />
                                     <ColumnDefinition  Width="*"  />
                                 </Grid.ColumnDefinitions >

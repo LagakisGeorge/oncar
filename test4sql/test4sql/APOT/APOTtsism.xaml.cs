@@ -90,17 +90,27 @@ public partial class APOTtsism : ContentPage
     // 
     async void CHANGEBARCODE(object sender, EventArgs e)
     {
-        //if (f_man_barcode == 0)
-        //{
-        //    f_man_barcode = 0;
-        //    butbarcode.Text = "BARCODE ΦΩΤΟ";
-        //}
-        //else
-        //{
-        //    f_man_barcode = 1;
-        //    butbarcode.Text = "Χ.BARCODE";
-        //}
-            find2_eid();
+
+            //  if (BARCODE.Text.Length == 0)
+            //  {
+           
+                Show_list_Eidon(ONO.Text);
+                // return;
+          //  }
+
+
+
+            //if (f_man_barcode == 0)
+            //{
+            //    f_man_barcode = 0;
+            //    butbarcode.Text = "BARCODE ΦΩΤΟ";
+            //}
+            //else
+            //{
+            //    f_man_barcode = 1;
+            //    butbarcode.Text = "Χ.BARCODE";
+            //}
+          //  find2_eid();
 
 
         }
@@ -108,6 +118,7 @@ public partial class APOTtsism : ContentPage
 
     async void barcfoc(object sender, EventArgs e)
     {
+    
         if (f_man_barcode == 1)
         {
                 find2_eid();
@@ -242,7 +253,18 @@ public partial class APOTtsism : ContentPage
             FPA.Text = N.ToString();
         }
 
+        public void find3_eid()
+        {
+            string SQL = "";
 
+            string C = BARCODE.Text;
+            SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HECODE = '" + C + "'";
+            ONO.Text = Globals.ReadSQLServerWithError(SQL);
+            SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
+                 "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HECODE='" + C + "' )";
+            float N = Globals.FReadSQLServer(SQL);
+            FPA.Text = N.ToString();
+        }
 
 
         void find_eid()
@@ -323,13 +345,13 @@ public partial class APOTtsism : ContentPage
         Monkeys = new List<Monkey>();
         BindingContext = null;
 
-         DataTable dt=new DataTable() ;
+         
         
-       string sql = "select top 50  HENAME,HECODE,HEID from HEITEMS where HENAME LIKE '%" + ono + "%'  order by ONO ; "; 
-                                                                                                                                                                                                      // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
-  
+       string sql = "select top 50  HENAME,HECODE,HEID from HEITEMS where HENAME LIKE '"+ ono + "%'  order by HENAME ; ";
+            // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
-            dt = LReadSQLServer(sql);
+            int lathos = 0;
+            DataTable dt= LReadSQLServer(sql,lathos);
             //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();
             int k;
             for ( k=0; k<=dt.Rows.Count - 1; k++)
@@ -350,9 +372,9 @@ public partial class APOTtsism : ContentPage
                 {
                     Name = (dt.Rows[k]["HENAME"].ToString() + "                         ").Substring(0, 18),
 
-                    Location = (dt.Rows[k]["HECODE"].ToString() + "      ").Substring(0, 5),
-                    ImageUrl = ( "      ").Substring(0, 5),
-                    idPEL = dt.Rows[k]["HEID"].ToString()
+                    Location = (dt.Rows[k]["HECODE"].ToString() + "                  ").Substring(0, 12),
+                    ImageUrl = ( "      ").Substring(0, 1),
+                    idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
                 });
 
 
@@ -380,8 +402,9 @@ public partial class APOTtsism : ContentPage
         //if (fisEIDH == 0)
         {
             //  BRESafm.IsEnabled = false;
-            ONO.Text = tappedItem.Name;
-            find_eid();
+            ONO.Text = tappedItem.Name+";" + tappedItem.Location;
+                BARCODE.Text = tappedItem.Location;
+            find3_eid();
 
         }
 
@@ -397,7 +420,7 @@ public partial class APOTtsism : ContentPage
             string sql="insert into EGGTIMINP (KODE,POSO) VALUES('" + lines[1]+"',"+LTI5.Text+"-"+FPA.Text+")";
             LExecuteSQLServer(sql);
             BARCODE.Text = "";
-            labold.Text = ONO.Text;
+            lab1.Text = ONO.Text;
             ONO.Text = "";
             FPA.Text = "";
             LTI5.Text = "";
@@ -437,7 +460,7 @@ public partial class APOTtsism : ContentPage
 
         }
 
-       private DataTable LReadSQLServer(string sql)
+       private DataTable LReadSQLServer(string sql,int latos)
         {
 
 
@@ -455,11 +478,33 @@ public partial class APOTtsism : ContentPage
             try
             {
                 con.Open();
+                latos = 0;
             }
             catch (Exception ex)
             {
                 // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                latos = 1;
             }
+
+/*
+            string SYNT = "";
+
+            try
+            {
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand(sql, con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();              
+                con.Close();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                // await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+*/
 
 
             string SYNT = "";
@@ -475,7 +520,8 @@ public partial class APOTtsism : ContentPage
                 // List<string> MyList = new List<string>();
 
 
-               
+                string ret;
+                ret = dt.Rows[0][0].ToString();
                 con.Close();
                 return dt;
 
@@ -488,7 +534,6 @@ public partial class APOTtsism : ContentPage
             }
 
 
-
         }
 
 
@@ -499,10 +544,17 @@ public partial class APOTtsism : ContentPage
 
         private async void DIAGROLD(object sender, EventArgs e)
         {
-           // string[] lines = ONO.Text.Split(';');
+
+            var choice = await DisplayAlert("Title", "Να διαγραφουν;", "Ναι", "Οχι");
+            if (choice) //yes was clicked
+            {
+                //do something
+           
+            // string[] lines = ONO.Text.Split(';');
             string sql = "DELETE FROM EGGTIMINP";
             LExecuteSQLServer(sql);
             await DisplayAlert("Διαγράφηκαν", ".", "OK");
+            }
         }
     }
 }
