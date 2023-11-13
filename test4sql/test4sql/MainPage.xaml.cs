@@ -49,6 +49,10 @@ namespace test4sql
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
 
+
+
+         /*  AYTO TO KOMMATI KAUYSTEROYSE TO JEKINHMA TOY PROGRAMMATOS 
+
           try
             {
             // DESKTOP-MPGU8SB\SQL17
@@ -68,6 +72,8 @@ namespace test4sql
             {
                 // await DisplayAlert("Error", ex.ToString(), "OK");
             }
+         */
+
         }
 
 
