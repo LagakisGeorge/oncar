@@ -116,7 +116,7 @@ public partial class APOTtsism : ContentPage
         }
 
 
-    async void barcfoc(object sender, EventArgs e)
+    async void barcfoc()  // object sender, EventArgs e)
     {
     
         if (f_man_barcode == 1)
@@ -245,10 +245,16 @@ public partial class APOTtsism : ContentPage
             string SQL ="" ;
            
             string C = BARCODE.Text;
-            SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
+           //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
+
+
+            SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "'";
+
             ONO.Text = Globals.ReadSQLServerWithError(SQL);
             SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
-                 "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HEAUXILIARYCODE='"+C+"' )";
+
+              //   "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HEAUXILIARYCODE='"+C+"' )";
+             " WHERE YEAR(HEDATE) = 2023 AND HEITEMID = (select HEITEMID from[HEITEMALTERCODES] WHERE HECODE = '"+c+"')";
             float N = Globals.FReadSQLServer(SQL);
             FPA.Text = N.ToString();
         }
