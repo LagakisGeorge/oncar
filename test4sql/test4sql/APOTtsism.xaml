@@ -10,42 +10,19 @@
 
 
 
-            <Grid>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-
-
-
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-
-
-
-
-            </Grid>
+   
 
             <StackLayout    Orientation="Horizontal">
 
 
                 <Button x:Name="butbarcode" 
-                    Text="BARCODE"  Grid.Row="1" FontSize="Large" Grid.Column="0" Clicked="CHANGEBARCODE" />
+                    Text="BARCODE"   FontSize="Large"  Clicked="CHANGEBARCODE" />
 
 
 
 
 
-                <Entry x:Name="BARCODE"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+                <Entry x:Name="BARCODE"    FontSize="Large" 
                    Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
 
 
@@ -53,35 +30,36 @@
 
 
 
-            <Entry x:Name="ONO"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+            <Entry x:Name="ONO"    FontSize="Large" 
                    Placeholder="ONOMA"       />
 
              <StackLayout    Orientation="Horizontal">
-                <Label x:Name="PYLON" Text="ΥΠΟΛ.PYLON"              />
+                <Label x:Name="PYLON" Text="ΥΠΟΛ PYLON"  BackgroundColor="Cyan"  FontSize="Medium" />
 
-                <Entry x:Name="FPA"  Grid.Row="1" Grid.Column="1" FontSize="Medium" 
+                <Entry x:Name="FPA"    FontSize="Medium" 
                    Placeholder="ΥΠΟΛ"       />
-                <Label  Text="......."              />
+                <Label  Text="......."    FontSize="Medium"          />
 
 
                 <Button x:Name="DELETEOLD" 
-                    Text="ΔΙΑΓΡΑΦΗ ΠΑΛΙΩΝ"  Grid.Row="1" FontSize="Medium" Grid.Column="2" Clicked="DIAGROLD" />
+                    Text="ΔΙΑΓ.ΠΑΛΙΩΝ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
 
 
 
             </StackLayout>
 
+            
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="REAL" Text="ΠΡΑΓΜ"              />
+                <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"    BackgroundColor="Cyan"       />
 
-                <Entry x:Name="LTI5"  Grid.Row="1" Grid.Column="1" FontSize="Large" 
+                <Entry x:Name="LTI5"    FontSize="Large" 
                    Placeholder="ΠΡΑΓΜ ΥΠΟΛ"       />
            
 
 
                     <Button x:Name="KATAX" 
-                    Text="ΚΑΤΑΧΩΡΗΣΗ"  Grid.Row="1" Grid.Column="0" Clicked="UPDATEKOD" />
+                    Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
  </StackLayout>
 
 
@@ -122,7 +100,7 @@
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" FontSize="Small" />
                                 <Label 
-                                    Grid.Column="1"
+                                    
                                     
                                    Text="{Binding Location}"
                                     />
