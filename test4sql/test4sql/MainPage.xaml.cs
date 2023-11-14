@@ -2189,6 +2189,13 @@ public static void BigLetters(string ipAddress)
 
             return;
         }
+
+        private async void FAPOGRAFH(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new APOTtsism());
+
+            return;
+        }
     }  // public partial class MainPage : ContentPage
 
 
