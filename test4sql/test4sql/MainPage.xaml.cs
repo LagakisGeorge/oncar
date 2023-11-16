@@ -1531,6 +1531,8 @@ NewMethod(e),
 
 
 
+
+
         private async void fPELREP(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new PelReports());
