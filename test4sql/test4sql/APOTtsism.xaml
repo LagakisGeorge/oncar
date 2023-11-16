@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               NavigationPage.HasNavigationBar="False"
+             x:Class="test4sql.APOTtsism">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="lab1" Text="ΤΣΙΣΜ ΦΥΣΙΚΗ ΑΠΟΓΡΑΦΗ"             
+                HorizontalOptions="CenterAndExpand" />
+
+
+
+   
+
+            <StackLayout    Orientation="Horizontal">
+
+
+                <Button x:Name="butbarcode" 
+                    Text="BARCODE"   FontSize="Large"  Clicked="CHANGEBARCODE" />
+
+
+
+
+
+                <Entry x:Name="BARCODE"    FontSize="Large" 
+                   Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
+
+
+            </StackLayout>
+
+
+
+            <Entry x:Name="ONO"    FontSize="Large" 
+                   Placeholder="ONOMA"       />
+
+             <StackLayout    Orientation="Horizontal">
+                <Label x:Name="PYLON" Text="ΥΠΟΛ PYLON"  BackgroundColor="Cyan"  FontSize="Medium" />
+
+                <Entry x:Name="FPA"    FontSize="Medium" 
+                   Placeholder="ΥΠΟΛ"       />
+                <Label  Text="......."    FontSize="Medium"          />
+
+
+                <Button x:Name="DELETEOLD" 
+                    Text="ΔΙΑΓ.ΠΑΛΙΩΝ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
+
+
+
+            </StackLayout>
+
+            
+
+            <StackLayout    Orientation="Horizontal">
+                <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"    BackgroundColor="Cyan"       />
+
+                <Entry x:Name="LTI5"    FontSize="Large" 
+                   Placeholder="ΠΡΑΓΜ ΥΠΟΛ"       />
+           
+
+
+                    <Button x:Name="KATAX" 
+                    Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
+ </StackLayout>
+
+
+           
+
+
+
+
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                      HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                                ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition  Width="*"  />
+                                </Grid.ColumnDefinitions >
+
+
+
+
+
+
+
+
+                                <Label Grid.Column="0" 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" FontSize="Small" />
+                                <Label 
+                                    
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+
+                                <Label                                    
+                                   Text="{Binding ImageUrl}" 
+                                    Grid.Column="2"
+                                    />
+                                <Label                                    
+                                   Text="{Binding idPEL}"
+                                    Grid.Column="3"
+                                    />
+                            </Grid>
+
+
+
+
+
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

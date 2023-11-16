@@ -18,7 +18,7 @@
         
 
         <!-- Place new controls here -->
-        <Label Text="Π ε λ α τ ο λ ό γ ι ο   v.2307.10" 
+        <Label Text="Π ε λ α τ ο λ ό γ ι ο   v.2311.10" 
            HorizontalOptions="Center"
             />
 
@@ -71,9 +71,14 @@
                  />
         
         
-        
-        
-        
+        <Button x:Name="APOGRAFH" 
+           Text="ΑΠΟΓΡΑΦΗ"
+           Clicked="FAPOGRAFH"
+         />
+
+
+
+
         <StackLayout Orientation="Horizontal" >
             <Button x:Name="APOTHIKI" 
                 Text="ΑΠΟΘΗΚΗ"
@@ -96,9 +101,9 @@
 
 
         </StackLayout>
-    
-    
-    
+        
+      
+
 
         <Button x:Name="PELATHS" 
                 Text="ΠΕΛΑΤΗΣ"
