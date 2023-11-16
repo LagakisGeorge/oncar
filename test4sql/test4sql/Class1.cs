@@ -12,8 +12,9 @@ namespace test4sql
 
     static class Globals
     {
+       public static string[] psw=new string[100];
 
-       
+
         public static string cIP ;
         public static string cSQLSERVER;
         public static string cFORTHGO;

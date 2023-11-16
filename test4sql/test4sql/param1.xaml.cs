@@ -45,7 +45,7 @@ namespace test4sql
 
             Globals.gIPKleis = PARAGGELIES.ReadSQL("select ifnull(POL,'') FROM MEM WHERE ID=2");
             cIPKleis.Text = Globals.gIPKleis;
-
+           
         }
 
         async void fkatax(object sender, EventArgs e)

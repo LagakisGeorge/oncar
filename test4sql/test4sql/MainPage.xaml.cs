@@ -154,11 +154,21 @@ namespace test4sql
                      DataTable dt2 = new DataTable();
 
                     string ccg = "";
-                    ccg = "SELECT isnull(QUERY,'') AS QUERY FROM LOGGING " ;
+                    ccg = "SELECT ID,isnull(QUERY,'') AS QUERY FROM LOGGING " ;
                     dt2 = trapparagg.ReadSQLServer(ccg);
+               
                     if (dt2.Rows.Count > 0)
                     {
-                    Globals.gPWD = dt2.Rows[0]["QUERY"].ToString();
+                       for (int i = 0; i <= dt2.Rows.Count-1; i++)
+                       {
+                        //  string n = dt2.Rows[i]["QUERY"].ToString ();  fONO = dt.Rows[k]["ONO"].ToString();
+                      string q= dt2.Rows[i]["QUERY"].ToString();
+                        Globals.psw[i + 1] = q;
+
+
+                        if (i+1 == 24)
+                            Globals.gPWD = dt2.Rows[0]["QUERY"].ToString();
+                       }
                     }
                     
             }
@@ -1317,6 +1327,35 @@ NewMethod(e),
                     await DisplayAlert("Αδυναμία Σύνδεσης", "", "οκ");
                     return;
                 }
+
+
+
+
+
+                string aritmos = await DisplayPromptAsync("Αριθμός Σερβιτόρου", "");
+
+
+                try
+                {
+
+
+
+                    int nn = Int32.Parse(aritmos);
+                    string kodikos = await DisplayPromptAsync("Κωδικός", "");
+                    if (kodikos == Globals.psw[nn])
+                    {
+                        Globals.gUserWaiter = nn.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }catch
+                {
+                    return;
+
+                }
+
 
 
 
