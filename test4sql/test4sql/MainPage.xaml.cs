@@ -133,7 +133,7 @@ namespace test4sql
 
 
 
-                /*
+                
 
                   // DESKTOP-MPGU8SB\SQL17
                   string[] lines = Globals.cSQLSERVER.Split(';');
@@ -170,7 +170,7 @@ namespace test4sql
                               Globals.gPWD = dt2.Rows[0]["QUERY"].ToString();
                          }
                       }
-               */
+               
                
 
 
@@ -1362,13 +1362,13 @@ NewMethod(e),
 
                 }
 
-                string C2 = Globals.ReadSQLServer("SELECT STR(ISNULL(SHOWOLATRAP,0))+';'+STR(ISNULL(LOGPRINPLIR,0))+';'+STR(ISNULL(EKTPRINPLIR,0))+';'+STR(ISNULL(RESERVEDBYONE,0)) FROM [BARELL].[dbo].[MEM]");
+                string C2 = Globals.ReadSQLServer("SELECT STR(ISNULL(SHOWOLATRAP,0))+';'+STR(ISNULL(LOGPRINPLIR,0))+';'+STR(ISNULL(EKTPRINPLIR,0))+';'+STR(ISNULL(RESERVEDBYONE,0))+';'+STR(ISNULL(CANOPENBARDIA,0)) FROM [BARELL].[dbo].[MEM]");
                 string[] lines = C2.Split(';');
                 Globals.gSHOWOLATRAP = Int32.Parse(lines[0]);
                 Globals.gLOGPRINPLIR = Int32.Parse(lines[1]);
                 Globals.gEKTPRINPLIR = Int32.Parse(lines[2]);
                 Globals.gRESERVEDBYONE = Int32.Parse(lines[3]);
-
+                Globals.gCANOPENBARDIA = Int32.Parse(lines[4]);
 
 
 
@@ -1387,6 +1387,12 @@ NewMethod(e),
 
                         if (dt2 == null || dt2.Rows.Count == 0)
                         {
+
+                            if (Globals.gCANOPENBARDIA == 0)
+                            {
+                                await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ ΣΕ ΣΕΡΒΕΡ", "   ", "OK");
+                                return;
+                            }
                             // Throw the error or retrun the code 
                             Globals.AllExecute("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, getdate(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
                             return;
@@ -1410,6 +1416,11 @@ NewMethod(e),
 
                     if (n == 0)
                     {
+                        if (Globals.gCANOPENBARDIA == 0)
+                        {
+                            await DisplayAlert("ΑΝΟΙΞΤΕ ΒΑΡΔΙΑ ΣΕ ΣΕΡΒΕΡ", "   ", "OK");
+                            return;
+                        }
                         Globals.ExecuteSQLServer("INSERT INTO BARDIA(OPENH, ISOPEN, HME, IDERGAZ, NUM1) VALUES(substring(  convert(char(16),CURRENT_TIMESTAMP,121) ,1,16), 1, GETDATE(), " + Globals.gUserWaiter.ToString() + ", " + Globals.gUserWaiter.ToString() + ")");
                     }
                     else

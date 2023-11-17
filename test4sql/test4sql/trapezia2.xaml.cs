@@ -205,7 +205,24 @@ namespace oncar
             {
                 //Monkeys = new List<Monkey>();
                 DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES WHERE NUM1="+ Globals.gUserWaiter+" ORDER BY NUM2",con);
+
+
+
+                string mWHERE = "";
+                if (Globals.gSHOWOLATRAP == 1)
+                {
+                    mWHERE = " ORDER BY NUM2";
+                }
+                else
+                {
+                    mWHERE = " WHERE NUM1 = " + Globals.gUserWaiter + " ORDER BY NUM2";
+                }
+
+
+
+
+
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES "+ mWHERE,con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
