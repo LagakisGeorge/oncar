@@ -125,7 +125,7 @@ namespace oncar
 
             if (Globals.indexParaggLine == -1)  // νεα παραγγελια
             {
-                AllExecute("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES (0,0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
+                AllExecute("INSERT INTO PARAGGMASTER (IDERGAZ,NUM1,AJIA,TRAPEZI,IDBARDIA,HME) VALUES ("+ Globals.gUserWaiter+",0, 0,'" + Globals.gTrapezi + "'," + Globals.gIDBARDIA+",GETDATE() )");
                 string cIDParagg = "";
                 cIDParagg =Globals.AllRead ("select CAST( ISNULL(max(ID),0) AS VARCHAR)  from PARAGGMASTER where TRAPEZI='" + Globals.gTrapezi + "'");
               
