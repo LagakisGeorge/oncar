@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
              x:Class="test4sql.param1">
     <ContentPage.Content>
@@ -87,7 +88,7 @@
                    Placeholder="IP ΚΛΕΙΣΙΜΑΤΟΣ" 
                     BackgroundColor="Azure"    
                    />
-            </StackLayout >
+           
 
 
 
@@ -95,11 +96,19 @@
                     Text="ΚΑΤΑΧΩΡΗΣΗ"
                         Clicked="fkatax" 
                   />
-
-            <Button x:Name="bftest" 
+            
+            
+              <Button x:Name="bftest" 
                     Text="ΔΟΚΙΜΗ ΣΥΝΔΕΣΗΣ SQLSERVER"
                         Clicked="ftest" 
                   />
+            
+            
+            
+             </StackLayout >
+            
+
+          
 
             <Button x:Name="ListServers" 
                     Text="ΛΙΣΤΑ ΣΥΝΔΕΜΕΝΩΝ SERVER"
