@@ -120,7 +120,17 @@ namespace oncar
 
 
                 var contents = connection.CreateCommand();
-                contents.CommandText = "SELECT  ONO,ifNULL(KATEILHMENO,0) AS KATEILHMENO,ifNULL(IDPARAGG,0) AS IDPARAGG,ifNULL(CH1,'') AS CH1 from TABLES WHERE NUM1=" + Globals.gUserWaiter + " ORDER BY NUM2";
+                string mWHERE="";
+                if (Globals.gSHOWOLATRAP == 1)
+                {
+                    mWHERE = " ORDER BY NUM2";
+                }
+                else
+                {
+                    mWHERE = " WHERE NUM1 = " + Globals.gUserWaiter + " ORDER BY NUM2";
+                }
+               // WHERE NUM1 = " + Globals.gUserWaiter + " ORDER BY NUM2"
+                contents.CommandText = "SELECT  ONO,ifNULL(KATEILHMENO,0) AS KATEILHMENO,ifNULL(IDPARAGG,0) AS IDPARAGG,ifNULL(CH1,'') AS CH1 from TABLES "+mWHERE;
                 var r = contents.ExecuteReader();
                 while (r.Read())
                 {

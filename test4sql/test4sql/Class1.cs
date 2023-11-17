@@ -26,6 +26,14 @@ namespace test4sql
         public static string gTrapezi;
         public static string gUserWaiter;
         public static string gPWD;
+        //'SELECT STR(ISNULL(SHOWOLATRAP,0))+';'+STR(ISNULL(LOGPRINPLIR,0))+';'+STR(ISNULL(EKTPRINPLIR,0))+';'+STR(ISNULL(RESERVEDBYONE,0)) FROM [BARELL].[dbo].[MEM]
+        public static int gSHOWOLATRAP;
+        public static int gLOGPRINPLIR;
+        public static int gEKTPRINPLIR;
+        public static int gRESERVEDBYONE;
+
+
+
 
 
 

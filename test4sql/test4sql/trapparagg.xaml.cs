@@ -1342,21 +1342,24 @@ catch (Exception ex)
             try
             {
 
-
-                string catyp = AllRead("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
-                if (Int32.Parse(catyp) > 0)
+                if (Globals.gEKTPRINPLIR == 1)
                 {
-                    await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
-                    return;
+                    string catyp = AllRead("SELECT COUNT(*) AS TYP FROM PARAGG WHERE  (ENERGOS IS NULL) AND IDPARAGG=" + Globals.gIDPARAGG + "");
+                    if (Int32.Parse(catyp) > 0)
+                    {
+                        await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΟΛΑ ΤΥΠΩΜΕΝΑ", "OK");
+                        return;
+                    }
                 }
-
-
-                catyp = AllRead("SELECT  cast(ISNULL(NUM2,0) as varchar ) AS ISTYP FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
-                if (catyp.Length == 0) { catyp = "0"; }
-                if (Int32.Parse(catyp) == 0)
+                if (Globals.gLOGPRINPLIR == 1)
                 {
-                    await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΤΥΠΩΘΗΚΕ ΛΟΓΑΡΙΑΣΜΟΣ", "OK");
-                    return;
+                    string catyp = AllRead("SELECT  cast(ISNULL(NUM2,0) as varchar ) AS ISTYP FROM PARAGGMASTER WHERE   ID=" + Globals.gIDPARAGG + "");
+                    if (catyp.Length == 0) { catyp = "0"; }
+                    if (Int32.Parse(catyp) == 0)
+                    {
+                        await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΤΥΠΩΘΗΚΕ ΛΟΓΑΡΙΑΣΜΟΣ", "OK");
+                        return;
+                    }
                 }
 
             }

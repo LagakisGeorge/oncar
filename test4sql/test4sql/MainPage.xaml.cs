@@ -128,49 +128,55 @@ namespace test4sql
                     image.Source = Device.RuntimePlatform == Device.Android
                 ? ImageSource.FromFile("dessert.jpg")
                 : ImageSource.FromFile("Images/dessert.jpg");
-                
 
 
 
 
 
+                /*
 
-                // DESKTOP-MPGU8SB\SQL17
-                string[] lines = Globals.cSQLSERVER.Split(';');
-                string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+                  // DESKTOP-MPGU8SB\SQL17
+                  string[] lines = Globals.cSQLSERVER.Split(';');
+                  string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
-                //     string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
-                // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
-                // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+                  //     string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+                  // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+                  // ok works fine string constring = @"Data Source=192.168.1.10,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
-                Globals.gPWD = "3921";
-
-
-               con = new SqlConnection(constring);
+                  Globals.gPWD = "3921";
 
 
-                con.Open();
+                 con = new SqlConnection(constring);
 
-                     DataTable dt2 = new DataTable();
 
-                    string ccg = "";
-                    ccg = "SELECT ID,isnull(QUERY,'') AS QUERY FROM LOGGING " ;
-                    dt2 = trapparagg.ReadSQLServer(ccg);
+                  con.Open();
+
+                       DataTable dt2 = new DataTable();
+
+                      string ccg = "";
+                      ccg = "SELECT ID,isnull(QUERY,'') AS QUERY FROM LOGGING " ;
+                      dt2 = trapparagg.ReadSQLServer(ccg);
+
+                      if (dt2.Rows.Count > 0)
+                      {
+                         for (int i = 0; i <= dt2.Rows.Count-1; i++)
+                         {
+                          //  string n = dt2.Rows[i]["QUERY"].ToString ();  fONO = dt.Rows[k]["ONO"].ToString();
+                        string q= dt2.Rows[i]["QUERY"].ToString();
+                          Globals.psw[i + 1] = q;
+
+
+                          if (i+1 == 24)
+                              Globals.gPWD = dt2.Rows[0]["QUERY"].ToString();
+                         }
+                      }
+               */
                
-                    if (dt2.Rows.Count > 0)
-                    {
-                       for (int i = 0; i <= dt2.Rows.Count-1; i++)
-                       {
-                        //  string n = dt2.Rows[i]["QUERY"].ToString ();  fONO = dt.Rows[k]["ONO"].ToString();
-                      string q= dt2.Rows[i]["QUERY"].ToString();
-                        Globals.psw[i + 1] = q;
 
 
-                        if (i+1 == 24)
-                            Globals.gPWD = dt2.Rows[0]["QUERY"].ToString();
-                       }
-                    }
-                    
+
+
+
             }
             catch (Exception ex)
             {
@@ -1356,7 +1362,12 @@ NewMethod(e),
 
                 }
 
-
+                string C2 = Globals.ReadSQLServer("SELECT STR(ISNULL(SHOWOLATRAP,0))+';'+STR(ISNULL(LOGPRINPLIR,0))+';'+STR(ISNULL(EKTPRINPLIR,0))+';'+STR(ISNULL(RESERVEDBYONE,0)) FROM [BARELL].[dbo].[MEM]");
+                string[] lines = C2.Split(';');
+                Globals.gSHOWOLATRAP = Int32.Parse(lines[0]);
+                Globals.gLOGPRINPLIR = Int32.Parse(lines[1]);
+                Globals.gEKTPRINPLIR = Int32.Parse(lines[2]);
+                Globals.gRESERVEDBYONE = Int32.Parse(lines[3]);
 
 
 
