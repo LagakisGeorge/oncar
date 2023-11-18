@@ -80,6 +80,14 @@ namespace oncar
         private async void doit(object sender, ItemTappedEventArgs e)
         {
             MainPageModel tappedItem = e.Item as MainPageModel;
+
+
+            if (e.Item.ToString().Substring(1, 2) == "##")
+            {
+                DisplayAlert("Παραγγελία άλλου", e.Item.ToString(), "Ok");
+                return;
+            }
+
             //  Items.Add(string.Format(" {0} ", fkat + fONO + "*" + fID+"*"+CH1));
             Globals.gtIDPARAGG = e.Item.ToString();  // a15 12356
             
@@ -222,7 +230,7 @@ namespace oncar
 
 
 
-                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1 from TABLES "+ mWHERE,con);
+                SqlCommand cmd3 = new SqlCommand("SELECT  ONO,ISNULL(KATEILHMENO,0) AS KATEILHMENO,ISNULL(IDPARAGG,0) AS IDPARAGG,ISNULL(CH1,'') AS CH1,isnull(NUM1,0) AS XRHSTHS from TABLES "+ mWHERE,con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
@@ -239,7 +247,23 @@ namespace oncar
                     string fID;
                     fID = dt.Rows[k]["idparagg"].ToString();
                     string fkat = dt.Rows[k]["kateilhmeno"].ToString();
-                    if (fkat == "0") { fkat = ""; } else { fkat = "# "; }
+                    if (fkat == "0")
+                    { fkat = ""; } else
+                    { 
+                        if (Globals.gUserWaiter == dt.Rows[k]["XRHSTHS"].ToString())
+                        {
+                            fkat = "# "; 
+                        }else
+                        {
+                            fkat = "##"+ dt.Rows[k]["XRHSTHS"].ToString()+"#";
+                        }
+                           
+                    
+                    
+                    
+                    }
+
+
                     //  Items.Add(string.Format(" {0} ", fkat + fONO + "*" + fID+"*   "+CH1));
                     Items.Add(string.Format(" {0} ", fkat + fONO + "*   " + CH1));
                     // Items.Add(string.Format(" {0} ", fkat + fONO + " " + fID));

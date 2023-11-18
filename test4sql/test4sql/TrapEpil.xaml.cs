@@ -131,7 +131,7 @@ namespace oncar
               
 
 
-                AllExecute("update TABLES SET KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
+                AllExecute("update TABLES SET NUM1="+ Globals.gUserWaiter+" ,KATEILHMENO=1,IDPARAGG=" + cIDParagg + " WHERE ONO='" + Globals.gTrapezi + "';");
 
 
           
@@ -159,7 +159,7 @@ namespace oncar
 
             AllExecute("update PARAGGMASTER SET AJIA="+caji.Replace(",",".")+" WHERE   ID="+ Globals.gIDPARAGG +  ";");
 
-            AllExecute("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "' WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
+            AllExecute("update TABLES SET KATEILHMENO=1,CH1='" + caji.Replace(",", ".") + "',NUM1="+ Globals.gUserWaiter+"  WHERE IDPARAGG=" + Globals.gIDPARAGG + "");
 
 
 
