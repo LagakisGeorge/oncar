@@ -248,11 +248,13 @@ namespace oncar
 
             if (action.Substring(0, 1) == "1" || action.Substring(0, 1) == "2" || action.Substring(0, 1) == "3")
             {
-
-                if (cTYPOMENO == "0")
+                if (Globals.gEKTPRINPLIR == 1)
                 {
-                    await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
-                    return;
+                    if (cTYPOMENO == "0")
+                    {
+                        await DisplayAlert("ΑΔΥΝΑΤΗ Η ΠΛΗΡΩΜΗ", "ΔΕΝ ΕΙΝΑΙ ΤΥΠΩΜΕΝΟ", "OK");
+                        return;
+                    }
                 }
 
 

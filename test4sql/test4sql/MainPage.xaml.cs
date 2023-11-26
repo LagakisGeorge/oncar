@@ -1362,7 +1362,7 @@ NewMethod(e),
 
                 }
 
-                string C2 = Globals.ReadSQLServer("SELECT STR(ISNULL(SHOWOLATRAP,0))+';'+STR(ISNULL(LOGPRINPLIR,0))+';'+STR(ISNULL(EKTPRINPLIR,0))+';'+STR(ISNULL(RESERVEDBYONE,0))+';'+STR(ISNULL(CANOPENBARDIA,0)) FROM [BARELL].[dbo].[MEM]");
+                string C2 = Globals.ReadSQLServer("SELECT STR(ISNULL(SHOWOLATRAP,0))+';'+STR(ISNULL(LOGPRINPLIR,0))+';'+STR(ISNULL(EKTPRINPLIR,0))+';'+STR(ISNULL(RESERVEDBYONE,0))+';'+STR(ISNULL(CANOPENBARDIA,0)) FROM MEM");
                 string[] lines = C2.Split(';');
                 Globals.gSHOWOLATRAP = Int32.Parse(lines[0]);
                 Globals.gLOGPRINPLIR = Int32.Parse(lines[1]);
