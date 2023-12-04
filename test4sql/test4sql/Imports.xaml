@@ -38,8 +38,9 @@
                        Clicked="test" 
             />
 
-            <Button x:Name="test22"
-                      Text="test2"
+            <Button x:Name="LEIDHPEL"
+                      Text="ΕΙΔΗ ΠΕΛΑΤΩΝ"
+                    Clicked="EIDHPEL"
                        
             />
 

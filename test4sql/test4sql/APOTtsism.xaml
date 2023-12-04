@@ -34,15 +34,17 @@
                    Placeholder="ONOMA"       />
 
              <StackLayout    Orientation="Horizontal">
-                <Label x:Name="PYLON" Text="ΥΠΟΛ PYLON"  BackgroundColor="Cyan"  FontSize="Medium" />
+                <Label x:Name="PYLON" Text="ΥΠΟΛ.PYLON"  BackgroundColor="Cyan"  FontSize="Medium" />
 
                 <Entry x:Name="FPA"    FontSize="Medium" 
                    Placeholder="ΥΠΟΛ"       />
-                <Label  Text="......."    FontSize="Medium"          />
+                 
+                <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Medium"          />
+               
 
 
                 <Button x:Name="DELETEOLD" 
-                    Text="ΔΙΑΓ.ΠΑΛΙΩΝ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
+                    Text="ΔΙΑΓ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
 
 
 
@@ -51,10 +53,10 @@
             
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"    BackgroundColor="Cyan"       />
+                <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
 
-                <Entry x:Name="LTI5"    FontSize="Large" 
-                   Placeholder="ΠΡΑΓΜ ΥΠΟΛ"       />
+                <Entry x:Name="LTI5"    FontSize="Large" BackgroundColor="Yellow" 
+                   Placeholder="ΠΡ.ΥΠΟΛ"       />
            
 
 

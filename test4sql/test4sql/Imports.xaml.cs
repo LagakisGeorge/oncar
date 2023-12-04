@@ -21,6 +21,10 @@ using Mono.Data.Sqlite;
 using System.Linq.Expressions;
 using oncar;
 using static Android.Provider.Telephony.Mms;
+using Java.Nio.Channels;
+using static Java.Text.Normalizer;
+using System.Text.RegularExpressions;
+using static Android.Provider.Telephony.Sms;
 
 namespace test4sql
 {
@@ -35,7 +39,7 @@ namespace test4sql
         public Page2()
         {
             InitializeComponent();
-            test22.IsVisible = false;
+           // LEIDHPEL.IsVisible = false;
             
         }
 
@@ -239,7 +243,18 @@ namespace test4sql
 
    MainPage.ExecuteSqlite(c);
 
-            
+
+
+
+
+            c = " CREATE TABLE IF NOT EXISTS EIDHPEL (" +
+      "[KODPEL][varchar](55) NULL," +
+      "[KODE][varchar] (55) NULL," +
+      "[POSO][real] NULL," +
+      "[AJIA][real] NULL," +
+      "[TELTIMH][real] NULL )";
+            MainPage.ExecuteSqlite(c);
+            await DisplayAlert("ειδη πελατών", "ειδη πελατών ΔΗΜΙΟΥΡΓΗΘΗΚΑΝ", "OK");
 
 
 
@@ -587,7 +602,7 @@ namespace test4sql
             try
             {
 
-                test22.IsVisible = true;
+                LEIDHPEL .IsVisible = true;
 
                 int n22 = MainPage.ExecuteSqlite("delete from PEL;");
 
@@ -1288,6 +1303,97 @@ namespace test4sql
         private void SQLQUERYF1(object sender, EventArgs e)
         {
             DOSQLQUERY(1);
+        }
+        private async void EIDHPEL(object sender, EventArgs e)
+        {
+
+            //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+            string[] lines = Globals.cSQLSERVER.Split(';');
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            //            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+            con = new SqlConnection(constring);
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                return;
+            }
+
+
+            // TO EKANA NA TO DIAGRAFEI APO TO EMPORIKO
+            // ALLA MPOREI NA ΞΕΧΑΣΤΕΙ ΚΑΙ ΝΑ ΤΟ ΣΤΕΙΛΕΙ 2 ΦΟΡΕΣ
+  string c = "DROP TABLE IF EXISTS EIDHPEL; Select PELKOD AS KODPEL, KODE, SUM(POSO) AS POSO, SUM(POSO * TIMM * (100 - EKPT) / 100) AS AJIA, MAX(TIMM) AS TELTIMH into EIDHPEL FROM EGGTIM where EIDOS = 'e' GROUP BY PELKOD,KODE";
+
+
+            SqlCommand cmd = new SqlCommand(c);
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+
+
+
+
+            c = "select * from EIDHPEL";
+
+
+
+
+
+
+          
+            //--------------------------------------  TRAPEZIA -----------------------------------------------------------
+            try
+            {
+                //Monkeys = new List<Monkey>();
+                DataTable dt = new DataTable();
+                SqlCommand cmd3 = new SqlCommand(c, con);
+                var adapter2 = new SqlDataAdapter(cmd3);
+                adapter2.Fill(dt);
+                // List<string> MyList = new List<string>();
+                int k = 0;
+                for (k = 0; k <= dt.Rows.Count - 1; k++)
+                {
+                    String KODPEL = dt.Rows[k]["KODPEL"].ToString();
+                    KODPEL = KODPEL.Replace("'", "`");
+
+                    String KODE = dt.Rows[k]["KODE"].ToString();
+                    KODE = KODE.Replace("'", "`");               
+
+
+                    string AJIA = dt.Rows[k]["AJIA"].ToString();
+                    AJIA = AJIA.Replace(",", ".");
+
+
+                    // MyList.Add(mF);
+                    string POSO = dt.Rows[k]["POSO"].ToString();
+                    POSO = POSO.Replace(",", ".");                  
+
+                    string TELTIMH = dt.Rows[k]["TELTIMH"].ToString();
+                    TELTIMH = TELTIMH.Replace(",", ".");
+
+
+
+                    int n2 = MainPage.ExecuteSqlite("insert into EIDHPEL (KODPEL,KODE,POSO,AJIA,TELTIMH) VALUES ('" + KODPEL + "','" +KODE +  "'," + POSO + "," + AJIA + "," + TELTIMH + ");");
+                } // FOR
+
+
+
+
+                //  BindingContext = this;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.ToString(), "OK");
+            }
+
+
+
+
+
+
         }
     }
 }

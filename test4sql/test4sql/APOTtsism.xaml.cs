@@ -243,21 +243,15 @@ public partial class APOTtsism : ContentPage
      public   void find2_eid()
         {
             string SQL ="" ;
+            String CC = "";
            
             string C = BARCODE.Text;
            //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
 
 
-            SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "')";
-
-            ONO.Text = Globals.ReadSQLServerWithError(SQL);
-            SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
-
-              //   "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HEAUXILIARYCODE='"+C+"' )";
-             " WHERE YEAR(HEDATE) = 2023 AND HEITEMID = (select HEITEMID from[HEITEMALTERCODES] WHERE HECODE = '"+C+"')";
-            float N = Globals.FReadSQLServer(SQL);
-            FPA.Text = N.ToString();
-
+            SQL = "SELECT TOP 1 HENAME+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "')";
+            CC = Globals.ReadSQLServerWithError(SQL);
+            ONO.Text = CC;
             if (ONO.Text.Substring(0, 5) == "ERROR")
             {
                 BARCODE.Text = "";
@@ -265,8 +259,42 @@ public partial class APOTtsism : ContentPage
             }
             else
             {
+
+                string[] lines = ONO.Text.Split(';');
+                String CID = lines[2];
+                SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
+
+                //   "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HEAUXILIARYCODE='"+C+"' )";
+                " WHERE YEAR(HEDATE) = 2023 AND HEITEMID ='" + CID + "'";  // (select HEITEMID from[HEITEMALTERCODES] WHERE HECODE = '"+C+"')";
+
+
+
+                float N = Globals.FReadSQLServer(SQL);
+                FPA.Text = N.ToString();
+
+
+                SQL = "SELECT TOP 1  HEITEMCOST FROM HEITEMCOSTPRICES WHERE HEITEMID='" + CID + "'  AND HEITEMCOST>0   ORDER BY HEITEMID,HEDATE DESC";
+
+                N = Globals.FReadSQLServer(SQL);
+                string c3 = N.ToString();
+                TIMH.Text = c3.Replace(",", ".");
+                TIMH.Text = c3;
+
                 LTI5.Focus();
             }
+
+
+
+
+            //if (ONO.Text.Substring(0, 5) == "ERROR")
+          //  {
+              //  BARCODE.Text = "";
+              //  BARCODE.Focus();
+           // }
+          //  else
+          //  {
+           //     LTI5.Focus();
+          //  }
 
 
 
@@ -436,17 +464,27 @@ public partial class APOTtsism : ContentPage
 
     private void UPDATEKOD(object sender, EventArgs e)
     {
-            string[] lines = ONO.Text.Split(';');
-            string sql="insert into EGGTIMINP (KODE,POSO) VALUES('" + lines[1]+"',"+LTI5.Text+"-"+FPA.Text+")";
-            LExecuteSQLServer(sql);
-            BARCODE.Text = "";
-            lab1.Text = ONO.Text;
-            ONO.Text = "";
-            FPA.Text = "";
-            LTI5.Text = "";
-            BARCODE.Focus();
+            if (ONO.Text.Length > 0)
+            {
+                string tt = TIMH.Text;
+                tt = tt.Replace(",", ".");
+                string PRAGM = LTI5.Text;
+                PRAGM = PRAGM.Replace(",", ".");
 
 
+                string[] lines = ONO.Text.Split(';');
+                //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
+
+                string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + PRAGM + "," + tt + ")";
+                LExecuteSQLServer(sql);
+                BARCODE.Text = "";
+                lab1.Text = ONO.Text;
+                ONO.Text = "";
+                FPA.Text = "";
+                LTI5.Text = "";
+                BARCODE.Focus();
+
+            }
 
     }
         private void LExecuteSQLServer(string sql)

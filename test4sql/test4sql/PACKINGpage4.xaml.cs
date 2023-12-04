@@ -546,7 +546,7 @@ namespace oncar
                 connection.Open();
                 // query the database to prove data was inserted!
                 var contents = connection.CreateCommand();
-                if (Globals.useBarcodes == "1")
+              if (Globals.useBarcodes == "1")
                 {
                 string CCB = CKODE.Text.TrimStart();
                     CCB = CCB.TrimEnd();
@@ -554,7 +554,15 @@ namespace oncar
                 }
                 else
                 {
-                    contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD = '" + CKODE.Text + "' ; "; // +BARCODE.Text +"'";
+                     if (Globals.useBarcodes == "6")
+                     {
+                       contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD IN (SELECT KODE FROM EIDHPEL WHERE KODPEL='"+AFM.Text +"')  and  ONO LIKE  '%" + CKODE.Text + "%' ; "; // +BARCODE.Text +"'";
+                }
+                     else
+                     {
+                       contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD = '" + CKODE.Text + "' ; "; // +BARCODE.Text +"'";
+ 
+                     }
                 }
 
 
