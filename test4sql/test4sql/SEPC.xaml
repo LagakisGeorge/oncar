@@ -36,6 +36,8 @@
             <Button Text="Διαγραφή" Clicked="Diag_barcode" />
             <Button Text="Διαγραφή Ολων των σκαναρισματων" Clicked="delete_all" />
 
+            <Button Text="Αποστολή Παραγγελιών" Clicked="WriteFileParagg" />
+
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
                   HasUnevenRows="true"

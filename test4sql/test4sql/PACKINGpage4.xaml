@@ -99,13 +99,19 @@
                 <!-- <Label     Grid.Row="0" Grid.Column="0" 
                     BackgroundColor="Azure"
                 Text="ΚΩΔΙΚΟΣ" HorizontalOptions="Center"  />   -->
+                <StackLayout Orientation="Horizontal">
 
-
-                <Button x:Name="bkodikos"  Grid.Row="0" Grid.Column="0" 
+                    <Button x:Name="bkodikos"  Grid.Row="0" Grid.Column="0" 
                       
                         Text="ΚΩΔΙΚΟΣ"
                        Clicked="BRESEIDOS"  />
-
+    
+                <Button x:Name="sEIDHPEL"  Grid.Row="0" Grid.Column="0" 
+                        
+       
+         Text="ΕΙΔΗ ΠΕΛ"
+        Clicked="csEIDHPEL"  />
+                </StackLayout> 
 
 
                 <Label     Grid.Row="0" Grid.Column="1" 

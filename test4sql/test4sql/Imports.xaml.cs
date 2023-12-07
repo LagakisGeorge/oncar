@@ -1336,7 +1336,7 @@ namespace test4sql
 
 
 
-            c = "select * from EIDHPEL";
+            c = "select isnull(KODPEL,'') as  KODPEL,ISNULL(KODE,'') AS KODE,ISNULL(POSO,0) AS POSO,ISNULL(AJIA,0) AS AJIA,ISNULL(TELTIMH,0) AS TELTIMH from EIDHPEL";
 
 
 
@@ -1374,9 +1374,17 @@ namespace test4sql
                     string TELTIMH = dt.Rows[k]["TELTIMH"].ToString();
                     TELTIMH = TELTIMH.Replace(",", ".");
 
+                    string cc4 = "";
+                    try
+                    {
 
-
-                    int n2 = MainPage.ExecuteSqlite("insert into EIDHPEL (KODPEL,KODE,POSO,AJIA,TELTIMH) VALUES ('" + KODPEL + "','" +KODE +  "'," + POSO + "," + AJIA + "," + TELTIMH + ");");
+                        cc4 = "insert into EIDHPEL (KODPEL,KODE,POSO,AJIA,TELTIMH) VALUES ('" + KODPEL + "','" + KODE + "'," + POSO + "," + AJIA + "," + TELTIMH + ");";
+                        int n2 = MainPage.ExecuteSqlite(cc4);
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlert("Error", cc4, "OK");
+                    }
                 } // FOR
 
 

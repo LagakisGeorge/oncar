@@ -365,7 +365,7 @@ namespace oncar
 
             }
 
-            BresEidos(CKODE.Text);
+            BresEidos(CKODE.Text,1);
 
 
 
@@ -522,7 +522,7 @@ namespace oncar
             */
 
 
-            async void BresEidos(string CCC)
+            async void BresEidos(string CCC,int ola)
             {
                 CCC = CCC.ToUpper();
                 CKODE.Text = CCC;
@@ -554,7 +554,7 @@ namespace oncar
                 }
                 else
                 {
-                     if (Globals.useBarcodes == "6")
+                     if (ola == 0)
                      {
                        contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD IN (SELECT KODE FROM EIDHPEL WHERE KODPEL='"+AFM.Text +"')  and  ONO LIKE  '%" + CKODE.Text + "%' ; "; // +BARCODE.Text +"'";
                 }
@@ -1589,7 +1589,7 @@ namespace oncar
 
                 }
 
-                BresEidos(CKODE.Text);
+                BresEidos(CKODE.Text,1);
             }
 
             private async void CloseInvoice_Clicked(object sender, EventArgs e)
@@ -1919,183 +1919,188 @@ namespace oncar
 
             }
 
+        private void csEIDHPEL(object sender, EventArgs e)
+        {
+            BresEidos(CKODE.Text, 0);
+        }
 
 
 
 
-            /*   
-               async void CloseOrder(object sender, EventArgs e)
+
+        /*   
+           async void CloseOrder(object sender, EventArgs e)
+           {
+               int n2 = MainPage.ExecuteSqlite("update ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID=1;");
+
+           }
+
+
+           async void BRES_AFM(object sender, EventArgs e)
+           {
+
+               // determine the path for the database file
+               string dbPath = Path.Combine(
+                   Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                   "adodemo.db3");
+               bool exists = File.Exists(dbPath);
+               if (!exists)
                {
-                   int n2 = MainPage.ExecuteSqlite("update ARITMISI SET ARITMISI=ARITMISI+1 WHERE ID=1;");
+                   Console.WriteLine("Creating database");
+                   // Need to create the database before seeding it with some data
+                   Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
 
                }
 
+               SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+               // Open the database connection and create table with data
+               connection.Open();
 
-               async void BRES_AFM(object sender, EventArgs e)
+
+
+               // query the database to prove data was inserted!
+               var contents = connection.CreateCommand();
+               contents.CommandText = "SELECT  * from PEL WHERE KOD like '%" + AFM.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+               var r = contents.ExecuteReader();
+               Console.WriteLine("Reading data");
+               while (r.Read())
                {
-
-                   // determine the path for the database file
-                   string dbPath = Path.Combine(
-                       Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                       "adodemo.db3");
-                   bool exists = File.Exists(dbPath);
-                   if (!exists)
-                   {
-                       Console.WriteLine("Creating database");
-                       // Need to create the database before seeding it with some data
-                       Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
-
-                   }
-
-                   SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-                   // Open the database connection and create table with data
-                   connection.Open();
+                   LABPEL.Text = r["EPO"].ToString();
+               }
+               // r["ONO"].ToString();
 
 
 
-                   // query the database to prove data was inserted!
-                   var contents = connection.CreateCommand();
-                   contents.CommandText = "SELECT  * from PEL WHERE KOD like '%" + AFM.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
-                   var r = contents.ExecuteReader();
-                   Console.WriteLine("Reading data");
-                   while (r.Read())
-                   {
-                       LABPEL.Text = r["EPO"].ToString();
-                   }
-                   // r["ONO"].ToString();
+               connection.Close();
 
-
-
-                   connection.Close();
-
-                   BARCODE.Focus();
+               BARCODE.Focus();
 
 
 
 
 
+           }
+
+           // barcfoc
+
+           async void barcfoc(object sender, EventArgs e)
+           {
+               if (f_man_barcode == 1)
+               {
+                   return;
                }
 
-               // barcfoc
+               var scanPage = new ZXingScannerPage();
+               // Navigate to our scanner page
+               await Navigation.PushAsync(scanPage);
 
-               async void barcfoc(object sender, EventArgs e)
+               scanPage.OnScanResult += (result) =>
                {
-                   if (f_man_barcode == 1)
+                   // Stop scanning
+                   scanPage.IsScanning = false;
+
+                   // Pop the page and show the result
+                   Device.BeginInvokeOnMainThread(async () =>
                    {
-                       return;
-                   }
+                       await Navigation.PopAsync();
+                       // await DisplayAlert("Scanned Barcode", result.Text, "OK");
+                       BARCODE.Text = result.Text;
+                   });
+               };
 
-                   var scanPage = new ZXingScannerPage();
-                   // Navigate to our scanner page
-                   await Navigation.PushAsync(scanPage);
+           }
 
-                   scanPage.OnScanResult += (result) =>
-                   {
-                       // Stop scanning
-                       scanPage.IsScanning = false;
 
-                       // Pop the page and show the result
-                       Device.BeginInvokeOnMainThread(async () =>
-                       {
-                           await Navigation.PopAsync();
-                           // await DisplayAlert("Scanned Barcode", result.Text, "OK");
-                           BARCODE.Text = result.Text;
-                       });
-                   };
 
+
+
+
+
+
+           async void WriteFile(object sender, EventArgs e)
+           {
+
+
+               string dbPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                        "adodemo.db3");
+               SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+               // Open the database connection and create table with data
+               connection.Open();
+               // query the database to prove data was inserted!
+               var contents = connection.CreateCommand();
+               contents.CommandText = "SELECT ATIM,KODE,POSO,TIMH FROM EGGTIM";
+               var r = contents.ExecuteReader();
+               // Console.WriteLine("Reading data");
+               string cc = "";
+               while (r.Read())
+               {
+                   cc = cc + r["ATIM"].ToString() + ";";
+                   cc = cc + r["KODE"].ToString() + ";";
+                   cc = cc + r["POSO"].ToString() + ";";
+                   cc = cc + r["TIMH"].ToString() + "\n";
+
+               }
+               connection.Close();
+               SaveFile(cc);
+               CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+
+           }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          void SaveFile(string text)
+           {
+               //Get the SmbFile specifying the file name to be created.
+               var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
+               // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+               try
+               {
+                   //Create file.
+                   file.CreateNewFile();
+               }
+               catch
+               {
+                   DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
+                   return;
                }
 
 
+               //Get writable stream.
+               var writeStream = file.GetOutputStream();
+              // string c = "1;2;3;4;5;6;7;8;\n";
+             //  c = c + "8;8;9;9;9;9;9;9\n";
+             //  c = c + "18;18;19;19;19;19;19;19\n";
+
+               //Write bytes.
+               writeStream.Write(Encoding.UTF8.GetBytes(text));
+
+               //Dispose writable stream.
+               writeStream.Dispose();
+           }
+
+   */
 
 
 
-
-
-
-               async void WriteFile(object sender, EventArgs e)
-               {
-
-
-                   string dbPath = Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                            "adodemo.db3");
-                   SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-                   // Open the database connection and create table with data
-                   connection.Open();
-                   // query the database to prove data was inserted!
-                   var contents = connection.CreateCommand();
-                   contents.CommandText = "SELECT ATIM,KODE,POSO,TIMH FROM EGGTIM";
-                   var r = contents.ExecuteReader();
-                   // Console.WriteLine("Reading data");
-                   string cc = "";
-                   while (r.Read())
-                   {
-                       cc = cc + r["ATIM"].ToString() + ";";
-                       cc = cc + r["KODE"].ToString() + ";";
-                       cc = cc + r["POSO"].ToString() + ";";
-                       cc = cc + r["TIMH"].ToString() + "\n";
-
-                   }
-                   connection.Close();
-                   SaveFile(cc);
-                   CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
-
-               }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              void SaveFile(string text)
-               {
-                   //Get the SmbFile specifying the file name to be created.
-                   var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
-                   // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
-                   try
-                   {
-                       //Create file.
-                       file.CreateNewFile();
-                   }
-                   catch
-                   {
-                       DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
-                       return;
-                   }
-
-
-                   //Get writable stream.
-                   var writeStream = file.GetOutputStream();
-                  // string c = "1;2;3;4;5;6;7;8;\n";
-                 //  c = c + "8;8;9;9;9;9;9;9\n";
-                 //  c = c + "18;18;19;19;19;19;19;19\n";
-
-                   //Write bytes.
-                   writeStream.Write(Encoding.UTF8.GetBytes(text));
-
-                   //Dispose writable stream.
-                   writeStream.Dispose();
-               }
-
-       */
-
-
-
-        } //PARAGGELIES
+    } //PARAGGELIES
 
 
 

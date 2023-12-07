@@ -462,5 +462,147 @@ namespace test4sql
 
         }
 
+        private async void WriteFileParagg(object sender, EventArgs e)
+        {
+
+           
+                //.ISENABLED = false;
+                SENDTOPC.IsEnabled = false;
+                SENDTOPC.BackgroundColor = Xamarin.Forms.Color.Green;
+                // listview.BackgroundColor = "";
+
+                // DIABAZO sqlite database KAI TA SOZO :
+                // se sqlserver
+                // KAI SE KOINO FAKELO SAN ARXEIO  EGGTIM2.TXT
+                //  -----------------SQLSERVER  1.SYNDESH   ---------------------------------------
+                string[] lines = Globals.cSQLSERVER.Split(';');
+                string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+                //            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
+                con = new SqlConnection(constring);
+                try
+                {
+                    con.Open();
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                    return;
+                }
+
+
+            
+
+                string dbPath = Path.Combine(
+                         Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                         "adodemo.db3");
+                SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+                // Open the database connection and create table with data
+                connection.Open();
+                // query the database to prove data was inserted!
+                var contents = connection.CreateCommand();
+                contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH,EKPT,IFNULL(FPA,1) AS FPA FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
+                var r = contents.ExecuteReader();
+                // Console.WriteLine("Reading data");
+
+                String cPal, cPart, cPos, cKod;
+                string cc;//= "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES (";
+
+
+                try
+                {
+
+
+                    while (r.Read())
+                    {
+                        string[] lines2 = r["HME"].ToString().Split('/');
+                        cc = "INSERT INTO EGGTIM (PELKOD,ATIM,HME,KODE,POSO,TIMM,EKPT,FPA) VALUES ('" + r["PELKOD"].ToString() + "','";
+                        cc += r["ATIM"].ToString() + "','";
+                        cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
+                        cc += r["KODE"].ToString() + "',";
+                        cc += r["POSO"].ToString().Replace(",", ".") + ",";
+                        cc += r["TIMH"].ToString().Replace(",", ".") + ",";
+                        cc += r["EKPT"].ToString().Replace(",", ".") + ",";
+                        cc += r["FPA"].ToString().Replace(",", ".") + ")";
+
+
+
+
+
+
+
+
+                    SqlCommand cmd = new SqlCommand(cc);
+                        cmd.Connection = con;
+                        cmd.ExecuteNonQuery();
+
+
+
+
+                    }
+
+
+
+
+                    CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+                    //  SaveFile(cc);
+
+                    //  MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
+
+
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                }
+
+
+
+
+
+                contents = connection.CreateCommand();
+                contents.CommandText = "SELECT TRP,ATIM,HME,KPE,IFNULL(AJI,0) AS AJI From TIM ";  //  WHERE LEFT(ATIM,1) IN ('T','ρ')
+                r = contents.ExecuteReader();
+                try
+                {
+                    while (r.Read())
+                    {
+                        string[] lines2 = r["HME"].ToString().Split('/');
+                        cc = "INSERT INTO TIM (TRP,ATIM,HME,KPE,AJI,KLEIDI) VALUES ('";
+                        cc += r["TRP"].ToString() + "','";
+                        cc += r["ATIM"].ToString() + "','";
+                        cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
+                        cc += r["KPE"].ToString() + "',";
+                    cc += r["AJI"].ToString().Replace(",", ".") + ",'";
+                    cc+= r["ATIM"].ToString() + "')";
+                    // cc += r["TIMH"].ToString().Replace(",", ".") + ")";
+
+                    SqlCommand cmd = new SqlCommand(cc);// cmd = new SqlCommand(cc);
+                        cmd.Connection = con;
+                        cmd.ExecuteNonQuery();
+                    }
+                    connection.Close();
+
+
+
+                    CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+                    //  SaveFile(cc);
+
+                    //  MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
+
+
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                }
+
+
+
+
+            }
+
+
+        
     }
 }

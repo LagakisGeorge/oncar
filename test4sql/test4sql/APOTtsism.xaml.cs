@@ -301,7 +301,7 @@ public partial class APOTtsism : ContentPage
 
         }
 
-        public void find3_eid()
+        public void find3_eid(string CID)
         {
             string SQL = "";
 
@@ -312,6 +312,24 @@ public partial class APOTtsism : ContentPage
                  "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HECODE='" + C + "' )";
             float N = Globals.FReadSQLServer(SQL);
             FPA.Text = N.ToString();
+
+            SQL = "SELECT TOP 1  HEITEMCOST FROM HEITEMCOSTPRICES WHERE HEITEMID='" + CID + "'  AND HEITEMCOST>0   ORDER BY HEITEMID,HEDATE DESC";
+
+            N = Globals.FReadSQLServer(SQL);
+            string c3 = N.ToString();
+            TIMH.Text = c3.Replace(",", ".");
+            TIMH.Text = c3;
+
+
+
+
+
+
+
+
+
+
+
         }
 
 
@@ -395,7 +413,7 @@ public partial class APOTtsism : ContentPage
 
          
         
-       string sql = "select top 50  HENAME,HECODE,HEID from HEITEMS where HENAME LIKE '"+ ono + "%'  order by HENAME ; ";
+       string sql = "select top 50  HENAME,HECODE,HEID from HEITEMS where HECODE LIKE '"+ONO+"%' OR HENAME LIKE '"+ ono + "%'  order by HENAME ; ";
             // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
             int lathos = 0;
@@ -421,7 +439,7 @@ public partial class APOTtsism : ContentPage
                     Name = (dt.Rows[k]["HENAME"].ToString() + "                         ").Substring(0, 18),
 
                     Location = (dt.Rows[k]["HECODE"].ToString() + "                  ").Substring(0, 12),
-                    ImageUrl = ( "      ").Substring(0, 1),
+                    ImageUrl = (dt.Rows[k]["HEID"].ToString() + "                       ").Substring(0, 15),
                     idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
                 });
 
@@ -452,7 +470,8 @@ public partial class APOTtsism : ContentPage
             //  BRESafm.IsEnabled = false;
             ONO.Text = tappedItem.Name+";" + tappedItem.Location;
                 BARCODE.Text = tappedItem.Location;
-            find3_eid();
+                string CID = (tappedItem.ImageUrl.ToString() + "                  ").Substring(0, 15);
+            find3_eid(CID);
 
         }
 

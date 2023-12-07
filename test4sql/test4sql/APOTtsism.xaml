@@ -109,7 +109,7 @@
 
 
                                 <Label                                    
-                                   Text="{Binding ImageUrl}" 
+                                   Text="{Binding ImageUrl}" IsVisible="false"
                                     Grid.Column="2"
                                     />
                                 <Label                                    
