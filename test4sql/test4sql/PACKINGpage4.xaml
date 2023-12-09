@@ -87,10 +87,10 @@
 
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="0.2*" />
                 </Grid.ColumnDefinitions>
 
@@ -100,17 +100,11 @@
                     BackgroundColor="Azure"
                 Text="ΚΩΔΙΚΟΣ" HorizontalOptions="Center"  />   -->
                 <StackLayout Orientation="Horizontal">
-
-                    <Button x:Name="bkodikos"  Grid.Row="0" Grid.Column="0" 
-                      
+                    <Button x:Name="bkodikos"  Grid.Row="0" Grid.Column="0"                       
                         Text="ΚΩΔΙΚΟΣ"
                        Clicked="BRESEIDOS"  />
-    
-                <Button x:Name="sEIDHPEL"  Grid.Row="0" Grid.Column="0" 
-                        
-       
-         Text="ΕΙΔΗ ΠΕΛ"
-        Clicked="csEIDHPEL"  />
+                    <Button x:Name="sEIDHPEL"  Grid.Row="0" Grid.Column="0"                               
+                        Text="ΕΙΔΗ ΠΕΛ" Clicked="csEIDHPEL"  />
                 </StackLayout> 
 
 

@@ -695,7 +695,7 @@ namespace oncar
                 //{
 
                 // CZ = "select CH2 FROM EIDH WHERE ID=" + Globals.gIDEIDOS;
-                CZ = "select CH2 FROM EIDH WHERE ONO='" + Globals.gIDEIDOS+"'";
+                CZ = "select ISNULL(CH2,'') AS CH2 FROM EIDH WHERE ONO='" + Globals.gIDEIDOS+"'";
 
 
                 // }

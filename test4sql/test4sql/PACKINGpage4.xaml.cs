@@ -1,5 +1,6 @@
 ﻿using Android.Bluetooth;
 using Android.Util;
+using Java.Nio.Channels;
 using Mono.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ using System.Threading.Tasks;
 using test4sql;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using static Android.App.DownloadManager;
+using static Android.Graphics.ColorSpace;
+using static Java.Text.Normalizer;
 
 namespace oncar
 {
@@ -525,11 +529,66 @@ namespace oncar
             async void BresEidos(string CCC,int ola)
             {
                 CCC = CCC.ToUpper();
-                CKODE.Text = CCC;
+            CCC = CCC.TrimEnd();
+            CCC = CCC.TrimStart();
+            int isnumber = 0;
 
-                // fisEIDH = 1; // gia to listview
-                // determine the path for the database file
-                string dbPath = Path.Combine(
+            String c1 = "", c2 = "", c3 = "", c4 = "", c5 = "", c6 = "", QU = "",nums="0123456789" ;
+            int le = CCC.Length;
+            if (le >= 1)
+            {
+                c1 = CCC.Substring(0, 1);
+                QU = " SUBSTRING(ONO,1,1) IN " + Globals.Idia(c1);
+                if (nums.IndexOf(c1) > 0) { isnumber = isnumber + 10; };
+            }
+            if (le >= 2)
+            {
+                c2 = CCC.Substring(1, 1);
+                QU = QU + " AND SUBSTRING(ONO,2,1) IN " + Globals.Idia(c2);
+                if (nums.IndexOf(c2) > 0) { isnumber = isnumber + 10; };
+            }
+
+            if (le >= 3)
+            {
+                c3 = CCC.Substring(2, 1);
+                QU = QU + " AND SUBSTRING(ONO,3,1) IN " + Globals.Idia(c3);
+                if (nums.IndexOf(c3) > 0) { isnumber = isnumber + 10; };
+            }
+
+            if (le >= 4)
+            {
+                c4 = CCC.Substring(3, 1);
+                QU = QU + " AND SUBSTRING(ONO,4,1) IN " + Globals.Idia(c4);
+                if (nums.IndexOf(c4) > 0) { isnumber = isnumber + 10; };
+            }
+            // QU = " ONO LIKE '" + CCC + "%' ";
+            if (le >= 5)
+            {
+                c5 = CCC.Substring(4, 1);
+                QU = QU + " AND SUBSTRING(ONO,5,1) IN " + Globals.Idia(c5);
+                if (nums.IndexOf(c5) > 0) { isnumber = isnumber + 10; };
+            }
+            if (le >= 6)
+            {
+                c6 = CCC.Substring(5, 1);
+                QU = QU + " AND SUBSTRING(ONO,6,1) IN " + Globals.Idia(c6);
+                if (nums.IndexOf(c6) > 0) { isnumber = isnumber + 10; };
+            }
+            
+            if( isnumber >0) {
+                isnumber = 1; 
+                 // ΨΑΧΝΕΙ ΚΑΤΑ ΚΩΔΙΚΟ
+                QU = "KOD='" + CCC + "'";
+            } else {
+                 isnumber = 0;
+                //QU=QU; ΨΑΧΝΕΙ ΜΕ ΟΝΟΜΑ
+            }
+
+            // CKODE.Text = CCC;
+
+            // fisEIDH = 1; // gia to listview
+            // determine the path for the database file
+            string dbPath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                     "adodemo.db3");
                 bool exists = File.Exists(dbPath);
@@ -556,11 +615,15 @@ namespace oncar
                 {
                      if (ola == 0)
                      {
-                       contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD IN (SELECT KODE FROM EIDHPEL WHERE KODPEL='"+AFM.Text +"')  and  ONO LIKE  '%" + CKODE.Text + "%' ; "; // +BARCODE.Text +"'";
-                }
-                     else
-                     {
-                       contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD = '" + CKODE.Text + "' ; "; // +BARCODE.Text +"'";
+                         if (CCC.Length == 0) { QU = " ONO LIKE '%' "; }
+                       //ΟΚ ΔΟΥΛΕΥΕΙ ΕΤΣΙ  contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD IN (SELECT KODE FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "')  and  "+QU+" ; "; // +BARCODE.Text +"'";
+                       contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD IN (SELECT KODE FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "')  and  " + QU + " ; "; // +BARCODE.                         
+                                                                                                                                                                                                                       // ΤΟ ΧΡΕΙΑΖΟΜΑΙ ΣΤΗΝ ΛΙΣΤΑ ΠΟΥ ΘΑ ΔΗΜΙΟΥΡΓΗΣΕΙ
+                       QU = " KOD IN(SELECT KODE FROM EIDHPEL WHERE KODPEL = '" + AFM.Text + "')  and  " + QU;
+                      }
+                else
+                {
+                       contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE  "+QU+"; "; // +BARCODE.Text +"'";
  
                      }
                 }
@@ -600,7 +663,9 @@ namespace oncar
                     // IF DELTA PROIONTA
 
                     FPA.Text = r["FPA2"].ToString();
-                    //lbarcode.Text = r["BARCODE"].ToString();  // ***
+                //lbarcode.Text = r["BARCODE"].ToString();  // ***
+                   if (flag > 1) 
+                   { break; }
 
                 }
                 // r["ONO"].ToString();
@@ -611,23 +676,39 @@ namespace oncar
                 string cck = CKODE.Text;
                 if (flag == 0)
                 {
-                    LPER.Text = cck + " ΔΕΝ ΒΡΕΘΗΚΕ ";  // ****
+                    LPER.Text = CCC + " ΔΕΝ ΒΡΕΘΗΚΕ ";  // ****
                     LPER.TextColor = Color.Red;
                     CKODE.Text = "";
                     CKODE.Focus();
-
+                    return;
                 }
 
 
 
                 if (flag == 0 || flag > 1)
                 {
-                    Show_list_Eidon(cck);
+                    Show_list_Eidon(QU);
                     fisEIDH = 1; // για να tsimpaei  τα ειδη 
                 }
                 else
                 {
-                    CPOSO.Focus();
+
+                // ΨΑΧΝΩ ΝΑ ΔΩ ΑΝ ΕΧΕΙ ΤΕΛΕΥΤΑΙΑ ΤΙΜΗ ΠΕΛΑΤΗ ΓΙΑ ΝΑ ΤΗΝ ΒΑΛΩ
+                string C0 = ReadSQL("select CAST(TELTIMH AS TEXT) FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "' AND KODE='" + CKODE.Text.TrimEnd() + "'");
+                if (C0.Length == 0)
+                { }
+                else
+                {
+                    CTIMH.Text = C0;
+                }
+
+
+
+
+
+
+
+                CPOSO.Focus();
                     fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
                     Show_list();
                 }
@@ -874,10 +955,23 @@ namespace oncar
                 }
                 if (fisEIDH == 1)
                 {
-
+                    CKODE.Text = tappedItem.Location;
                     LPER.Text = tappedItem.Name;
                     CTIMH.Text = tappedItem.ImageUrl;
-                    CKODE.Text = tappedItem.Location;
+                // ΨΑΧΝΩ ΝΑ ΔΩ ΑΝ ΕΧΕΙ ΤΕΛΕΥΤΑΙΑ ΤΙΜΗ ΠΕΛΑΤΗ ΓΙΑ ΝΑ ΤΗΝ ΒΑΛΩ
+                string  C0 = ReadSQL("select CAST(TELTIMH AS TEXT) FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "' AND KODE='" + CKODE.Text.TrimEnd()  + "'");
+                if (C0.Length == 0)
+                { }else
+                {
+                    CTIMH.Text = C0;
+                }
+                  
+
+
+
+
+
+                    
 
                     listview.ItemsSource = null;
                     fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
@@ -1462,7 +1556,7 @@ namespace oncar
 
             }
 
-            void Show_list_Eidon(string ono)
+            void Show_list_Eidon(string QU)
             {
                 Monkeys = new List<Monkey>();
                 BindingContext = null;
@@ -1485,8 +1579,8 @@ namespace oncar
 
 
                 var contents = connection.CreateCommand();
-                contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(ONO,'') AS PER,ifnull(XONDR,0) as timh,ID from EID where KOD LIKE '%" + ono + "%' OR ONO LIKE '%" + ono + "%' order by ONO ; "; // +BARCODE.Text +"'";
-                                                                                                                                                                                                              // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
+                // contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(ONO,'') AS PER,ifnull(XONDR,0) as timh,ID from EID where KOD LIKE '%" + ono + "%' OR ONO LIKE '%" + ono + "%' order by ONO ; "; // +BARCODE.Text +"'";
+                contents.CommandText = "SELECT  ifnull(KOD,'') as KODI,ifnull(ONO,'') AS PER,ifnull(XONDR,0) as timh,ID from EID where "+QU+" order by ONO ; "; // +BARCODE.Text +"'";                                                                                                                                                                                              // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
                 var r = contents.ExecuteReader();
                 Console.WriteLine("Reading data");
                 while (r.Read())

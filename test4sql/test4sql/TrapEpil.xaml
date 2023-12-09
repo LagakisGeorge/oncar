@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              NavigationPage.HasNavigationBar="False" 
                 xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"  
              x:Class="oncar.trapeziEpil">
     <ContentPage.Content>
@@ -93,7 +94,7 @@
             </ListView.ItemTemplate>
             </ListView>-->
 
-            <StackLayout HeightRequest="300" Padding="6">
+            <StackLayout HeightRequest="500" Padding="6">
                 <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
                HasUnevenRows="false" 
@@ -122,7 +123,7 @@
 
 
 
-            <StackLayout Padding="6" HeightRequest="1500" VerticalOptions="CenterAndExpand" >
+            <StackLayout Padding="6" HeightRequest="1300" VerticalOptions="CenterAndExpand" >
                 <flv:FlowListView FlowColumnCount="3"   
                 SeparatorVisibility="Default"   
                  x:Name="listEIDH"                                 
