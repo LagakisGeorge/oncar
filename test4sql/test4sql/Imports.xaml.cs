@@ -25,6 +25,7 @@ using Java.Nio.Channels;
 using static Java.Text.Normalizer;
 using System.Text.RegularExpressions;
 using static Android.Provider.Telephony.Sms;
+using SharpCifs.Util;
 
 namespace test4sql
 {
@@ -1311,6 +1312,22 @@ namespace test4sql
             string[] lines = Globals.cSQLSERVER.Split(';');
             string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
 
+
+
+            var action = await DisplayAlert("Θα μεταφερθουν τα είδη πελάτη (10min)", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+
+
+
+
+
             //            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
             con = new SqlConnection(constring);
             try
@@ -1326,7 +1343,22 @@ namespace test4sql
 
             // TO EKANA NA TO DIAGRAFEI APO TO EMPORIKO
             // ALLA MPOREI NA ΞΕΧΑΣΤΕΙ ΚΑΙ ΝΑ ΤΟ ΣΤΕΙΛΕΙ 2 ΦΟΡΕΣ
-  string c = "DROP TABLE IF EXISTS EIDHPEL; Select PELKOD AS KODPEL, KODE, SUM(POSO) AS POSO, SUM(POSO * TIMM * (100 - EKPT) / 100) AS AJIA, MAX(TIMM) AS TELTIMH into EIDHPEL FROM EGGTIM where EIDOS = 'e' GROUP BY PELKOD,KODE";
+            string c = "DROP TABLE  EIDHPEL";
+
+            try
+            {
+
+                SqlCommand cmd2 = new SqlCommand(c);
+                cmd2.Connection = con;
+                cmd2.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("ΔΕΝ ΒΡΕΘΗΚΕ Ο ΠΙΝΑΚΑΣ EIDHPEL", ex.ToString(), "OK");
+                return;
+            }
+
+            c ="Select PELKOD AS KODPEL, KODE, SUM(POSO) AS POSO, SUM(POSO * TIMM * (100 - EKPT) / 100) AS AJIA, MAX(TIMM) AS TELTIMH into EIDHPEL FROM EGGTIM where EIDOS = 'e' GROUP BY PELKOD,KODE";
 
 
             SqlCommand cmd = new SqlCommand(c);
@@ -1336,14 +1368,16 @@ namespace test4sql
 
 
 
+
+
             c = "select isnull(KODPEL,'') as  KODPEL,ISNULL(KODE,'') AS KODE,ISNULL(POSO,0) AS POSO,ISNULL(AJIA,0) AS AJIA,ISNULL(TELTIMH,0) AS TELTIMH from EIDHPEL";
 
 
 
 
+            int n20 = MainPage.ExecuteSqlite("delete from EIDHPEL");
 
 
-          
             //--------------------------------------  TRAPEZIA -----------------------------------------------------------
             try
             {
@@ -1354,6 +1388,12 @@ namespace test4sql
                 adapter2.Fill(dt);
                 // List<string> MyList = new List<string>();
                 int k = 0;
+
+
+
+
+
+
                 for (k = 0; k <= dt.Rows.Count - 1; k++)
                 {
                     String KODPEL = dt.Rows[k]["KODPEL"].ToString();
@@ -1388,7 +1428,7 @@ namespace test4sql
                 } // FOR
 
 
-
+                await DisplayAlert("OK ΕΙΔΗ ΠΕΛΑΤΗ.", k.ToString(), "OK");
 
                 //  BindingContext = this;
             }
@@ -1396,7 +1436,7 @@ namespace test4sql
             {
                 await DisplayAlert("Error", ex.ToString(), "OK");
             }
-
+            
 
 
 

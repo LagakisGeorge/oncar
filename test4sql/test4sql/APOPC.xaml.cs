@@ -385,6 +385,7 @@ namespace test4sql
             MainPage.ExecuteSqlite("delete from EID;");
             MainPage.ExecuteSqlite("delete from TIM;");
             MainPage.ExecuteSqlite("delete from EGGTIM;");
+            CrossToastPopUp.Current.ShowToastMessage("1.αδειασμα οκ");
 
             String SYNT = "";
             if (TEST2.BackgroundColor == Xamarin.Forms.Color.Green)
@@ -418,7 +419,10 @@ namespace test4sql
                     mTYP = mTYP.Replace(",", ".");
 
 
-
+                    if (k>100 & k % 100 == 0)
+                    {
+                        CrossToastPopUp.Current.ShowToastMessage("ειδη"+k.ToString());
+                    }
 
                     string mXTI = dt.Rows[k]["MXTI"].ToString();
                     mXTI = mXTI.Replace(",", ".");

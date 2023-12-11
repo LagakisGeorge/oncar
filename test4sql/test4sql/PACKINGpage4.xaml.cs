@@ -531,9 +531,22 @@ namespace oncar
                 CCC = CCC.ToUpper();
             CCC = CCC.TrimEnd();
             CCC = CCC.TrimStart();
+
+            
+
+
             int isnumber = 0;
 
             String c1 = "", c2 = "", c3 = "", c4 = "", c5 = "", c6 = "", QU = "",nums="0123456789" ;
+
+            CCC = Globals.Idia(CCC);
+            CCC = CCC.Replace("%", "*");
+            QU = " ONO GLOB '*"+CCC+"*' ";
+
+
+
+            /*
+             
             int le = CCC.Length;
             if (le >= 1)
             {
@@ -583,6 +596,9 @@ namespace oncar
                  isnumber = 0;
                 //QU=QU; ΨΑΧΝΕΙ ΜΕ ΟΝΟΜΑ
             }
+
+            */
+
 
             // CKODE.Text = CCC;
 
@@ -1589,7 +1605,7 @@ namespace oncar
 
                     Monkeys.Add(new Monkey
                     {
-                        Name = (r["PER"].ToString() + "                         ").Substring(0, 18),
+                        Name = (r["PER"].ToString() + "                                                         ").Substring(0, 48),
 
                         Location = (r["KODI"].ToString() + "                        ").Substring(0, 18),
                         ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),

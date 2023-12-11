@@ -407,9 +407,9 @@ namespace oncar
                 // Monkeys.Add(new Monkey
                 myText.Add((MainPage.ToGreek737(Globals.gTITLOS)));
 
-
+                myText.Add("ΣΕΡΒ.:"+Globals.gUserWaiter.ToString());
                 //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
-                string DDD = MainPage.ToGreek737(titlos.Text + "  .");
+                string DDD = MainPage.ToGreek737(titlos.Text + "  ." + "ΣΕΡΒ.:" + Globals.gUserWaiter.ToString());
                 myText.Add(DDD);
                 //myText.Add(Globals.gTrapezi.ToString() +MainPage.ToGreek737( " * TΡΑΠΕΖΙ * ") +Globals.gTrapezi.ToString ()  + ".                \r\n");
 
@@ -746,7 +746,7 @@ namespace oncar
             // Monkeys.Add(new Monkey
 
             //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
-            string DDD = MainPage.ToGreek737(titlos.Text+"  .");
+            string DDD = MainPage.ToGreek737(titlos.Text+"  ." + "ΣΕΡΒ.:" + Globals.gUserWaiter.ToString());
             myText.Add(DDD+"  "+ MainPage.ToGreek737(cmdtimologio.Text + "  ."));
             myText2.Add(DDD);
             myText3.Add(DDD);
@@ -788,16 +788,23 @@ namespace oncar
                     KANON = dt.Rows[k]["POSO"].ToString().Trim() + "x" + (MainPage.ToGreek737(dt.Rows[k]["ONO"].ToString().Trim())); // + "        " + dt.Rows[k]["TIMH"].ToString() + "    " + dt.Rows[k]["AXIA"].ToString()) ;
 
                     // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
-                    // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ
-                    //  if (dt.Rows[k]["PRINTER"].ToString() == "1")
-                    //  {
-                    //      myText.Add(KANON.Trim());
-                    //      i1 = i1 + 1;
-                    //  }
+                    // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ  Globals.Ola1Printer = 1
 
-                    // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
-                    myText.Add(KANON.Trim());
-                    i1 = i1 + 1;
+                    if (Globals.gOla1Printer == 1) {
+                        // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
+                        myText.Add(KANON.Trim());
+                        i1 = i1 + 1;
+                    
+                    }
+                    else
+                    {
+                        if (dt.Rows[k]["PRINTER"].ToString() == "1")
+                        {
+                            myText.Add(KANON.Trim());
+                            i1 = i1 + 1;
+                        }
+                    }
+                  
                     
                         if (dt.Rows[k]["PRINTER"].ToString() == "2")
                         {

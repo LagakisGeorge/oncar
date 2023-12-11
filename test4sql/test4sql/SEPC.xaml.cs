@@ -491,9 +491,9 @@ namespace test4sql
                 }
 
 
-            
+            string cc;//= "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES (";
 
-                string dbPath = Path.Combine(
+            string dbPath = Path.Combine(
                          Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                          "adodemo.db3");
                 SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
@@ -501,23 +501,111 @@ namespace test4sql
                 connection.Open();
                 // query the database to prove data was inserted!
                 var contents = connection.CreateCommand();
-                contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH,EKPT,IFNULL(FPA,1) AS FPA FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
-                var r = contents.ExecuteReader();
+
+          
+            contents.CommandText = "SELECT TRP,ATIM,HME,KPE,IFNULL(AJI,0) AS AJI From TIM ";  //  WHERE LEFT(ATIM,1) IN ('T','ρ')
+
+            var r = contents.ExecuteReader();
+
+            string[] cID_NUM_atim= new string[100];
+            int ii = 0;
+
+            try
+            {
+                while (r.Read())
+                {
+                    ii++;
+                    string cAtim = r["ATIM"].ToString();
+                    // ΣΤΟ ΠΡΩΤΟ ΤΙΜΟΛΟΓΙΟ ΒΛΕΠΩ ΜΗΝ ΤΥΧΟΝ ΥΠΑΡΧΕΙ ΗΔΗ.ΑΝ ΝΑΙ ΣΤΑΜΑΤΩ ΤΗΝ ΔΙΑΔΙΚΑΣΙΑ
+                    if (ii == 1)
+                    {
+                        string cf1 = "-1", q21 = "select  cast(COUNT(*) AS VARCHAR(1))  FROM TIM WHERE KLEIDI='" + cAtim + "'";
+                        cf1 = Globals.ReadSQLServer(q21);
+                        if (cf1 == "0") { }
+                        else
+                        {
+                            await DisplayAlert("εχουν ήδη μεταφερθεί", "υπαρχουν ", "OK");
+                            return;
+                        }
+                    }
+
+
+
+
+
+
+
+
+                    
+                    string[] lines2 = r["HME"].ToString().Split('/');
+                    cc = "INSERT INTO TIM (EIDOS,B_N1,AJ1,AJ2,AJ3,AJ4,AJ5,AJ6,FPA1,FPA2,FPA3,FPA4,FPA6,TRP,ATIM,HME,KPE,AJI,KLEIDI) VALUES ('e',1,0,0,0,0,0,0,0,0,0,0,0,'";
+                    cc += r["TRP"].ToString() + "','";
+                    cc += cAtim + "','";
+                    cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
+                    cc += r["KPE"].ToString() + "',";
+                    cc += r["AJI"].ToString().Replace(",", ".") + ",'";
+                    cc += cAtim  + "')";
+                    // cc += r["TIMH"].ToString().Replace(",", ".") + ")";
+
+                    SqlCommand cmd = new SqlCommand(cc);// cmd = new SqlCommand(cc);
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+
+                    string cf = "0",q2= "select  cast(ID_NUM AS VARCHAR(10))  FROM TIM WHERE KLEIDI='" + cAtim + "'";
+                        cf=Globals.ReadSQLServer(q2);
+                    
+                    cID_NUM_atim[ii] = cAtim + ";" + cf;
+
+
+                }
+
+
+
+                CrossToastPopUp.Current.ShowToastMessage("1.Αποθηκεύτηκε");
+
+
+
+
+
+
+                contents = connection.CreateCommand();
+                contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH,EKPT,IFNULL(FPA,1) AS FPA,IFNULL(ONO,'') AS ONO FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
+
                 // Console.WriteLine("Reading data");
+                r = contents.ExecuteReader();
+
+
 
                 String cPal, cPart, cPos, cKod;
-                string cc;//= "INSERT INTO EGGTIM (ATIM,HME,KODE,POSO,TIMM) VALUES (";
+               
 
 
                 try
                 {
-
+                     string cID_NUM = "";
 
                     while (r.Read())
                     {
                         string[] lines2 = r["HME"].ToString().Split('/');
-                        cc = "INSERT INTO EGGTIM (PELKOD,ATIM,HME,KODE,POSO,TIMM,EKPT,FPA) VALUES ('" + r["PELKOD"].ToString() + "','";
-                        cc += r["ATIM"].ToString() + "','";
+                        string cAtim = r["ATIM"].ToString();
+                        // ψαχνω να δω το id_num του ΤΙΜ για να το δώσω και στο eggtim
+                       
+                        for (int ik = 1; ik < 100; ik++)
+                        {
+                            string[] words = cID_NUM_atim[ik].ToString().Split(';');
+                            if (words[0]==cAtim)
+                            {
+                                cID_NUM = words[1];
+                                if (cID_NUM.Length == 0) { cID_NUM = "0"; }
+                                break;
+                            }
+                        }
+
+
+
+
+                        cc = "INSERT INTO EGGTIM (ONOMA,ID_NUM,APOT,PELKOD,ATIM,HME,KODE,POSO,TIMM,EKPT,FPA) VALUES ('"+r["ONO"].ToString()+"',"+cID_NUM+", 1,'" + r["PELKOD"].ToString() + "','";
+                        cc += cAtim + "','";
                         cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
                         cc += r["KODE"].ToString() + "',";
                         cc += r["POSO"].ToString().Replace(",", ".") + ",";
@@ -527,12 +615,7 @@ namespace test4sql
 
 
 
-
-
-
-
-
-                    SqlCommand cmd = new SqlCommand(cc);
+                        SqlCommand cmd = new SqlCommand(cc);
                         cmd.Connection = con;
                         cmd.ExecuteNonQuery();
 
@@ -544,7 +627,7 @@ namespace test4sql
 
 
 
-                    CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+                    CrossToastPopUp.Current.ShowToastMessage("2.Αποθηκεύτηκε");
                     //  SaveFile(cc);
 
                     //  MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
@@ -560,42 +643,21 @@ namespace test4sql
 
 
 
-                contents = connection.CreateCommand();
-                contents.CommandText = "SELECT TRP,ATIM,HME,KPE,IFNULL(AJI,0) AS AJI From TIM ";  //  WHERE LEFT(ATIM,1) IN ('T','ρ')
-                r = contents.ExecuteReader();
-                try
-                {
-                    while (r.Read())
-                    {
-                        string[] lines2 = r["HME"].ToString().Split('/');
-                        cc = "INSERT INTO TIM (TRP,ATIM,HME,KPE,AJI,KLEIDI) VALUES ('";
-                        cc += r["TRP"].ToString() + "','";
-                        cc += r["ATIM"].ToString() + "','";
-                        cc += lines2[1] + "/" + lines2[0] + "/" + lines2[2].Substring(0, 4) + "','";
-                        cc += r["KPE"].ToString() + "',";
-                    cc += r["AJI"].ToString().Replace(",", ".") + ",'";
-                    cc+= r["ATIM"].ToString() + "')";
-                    // cc += r["TIMH"].ToString().Replace(",", ".") + ")";
 
-                    SqlCommand cmd = new SqlCommand(cc);// cmd = new SqlCommand(cc);
-                        cmd.Connection = con;
-                        cmd.ExecuteNonQuery();
-                    }
-                    connection.Close();
+                connection.Close();
+                await DisplayAlert("OK", "", "OK");
 
-
-
-                    CrossToastPopUp.Current.ShowToastMessage("Αποθηκεύτηκε");
+                CrossToastPopUp.Current.ShowToastMessage("3.Αποθηκεύτηκε");
                     //  SaveFile(cc);
 
                     //  MainPage.ExecuteSqlite("DELETE FROM  PARALABES");
 
 
-                }
-                catch (Exception ex)
-                {
+            }
+            catch (Exception ex)
+            {
                     await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
-                }
+            }
 
 
 

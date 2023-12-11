@@ -41,7 +41,7 @@ namespace test4sql
 
 
 
-
+        public static int gOla1Printer=0;  // να γινει παραμετρικο
         public static string gIPKleis;
         public static string cIPPR1;
         public static string cIPPR2;
@@ -500,7 +500,7 @@ namespace test4sql
 
 
 
-
+//   DEN XREIASTHKE GIATI XRHSIMOPOIHSA TO GLOB STHN SQLITE
         public static string Idia(string ST)
 
         {
@@ -533,40 +533,40 @@ namespace test4sql
 
                 if (N <= 0)
                 {
-                    s =  s + "('"+C+"')"; continue;
+                    s =  s + "["+C+"]"; continue;
                 }
                 else
 
                 {
-                    string v = "aAαΑά"; if (v.IndexOf(C) > 0) { s = s + "('Α','A')"; continue; }
-                    v = "βΒbB"; if (v.IndexOf(C) > 0) { s = s + "('Β','B')"; continue; }
-                    v = "γΓgG"; if (v.IndexOf(C) > 0) { s = s + "('G','Γ')"; continue; }
-                    v = "δΔdD"; if (v.IndexOf(C) > 0) { s = s + "('Δ','D')"; continue; }
-                    v = "εΕeEέ"; if (v.IndexOf(C) > 0) { s = s + "('Ε','E')"; continue; }
-                    v = "ζΖzZ"; if (v.IndexOf(C) > 0) { s = s + "('Ζ','Z')"; continue; }
-                    v = "ηήΗhH"; if (v.IndexOf(C) > 0) { s = s + "('Η','H')"; continue; }
-                    v = "θΘuU"; if (v.IndexOf(C) > 0) { s = s + "('Θ','U')"; continue; }
-                    v = "ιίΙiI"; if (v.IndexOf(C) > 0) { s = s + "('Ι','I')"; continue; }
-                    v = "κΚkK"; if (v.IndexOf(C) > 0) { s = s + "('Κ','K')"; continue; }
-                    v = "λΛlL"; if (v.IndexOf(C) > 0) { s = s + "('Λ','L')"; continue; }
-                    v = "μΜmM"; if (v.IndexOf(C) > 0) { s = s + "('Μ','M')"; continue; }
+                    string v = "aAαΑά"; if (v.IndexOf(C) > 0) { s = s + "[ΑA]"; continue; }
+                    v = "βΒbB"; if (v.IndexOf(C) > 0) { s = s + "[ΒB]"; continue; }
+                    v = "γΓgG"; if (v.IndexOf(C) > 0) { s = s + "[GΓ]"; continue; }
+                    v = "δΔdD"; if (v.IndexOf(C) > 0) { s = s + "[ΔD]"; continue; }
+                    v = "εΕeEέ"; if (v.IndexOf(C) > 0) { s = s + "[ΕE]"; continue; }
+                    v = "ζΖzZ"; if (v.IndexOf(C) > 0) { s = s + "[ΖZ]"; continue; }
+                    v = "ηήΗhH"; if (v.IndexOf(C) > 0) { s = s + "[ΗH]"; continue; }
+                    v = "θΘuU"; if (v.IndexOf(C) > 0) { s = s + "[ΘU]"; continue; }
+                    v = "ιίΙiI"; if (v.IndexOf(C) > 0) { s = s + "[ΙI]"; continue; }
+                    v = "κΚkK"; if (v.IndexOf(C) > 0) { s = s + "[ΚK]"; continue; }
+                    v = "λΛlL"; if (v.IndexOf(C) > 0) { s = s + "[ΛL]"; continue; }
+                    v = "μΜmM"; if (v.IndexOf(C) > 0) { s = s + "[ΜM]"; continue; }
 
-                    v = "νΝnN"; if (v.IndexOf(C) > 0) { s = s + "('Ν','N')"; continue; }
-                    v = "ξΞjJ"; if (v.IndexOf(C) > 0) { s = s + "('Ξ','J')"; continue; }
-                    v = "όοΟoO"; if (v.IndexOf(C) > 0) { s = s + "('Ο','O')"; continue; }
-                    v = "πΠpP"; if (v.IndexOf(C) > 0) { s = s + "('Π','P')"; continue; }
-                    v = "ρΡrR"; if (v.IndexOf(C) > 0) { s = s + "('Ρ','R')"; continue; }
-                    v = "σςΣsS"; if (v.IndexOf(C) > 0) { s = s + "('Σ','S')"; continue; }
+                    v = "νΝnN"; if (v.IndexOf(C) > 0) { s = s + "[ΝN]"; continue; }
+                    v = "ξΞjJ"; if (v.IndexOf(C) > 0) { s = s + "[ΞJ]"; continue; }
+                    v = "όοΟoO"; if (v.IndexOf(C) > 0) { s = s + "[ΟO]"; continue; }
+                    v = "πΠpP"; if (v.IndexOf(C) > 0) { s = s + "[ΠP]"; continue; }
+                    v = "ρΡrR"; if (v.IndexOf(C) > 0) { s = s + "[ΡR]"; continue; }
+                    v = "σςΣsS"; if (v.IndexOf(C) > 0) { s = s + "[ΣS]"; continue; }
 
-                    v = "τΤtT"; if (v.IndexOf(C) > 0) { s = s + "('Τ','T')"; continue; }
-                    v = "ύυΥyY"; if (v.IndexOf(C) > 0) { s = s + "('Υ','Y')"; continue; }
-                    v = "φΦfF"; if (v.IndexOf(C) > 0) { s = s + "('Φ','F')"; continue; }
-                    v = "χΧxX"; if (v.IndexOf(C) > 0) { s = s + "('Χ','X')"; continue; }
-                    v = "ψΨcC"; if (v.IndexOf(C) > 0) { s = s + "('Ψ','C')"; continue; }
-                    v = "ώωΩvV"; if (v.IndexOf(C) > 0) { s = s + "('Ω','V')"; continue; }
+                    v = "τΤtT"; if (v.IndexOf(C) > 0) { s = s + "[ΤT]"; continue; }
+                    v = "ύυΥyY"; if (v.IndexOf(C) > 0) { s = s + "[ΥY]"; continue; }
+                    v = "φΦfF"; if (v.IndexOf(C) > 0) { s = s + "[ΦF]"; continue; }
+                    v = "χΧxX"; if (v.IndexOf(C) > 0) { s = s + "[ΧX]"; continue; }
+                    v = "ψΨcC"; if (v.IndexOf(C) > 0) { s = s + "[ΨC]"; continue; }
+                    v = "ώωΩvV"; if (v.IndexOf(C) > 0) { s = s + "[ΩV]"; continue; }
 
-                    v = "qQ"; if (v.IndexOf(C) > 0) { s = s + "('Q')"; continue; }
-                    v = "wW"; if (v.IndexOf(C) > 0) { s = s + "('W')"; continue; }
+                    v = "qQ"; if (v.IndexOf(C) > 0) { s = s + "[Q]"; continue; }
+                    v = "wW"; if (v.IndexOf(C) > 0) { s = s + "[W]"; continue; }
 
                 }
 
@@ -593,7 +593,7 @@ namespace test4sql
             //       3
             //       -1
         }
-
+        
     }
 
 
