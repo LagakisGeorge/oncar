@@ -746,7 +746,7 @@ namespace oncar
             // Monkeys.Add(new Monkey
 
             //myText.Add(Globals.gTrapezi.ToString() + MainPage.ToGreek737(" * TΡΑΠΕΖΙ * ")) ;
-            string DDD = MainPage.ToGreek737(titlos.Text+"  ." + "ΣΕΡΒ.:" + Globals.gUserWaiter.ToString());
+            string DDD = MainPage.ToGreek737(titlos.Text+" " + "ΣΕΡΒ.:" + Globals.gUserWaiter.ToString());
             myText.Add(DDD+"  "+ MainPage.ToGreek737(cmdtimologio.Text + "  ."));
             myText2.Add(DDD);
             myText3.Add(DDD);
