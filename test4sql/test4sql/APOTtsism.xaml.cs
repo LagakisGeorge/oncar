@@ -332,7 +332,10 @@ public partial class APOTtsism : ContentPage
             TIMH.Text = c3.Replace(",", ".");
             TIMH.Text = c3;
 
+            SQL = "SELECT (SELECT TOP 1  HENAME FROM HEMEASUREMENTUNITS  WHERE HEID=HEITEMS.HEAMSNTID ) AS DD  FROM HEITEMS WHERE HEID='" + CID + "';";
+            string c4 = Globals.ReadSQLServer(SQL);
 
+            MON.Text = c4;
 
 
 
@@ -429,7 +432,7 @@ public partial class APOTtsism : ContentPage
             // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
             int lathos = 0;
-            DataTable dt= LReadSQLServer(sql,lathos);
+            DataTable dt= LReadSQLServer(sql,lathos,0);
             //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();
             int k;
             for ( k=0; k<=dt.Rows.Count - 1; k++)
@@ -478,7 +481,7 @@ public partial class APOTtsism : ContentPage
             BindingContext = null;
             string sql = "select * from EGGTIMINP  order by ID DESC ; ";           
             int lathos = 0;
-            DataTable dt = LReadSQLServer(sql, lathos);
+            DataTable dt = LReadSQLServer(sql, lathos,1);
             //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();
             int k;
             for (k = 0; k <= dt.Rows.Count - 1; k++)
@@ -577,7 +580,7 @@ public partial class APOTtsism : ContentPage
 
         }
 
-       private DataTable LReadSQLServer(string sql,int latos)
+       private DataTable LReadSQLServer(string sql,int latos,int ISMERCURY)
         {
 
 
@@ -589,6 +592,15 @@ public partial class APOTtsism : ContentPage
             }
             string[] lines = Globals.cSQLSERVER.Split(';');
             string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+            if (ISMERCURY == 1)
+            {
+                
+                 constring = @"Data Source=" + lines[0] + ";Initial Catalog=MERCURY;Uid=sa;Pwd=" + lines[2];
+
+            }
+
+
 
             // string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
             SqlConnection con = new SqlConnection(constring);
