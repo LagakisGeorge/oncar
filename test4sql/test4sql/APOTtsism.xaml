@@ -33,36 +33,19 @@
             <Entry x:Name="ONO"    FontSize="Large" 
                    Placeholder="ONOMA"       />
 
-             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="PYLON" Text="ΥΠΟΛ.PYLON"  BackgroundColor="Cyan"  FontSize="Medium" />
-
-                <Entry x:Name="FPA"    FontSize="Medium" 
-                   Placeholder="ΥΠΟΛ"       />
-                 
+            <StackLayout    Orientation="Horizontal">
+                <Label x:Name="PYLON" Text="PYL"  BackgroundColor="Cyan"  FontSize="Medium" />
+                <Entry x:Name="FPA"    FontSize="Medium"   Placeholder="ΥΠΟΛ"       />
                 <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Medium"          />
-               
-
-
-                <Button x:Name="DELETEOLD" 
-                    Text="ΔΙΑΓ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
-
-
-
+                <Label   x:Name="MON" Text="μον "  MinimumWidthRequest="10"  FontSize="Medium"          />
+                <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
             </StackLayout>
-
             
-
             <StackLayout    Orientation="Horizontal">
                 <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
-
-                <Entry x:Name="LTI5"    FontSize="Large" BackgroundColor="Yellow" 
-                   Placeholder="ΠΡ.ΥΠΟΛ"       />
-           
-
-
-                    <Button x:Name="KATAX" 
-                    Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
- </StackLayout>
+                <Entry x:Name="LTI5"    FontSize="Large" BackgroundColor="Yellow"   Placeholder="ΠΡ.ΥΠΟΛ"       />
+                <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
+            </StackLayout>
 
 
            

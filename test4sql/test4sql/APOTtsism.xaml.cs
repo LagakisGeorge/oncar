@@ -272,15 +272,27 @@ public partial class APOTtsism : ContentPage
                 float N = Globals.FReadSQLServer(SQL);
                 FPA.Text = N.ToString();
 
-
                 SQL = "SELECT TOP 1  HEITEMCOST FROM HEITEMCOSTPRICES WHERE HEITEMID='" + CID + "'  AND HEITEMCOST>0   ORDER BY HEITEMID,HEDATE DESC";
-
                 N = Globals.FReadSQLServer(SQL);
                 string c3 = N.ToString();
                 TIMH.Text = c3.Replace(",", ".");
                 TIMH.Text = c3;
 
+                SQL = "SELECT (SELECT TOP 1  HENAME FROM HEMEASUREMENTUNITS  WHERE HEID=HEITEMS.HEAMSNTID ) AS DD  FROM HEITEMS WHERE HEID='"+CID+"';";
+                string c4=  Globals.ReadSQLServer(SQL);
+                
+                MON.Text = c4;
+                
+
+
+
+
+
                 LTI5.Focus();
+
+
+
+
             }
 
 
