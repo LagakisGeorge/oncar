@@ -471,7 +471,34 @@ public partial class APOTtsism : ContentPage
         BindingContext = this;
     }
 
-    private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+
+        void Show_Last()
+        {
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+            string sql = "select * from EGGTIMINP  order by ID DESC ; ";           
+            int lathos = 0;
+            DataTable dt = LReadSQLServer(sql, lathos);
+            //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();
+            int k;
+            for (k = 0; k <= dt.Rows.Count - 1; k++)
+            {
+                Monkeys.Add(new Monkey
+                {
+                    Name = (dt.Rows[k]["ONO"].ToString() + "                                ").Substring(0, 25),
+                    Location = (dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3),
+                    ImageUrl = (dt.Rows[k]["KODE"].ToString() + "                       ").Substring(0, 15),
+                    idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
+                });
+            }
+            listview.ItemsSource = Monkeys;
+            BindingContext = this;
+            BindingContext = this;
+        }
+
+
+
+        private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
     {
 
         Monkey tappedItem = e.Item as Monkey;
@@ -506,13 +533,14 @@ public partial class APOTtsism : ContentPage
                 string[] lines = ONO.Text.Split(';');
                 //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
 
-                string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + PRAGM + "," + tt + ")";
+                string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('"+ONO.Text +"','" + lines[1] + "'," + PRAGM + "," + tt + ")";
                 LExecuteSQLServer(sql);
                 BARCODE.Text = "";
                 lab1.Text = ONO.Text;
                 ONO.Text = "";
                 FPA.Text = "";
                 LTI5.Text = "";
+                Show_Last();
                 BARCODE.Focus();
 
             }
@@ -624,6 +652,9 @@ public partial class APOTtsism : ContentPage
 
 
         }
+
+
+
 
 
         private async void DIAGROLD(object sender, EventArgs e)
