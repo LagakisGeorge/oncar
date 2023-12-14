@@ -240,7 +240,7 @@ public partial class APOTtsism : ContentPage
     }
 
 
-     public   void find2_eid()
+     public   void find2_eid()  // αναζητηση με barcode
         {
             string SQL ="" ;
             String CC = "";
@@ -313,13 +313,18 @@ public partial class APOTtsism : ContentPage
 
         }
 
-        public void find3_eid(string CID)
+        public void find3_eid(string CID) // ekana klik sto listview
         {
             string SQL = "";
 
             string C = BARCODE.Text;
             SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HECODE = '" + C + "'";
             ONO.Text = Globals.ReadSQLServerWithError(SQL);
+            if (ONO.Text.Contains("ERROR"))
+            {
+                ONO.Text = "λαθος";
+                return;
+            }
             SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
                  "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HECODE='" + C + "' )";
             float N = Globals.FReadSQLServer(SQL);
@@ -337,7 +342,7 @@ public partial class APOTtsism : ContentPage
 
             MON.Text = c4;
 
-
+            LTI5.Focus();
 
 
 
@@ -421,7 +426,7 @@ public partial class APOTtsism : ContentPage
     }
 
 
-    void Show_list_Eidon(string ono)
+    void Show_list_Eidon(string ono)  // αναζητηση με ονομα 
     {
         Monkeys = new List<Monkey>();
         BindingContext = null;
@@ -451,9 +456,9 @@ public partial class APOTtsism : ContentPage
 
                 Monkeys.Add(new Monkey
                 {
-                    Name = (dt.Rows[k]["HENAME"].ToString() + "                         ").Substring(0, 18),
+                    Name = (dt.Rows[k]["HENAME"].ToString() + "                                ").Substring(0, 25),
 
-                    Location = (dt.Rows[k]["HECODE"].ToString() + "                  ").Substring(0, 12),
+                    Location =  (dt.Rows[k]["HECODE"].ToString() + "                  ").Substring(0, 12),
                     ImageUrl = (dt.Rows[k]["HEID"].ToString() + "                       ").Substring(0, 15),
                     idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
                 });
@@ -482,14 +487,14 @@ public partial class APOTtsism : ContentPage
             string sql = "select * from EGGTIMINP  order by ID DESC ; ";           
             int lathos = 0;
             DataTable dt = LReadSQLServer(sql, lathos,1);
-            //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();
+            //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();   dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3)
             int k;
             for (k = 0; k <= dt.Rows.Count - 1; k++)
             {
                 Monkeys.Add(new Monkey
                 {
-                    Name = (dt.Rows[k]["ONO"].ToString() + "                                ").Substring(0, 25),
-                    Location = (dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3),
+                    Name = (dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3)+"-"+(dt.Rows[k]["ONO"].ToString() + "                                ").Substring(0, 25),
+                    Location = "  ",
                     ImageUrl = (dt.Rows[k]["KODE"].ToString() + "                       ").Substring(0, 15),
                     idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
                 });
@@ -527,23 +532,41 @@ public partial class APOTtsism : ContentPage
     {
             if (ONO.Text.Length > 0)
             {
-                string tt = TIMH.Text;
-                tt = tt.Replace(",", ".");
-                string PRAGM = LTI5.Text;
-                PRAGM = PRAGM.Replace(",", ".");
 
 
-                string[] lines = ONO.Text.Split(';');
-                //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
+                try
+                {
 
-                string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('"+ONO.Text +"','" + lines[1] + "'," + PRAGM + "," + tt + ")";
-                LExecuteSQLServer(sql);
+
+                    string tt = TIMH.Text;
+                    tt = tt.Replace(",", ".");
+                    string PRAGM = LTI5.Text;
+                    PRAGM = PRAGM.Replace(",", ".");
+
+
+                    string[] lines = ONO.Text.Split(';');
+                    //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
+
+                    string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + ONO.Text + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
+                    LExecuteSQLServer(sql);
+                }
+                catch
+                {
+
+                }
                 BARCODE.Text = "";
                 lab1.Text = ONO.Text;
                 ONO.Text = "";
                 FPA.Text = "";
                 LTI5.Text = "";
-                Show_Last();
+                try
+                {
+                  Show_Last();
+                }
+                catch
+                {
+
+                }
                 BARCODE.Focus();
 
             }
@@ -615,25 +638,7 @@ public partial class APOTtsism : ContentPage
                 latos = 1;
             }
 
-/*
-            string SYNT = "";
 
-            try
-            {
-                DataTable dt = new DataTable();
-                SqlCommand cmd3 = new SqlCommand(sql, con);
-                var adapter2 = new SqlDataAdapter(cmd3);
-                adapter2.Fill(dt);
-                // List<string> MyList = new List<string>();              
-                con.Close();
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                return null;
-                // await DisplayAlert("Error", ex.ToString(), "OK");
-            }
-*/
 
 
             string SYNT = "";
@@ -645,12 +650,7 @@ public partial class APOTtsism : ContentPage
                 DataTable dt = new DataTable();
                 SqlCommand cmd3 = new SqlCommand(sql, con);
                 var adapter2 = new SqlDataAdapter(cmd3);
-                adapter2.Fill(dt);
-                // List<string> MyList = new List<string>();
-
-
-                string ret;
-                ret = dt.Rows[0][0].ToString();
+                adapter2.Fill(dt);               
                 con.Close();
                 return dt;
 

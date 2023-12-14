@@ -31,7 +31,7 @@
 
 
             <Entry x:Name="ONO"    FontSize="Large" 
-                   Placeholder="ONOMA"       />
+                   Placeholder="        "       />
 
             <StackLayout    Orientation="Horizontal">
                 <Label x:Name="PYLON" Text="PYL"  BackgroundColor="Cyan"  FontSize="Medium" />
@@ -43,7 +43,7 @@
             
             <StackLayout    Orientation="Horizontal">
                 <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
-                <Entry x:Name="LTI5"    FontSize="Large" BackgroundColor="Yellow"   Placeholder="ΠΡ.ΥΠΟΛ"       />
+                <Entry x:Name="LTI5"    FontSize="Large" BackgroundColor="Yellow"   Placeholder="      "       />
                 <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
             </StackLayout>
 
@@ -66,25 +66,22 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition  Width="*" />
-                                    <ColumnDefinition  Width="*"  />
-                                </Grid.ColumnDefinitions >
 
 
 
 
+                            <StackLayout    >
 
 
 
-
-                                <Label Grid.Column="0" 
+                                <Label 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" FontSize="Small" />
-                                <Label 
+                                
+                                
+                                <StackLayout    Orientation="Horizontal">
+
+                                    <Label 
                                     
                                     
                                    Text="{Binding Location}"
@@ -93,14 +90,14 @@
 
                                 <Label                                    
                                    Text="{Binding ImageUrl}" IsVisible="false"
-                                    Grid.Column="2"
+                                   
                                     />
                                 <Label                                    
                                    Text="{Binding idPEL}"
-                                    Grid.Column="3"
+                                   
                                     />
-                            </Grid>
-
+                                </StackLayout>
+                            </StackLayout>
 
 
 
