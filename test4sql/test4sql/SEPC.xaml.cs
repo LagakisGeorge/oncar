@@ -503,7 +503,7 @@ namespace test4sql
                 var contents = connection.CreateCommand();
 
           
-            contents.CommandText = "SELECT TRP,ATIM,HME,KPE,IFNULL(AJI,0) AS AJI From TIM ";  //  WHERE LEFT(ATIM,1) IN ('T','ρ')
+            contents.CommandText = "SELECT TRP,ATIM,HME,KPE,IFNULL(AJI,0) AS AJI From TIM where ifnull(NUM2,0)=0";  //  WHERE LEFT(ATIM,1) IN ('T','ρ')
 
             var r = contents.ExecuteReader();
 
@@ -512,7 +512,7 @@ namespace test4sql
 
             try
             {
-                while (r.Read())
+                while (r.Read())  // loop τιμολογίων
                 {
                     ii++;
                     string cAtim = r["ATIM"].ToString();
@@ -569,7 +569,7 @@ namespace test4sql
 
 
                 contents = connection.CreateCommand();
-                contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH,EKPT,IFNULL(FPA,1) AS FPA,IFNULL(ONO,'') AS ONO FROM EGGTIM  ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
+                contents.CommandText = "SELECT IFNULL( substr(CH1,0,5),'      ') AS PELKOD,ATIM,HME,KODE,POSO,TIMH,EKPT,IFNULL(FPA,1) AS FPA,IFNULL(ONO,'') AS ONO FROM EGGTIM where ifnull(NUM2,0)=0 ";  // WHERE LEFT(ATIM,1) IN ('T','ρ')
 
                 // Console.WriteLine("Reading data");
                 r = contents.ExecuteReader();
@@ -645,7 +645,13 @@ namespace test4sql
 
 
                 connection.Close();
+                MainPage.ExecuteSqlite("UPDATE TIM SET NUM2=1");
+                MainPage.ExecuteSqlite("UPDATE EGGTIM SET NUM2=1");
                 await DisplayAlert("OK", "", "OK");
+
+
+
+
 
                 CrossToastPopUp.Current.ShowToastMessage("3.Αποθηκεύτηκε");
                     //  SaveFile(cc);

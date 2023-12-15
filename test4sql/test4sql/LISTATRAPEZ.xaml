@@ -216,12 +216,12 @@
                                    Text="ψομμεντσ ....... gfhgfhgfhgfhg hfgththty"                                
                                    VerticalOptions="End" />
             </StackLayout>
-
-            <Button x:Name="but31" 
+            <StackLayout   Orientation="Horizontal">
+                <Button x:Name="but31" 
                 Text="ΜΗΔΕΝΙΣΜΟΣ ΤΙΜΟΛΟΓΙΩΝ"
-                       Clicked="delt"
-                
-                 />
+                       Clicked="delt" />
+               
+            </StackLayout> 
 
         </StackLayout>
     </ContentPage.Content>

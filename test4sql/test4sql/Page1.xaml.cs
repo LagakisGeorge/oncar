@@ -1112,5 +1112,16 @@ namespace test4sql
 
 
         }
+
+        private async void MARKARISMA(object sender, EventArgs e)
+        {
+            MainPage.ExecuteSqlite("UPDATE TIM SET NUM2=0");
+            MainPage.ExecuteSqlite("UPDATE EGGTIM SET NUM2=0");
+            await DisplayAlert("OK", "", "OK");
+
+
+
+
+        }
     }
 }

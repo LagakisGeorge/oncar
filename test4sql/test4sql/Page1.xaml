@@ -168,13 +168,20 @@
                        Clicked="LISTEIDH"                
                  />
             </StackLayout>
-            
 
-            <Button x:Name="but31" 
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="but31" 
                 Text="ΜΗΔΕΝΙΣΜΟΣ ΤΙΜΟΛΟΓΙΩΝ"
                        Clicked="delt"
                 
                  />
+                <Button x:Name="but311" 
+Text="MAΡΚ.ΓΙΑ ΕΠΑΝΑΠΟΣΤΟΛΗ"
+       Clicked="MARKARISMA" />
+            </StackLayout>
+
+
+
 
         </StackLayout>
     </ContentPage.Content>
