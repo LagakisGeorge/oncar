@@ -11,6 +11,10 @@ using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using System.Data;
+using Android.Content;
+using Android.Widget;
+using static Java.Util.ResourceBundle;
+
 namespace test4sql
 { 
 [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -29,7 +33,8 @@ public partial class APOTtsism : ContentPage
         InitializeComponent();
         lab1.Text = "ll";
             BARCODE.Focus();
-
+            //need this line to init effect in android
+           // Xamarin.KeyboardHelper.Platform.Droid.Effects.Init(this);
 
         }
 
@@ -471,7 +476,8 @@ public partial class APOTtsism : ContentPage
             }
 
             listview.ItemsSource = Monkeys;
-        BindingContext = this;
+            listview.BackgroundColor = Color.Bisque ;
+            BindingContext = this;
 
 
         
@@ -500,6 +506,7 @@ public partial class APOTtsism : ContentPage
                 });
             }
             listview.ItemsSource = Monkeys;
+            listview.BackgroundColor =Color.Green ; 
             BindingContext = this;
             BindingContext = this;
         }
@@ -528,10 +535,33 @@ public partial class APOTtsism : ContentPage
 
     }
 
-    private void UPDATEKOD(object sender, EventArgs e)
+
+        public static bool IsNumeric(object Expression)
+        {
+            double retNum;
+
+            bool isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            return isNum;
+        }
+
+        private async void UPDATEKOD(object sender, EventArgs e)
     {
+
+            if (IsNumeric(LTI5.Text )==false )
+
+            { 
+                 butbarcode.BackgroundColor = Color.Yellow ;
+                LTI5.Text = "";
+                await DisplayAlert("ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "OK");
+                LTI5.Focus ();
+                return; } 
+
+
+
             if (ONO.Text.Length > 0)
             {
+               
+
 
 
                 try
@@ -547,16 +577,19 @@ public partial class APOTtsism : ContentPage
                     string[] lines = ONO.Text.Split(';');
                     //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
 
-                    string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + ONO.Text + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
+                    string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + lines[0] + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
                     LExecuteSQLServer(sql);
+                    ONO.Text = "";
+                    butbarcode.BackgroundColor= Color.Green;
                 }
                 catch
                 {
-
+                    ONO.Text = "ΛΑΘΟΣ";
+                    butbarcode.BackgroundColor = Color.Yellow ;
                 }
                 BARCODE.Text = "";
                 lab1.Text = ONO.Text;
-                ONO.Text = "";
+                //  ONO.Text = "";
                 FPA.Text = "";
                 LTI5.Text = "";
                 try
@@ -689,5 +722,9 @@ public partial class APOTtsism : ContentPage
            find2_eid();
         }
     }
+
+   
+
+
 }
 

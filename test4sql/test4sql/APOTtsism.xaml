@@ -2,18 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                NavigationPage.HasNavigationBar="False"
+            
              x:Class="test4sql.APOTtsism">
+    
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="lab1" Text="ΤΣΙΣΜ ΦΥΣΙΚΗ ΑΠΟΓΡΑΦΗ"             
-                HorizontalOptions="CenterAndExpand" />
+           
+
+           
 
 
-
-   
 
             <StackLayout    Orientation="Horizontal">
-
+ <Label x:Name="lab1" Text="ΤΣΙΣΜ"             
+                />
 
                 <Button x:Name="butbarcode" 
                     Text="BARCODE"   FontSize="Large"  Clicked="CHANGEBARCODE" />
@@ -22,7 +24,7 @@
 
 
 
-                <Entry x:Name="BARCODE"    FontSize="Large" 
+                <Entry x:Name="BARCODE"   Keyboard="Numeric"   FontSize="Large" 
                    Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
 
 
@@ -34,16 +36,16 @@
                    Placeholder="        "       />
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="PYLON" Text="PYL"  BackgroundColor="Cyan"  FontSize="Medium" />
-                <Entry x:Name="FPA"    FontSize="Medium"   Placeholder="ΥΠΟΛ"       />
-                <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Medium"          />
-                <Label   x:Name="MON" Text="μον "  MinimumWidthRequest="10"  FontSize="Medium"          />
-                <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Medium"  BackgroundColor="Red"  Clicked="DIAGROLD" />
+                <Label x:Name="PYLON" Text="PYL"  BackgroundColor="Cyan"  FontSize="Small"  />
+                <Entry x:Name="FPA"    FontSize="Small"    Placeholder="ΥΠΟΛ"       />
+                <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Small"           />
+                <Label   x:Name="MON" Text="μον "  MinimumWidthRequest="30"  FontSize="Small"           />
+                <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Small"  BackgroundColor="Red"  HorizontalOptions="End"  Clicked="DIAGROLD" />
             </StackLayout>
             
             <StackLayout    Orientation="Horizontal">
                 <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
-                <Entry x:Name="LTI5"    FontSize="Large" BackgroundColor="Yellow"   Placeholder="      "       />
+                <Entry x:Name="LTI5"  Keyboard="Numeric"  FontSize="Large" BackgroundColor="Yellow"   Placeholder="      "       />
                 <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
             </StackLayout>
 
