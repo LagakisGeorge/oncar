@@ -245,16 +245,25 @@ public partial class APOTtsism : ContentPage
     }
 
 
-     public   void find2_eid()  // αναζητηση με barcode
+        public void find2_eid()  // αναζητηση με barcode
         {
-            string SQL ="" ;
+            string SQL = "";
             String CC = "";
-           
+
             string C = BARCODE.Text;
-           //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
+            if (C.Length < 8)
+            {
+                SQL = "SELECT TOP 1 HENAME+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HECODE='" + C + "'";
+            }
+            //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
+            else
+            {
+                 SQL = "SELECT TOP 1 HENAME+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "')";
+            }
 
-
-            SQL = "SELECT TOP 1 HENAME+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "')";
+             
+             
+            
             CC = Globals.ReadSQLServerWithError(SQL);
             ONO.Text = CC;
             if (ONO.Text.Substring(0, 5) == "ERROR")
@@ -341,6 +350,15 @@ public partial class APOTtsism : ContentPage
             string c3 = N.ToString();
             TIMH.Text = c3.Replace(",", ".");
             TIMH.Text = c3;
+
+
+
+
+
+
+
+
+
 
             SQL = "SELECT (SELECT TOP 1  HENAME FROM HEMEASUREMENTUNITS  WHERE HEID=HEITEMS.HEAMSNTID ) AS DD  FROM HEITEMS WHERE HEID='" + CID + "';";
             string c4 = Globals.ReadSQLServer(SQL);
@@ -464,7 +482,7 @@ public partial class APOTtsism : ContentPage
                     Name = (dt.Rows[k]["HENAME"].ToString() + "                                ").Substring(0, 25),
 
                     Location =  (dt.Rows[k]["HECODE"].ToString() + "                  ").Substring(0, 12),
-                    ImageUrl = (dt.Rows[k]["HEID"].ToString() + "                       ").Substring(0, 15),
+                    ImageUrl = (dt.Rows[k]["HEID"].ToString() +"                                         ").Substring(0, 40),
                     idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
                 });
 
@@ -524,7 +542,7 @@ public partial class APOTtsism : ContentPage
             //  BRESafm.IsEnabled = false;
             ONO.Text = tappedItem.Name+";" + tappedItem.Location;
                 BARCODE.Text = tappedItem.Location;
-                string CID = (tappedItem.ImageUrl.ToString() + "                  ").Substring(0, 15);
+                string CID = (tappedItem.ImageUrl.ToString() + "                                             ").Substring(0, 40);
             find3_eid(CID);
 
         }
