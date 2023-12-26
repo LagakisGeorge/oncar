@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PCLStorage;  
-
+using PCLStorage;
+using System.Xml;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 //using PCLStorage;
@@ -18,6 +18,9 @@ using System.Data;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Mono.Data.Sqlite;
+
+
+
 using System.Linq.Expressions;
 using oncar;
 using static Android.Provider.Telephony.Mms;
@@ -26,6 +29,7 @@ using static Java.Text.Normalizer;
 using System.Text.RegularExpressions;
 using static Android.Provider.Telephony.Sms;
 using SharpCifs.Util;
+using System.Xml;
 
 namespace test4sql
 {
@@ -1437,6 +1441,119 @@ namespace test4sql
                 await DisplayAlert("Error", ex.ToString(), "OK");
             }
             
+
+
+
+
+
+        }
+
+        private async void CXMLTEST(object sender, EventArgs e)
+        {
+           // string path = "/storage/emulated/0";  // Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments  );  // "/data/lagakis2";  // 
+
+
+           // string filename = Path.Combine(path, "lagakis.txt");
+
+           // var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
+
+            XmlWriterSettings writerSettings = new XmlWriterSettings();
+            writerSettings.OmitXmlDeclaration = true;
+            writerSettings.ConformanceLevel = ConformanceLevel.Fragment;
+            writerSettings.CloseOutput = false;
+            MemoryStream localMemoryStream = new MemoryStream();
+            using (XmlWriter writer = XmlWriter.Create(localMemoryStream, writerSettings))
+            {
+                writer.WriteStartElement("book");
+                writer.WriteElementString("title", "A Programmer's Guide to ADO.NET");
+                writer.WriteElementString("author", "Mahesh Chand");
+                writer.WriteElementString("publisher", "APress");
+                writer.WriteElementString("price", "44.95");
+                writer.WriteEndElement();
+                writer.Flush();
+            }
+
+
+            
+            string test = "Testing 1-2-3";
+
+            // convert string to stream
+      //      byte[] byteArray = Encoding.ASCII.GetBytes(test);
+     //       MemoryStream stream = new MemoryStream(byteArray);
+
+
+
+            // convert stream to string
+            StreamReader reader = new StreamReader(localMemoryStream);
+            localMemoryStream.Seek(0, SeekOrigin.Begin);
+            string text = reader.ReadToEnd();
+            DisplayAlert(text, "a", "mm", "xx");
+
+
+
+            //XmlDocument doc = new XmlDocument();
+            //XmlElement el = (XmlElement)doc.AppendChild(doc.CreateElement("Order"));
+            //el.SetAttribute("CallConfirm", "1");
+            //el.SetAttribute("PayMethod", "Безнал");
+            //el.SetAttribute("QtyPerson", "");
+            //el.SetAttribute("Type", "2");
+            //el.SetAttribute("PayStateID", "0");
+            //el.SetAttribute("Remark", "{Comment}");
+            //el.SetAttribute("RemarkMoney", "0");
+            //el.SetAttribute("TimePlan", "");
+            //el.SetAttribute("Brand", "1");
+            //el.SetAttribute("DiscountPercent", "0");
+            //el.SetAttribute("BonusAmount", "0");
+            //el.SetAttribute("Department", "");
+
+            //XmlElement el2 = (XmlElement)el.AppendChild(doc.CreateElement("Customer"));
+            //el2.SetAttribute("Login", "");
+            //el2.SetAttribute("FIO", "{FIO}");
+
+           
+
+            //DisplayAlert("αα", doc.ToString (), "mm", "xx");
+
+
+
+            
+
+            var doc = new XmlDocument();
+            XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0",
+                "UTF-8", string.Empty);
+
+            doc.AppendChild(xmlDeclaration);
+
+            XmlElement usersNode = doc.CreateElement("users");
+            doc.AppendChild(usersNode);
+
+        //    foreach (var (_, value) in users)
+            {
+                XmlElement userEl = doc.CreateElement("user");
+                usersNode.AppendChild(userEl);
+
+                XmlAttribute e22 = doc.CreateAttribute("id");
+                e22.Value = "aaa";
+                userEl.Attributes.Append(e22);
+
+                XmlElement e2 = doc.CreateElement("name");
+                e2.InnerText = "valueName";
+                userEl.AppendChild(e2);
+
+                XmlElement e3 = doc.CreateElement("occupation");
+                e3.InnerText = "Occupation";
+                userEl.AppendChild(e3);
+            }
+
+            doc.Save(Console.Out);
+
+            DisplayAlert("αα", doc.ToString(), "mm", "xx");
+
+
+
+
+
+
 
 
 

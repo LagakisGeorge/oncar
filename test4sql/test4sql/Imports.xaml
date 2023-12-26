@@ -64,15 +64,20 @@
                
                  />
 
+            <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
 
-
-            <Button x:Name="IMPBAR"
+                <Button x:Name="IMPBAR"
                       Text="IMPORT BAR RESTAURANT"
                        Clicked="SUBIMPBAR" 
                      BackgroundColor="Green"
                
                  />
-           
+                <Button x:Name="XMLTEST"
+                      Text="xml test"
+                      Clicked="CXMLTEST" 
+                      BackgroundColor="Green"
+                  />
+            </StackLayout>
 
 
 
