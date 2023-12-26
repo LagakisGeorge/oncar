@@ -56,14 +56,24 @@
                      BackgroundColor="Green"
                
                  />
+            <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
 
-            <Button x:Name="CMDupdateWeb"
+                <Button x:Name="SendInvoices"
+                   Text="test SendInv"
+                   Clicked="cSendInv" 
+                   BackgroundColor="Green">
+
+                </Button>
+
+                <Button x:Name="CMDupdateWeb"
                       Text="Αναβάθμιση"
                        Clicked="updateWeb" 
                      BackgroundColor="Green"
                
                  />
-
+            </StackLayout>
+            
+            
             <StackLayout Orientation="Horizontal" Padding="5" Spacing="10">
 
                 <Button x:Name="IMPBAR"

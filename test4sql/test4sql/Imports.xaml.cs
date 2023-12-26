@@ -38,6 +38,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using static Android.Provider.ContactsContract.CommonDataKinds;
 using System.Xml.Linq;
+using System.Web;
 
 namespace test4sql
 {
@@ -687,6 +688,9 @@ namespace test4sql
                 ((Stream)readStream).CopyTo(memStream);
                 //Dispose readable stream.
                 readStream.Dispose();
+
+
+
                 //  Console.WriteLine(Encoding.UTF8.GetString(memStream.ToArray()));
                 byte[] bytes = memStream.ToArray();
                 //   await DisplayAlert("Error", Encoding.UTF8.GetString(bytes), "OK");
@@ -1610,42 +1614,150 @@ namespace test4sql
                 e3.InnerText = "Occupation";
                 userEl.AppendChild(e3);
             }
-
-            doc.Save(Console.Out);
-
-            DisplayAlert("αα", doc.ToString(), "mm", "xx");
+           
+            string text2=doc.OuterXml ; // Console.Out);
+            SaveFile(text2, "testxml.xml");
+            //string text2;
+            //  doc.Save(text);
+            DisplayAlert("αα", text2, "mm", "xx");
         }
 
         private async void cwebsrvice(object sender, EventArgs e)
         {
+            //doyleyei teleia sthn RequestTransmittedDocs
             HttpClient client = new HttpClient();
-        //'Dim queryString = HttpUtility.ParseQueryString(String.Empty)
-        try
+            var queryString = HttpUtility.ParseQueryString(string.Empty );
+            try
             {
-                client.DefaultRequestHeaders.Add("aade-user-id", "glagakis2");
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "555bc57c80634243958f62b629316aaa");
+                client.DefaultRequestHeaders.Add("aade-user-id", "glagakis22");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "534044b048f4023151f37c2a44282200");
 
-                string uri = "https://mydata-dev.azure-api.net/SendInvoices";// ' + queryString.ToString
+                string uri = "https://mydataapidev.aade.gr/RequestTransmittedDocs?mark=400000000000000";// ' + queryString.ToString
 
-                HttpResponseMessage response;// As 
-                string xl = XDocument.Load("c:\\txtfiles\\inv.xml").ToString();// ' "--> εκει έχω αποθηκεύσει το xml που εφτιαξα"
-                Byte[] byteData = Encoding.UTF8.GetBytes(xl);
+                //   public  HttpResponseMessage response;// As 
+                // SmbFile file = new SmbFile("smb://" + Globals.cIP + "/inv.xml");
+                // Stream ccc=file.ToString ();    
+                //       string xl = XDocument.Load(file).ToString();// ' "--> εκει έχω αποθηκεύσει το xml που εφτιαξα"
+                //  Byte[] byteData = Encoding.UTF8.GetBytes(xl);
 
-                ByteArrayContent content = new ByteArrayContent(byteData);
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
-                response = await client.PostAsync(uri, content);
+                //   ByteArrayContent content = new ByteArrayContent(byteData);
+                //     content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
+                var response = await client.GetAsync(uri); //   PostAsync(uri, content);
                 string result = await response.Content.ReadAsStringAsync();
 
-               // TextBox2.Text = result.ToString
-             //   ' "είναι το textbox πανω στη φόρμα που σου επιστρέφει το response xml"
+                // TextBox2.Text = result.ToString
+                //   ' "είναι το textbox πανω στη φόρμα που σου επιστρέφει το response xml"
+                SaveFile(result,"eggtim23.txt");
 
-            
+                DisplayAlert("αα", result.Substring(0,50), "mm", "xx");
 
 
-        } catch {
-               // ex As Exception
-           // MsgBox(ex.ToString)
+
+            } catch {
+                DisplayAlert("latoe", "λαθος", "mm", "xx");
+                // ex As Excepti
+                // n
+                // MsgBox(ex.ToString)
+            }
+
+
+
+
         }
+
+
+        void SaveFile(string text,string filname)
+        {
+            //Get the SmbFile specifying the file name to be created.
+            var file = new SmbFile("smb://" + Globals.cIP + "/"+filname);
+            // fine var file = new SmbFile("smb://User:1@192.168.1.5/backpel/New2FileName.txt");
+            try
+            {
+                //Create file.
+                file.CreateNewFile();
+            }
+            catch
+            {
+                DisplayAlert("Υπαρχει ηδη το αρχειο", "....", "OK");
+                return;
+            }
+
+
+            //Get writable stream.
+            var writeStream = file.GetOutputStream();
+           
+
+            //Write bytes.
+            writeStream.Write(Encoding.UTF8.GetBytes(text));
+
+            //Dispose writable stream.
+            writeStream.Dispose();
+        }
+        
+        private async void cSendInv(object sender, EventArgs e)
+        {
+            //doyleyei  sthn SendInvoices
+            HttpClient client = new HttpClient();
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            try
+            {
+                client.DefaultRequestHeaders.Add("aade-user-id", "glagakis22");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "534044b048f4023151f37c2a44282200");
+
+                string uri = "https://mydataapidev.aade.gr/SendInvoices";// ' + queryString.ToString
+
+                //   public  HttpResponseMessage response;// As 
+                SmbFile file = new SmbFile("smb://" + Globals.cIP + "/inv.xml");
+                string g;
+                try
+                {
+                    //Get readable stream.
+                    var readStream = file.GetInputStream();
+                    //Create reading buffer.
+                    var memStream = new MemoryStream();
+                    //Get bytes.
+                    ((Stream)readStream).CopyTo(memStream);
+                    //Dispose readable stream.
+                    readStream.Dispose();
+                    //  Console.WriteLine(Encoding.UTF8.GetString(memStream.ToArray()));
+                    byte[] bytes = memStream.ToArray();
+                    //   await DisplayAlert("Error", Encoding.UTF8.GetString(bytes), "OK");
+                    g = Encoding.UTF8.GetString(memStream.ToArray());
+                    string[] lines = g.Split('\n');
+
+
+
+                    //  Stream ccc=file.ToString ();    
+                    //       string xl = XDocument.Load(file).ToString();// ' "--> εκει έχω αποθηκεύσει το xml που εφτιαξα"
+                    // Byte[] byteData = Encoding.UTF8.GetBytes(xl);
+
+                    ByteArrayContent content = new ByteArrayContent(bytes);
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
+                    var response = await client.PostAsync(uri, content);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    // TextBox2.Text = result.ToString
+                    //   ' "είναι το textbox πανω στη φόρμα που σου επιστρέφει το response xml"
+                    SaveFile(result, "apant.xml");
+
+                    DisplayAlert("αα", result.Substring(0, 150), "mm", "xx");
+                }
+                catch
+                {
+                    DisplayAlert("latos1", "λαθος1", "mm", "xx");
+
+
+
+                }
+            }
+            catch
+            {
+                DisplayAlert("latoe", "λαθος", "mm", "xx");
+                // ex As Excepti
+                // n
+                // MsgBox(ex.ToString)
+            }
+
 
 
 
