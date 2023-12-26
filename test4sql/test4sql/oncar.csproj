@@ -51,6 +51,7 @@
   <ItemGroup>
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
     <PackageReference Include="Mono.Data.Sqlite.Portable" Version="1.0.3.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PCLStorage" Version="1.0.2" />
     <PackageReference Include="Plugin.BLE" Version="2.2.0-pre2" />
     <PackageReference Include="Plugin.Toast" Version="2.1.2" />

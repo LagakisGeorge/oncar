@@ -77,6 +77,11 @@
                       Clicked="CXMLTEST" 
                       BackgroundColor="Green"
                   />
+                <Button x:Name="webservice"
+                      Text="web service"
+                      Clicked="cwebsrvice" 
+                      BackgroundColor="Green"
+                  />
             </StackLayout>
 
 

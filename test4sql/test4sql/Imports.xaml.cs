@@ -30,10 +30,77 @@ using System.Text.RegularExpressions;
 using static Android.Provider.Telephony.Sms;
 using SharpCifs.Util;
 using System.Xml;
+using Java.Net;
+using Java.Util.Concurrent;
+using System;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using static Android.Provider.ContactsContract.CommonDataKinds;
+using System.Xml.Linq;
 
 namespace test4sql
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    public class Repository
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("html_url")]
+        public Uri GitHubHomeUrl { get; set; }
+
+        [JsonProperty("homepage")]
+        public Uri Homepage { get; set; }
+
+        [JsonProperty("watchers")]
+        public int Watchers { get; set; }
+    }
+
+    public static class Constants
+    {
+        public const string GitHubReposEndpoint = "https://api.github.com/orgs/dotnet/repos";
+    }
+
+    public class RestService
+    {
+        HttpClient _client;
+
+        public RestService()
+        {
+            _client = new HttpClient();
+
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                _client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            }
+        }
+
+        public async Task<List<Repository>> GetRepositoriesAsync(string uri)
+        {
+            List<Repository> repositories = null;
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    repositories = JsonConvert.DeserializeObject<List<Repository>>(content);
+                }
+            }
+            catch (Exception ex)
+            {
+               // Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+
+            return repositories;
+        }
+    }
+
     public partial class Page2 : ContentPage
     {
 
@@ -1457,8 +1524,7 @@ namespace test4sql
 
            // var file = new SmbFile("smb://" + Globals.cIP + "/eggtim2.txt");
 
-            XmlWriterSettings writerSettings = new XmlWriterSettings();
-            writerSettings.OmitXmlDeclaration = true;
+            XmlWriterSettings writerSettings = new XmlWriterSettings();      writerSettings.OmitXmlDeclaration = true;
             writerSettings.ConformanceLevel = ConformanceLevel.Fragment;
             writerSettings.CloseOutput = false;
             MemoryStream localMemoryStream = new MemoryStream();
@@ -1548,13 +1614,38 @@ namespace test4sql
             doc.Save(Console.Out);
 
             DisplayAlert("αα", doc.ToString(), "mm", "xx");
+        }
+
+        private async void cwebsrvice(object sender, EventArgs e)
+        {
+            HttpClient client = new HttpClient();
+        //'Dim queryString = HttpUtility.ParseQueryString(String.Empty)
+        try
+            {
+                client.DefaultRequestHeaders.Add("aade-user-id", "glagakis2");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "555bc57c80634243958f62b629316aaa");
+
+                string uri = "https://mydata-dev.azure-api.net/SendInvoices";// ' + queryString.ToString
+
+                HttpResponseMessage response;// As 
+                string xl = XDocument.Load("c:\\txtfiles\\inv.xml").ToString();// ' "--> εκει έχω αποθηκεύσει το xml που εφτιαξα"
+                Byte[] byteData = Encoding.UTF8.GetBytes(xl);
+
+                ByteArrayContent content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
+                response = await client.PostAsync(uri, content);
+                string result = await response.Content.ReadAsStringAsync();
+
+               // TextBox2.Text = result.ToString
+             //   ' "είναι το textbox πανω στη φόρμα που σου επιστρέφει το response xml"
+
+            
 
 
-
-
-
-
-
+        } catch {
+               // ex As Exception
+           // MsgBox(ex.ToString)
+        }
 
 
 
