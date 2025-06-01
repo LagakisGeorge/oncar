@@ -253,12 +253,12 @@ public partial class APOTtsism : ContentPage
             string C = BARCODE.Text;
             if (C.Length < 8)
             {
-                SQL = "SELECT TOP 1 HENAME+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HECODE='" + C + "'";
+                SQL = "SELECT TOP 1 LEFT(HENAME,49)+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HECODE='" + C + "'";
             }
             //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
             else
             {
-                 SQL = "SELECT TOP 1 HENAME+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "')";
+                 SQL = "SELECT TOP 1 LEFT(HENAME,49)+';'+HECODE+';'+CONVERT(NVARCHAR(50),HEID)  AS CC FROM [HEITEMS] WHERE HEID=(select HEITEMID from [HEITEMALTERCODES] WHERE HECODE='" + C + "')";
             }
 
              
@@ -279,7 +279,7 @@ public partial class APOTtsism : ContentPage
                 SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
 
                 //   "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HEAUXILIARYCODE='"+C+"' )";
-                " WHERE YEAR(HEDATE) = 2023 AND HEITEMID ='" + CID + "'";  // (select HEITEMID from[HEITEMALTERCODES] WHERE HECODE = '"+C+"')";
+                " WHERE YEAR(HEDATE) = 2024 AND HEITEMID ='" + CID + "'";  // (select HEITEMID from[HEITEMALTERCODES] WHERE HECODE = '"+C+"')";
 
 
 
@@ -332,7 +332,7 @@ public partial class APOTtsism : ContentPage
             string SQL = "";
 
             string C = BARCODE.Text;
-            SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HECODE = '" + C + "'";
+            SQL = "SELECT TOP 1 LEFT(HENAME,49)+';'+HECODE AS CC FROM [HEITEMS] WHERE HECODE = '" + C + "'";
             ONO.Text = Globals.ReadSQLServerWithError(SQL);
             if (ONO.Text.Contains("ERROR"))
             {
@@ -456,7 +456,7 @@ public partial class APOTtsism : ContentPage
 
          
         
-       string sql = "select top 50  HENAME,HECODE,HEID from HEITEMS where HECODE LIKE '"+ONO+"%' OR HENAME LIKE '"+ ono + "%'  order by HENAME ; ";
+       string sql = "select top 50  LEFT(HENAME,49) AS HENAME,HECODE,HEID from HEITEMS where HECODE LIKE '"+ONO+"%' OR HENAME LIKE '"+ ono + "%'  order by HENAME ; ";
             // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
             int lathos = 0;
@@ -596,9 +596,18 @@ public partial class APOTtsism : ContentPage
                     //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
 
                     string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + lines[0] + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
-                    LExecuteSQLServer(sql);
-                    ONO.Text = "";
-                    butbarcode.BackgroundColor= Color.Green;
+                    if (LExecuteSQLServer(sql) == 1)
+                    {  //'LExecuteSQLServer(sql);
+                        ONO.Text = "";
+                        butbarcode.BackgroundColor = Color.Green;
+                    }
+                    else
+                    {
+                        await DisplayAlert("δεν αποθηκευτηκε", "δεν αποθηκευτηκε", "OK");
+
+                        string LAT = "ΚΩΔΙΚΟΣ:" + lines[1] + " ONOMA:" + lines[0] + " ΠΟΣΟΤΗΤΑ:" + PRAGM + " TIMH:" + tt;
+                        await DisplayAlert(LAT, " λαθος", "OK");
+                    }
                 }
                 catch
                 {
@@ -623,7 +632,7 @@ public partial class APOTtsism : ContentPage
             }
 
     }
-        private void LExecuteSQLServer(string sql)
+        private int LExecuteSQLServer(string sql)
         {
             string[] lines = Globals.cSQLSERVER.Split(';');
             string constring = @"Data Source=" + lines[0] + ";Initial Catalog=MERCURY;Uid=sa;Pwd=" + lines[2];
@@ -645,11 +654,13 @@ public partial class APOTtsism : ContentPage
                 cmd.Connection = con;
                 cmd.ExecuteNonQuery();
                 con.Close();
+               return 1 ;
             }
             catch (Exception ex)
             {
                 string cv = "";
                 // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
+                return 0;
             }
 
         }
@@ -730,7 +741,7 @@ public partial class APOTtsism : ContentPage
            
             // string[] lines = ONO.Text.Split(';');
             string sql = "DELETE FROM EGGTIMINP";
-            LExecuteSQLServer(sql);
+           if (LExecuteSQLServer(sql)==1)
             await DisplayAlert("Διαγράφηκαν", ".", "OK");
             }
         }
