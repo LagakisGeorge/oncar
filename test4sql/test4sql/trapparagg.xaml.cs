@@ -790,7 +790,7 @@ namespace oncar
                     // ΚΑΝΟΝΙΚΑ ΠΡΕΠΕΙ ΝΑ ΧΩΡΙΖΕΙ ΤΟΝ ΠΡΙΝΤΕΡ 1 ΑΠΟ ΤΟΥΣ ΑΛΛΟΥΣ 
                     // ΑΛΛΑ ΤΟ ΕΛΛΗΝΙΚΟ ΘΕΛΕΙ Ο 1 ΕΚΤ ΝΑ ΠΑΙΡΝΕΙ ΟΛΑ ΤΑ ΕΙΔΗ  Globals.Ola1Printer = 1
 
-                    if (Globals.gOla1Printer == 1) {
+                    if (Globals.gOla1Printer >= 1) {
                         // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
                         myText.Add(KANON.Trim());
                         i1 = i1 + 1;
@@ -804,19 +804,46 @@ namespace oncar
                             i1 = i1 + 1;
                         }
                     }
-                  
-                    
+
+                    if (Globals.gOla1Printer >= 2)
+                    {
+                        // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
+                        myText.Add(KANON.Trim());
+                        i1 = i1 + 1;
+
+                    }
+                    else
+                    {
                         if (dt.Rows[k]["PRINTER"].ToString() == "2")
                         {
                             myText2.Add(KANON.Trim());
                             i2 = i2 + 1;
                         }
+                    }
+
+
+                    if (Globals.gOla1Printer >= 3)
+                    {
+                        // ΟΛΑ ΤΑ ΕΙΔΗ ΤΟ 1 (ΤΑ ΔΙΚΑ ΤΟΥ + 2+ 3) ORDER BY KATHG
+                        myText.Add(KANON.Trim());
+                        i1 = i1 + 1;
+
+                    }
+                    else
+                    {
+
                         if (dt.Rows[k]["PRINTER"].ToString() == "3")
                         {
                             myText3.Add(KANON.Trim());
                             i3 = i3 + 1;
                         }
-                    
+                    }
+
+
+
+
+
+
 
                     PROS = MainPage.ToGreek737(dt.Rows[k]["PROSUETA"].ToString().Substring(0, 19).TrimEnd()) + "*" + MainPage.ToGreek737(dt.Rows[k]["SXOLIA"].ToString().Substring(0, 29));
                     if (PROS.Trim().Length > 0)
@@ -859,7 +886,8 @@ namespace oncar
                  "adodemo.db3");
                 SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
                 connection.Open();
-               
+
+               // gemizei ta text,text2,text3 rolarontas to paragg
                
                 try
                 {
@@ -976,6 +1004,10 @@ namespace oncar
             }
             try
             {
+                
+                // gia kaue ektypvth exei metrhth i1,i2,i3 kai typvnei ta antistoixa myText,myText2,myText3
+                
+                //printthis : typvnei to mytext kai bobei to xarti 
                 int Ok = 0;
                 int must = 0;
                 if (i1 > 0){ 
@@ -1066,7 +1098,7 @@ namespace oncar
 
 
             
-
+            // typvnei to mytext kai bobei to xarti
 
 
 

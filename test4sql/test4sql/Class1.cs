@@ -41,7 +41,7 @@ namespace test4sql
 
 
 
-        public static int gOla1Printer=0;  // να γινει παραμετρικο
+        public static int gOla1Printer=3;  // να γινει παραμετρικο
         public static string gIPKleis;
         public static string cIPPR1;
         public static string cIPPR2;
