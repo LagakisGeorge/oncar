@@ -527,7 +527,7 @@ namespace oncar
 
 
             async void BresEidos(string CCC,int ola)
-            {
+       {
                 CCC = CCC.ToUpper();
             CCC = CCC.TrimEnd();
             CCC = CCC.TrimStart();
@@ -621,15 +621,15 @@ namespace oncar
                 connection.Open();
                 // query the database to prove data was inserted!
                 var contents = connection.CreateCommand();
-              if (Globals.useBarcodes == "1")
+         if (Globals.useBarcodes == "1")
                 {
                 string CCB = CKODE.Text.TrimStart();
                     CCB = CCB.TrimEnd();
                     contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2 from EID WHERE BARCODE LIKE '" + CCB + "%'  ; "; // +BARCODE.Text +"'";
                 }
-                else
-                {
-                     if (ola == 0)
+         else
+         {
+                if (ola == 0)
                      {
                          if (CCC.Length == 0) { QU = " ONO LIKE '%' "; }
                        //ΟΚ ΔΟΥΛΕΥΕΙ ΕΤΣΙ  contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE KOD IN (SELECT KODE FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "')  and  "+QU+" ; "; // +BARCODE.Text +"'";
@@ -641,8 +641,8 @@ namespace oncar
                 {
                        contents.CommandText = "SELECT  ONO,XONDR,ANAM,DESM,YPOL,BARCODE,KOD,IFNULL(FPA,1) AS FPA2  from EID WHERE  "+QU+"; "; // +BARCODE.Text +"'";
  
-                     }
                 }
+         }
 
 
                 String DD = PARAGGELIES.ReadSQL("select IFNULL(EKPT,0) AS EKTP2 FROM TIMOKAT WHERE KOD='" + CKODE.Text + "' AND  TIMOK=" + fTIMOK);
@@ -727,7 +727,7 @@ namespace oncar
                 CPOSO.Focus();
                     fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
                     Show_list();
-                }
+              }
             }
 
             async void kataxorisi(object sender, EventArgs e)
@@ -915,131 +915,136 @@ namespace oncar
             {
                 return value.All(char.IsNumber);
             }
-            void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
-            {
-                Monkey selectedItem = e.SelectedItem as Monkey;
-            }
+      //      void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+       //     {
+       //         Monkey selectedItem = e.SelectedItem as Monkey;
+       //     }
 
-            async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
-            {
-                Monkey tappedItem = e.Item as Monkey;
-                // tappedItem.Location=>'00182'
-                //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
-                if (fisEIDH == 0)
+        async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Monkey tappedItem = e.Item as Monkey;
+            // tappedItem.Location=>'00182'
+            //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
+          if (fisEIDH == 0)
+           {
+                //  BRESafm.IsEnabled = false;
+                EPO.Text = tappedItem.Name;
+                AFM.Text = tappedItem.Location;
+                listview.ItemsSource = null;
+                CKODE.IsEnabled = true;
+                fisEIDH = 1; // για να βλεπει τα ειδη απο δω και περα
+
+                // BAZO NUM1=-1 ΟΤΙ ΕΙΝΑΙ ΕΚΚΡΕΜΕΣ
+                if (fISDiortosi == 1) { }
+                else
                 {
-                    //  BRESafm.IsEnabled = false;
-                    EPO.Text = tappedItem.Name;
-                    AFM.Text = tappedItem.Location;
-                    listview.ItemsSource = null;
-                    CKODE.IsEnabled = true;
-                    fisEIDH = 1; // για να βλεπει τα ειδη απο δω και περα
-
-                    // BAZO NUM1=-1 ΟΤΙ ΕΙΝΑΙ ΕΚΚΡΕΜΕΣ
-                    if (fISDiortosi == 1) { }
-                    else
-                    {
-                        MainPage.ExecuteSqlite("delete from TIM WHERE ATIM='" + ATIM.Text + "'");
+                    MainPage.ExecuteSqlite("delete from TIM WHERE ATIM='" + ATIM.Text + "'");
 
 
-                        MainPage.ExecuteSqlite("INSERT INTO TIM (NUM1,HME,ATIM,KPE,TRP,EPO) VALUES (-1,datetime('now'),'" + ATIM.Text + "','" + AFM.Text + "','" + BCASH.Text.Substring(0, 5) + "','" + EPO.Text + "')");
-                    }
-
-
-
-                    fTIMOK = tappedItem.ImageUrl;
-                    string ccv = ReadSQL("SELECT IFNULL(NUM1,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
-                    fEKPTNUM1 = float.Parse(ccv);
-                    if (nn == 1)
-                    {
-                        //fEKPTNUM1 = (float)r["NUM1"];
-                    }
-                    else  // στην σειρα Β δεν εχει εκπτωση
-                    {
-                        fEKPTNUM1 = 0;
-                    }
-
-
-                    string ccv2 = ReadSQL("SELECT IFNULL(TYP,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
-                    fYPOLPEL = float.Parse(ccv2);
-
-                    // string[] lines = tappedItem.idPEL.Split(';');
-                    // fEKPTNUM1 = float.Parse (lines[1]);
-                    //  fYPOLPEL = float.Parse(lines[0]);
-                    LPLIR.Text = "Yπ:" + ccv2 + " Εκπ:" + ccv;
-                    // idPEL = r["TYP2"].ToString() + ";" + r["NUM12"].ToString()
-                    return;
+                    MainPage.ExecuteSqlite("INSERT INTO TIM (NUM1,HME,ATIM,KPE,TRP,EPO) VALUES (-1,datetime('now'),'" + ATIM.Text + "','" + AFM.Text + "','" + BCASH.Text.Substring(0, 5) + "','" + EPO.Text + "')");
                 }
-                if (fisEIDH == 1)
+
+
+
+                fTIMOK = tappedItem.ImageUrl;
+                string ccv = ReadSQL("SELECT IFNULL(NUM1,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
+                fEKPTNUM1 = float.Parse(ccv);
+                if (nn == 1)
                 {
-                    CKODE.Text = tappedItem.Location;
-                    LPER.Text = tappedItem.Name;
-                    CTIMH.Text = tappedItem.ImageUrl;
+                    //fEKPTNUM1 = (float)r["NUM1"];
+                }
+                else  // στην σειρα Β δεν εχει εκπτωση
+                {
+                    fEKPTNUM1 = 0;
+                }
+
+
+                string ccv2 = ReadSQL("SELECT IFNULL(TYP,0) FROM PEL WHERE ID=" + tappedItem.idPEL);
+                fYPOLPEL = float.Parse(ccv2);
+
+                // string[] lines = tappedItem.idPEL.Split(';');
+                // fEKPTNUM1 = float.Parse (lines[1]);
+                //  fYPOLPEL = float.Parse(lines[0]);
+                LPLIR.Text = "Yπ:" + ccv2 + " Εκπ:" + ccv;
+                // idPEL = r["TYP2"].ToString() + ";" + r["NUM12"].ToString()
+                return;
+            }  
+         /*   if (fisEIDH == 1)
+            {
+                CKODE.Text = tappedItem.Location;
+                LPER.Text = tappedItem.Name;
+                CTIMH.Text = tappedItem.ImageUrl;
                 // ΨΑΧΝΩ ΝΑ ΔΩ ΑΝ ΕΧΕΙ ΤΕΛΕΥΤΑΙΑ ΤΙΜΗ ΠΕΛΑΤΗ ΓΙΑ ΝΑ ΤΗΝ ΒΑΛΩ
-                string  C0 = ReadSQL("select CAST(TELTIMH AS TEXT) FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "' AND KODE='" + CKODE.Text.TrimEnd()  + "'");
+                string C0 = ReadSQL("select CAST(TELTIMH AS TEXT) FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "' AND KODE='" + CKODE.Text.TrimEnd() + "'");
                 if (C0.Length == 0)
-                { }else
+                { }
+                else
                 {
                     CTIMH.Text = C0;
                 }
-                  
 
 
 
 
 
-                    
 
-                    listview.ItemsSource = null;
-                    fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
-                                 // BRESPREV.IsVisible = false;
-                                 // BRESNEXT.IsVisible = false;
-                    CPOSO.Focus();
-                    Show_list();
-                    return;
-                }
 
-                var action = await DisplayAlert("Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
-                if (action)
+
+                listview.ItemsSource = null;
+                fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
+                             // BRESPREV.IsVisible = false;
+                             // BRESNEXT.IsVisible = false;
+                CPOSO.Focus();
+                Show_list();
+                return;
+            }
+         */
+            var action = await DisplayAlert("Να διαγραφεί?", "Εισαι σίγουρος?", "Ναι", "Οχι");
+            if (action)
+            {
+                string cKOD;
+
+                cKOD = tappedItem.Name;
+                string[] lines1 = cKOD.Split(';');
+                cKOD = lines1[0];
+
+                string cid;
+
+                cid = tappedItem.idPEL;
+                string[] lines = cid.Split(';');
+                //  Navigate to first page
+                string mposo = ReadSQL("select POSO FROM EGGTIM WHERE  ID=" + lines[1]);
+                if (EIDOSPAR == "τ")
                 {
-                    string cKOD;
+                    MainPage.ExecuteSqlite("update EID set YPOL=IFNULL(YPOL,0)-" + mposo + " WHERE KOD='" + cKOD + "'");
 
-                    cKOD = tappedItem.Name;
-                    string[] lines1 = cKOD.Split(';');
-                    cKOD = lines1[0];
-
-                    string cid;
-
-                    cid = tappedItem.idPEL;
-                    string[] lines = cid.Split(';');
-                    //  Navigate to first page
-                    string mposo = ReadSQL("select POSO FROM EGGTIM WHERE  ID=" + lines[1]);
-                    if (EIDOSPAR == "τ")
-                    {
-                        MainPage.ExecuteSqlite("update EID set YPOL=IFNULL(YPOL,0)-" + mposo + " WHERE KOD='" + cKOD + "'");
-
-                    }
-                    else
-                    {
-                        MainPage.ExecuteSqlite("update EID set DESM=IFNULL(DESM,0)-" + mposo + " WHERE KOD='" + cKOD + "'");
-                    }
-
-                    MainPage.ExecuteSqlite("delete from EGGTIM WHERE ID=" + lines[1]);
-                    await DisplayAlert("διαγραφτηκε", "", "OK");
-                    Show_list();
+                }
+                else
+                {
+                    MainPage.ExecuteSqlite("update EID set DESM=IFNULL(DESM,0)-" + mposo + " WHERE KOD='" + cKOD + "'");
                 }
 
-
-
-
-
-
-
-
-
-
-
+                MainPage.ExecuteSqlite("delete from EGGTIM WHERE ID=" + lines[1]);
+                await DisplayAlert("διαγραφτηκε", "", "OK");
+                Show_list();
             }
 
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+          //  async void OnListEIDViewItemTapped(object sender, ItemTappedEventArgs e)
+           
 
             private async void BtnScan_Clicked(object sender, EventArgs e)
             {
@@ -1605,7 +1610,7 @@ namespace oncar
 
                     Monkeys.Add(new Monkey
                     {
-                        Name = (r["PER"].ToString() + "                                                         ").Substring(0, 48),
+                        Name = (r["PER"].ToString() + "                                                         ").Substring(0, 28),
 
                         Location = (r["KODI"].ToString() + "                        ").Substring(0, 18),
                         ImageUrl = (r["timh"].ToString() + "      ").Substring(0, 5),
@@ -1616,7 +1621,7 @@ namespace oncar
 
                 }
 
-                listview.ItemsSource = Monkeys;
+                listviewEID.ItemsSource = Monkeys;
                 BindingContext = this;
 
 
@@ -2034,6 +2039,39 @@ namespace oncar
             BresEidos(CKODE.Text, 0);
         }
 
+     async   private void OnListEIDViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Monkey tappedItem = e.Item as Monkey;
+            // tappedItem.Location=>'00182'
+            //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
+           
+           // if (fisEIDH == 1)
+            //{
+                CKODE.Text = tappedItem.Location;
+                LPER.Text = tappedItem.Name;
+                CTIMH.Text = tappedItem.ImageUrl;
+                // ΨΑΧΝΩ ΝΑ ΔΩ ΑΝ ΕΧΕΙ ΤΕΛΕΥΤΑΙΑ ΤΙΜΗ ΠΕΛΑΤΗ ΓΙΑ ΝΑ ΤΗΝ ΒΑΛΩ
+                string C0 = ReadSQL("select CAST(TELTIMH AS TEXT) FROM EIDHPEL WHERE KODPEL='" + AFM.Text + "' AND KODE='" + CKODE.Text.TrimEnd() + "'");
+                if (C0.Length == 0)
+                { }
+                else
+                {
+                    CTIMH.Text = C0;
+                }
+                listview.ItemsSource = null;
+                fisEIDH = 2; // για να βλεπει τα ειδη timol  απο δω και περα
+                             // BRESPREV.IsVisible = false;
+                             // BRESNEXT.IsVisible = false;
+                CPOSO.Focus();
+                Show_list();
+                return;
+           
+        }
+
+
+
+
+
 
 
 
@@ -2219,5 +2257,5 @@ namespace oncar
 
 
 
-    
+
 }

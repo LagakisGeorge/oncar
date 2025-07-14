@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               NavigationPage.HasNavigationBar="False" 
              x:Class="oncar.Page4">
     <ContentPage.Content>
         <StackLayout>
@@ -193,12 +194,13 @@
                         Text="EKTYΠΩΣΗ"
                         IsEnabled="False" 
                        Clicked="BtnScan_Clicked"  />
-
-
-
-
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
+            
+            
+            
+            
+            
+            <StackLayout Orientation="Horizontal">   
 
                 <Button x:Name="BEXODOS" 
                      BackgroundColor="GreenYellow" 
@@ -221,6 +223,11 @@
                        Clicked="SYGKEPIS"  />
             </StackLayout>
 
+            
+            
+            
+            
+            
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
                       HeightRequest="80"
@@ -237,19 +244,19 @@
                             <StackLayout>
 
                                 <StackLayout   Orientation="Horizontal">
-                               
-                                <Label Grid.Column="0" 
+
+                                    <Label Grid.Column="0" 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" FontSize="Small" />
-                                <Label 
+                                    <Label 
                                     Grid.Column="1"
                                     
                                    Text="{Binding Location}"
                                     />
 
-                                </StackLayout>
+                                    <!--     </StackLayout>
 
-                                <StackLayout   Orientation="Horizontal">
+                                <StackLayout   Orientation="Horizontal">   -->
 
                                     <Label                                    
                                    Text="{Binding ImageUrl}" 
@@ -261,59 +268,57 @@
                                     />
                                 </StackLayout>
 
-                                        </StackLayout>
-
-
-
-                                        <!--    <StackLayout Padding="20" Spacing="10"  Orientation="Horizontal" >
-
-                                <Label Grid.Column="1" 
-                                   Text="{Binding Name}"
-                                       VerticalOptions="Start"
-                                       HorizontalOptions="Start"
-                                       
-                                   FontAttributes="Bold"
-                                       BackgroundColor="Aquamarine"
-                                       FontSize="Small" 
-                                />
-                                
-                                <Label                                     
-                                   Text="{Binding Location}"
-                                    FontAttributes="Bold"                                    
-                                    FontSize="Small"
-                                   VerticalOptions="Start"
-                                       HorizontalOptions="Start"
-                                 />
-
-                              
-                                  <Label                                    
-                                    Text="{Binding ImageUrl}" 
-                                    FontAttributes="Bold"
-                                    FontSize="Small"
-                                      VerticalOptions="Start"
-         HorizontalOptions="FillAndExpand"
-                                    />
-                                  <Label                                    
-                                   Text="{Binding idPEL}"
-                                    FontAttributes="Bold"
-                                    FontSize="Small"
-                                      VerticalOptions="Start"
-                  HorizontalOptions="FillAndExpand"
-                                  
-                                  />
-                            
-                           
-
-
-
-
-                            </StackLayout>    -->
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
+            <ListView ItemsSource="{Binding Monkeys}"
+                   x:Name="listviewEID"
+                  HeightRequest="80"
+                  BackgroundColor="Bisque"
+                  HasUnevenRows="true" 
+                  ItemTapped="OnListEIDViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                            ItemTapped="OnListViewItemTapped"   -->
 
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+                            <StackLayout>
+
+                                <StackLayout   Orientation="Horizontal">
+
+                                    <Label Grid.Column="0" 
+                               Text="{Binding Name}"
+                               FontAttributes="Bold" FontSize="Small" />
+                                    <Label 
+                                Grid.Column="1"
+                                
+                               Text="{Binding Location}"
+                                />
+
+                                    <!--     </StackLayout>
+
+                            <StackLayout   Orientation="Horizontal">   -->
+
+                                    <Label                                    
+                               Text="{Binding ImageUrl}" 
+                                Grid.Column="2"
+                                />
+                                    <Label                                    
+                               Text="{Binding idPEL}"
+                                Grid.Column="3"
+                                />
+                                </StackLayout>
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
 
 
