@@ -225,12 +225,56 @@
 
             
             
-            
+               <ListView ItemsSource="{Binding Monkeys}"
+                   x:Name="listviewEID"
+                  HeightRequest="220"
+                  BackgroundColor="Bisque"
+                  HasUnevenRows="true" 
+                  ItemTapped="OnListEIDViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                            ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+                            <StackLayout>
+
+                                <StackLayout   Orientation="Horizontal">
+
+                                    <Label Grid.Column="0" 
+                               Text="{Binding Name}"
+                               FontAttributes="Bold" FontSize="Small" />
+                                    <Label 
+                                Grid.Column="1"
+                                
+                               Text="{Binding Location}"
+                                />
+
+                                    <!--     </StackLayout>
+
+                            <StackLayout   Orientation="Horizontal">   -->
+
+                                    <Label                                    
+                               Text="{Binding ImageUrl}" 
+                                Grid.Column="2"
+                                />
+                                    <Label                                    
+                               Text="{Binding idPEL}"
+                                Grid.Column="3"
+                                />
+                                </StackLayout>
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             
             
             <ListView ItemsSource="{Binding Monkeys}"
                        x:Name="listview"
-                      HeightRequest="80"
+                      HeightRequest="20"
                       BackgroundColor="Bisque"
                       HasUnevenRows="true" 
                       ItemTapped="OnListViewItemTapped" >
@@ -274,51 +318,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ListView ItemsSource="{Binding Monkeys}"
-                   x:Name="listviewEID"
-                  HeightRequest="80"
-                  BackgroundColor="Bisque"
-                  HasUnevenRows="true" 
-                  ItemTapped="OnListEIDViewItemTapped" >
-                <!-- ItemSelected="OnListViewItemSelected" 
-                            ItemTapped="OnListViewItemTapped"   -->
-
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-
-                            <StackLayout>
-
-                                <StackLayout   Orientation="Horizontal">
-
-                                    <Label Grid.Column="0" 
-                               Text="{Binding Name}"
-                               FontAttributes="Bold" FontSize="Small" />
-                                    <Label 
-                                Grid.Column="1"
-                                
-                               Text="{Binding Location}"
-                                />
-
-                                    <!--     </StackLayout>
-
-                            <StackLayout   Orientation="Horizontal">   -->
-
-                                    <Label                                    
-                               Text="{Binding ImageUrl}" 
-                                Grid.Column="2"
-                                />
-                                    <Label                                    
-                               Text="{Binding idPEL}"
-                                Grid.Column="3"
-                                />
-                                </StackLayout>
-
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+         
 
 
 

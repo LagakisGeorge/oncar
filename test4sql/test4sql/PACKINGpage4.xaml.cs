@@ -1682,7 +1682,7 @@ namespace oncar
                 fkauajiPro = spro;
                 // DEN XREIAZETAI GIATI THN EXEI THN EKPTOSI  s = s - (s * fEKPTNUM1   ) / 100;
                 fkauaji = s;
-                faji = s * 113 / 100;
+            faji = s; // * 113 / 100;  ΚΑΘΑΡΗ ΑΞΙΑ
                 connection.Close();
 
                 SAJIA.Text = String.Format("{0:0.00}", faji);  // s.ToString();
