@@ -86,11 +86,15 @@
                  />
 
             <Button x:Name="APOTHIKI2" 
-                Text="BARCODES-ΑΝΤΙΣΤΟΙΧΙΣΗ"
+                Text="BARC-ΑΝΤΙΣ"
                 Clicked="fANTIST"
                  />
-            
-            
+
+            <Button x:Name="APOTHIKI4" 
+     Text="ΕΛΕΓΧ-ΤΙΜ"
+     Clicked="checkParaggp"
+      />
+
             <Button x:Name="APOTHIKI3" 
                 Text="PACKING"
                 Clicked="CMDPACKING"
@@ -113,6 +117,8 @@
         <Button x:Name="kinpelath" 
                 Text="ΚΙΝΗΣΗ ΠΕΛΑΤΗ"
                 Clicked="fPELkin"/>
+        
+        
         <Button x:Name="reppelath" 
                 Text="REPORTS ΠΕΛΑΤΩΝ"
                 Clicked="fPELREP" />

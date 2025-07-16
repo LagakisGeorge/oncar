@@ -2259,6 +2259,15 @@ public static void BigLetters(string ipAddress)
 
             return;
         }
+
+        private void checkParaggp(object sender, EventArgs e)
+        {
+            //checkParagg ch;
+            Navigation.PushAsync(new checkParagg());
+
+            return;
+
+        }
     }  // public partial class MainPage : ContentPage
 
 
