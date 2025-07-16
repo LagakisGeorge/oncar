@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               NavigationPage.HasNavigationBar="False"
+            
+             x:Class="test4sql.checkParagg">
+
+    <ContentPage.Content>
+        <StackLayout>
+
+            <StackLayout    Orientation="Horizontal">
+            <Label x:Name="lab1" Text="ΤΣΙΣΜ" />
+                <Button x:Name="SHOWTIM" Text="ΛΙΣΤΑ ΠΑΡ/ΚΩΝ"   FontSize="Small"  BackgroundColor="Red"  HorizontalOptions="End"  Clicked="SHOWTIMP" />
+            </StackLayout>
+
+
+            <StackLayout    Orientation="Horizontal">
+                
+                <Button x:Name="butbarcode" 
+                    Text="BARCODE"   FontSize="Large"  Clicked="CHANGEBARCODE" />
+
+
+
+
+
+                <Entry x:Name="BARCODE"   Keyboard="Numeric"   FontSize="Large" 
+                   Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
+
+
+            </StackLayout>
+
+
+
+            <Entry x:Name="ONO"    FontSize="Large" 
+                   Placeholder="        "       />
+
+            <StackLayout    Orientation="Horizontal">
+                <Label x:Name="PYLON" Text="PYL"  BackgroundColor="Cyan"  FontSize="Small"  />
+                <Entry x:Name="FPA"    FontSize="Small"    Placeholder="ΥΠΟΛ"       />
+                <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Small"           />
+                <Label   x:Name="MON" Text="μον "  MinimumWidthRequest="30"  FontSize="Small"           />
+                
+                
+                <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Small"  BackgroundColor="Red"  HorizontalOptions="End"  Clicked="DIAGROLD" />
+            </StackLayout>
+
+            <StackLayout    Orientation="Horizontal">
+                <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
+                <Entry x:Name="LTI5"  Keyboard="Numeric"  FontSize="Large" BackgroundColor="Yellow"   Placeholder="      "       />
+                <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
+            </StackLayout>
+
+
+
+
+
+
+
+
+            <ListView ItemsSource="{Binding Monkeys}"
+                       x:Name="listview"
+                      HeightRequest="80"
+                      BackgroundColor="Bisque"
+                      HasUnevenRows="true" 
+                      ItemTapped="OnListViewItemTapped" >
+                <!-- ItemSelected="OnListViewItemSelected" 
+                                ItemTapped="OnListViewItemTapped"   -->
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+
+
+
+                            <StackLayout    >
+
+
+
+                                <Label 
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold" FontSize="Small" />
+
+
+                                <StackLayout    Orientation="Horizontal">
+
+                                    <Label 
+                                    
+                                    
+                                   Text="{Binding Location}"
+                                    />
+
+
+                                    <Label                                    
+                                   Text="{Binding ImageUrl}" IsVisible="false"
+                                   
+                                    />
+                                    <Label                                    
+                                   Text="{Binding idPEL}"
+                                   
+                                    />
+                                </StackLayout>
+                            </StackLayout>
+
+
+
+
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
+
+
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
