@@ -1,18 +1,19 @@
-﻿using Mono.Data.Sqlite;
+﻿using Android.Content;
+using Android.Widget;
+using Mono.Data.Sqlite;
+using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
-using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
-using System.Data;
-using Android.Content;
-using Android.Widget;
+using static Android.Resource;
 using static Java.Util.ResourceBundle;
 
 namespace test4sql
@@ -24,9 +25,10 @@ namespace test4sql
         int f_man_barcode = 1;
         string cc = "";
         int firstTime = 0;
-
+        //  Globals.PARAGGlines[k, 0] = mOno;
+        //             Globals.PARAGGlines[k, 1] = mPoso;
         // Globals.ExecuteSQLServer(cc);
-
+        string f_ID_NUM = "0";
 
         public checkParagg()
         {
@@ -227,17 +229,17 @@ namespace test4sql
         public void find2_eid()  // αναζητηση με barcode
         {
             string SQL = "";
-            String CC = "";
+            string CC = "";
 
             string C = BARCODE.Text;
             if (C.Length < 8)
             {
-                SQL = "SELECT TOP 1 KOD,ONO FROM EID  WHERE KOD='" + C + "'";
+                SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
             }
             //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
             else
             {
-                SQL = "SELECT TOP 1 KOD FROM BARCODES  WHERE ERG='" + C + "'";
+                SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE ERG='" + C + "'";
             }
 
 
@@ -252,13 +254,50 @@ namespace test4sql
             }
             else
             {
-             //ΒΡΕΘΗΚΕ ΝΑ ΑΦΑΙΡΕΘΕΙ'
-             // ΕΙΝΑΙ ΜΕΣΑ ΣΤΑ ΕΙΔΗ ΤΟΥ ΤΙΜΟΛΟΓΙΟΥ?
-             // ΝΑΙ ΝΑ ΑΦΑΙΡΕΘΕΙ
-             // ΟΧΙ
-             //ΒΓΑΖΕΙ ΜΗΝΥΜΑ
+                //ΒΡΕΘΗΚΕ ΝΑ ΑΦΑΙΡΕΘΕΙ'
+                // ΕΙΝΑΙ ΜΕΣΑ ΣΤΑ ΕΙΔΗ ΤΟΥ ΤΙΜΟΛΟΓΙΟΥ?
+                // ΝΑΙ ΝΑ ΑΦΑΙΡΕΘΕΙ
+                // ΟΧΙ
+                //ΒΓΑΖΕΙ ΜΗΝΥΜΑ
+
+                string posothtascan = "1";
+
+
+                string[] lines = CC.Split(';');
+                BARCODE.Text = lines[0];
+                ONO.Text = lines[1];
+                if (f_ID_NUM == "0") { }
+                else
+                {
+                     int n3 = MainPage.ExecuteSqlite("update EGGTIM set NUM1=NUM1+"+ posothtascan + " WHERE IDPARAGG="+f_ID_NUM +" AND KODE='" + lines[0]+"'");
+                    if (n3 == 0)
+                    {
+                        int n4  = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + ","+posothtascan+",'" + lines[1] + "','" + lines[0] + "'," + posothtascan + ");");
+
+
+                    }
+
+
+
+                
+                }
+
+                Show_listNew(f_ID_NUM);
+
+
+
+
+                   
+
+
+
 
             }
+
+
+
+
+
 
 
         }
@@ -287,7 +326,7 @@ namespace test4sql
             TIMH.Text = c3.Replace(",", ".");
             TIMH.Text = c3;
 
-
+            //'ReadSQL(string Query) LITE
 
 
 
@@ -408,7 +447,7 @@ namespace test4sql
                 });
             }
             listview.ItemsSource = Monkeys;
-            listview.BackgroundColor = Color.Bisque;
+            listview.BackgroundColor = Xamarin.Forms.Color.Bisque;
             BindingContext = this;
             BindingContext = this;
         }
@@ -434,7 +473,7 @@ namespace test4sql
                 });
             }
             listview.ItemsSource = Monkeys;
-            listview.BackgroundColor = Color.Green;
+            listview.BackgroundColor = Xamarin.Forms.Color.Green;
             BindingContext = this;
             BindingContext = this;
         }
@@ -452,14 +491,15 @@ namespace test4sql
                 //  BRESafm.IsEnabled = false;
 
 
-                if (firstTime == 0)
+                if (firstTime == 0) // kanv klik sto tim
                 {
                     ONO.Text = tappedItem.Name + ";" + tappedItem.Location;
                     BARCODE.Text = tappedItem.Location;
                     string CID = (tappedItem.ImageUrl.ToString() + "                                             ").Substring(0, 40);
                     //  find3_eid(CID);
                     BARCODE.Text = tappedItem.idPEL;
-                    String id = tappedItem.idPEL;
+                    string id = tappedItem.idPEL;
+                    f_ID_NUM = id;
                     firstTime = 1;
                     try
                     {
@@ -495,6 +535,11 @@ namespace test4sql
 
         void Show_list_DET(string id)  // αναζητηση με id_num
         {
+
+
+
+            int n2 = MainPage.ExecuteSqlite("delete from EGGTIM where IDPARAGG=" + id );
+
             Monkeys = new List<Monkey>();
             BindingContext = null;
             string sql = "select top 150 ONOMA,STR(POSO) AS POSO,MONA,STR(TIMM) +MONA AS TIMH,KODE  from EGGTIM  WHERE ID_NUM="+id+" ORDER BY ONOMA ";
@@ -506,22 +551,86 @@ namespace test4sql
             int k;
             for (k = 0; k <= dt.Rows.Count - 1; k++)
             {
+                string MONO, MKOD, MPOSO;
+                MONO = dt.Rows[k]["ONOMA"].ToString();
+                MPOSO = dt.Rows[k]["POSO"].ToString();
+                MKOD = dt.Rows[k]["KODE"].ToString();
+                int n3 = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES ("+id+",0,'"+MONO+"','" + MKOD + "'," + MPOSO  + ");"   );
+
                 Monkeys.Add(new Monkey
                 {
-                    Name = (dt.Rows[k]["ONOMA"].ToString() + "                                ").Substring(0, 25),
+                    Name = (MONO + "                                ").Substring(0, 25),
 
-                    Location = (dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 12),
+                    Location = (MPOSO + "                  ").Substring(0, 12),
                     ImageUrl = (dt.Rows[k]["TIMH"].ToString() + "                                         ").Substring(0, 40),
-                    idPEL = (dt.Rows[k]["KODE"].ToString() + "                  ").Substring(0, 12),  // dt.Rows[k]["HEID"].ToString()
+                    idPEL = (MKOD + "                  ").Substring(0, 12),  // dt.Rows[k]["HEID"].ToString()
                 });
             }
             listview.ItemsSource = Monkeys;
-            listview.BackgroundColor = Color.Bisque;
+            listview.BackgroundColor = Xamarin.Forms.Color.Bisque;
             BindingContext = this;
             BindingContext = this;
         }
 
 
+        void Show_listNew(string id)  // αναζητηση με id_num
+        {
+
+
+
+           // int n2 = MainPage.ExecuteSqlite("delete from EGGTIM where IDPARAGG=" + id);
+
+            Monkeys = new List<Monkey>();
+            BindingContext = null;
+
+
+
+
+            string dbPath = Path.Combine(  Environment.GetFolderPath(Environment.SpecialFolder.Personal),  "adodemo.db3");          
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT  * from EGGTIM WHERE IDPARAGG="+id+"  ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            while (r.Read())
+            {        
+                
+
+                    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
+                                                                                // 
+                string MONO, MKOD, MPOSO;
+                MONO = r["ONO"].ToString();
+                MPOSO = r["POSO"].ToString();
+                MKOD = r["KODE"].ToString();
+                //int n3 = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + id + ",0,'" + MONO + "','" + MKOD + "'," + MPOSO + ");");
+
+                Monkeys.Add(new Monkey
+                {
+                    Name = (MONO + "                                ").Substring(0, 25),
+
+                    Location = (MPOSO + "                  ").Substring(0, 12),
+                    ImageUrl = (r["timm"].ToString() + "                                         ").Substring(0, 40),
+                    idPEL ="" //(MKOD + "                  ").Substring(0, 12)"",  // dt.Rows[k]["HEID"].ToString()
+                });
+
+
+
+
+
+
+
+
+
+
+            }
+            connection.Close();
+
+            listview.ItemsSource = Monkeys;
+            listview.BackgroundColor = Xamarin.Forms.Color.Bisque;
+            BindingContext = this;
+            BindingContext = this;
+        }
 
 
 
@@ -539,7 +648,7 @@ namespace test4sql
             if (IsNumeric(LTI5.Text) == false)
 
             {
-                butbarcode.BackgroundColor = Color.Yellow;
+                butbarcode.BackgroundColor = Xamarin.Forms.Color.Yellow;
                 LTI5.Text = "";
                 await DisplayAlert("ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "OK");
                 LTI5.Focus();
@@ -571,7 +680,7 @@ namespace test4sql
                     if (LExecuteSQLServer(sql) == 1)
                     {  //'LExecuteSQLServer(sql);
                         ONO.Text = "";
-                        butbarcode.BackgroundColor = Color.Green;
+                        butbarcode.BackgroundColor = Xamarin.Forms.Color.Green;
                     }
                     else
                     {
@@ -584,7 +693,7 @@ namespace test4sql
                 catch
                 {
                     ONO.Text = "ΛΑΘΟΣ";
-                    butbarcode.BackgroundColor = Color.Yellow;
+                    butbarcode.BackgroundColor = Xamarin.Forms.Color.Yellow;
                 }
                 BARCODE.Text = "";
                 lab1.Text = ONO.Text;
