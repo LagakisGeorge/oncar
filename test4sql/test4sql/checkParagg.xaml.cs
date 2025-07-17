@@ -231,7 +231,7 @@ namespace test4sql
             string SQL = "";
             string CC = "";
 
-            string C = BARCODE.Text;
+            string C = BARCODE.Text.Trim();
             if (C.Length < 8)
             {
                 SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
@@ -239,9 +239,13 @@ namespace test4sql
             //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
             else
             {
-                SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE ERG='" + C + "'";
+                SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
             }
 
+            try
+            {
+
+            
 
 
 
@@ -285,16 +289,14 @@ namespace test4sql
                 Show_listNew(f_ID_NUM);
 
 
-
-
-                   
-
-
-
-
             }
 
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
 
 
 
@@ -590,14 +592,14 @@ namespace test4sql
             SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
             connection.Open();
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  * from EGGTIM WHERE IDPARAGG="+id+"  ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ifnull(NUM1,0) as NUM1,ONO,KODE,POSO from EGGTIM WHERE IDPARAGG=" + id+"  ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
             {        
                 
 
-                    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
+                //    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
                                                                                 // 
                 string MONO, MKOD, MPOSO;
                 MONO = r["ONO"].ToString();
@@ -605,16 +607,25 @@ namespace test4sql
                 MKOD = r["KODE"].ToString();
                 //int n3 = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + id + ",0,'" + MONO + "','" + MKOD + "'," + MPOSO + ");");
 
+                try
+                {
+
+                
                 Monkeys.Add(new Monkey
                 {
                     Name = (MONO + "                                ").Substring(0, 25),
 
                     Location = (MPOSO + "                  ").Substring(0, 12),
-                    ImageUrl = (r["timm"].ToString() + "                                         ").Substring(0, 40),
-                    idPEL ="" //(MKOD + "                  ").Substring(0, 12)"",  // dt.Rows[k]["HEID"].ToString()
+                    ImageUrl = (MKOD + "                                         ").Substring(0, 40),
+                    idPEL = r["NUM1"].ToString() //(MKOD + "                  ").Substring(0, 12)"",  // dt.Rows[k]["HEID"].ToString()
                 });
 
+                }
+                catch (Exception)
+                {
 
+                    throw;
+                }
 
 
 
