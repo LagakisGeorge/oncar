@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -901,18 +902,39 @@ namespace test4sql
             Console.WriteLine("Reading data");
             while (r.Read())
             {
-                string q = "update EGGTIM SET KOLA=" + r["CNUM1"].ToString() + " WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
-                int n = LExecuteSQLServer(q);
+                string q2 = "update EGGTIM SET KOLA=" + r["CNUM1"].ToString() + " WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
+                int n = LExecuteSQLServer(q2);
                 if (r["ONO"].ToString().Substring(0, 2) == "**")
                 {
-                    q = "insert into  EGGTIM (ID_NUM,KODE,ONOMA,POSO,KOLA) VALUES("+f_ID_NUM+",'"+r["KODE"].ToString()+"','" + r["ONO"].ToString()+"',"+ r["CNUM1"].ToString()+","+ r["CNUM1"].ToString()+")";
-                    n = LExecuteSQLServer(q);
+                   string q4 = "insert into  EGGTIM (EIDOS,ID_NUM,KODE,ONOMA,POSO,KOLA) VALUES('e',"+f_ID_NUM+",'"+r["KODE"].ToString()+"','" + r["ONO"].ToString()+"',"+ r["CNUM1"].ToString()+","+ r["CNUM1"].ToString()+")";
+                    n = LExecuteSQLServer(q4);
+                    // CC = Globals.ReadSQLServerWithError(SQL);
+                    // q= " string q = \"update EGGTIM SET KOLA=\" + r[\"CNUM1\"].ToString() + \" WHERE ID_NUM=\" + f_ID_NUM + \" AND KODE='\" + r[\"KODE\"].ToString() + \"'\";"
+                     string q3 = "update EGGTIM SET ATIM=(SELECT ATIM FROM TIM WHERE ID_NUM="+f_ID_NUM+") WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
+                     n = LExecuteSQLServer(q3);
+
+                    q3 = "update EGGTIM SET HME=(SELECT HME FROM TIM WHERE ID_NUM=" + f_ID_NUM + ") WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
+                    n = LExecuteSQLServer(q3);
+
+
+
+
+
+
+
+
+
+
+
                 }
 
             }
 
 
             connection.Close();
+
+           string q = "update TIM SET PARAT='"+PARAT.Text+"' WHERE ID_NUM=" + f_ID_NUM ;
+            int n2 = LExecuteSQLServer(q);
 
             KATAX.IsEnabled = false;
 

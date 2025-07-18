@@ -47,8 +47,8 @@
             </StackLayout>
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
-                <Entry x:Name="LTI5"  Keyboard="Numeric"    Placeholder="      "       />
+                <Label x:Name="REAL" Text="ΣΧΟΛΙΑ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
+                <Entry x:Name="PARAT"    Placeholder="                    "       />
                 <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
             </StackLayout>
 
