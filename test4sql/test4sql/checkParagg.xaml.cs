@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Widget;
+using Java.Lang;
 using Mono.Data.Sqlite;
 using SharpCifs.Smb;  // http://sharpcifsstd.dobes.jp/
 using System;
@@ -8,6 +9,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -15,6 +17,7 @@ using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
 using static Android.Resource;
 using static Java.Util.ResourceBundle;
+using Exception = System.Exception;
 
 namespace test4sql
 {
@@ -98,7 +101,7 @@ namespace test4sql
         // 
         async void CHANGEBARCODE(object sender, EventArgs e)
         {
-            Show_list_Eidon(ONO.Text);         
+          //  Show_list_Eidon(ONO.Text);         
         }
 
 
@@ -127,7 +130,7 @@ namespace test4sql
                     // await DisplayAlert("Scanned Barcode", result.Text, "OK");
                     BARCODE.Text = result.Text;
                     // Completed = "posothtaCompleted"
-                    find_eid();
+                  //  find_eid();
                 });
             };
 
@@ -226,11 +229,10 @@ namespace test4sql
         }
 
 
-        public void find2_eid()  // αναζητηση με barcode
+        public async void find2_eid()  // αναζητηση με barcode
         {
             string SQL = "";
             string CC = "";
-
             string C = BARCODE.Text.Trim();
             if (C.Length < 8)
             {
@@ -241,19 +243,14 @@ namespace test4sql
             {
                 SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
             }
-
             try
-            {
-
-            
-
-
-
+            {         
             CC = Globals.ReadSQLServerWithError(SQL);
             ONO.Text = CC;
             if (ONO.Text.Substring(0, 5) == "ERROR")
             {
-                BARCODE.Text = "";
+                    await DisplayAlert("δεν υπαρχει το BARCODE", "ΑΓΝΩΣΤΟ BARCODE", "OK");
+                    BARCODE.Text = "";
                 BARCODE.Focus();
             }
             else
@@ -265,7 +262,11 @@ namespace test4sql
                 //ΒΓΑΖΕΙ ΜΗΝΥΜΑ
 
                 string posothtascan = "1";
-
+                    string rr = RPOSO.Text;
+//if (rr.Length > 0)
+                   // {
+                        posothtascan = rr;
+                  //  }
 
                 string[] lines = CC.Split(';');
                 BARCODE.Text = lines[0];
@@ -275,20 +276,24 @@ namespace test4sql
                 {
                      int n3 = MainPage.ExecuteSqlite("update EGGTIM set NUM1=NUM1+"+ posothtascan + " WHERE IDPARAGG="+f_ID_NUM +" AND KODE='" + lines[0]+"'");
                     if (n3 == 0)
+                        // δεν βρεθηκε ο κωδικος μεσα στο τιμολόγιο
+                        // ή δεν βγαζω τιποτα ή
+                        // ή υπάρχει ο κωδικός αλλα ειναι άλλο είδος οπότε το προσθέτω
+                        // ή δεν βρίσκω το είδος με αυτό το barcode και βγαζω msgbox
                     {
-                        int n4  = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + ","+posothtascan+",'" + lines[1] + "','" + lines[0] + "'," + posothtascan + ");");
-
-
+                        int n4  = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + ","+posothtascan+",'" +"**"+ lines[1] + "','" + lines[0] + "'," + posothtascan + ");");
+                            ONO.BackgroundColor = Xamarin.Forms.Color.Red;
                     }
-
-
-
-                
+                        else
+                    {
+                            ONO.BackgroundColor = Xamarin.Forms.Color.Green;
+                    }               
                 }
 
                 Show_listNew(f_ID_NUM);
-
-
+                    RPOSO.Text = "1";
+                    BARCODE.Text = "";
+                    BARCODE.Focus();
             }
 
             }
@@ -306,43 +311,29 @@ namespace test4sql
 
         public void find3_eid(string CID) // ekana klik sto listview
         {
-            string SQL = "";
+            //string SQL = "";
 
-            string C = BARCODE.Text;
-            SQL = "SELECT TOP 1 LEFT(HENAME,49)+';'+HECODE AS CC FROM [HEITEMS] WHERE HECODE = '" + C + "'";
-            ONO.Text = Globals.ReadSQLServerWithError(SQL);
-            if (ONO.Text.Contains("ERROR"))
-            {
-                ONO.Text = "λαθος";
-                return;
-            }
-            SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
-                 "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HECODE='" + C + "' )";
-            float N = Globals.FReadSQLServer(SQL);
-            FPA.Text = N.ToString();
+            //string C = BARCODE.Text;
+            //SQL = "SELECT TOP 1 LEFT(HENAME,49)+';'+HECODE AS CC FROM [HEITEMS] WHERE HECODE = '" + C + "'";
+            //ONO.Text = Globals.ReadSQLServerWithError(SQL);
+            //if (ONO.Text.Contains("ERROR"))
+            //{
+            //    ONO.Text = "λαθος";
+            //    return;
+            //}
+            //SQL = "SELECT SUM(HEATOTIMPQTY) -SUM(HEATOTEXPQTY) AS XX   from [HEITEMACCUMULATORS] " +
+            //     "WHERE YEAR(HEDATE)=2023 AND  HEITEMID IN ( SELECT HEID FROM  [HEITEMS] WHERE HECODE='" + C + "' )";
+            //float N = Globals.FReadSQLServer(SQL);
+            //// FPA.Text = N.ToString();
 
-            SQL = "SELECT TOP 1  HEITEMCOST FROM HEITEMCOSTPRICES WHERE HEITEMID='" + CID + "'  AND HEITEMCOST>0   ORDER BY HEITEMID,HEDATE DESC";
+            //SQL = "SELECT TOP 1  HEITEMCOST FROM HEITEMCOSTPRICES WHERE HEITEMID='" + CID + "'  AND HEITEMCOST>0   ORDER BY HEITEMID,HEDATE DESC";
 
-            N = Globals.FReadSQLServer(SQL);
-            string c3 = N.ToString();
-            TIMH.Text = c3.Replace(",", ".");
-            TIMH.Text = c3;
+            //N = Globals.FReadSQLServer(SQL);
+            //string c3 = N.ToString();
+            //TIMH.Text = c3.Replace(",", ".");
+            //TIMH.Text = c3;
 
-            //'ReadSQL(string Query) LITE
-
-
-
-
-
-
-
-
-            SQL = "SELECT (SELECT TOP 1  HENAME FROM HEMEASUREMENTUNITS  WHERE HEID=HEITEMS.HEAMSNTID ) AS DD  FROM HEITEMS WHERE HEID='" + CID + "';";
-            string c4 = Globals.ReadSQLServer(SQL);
-
-            MON.Text = c4;
-
-            LTI5.Focus();
+            ////'ReadSQL(string Query) LITE
 
 
 
@@ -350,72 +341,13 @@ namespace test4sql
 
 
 
-        }
 
+            //SQL = "SELECT (SELECT TOP 1  HENAME FROM HEMEASUREMENTUNITS  WHERE HEID=HEITEMS.HEAMSNTID ) AS DD  FROM HEITEMS WHERE HEID='" + CID + "';";
+            //string c4 = Globals.ReadSQLServer(SQL);
 
-        void find_eid()
-        {
+            //MON.Text = c4;
 
-
-
-
-
-            // determine the path for the database file
-            string dbPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                "adodemo.db3");
-            bool exists = File.Exists(dbPath);
-            if (!exists)
-            {
-                Console.WriteLine("Creating database");
-                // Need to create the database before seeding it with some data
-                Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
-
-            }
-
-            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
-            // Open the database connection and create table with data
-            connection.Open();
-
-
-
-
-
-
-
-            // query the database to prove data was inserted!
-            var contents = connection.CreateCommand();
-            if (Globals.useBarcodes == "1")
-            {
-                //contents.CommandText = "SELECT  E.ONO,E.XONDR,E.YPOL,E.BARCODE,E.KOD from EID E inner JOIN BARCODES B ON E.KOD=B.KOD   WHERE B.BARCODE like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
-                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
-            }
-            else
-            {
-                contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE ONO like '%" + ONO.Text + "%'  ; "; // +BARCODE.Text +"'";
-            }
-
-            var r = contents.ExecuteReader();
-            Console.WriteLine("Reading data");
-            while (r.Read())
-            {
-                //lper.Text = r["ONO"].ToString();  // ****
-                // ltimh.Text = r["XONDR"].ToString();
-                string ccc = r["XONDR"].ToString();
-
-                //  lkode.Text = r["KOD"].ToString();
-                //  lbarcode.Text = r["BARCODE"].ToString();  // ***
-
-                //  cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
-
-            }
-            // r["ONO"].ToString();
-
-
-
-            connection.Close();
-
-            // System.Threading.Thread.Sleep(1000);
+            //LTI5.Focus();
 
 
 
@@ -424,13 +356,86 @@ namespace test4sql
 
 
         }
+
+
+        //void find_eid()
+        //{
+
+
+
+
+
+        //    // determine the path for the database file
+        //    string dbPath = Path.Combine(
+        //        Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+        //        "adodemo.db3");
+        //    bool exists = File.Exists(dbPath);
+        //    if (!exists)
+        //    {
+        //        Console.WriteLine("Creating database");
+        //        // Need to create the database before seeding it with some data
+        //        Mono.Data.Sqlite.SqliteConnection.CreateFile(dbPath);
+
+        //    }
+
+        //    SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+        //    // Open the database connection and create table with data
+        //    connection.Open();
+
+
+
+
+
+
+
+        //    // query the database to prove data was inserted!
+        //    var contents = connection.CreateCommand();
+        //    if (Globals.useBarcodes == "1")
+        //    {
+        //        //contents.CommandText = "SELECT  E.ONO,E.XONDR,E.YPOL,E.BARCODE,E.KOD from EID E inner JOIN BARCODES B ON E.KOD=B.KOD   WHERE B.BARCODE like '%" + BARCODE.Text + "%' LIMIT 1 ; "; // +BARCODE.Text +"'";
+        //        contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE KOD IN (SELECT KOD FROM BARCODES WHERE BARCODE like '%" + BARCODE.Text + "%' LIMIT 1)  ; "; // +BARCODE.Text +"'";
+        //    }
+        //    else
+        //    {
+        //        contents.CommandText = "SELECT  ONO,XONDR,YPOL,BARCODE,KOD from EID WHERE ONO like '%" + ONO.Text + "%'  ; "; // +BARCODE.Text +"'";
+        //    }
+
+        //    var r = contents.ExecuteReader();
+        //    Console.WriteLine("Reading data");
+        //    while (r.Read())
+        //    {
+        //        //lper.Text = r["ONO"].ToString();  // ****
+        //        // ltimh.Text = r["XONDR"].ToString();
+        //        string ccc = r["XONDR"].ToString();
+
+        //        //  lkode.Text = r["KOD"].ToString();
+        //        //  lbarcode.Text = r["BARCODE"].ToString();  // ***
+
+        //        //  cc = cc + lbarcode.Text+";";  // +lper.Text+";"+ltimh.Text+";"+ 
+
+        //    }
+        //    // r["ONO"].ToString();
+
+
+
+        //    connection.Close();
+
+        //    // System.Threading.Thread.Sleep(1000);
+
+
+
+
+
+
+
+        //}
 
 
         void Show_list_Eidon(string ono)  // αναζητηση με ονομα 
         {
             Monkeys = new List<Monkey>();
             BindingContext = null;
-            string sql = "select top 50 ATIM,ATIM+PEL.EPO AS EPO,CONVERT(CHAR(10),HME,103) AS HMER,STR(ID_NUM) AS ID_NUM  from TIM INNER JOIN PEL ON TIM.KPE=PEL.KOD AND TIM.EIDOS=PEL.EIDOS WHERE TIM.EIDOS='e' ORDER BY ID_NUM DESC ";
+            string sql = "select top 50 ATIM,ATIM+PEL.EPO AS EPO,CONVERT(CHAR(10),HME,103) AS HMER,STR(ID_NUM) AS ID_NUM  from TIM INNER JOIN PEL ON TIM.KPE=PEL.KOD AND TIM.EIDOS=PEL.EIDOS WHERE TIM.EIDOS='e' AND   CHARINDEX( LEFT(ATIM,1) , '" + Globals.gTITLOS+"')>0  ORDER BY ID_NUM DESC ";
             // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
             int lathos = 0;
@@ -455,30 +460,30 @@ namespace test4sql
         }
 
 
-        void Show_Last()
-        {
-            Monkeys = new List<Monkey>();
-            BindingContext = null;
-            string sql = "select * from EGGTIMINP  order by ID DESC ; ";
-            int lathos = 0;
-            DataTable dt = LReadSQLServer(sql, lathos, 1);
-            //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();   dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3)
-            int k;
-            for (k = 0; k <= dt.Rows.Count - 1; k++)
-            {
-                Monkeys.Add(new Monkey
-                {
-                    Name = (dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3) + "-" + (dt.Rows[k]["ONO"].ToString() + "                                ").Substring(0, 25),
-                    Location = "  ",
-                    ImageUrl = (dt.Rows[k]["KODE"].ToString() + "                       ").Substring(0, 15),
-                    idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
-                });
-            }
-            listview.ItemsSource = Monkeys;
-            listview.BackgroundColor = Xamarin.Forms.Color.Green;
-            BindingContext = this;
-            BindingContext = this;
-        }
+        //void Show_Last()
+        //{
+        //    Monkeys = new List<Monkey>();
+        //    BindingContext = null;
+        //    string sql = "select * from EGGTIMINP  order by ID DESC ; ";
+        //    int lathos = 0;
+        //    DataTable dt = LReadSQLServer(sql, lathos, 1);
+        //    //   for (k = 0; k <= dt.Rows.Count - 1; k++)   String mF = dt.Rows[k]["MONO"].ToString();   dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3)
+        //    int k;
+        //    for (k = 0; k <= dt.Rows.Count - 1; k++)
+        //    {
+        //        Monkeys.Add(new Monkey
+        //        {
+        //            Name = (dt.Rows[k]["POSO"].ToString() + "                  ").Substring(0, 3) + "-" + (dt.Rows[k]["ONO"].ToString() + "                                ").Substring(0, 25),
+        //            Location = "  ",
+        //            ImageUrl = (dt.Rows[k]["KODE"].ToString() + "                       ").Substring(0, 15),
+        //            idPEL = ("      ").Substring(0, 1)      // dt.Rows[k]["HEID"].ToString()
+        //        });
+        //    }
+        //    listview.ItemsSource = Monkeys;
+        //    listview.BackgroundColor = Xamarin.Forms.Color.Green;
+        //    BindingContext = this;
+        //    BindingContext = this;
+        //}
 
 
 
@@ -496,10 +501,10 @@ namespace test4sql
                 if (firstTime == 0) // kanv klik sto tim
                 {
                     ONO.Text = tappedItem.Name + ";" + tappedItem.Location;
-                    BARCODE.Text = tappedItem.Location;
+                    BARCODE.Text = "";// tappedItem.Location;
                     string CID = (tappedItem.ImageUrl.ToString() + "                                             ").Substring(0, 40);
                     //  find3_eid(CID);
-                    BARCODE.Text = tappedItem.idPEL;
+                    BARCODE.Text = "";// tappedItem.idPEL;
                     string id = tappedItem.idPEL;
                     f_ID_NUM = id;
                     firstTime = 1;
@@ -516,7 +521,7 @@ namespace test4sql
                 }
                 else
                 {
-
+                    BARCODE.Text = tappedItem.idPEL;
 
 
 
@@ -572,6 +577,7 @@ namespace test4sql
             listview.BackgroundColor = Xamarin.Forms.Color.Bisque;
             BindingContext = this;
             BindingContext = this;
+            BARCODE.Focus();
         }
 
 
@@ -601,31 +607,42 @@ namespace test4sql
 
                 //    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
                                                                                 // 
-                string MONO, MKOD, MPOSO;
+                string MONO, MKOD, MPOSO,MNUM1;
                 MONO = r["ONO"].ToString();
                 MPOSO = r["POSO"].ToString();
                 MKOD = r["KODE"].ToString();
+                MNUM1 = r["NUM1"].ToString();
                 //int n3 = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + id + ",0,'" + MONO + "','" + MKOD + "'," + MPOSO + ");");
 
-                try
+                // double retNum;
+               if (val(MPOSO) > val(MNUM1))
                 {
-
-                
-                Monkeys.Add(new Monkey
+                    MNUM1 = MNUM1 + " ---";
+                }else
                 {
-                    Name = (MONO + "                                ").Substring(0, 25),
-
-                    Location = (MPOSO + "                  ").Substring(0, 12),
-                    ImageUrl = (MKOD + "                                         ").Substring(0, 40),
-                    idPEL = r["NUM1"].ToString() //(MKOD + "                  ").Substring(0, 12)"",  // dt.Rows[k]["HEID"].ToString()
-                });
-
+                    if (val(MPOSO) == val(MNUM1))
+                    { MNUM1 = MNUM1 + " OK OK  "; }
+                    else {  MNUM1 = MNUM1 + "********"; }                        
                 }
-                catch (Exception)
-                {
+                    try
+                    {
 
-                    throw;
-                }
+
+                        Monkeys.Add(new Monkey
+                        {
+                            Name = (MONO + "                                ").Substring(0, 25),
+
+                            Location = (MPOSO + "                  ").Substring(0, 12),
+                            ImageUrl = (MKOD + "                                         ").Substring(0, 40),
+                            idPEL = MNUM1 //(MKOD + "                  ").Substring(0, 12)"",  // dt.Rows[k]["HEID"].ToString()
+                        });
+
+                    }
+                    catch (System.Exception)
+                    {
+
+                        throw;
+                    }
 
 
 
@@ -649,85 +666,99 @@ namespace test4sql
         {
             double retNum;
 
-            bool isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            bool isNum = double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
             return isNum;
         }
 
-        private async void UPDATEKOD(object sender, EventArgs e)
+        public static float val(string cc)
         {
-
-            if (IsNumeric(LTI5.Text) == false)
-
-            {
-                butbarcode.BackgroundColor = Xamarin.Forms.Color.Yellow;
-                LTI5.Text = "";
-                await DisplayAlert("ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "OK");
-                LTI5.Focus();
-                return;
-            }
-
-
-
-            if (ONO.Text.Length > 0)
-            {
-
-
-
-
-                try
-                {
-
-
-                    string tt = TIMH.Text;
-                    tt = tt.Replace(",", ".");
-                    string PRAGM = LTI5.Text;
-                    PRAGM = PRAGM.Replace(",", ".");
-
-
-                    string[] lines = ONO.Text.Split(';');
-                    //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
-
-                    string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + lines[0] + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
-                    if (LExecuteSQLServer(sql) == 1)
-                    {  //'LExecuteSQLServer(sql);
-                        ONO.Text = "";
-                        butbarcode.BackgroundColor = Xamarin.Forms.Color.Green;
-                    }
-                    else
-                    {
-                        await DisplayAlert("δεν αποθηκευτηκε", "δεν αποθηκευτηκε", "OK");
-
-                        string LAT = "ΚΩΔΙΚΟΣ:" + lines[1] + " ONOMA:" + lines[0] + " ΠΟΣΟΤΗΤΑ:" + PRAGM + " TIMH:" + tt;
-                        await DisplayAlert(LAT, " λαθος", "OK");
-                    }
-                }
-                catch
-                {
-                    ONO.Text = "ΛΑΘΟΣ";
-                    butbarcode.BackgroundColor = Xamarin.Forms.Color.Yellow;
-                }
-                BARCODE.Text = "";
-                lab1.Text = ONO.Text;
-                //  ONO.Text = "";
-                FPA.Text = "";
-                LTI5.Text = "";
-                try
-                {
-                    Show_Last();
-                }
-                catch
-                {
-
-                }
-                BARCODE.Focus();
-
-            }
-
+            float ret;
+            ret = float.Parse(cc);
+            //'retNum = double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            return ret;
         }
+
+
+
+
+      //  private async void UPDATEKOD(object sender, EventArgs e)
+     //   {
+
+            //if (IsNumeric(LTI5.Text) == false)
+
+            //{
+            //    butbarcode.BackgroundColor = Xamarin.Forms.Color.Yellow;
+            //    LTI5.Text = "";
+            //    await DisplayAlert("ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "ΒΑΛΤΕ ΠΟΣΟΤΗΤΑ", "OK");
+            //    LTI5.Focus();
+            //    return;
+            //}
+
+
+
+            //if (ONO.Text.Length > 0)
+            //{
+
+
+
+
+            //    try
+            //    {
+
+
+            //        string tt = TIMH.Text;
+            //        tt = tt.Replace(",", ".");
+            //        string PRAGM = LTI5.Text;
+            //        PRAGM = PRAGM.Replace(",", ".");
+
+
+            //        string[] lines = ONO.Text.Split(';');
+            //        //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
+
+            //        string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + lines[0] + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
+            //        if (LExecuteSQLServer(sql) == 1)
+            //        {  //'LExecuteSQLServer(sql);
+            //            ONO.Text = "";
+            //            butbarcode.BackgroundColor = Xamarin.Forms.Color.Green;
+            //        }
+            //        else
+            //        {
+            //            await DisplayAlert("δεν αποθηκευτηκε", "δεν αποθηκευτηκε", "OK");
+
+            //            string LAT = "ΚΩΔΙΚΟΣ:" + lines[1] + " ONOMA:" + lines[0] + " ΠΟΣΟΤΗΤΑ:" + PRAGM + " TIMH:" + tt;
+            //            await DisplayAlert(LAT, " λαθος", "OK");
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        ONO.Text = "ΛΑΘΟΣ";
+            //        butbarcode.BackgroundColor = Xamarin.Forms.Color.Yellow;
+            //    }
+            //    BARCODE.Text = "";
+            //    lab1.Text = ONO.Text;
+            //    //  ONO.Text = "";
+            //    FPA.Text = "";
+            //    LTI5.Text = "";
+            //    try
+            //    {
+            //        Show_Last();
+            //    }
+            //    catch
+            //    {
+
+            //    }
+            //    BARCODE.Focus();
+
+            //}
+
+     //   }
+
         private int LExecuteSQLServer(string sql)
         {
             string[] lines = Globals.cSQLSERVER.Split(';');
-            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=MERCURY;Uid=sa;Pwd=" + lines[2];
+            string constring = @"Data Source=" + lines[0] + ";Initial Catalog=" + lines[1] + ";Uid=sa;Pwd=" + lines[2]; // ";Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
+
+           // string constring = @"Data Source=" + lines[0] + ";Initial Catalog=MERCURY;Uid=sa;Pwd=" + lines[2];
 
             //            string constring = @"Data Source=" + Globals.cSQLSERVER + ";Initial Catalog=TECHNOPLASTIKI;Uid=sa;Pwd=12345678";
             // ok fine string constring = @"Data Source=DESKTOP-MPGU8SB\SQL17,51403;Initial Catalog=MERCURY;Uid=sa;Pwd=12345678";
@@ -748,7 +779,7 @@ namespace test4sql
                 con.Close();
                 return 1;
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 string cv = "";
                 // DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
@@ -840,12 +871,51 @@ namespace test4sql
 
         private void barcfoc2(object sender, EventArgs e)
         {
-            find2_eid();
+            try
+            {
+               find2_eid();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         private void SHOWTIMP(object sender, EventArgs e)
         {
+            RPOSO.Text = "1";
             Show_list_Eidon("");
+        }
+
+        private void UPDATEKOD(object sender, EventArgs e)
+        {
+
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "adodemo.db3");
+            SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
+            connection.Open();
+            var contents = connection.CreateCommand();
+            contents.CommandText = "SELECT  ifnull(NUM1,0) as CNUM1,ONO,KODE,POSO from EGGTIM WHERE IDPARAGG=" + f_ID_NUM  + "  ; "; // +BARCODE.Text +"'";
+            var r = contents.ExecuteReader();
+            Console.WriteLine("Reading data");
+            while (r.Read())
+            {
+                string q = "update EGGTIM SET KOLA=" + r["CNUM1"].ToString() + " WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
+                int n = LExecuteSQLServer(q);
+                if (r["ONO"].ToString().Substring(0, 2) == "**")
+                {
+                    q = "insert into  EGGTIM (ID_NUM,KODE,ONOMA,POSO,KOLA) VALUES("+f_ID_NUM+",'"+r["KODE"].ToString()+"','" + r["ONO"].ToString()+"',"+ r["CNUM1"].ToString()+","+ r["CNUM1"].ToString()+")";
+                    n = LExecuteSQLServer(q);
+                }
+
+            }
+
+
+            connection.Close();
+
+            KATAX.IsEnabled = false;
+
         }
     }
 

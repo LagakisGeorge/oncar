@@ -10,7 +10,9 @@
 
             <StackLayout    Orientation="Horizontal">
             <Label x:Name="lab1" Text="ΤΣΙΣΜ" />
+                <!-- δειχνει τα τιμολογια -->
                 <Button x:Name="SHOWTIM" Text="ΛΙΣΤΑ ΠΑΡ/ΚΩΝ"   FontSize="Small"  BackgroundColor="Red"  HorizontalOptions="End"  Clicked="SHOWTIMP" />
+         
             </StackLayout>
 
 
@@ -25,7 +27,7 @@
 
                 <Entry x:Name="BARCODE"   Keyboard="Numeric"   FontSize="Large" 
                    Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
-
+                  <Entry x:Name="RPOSO"    FontSize="Small"    Placeholder="ΠΟΣΟΤΗΤΑ"       />
 
             </StackLayout>
 
@@ -35,18 +37,18 @@
                    Placeholder="        "       />
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="PYLON" Text="PYL"  BackgroundColor="Cyan"  FontSize="Small"  />
-                <Entry x:Name="FPA"    FontSize="Small"    Placeholder="ΥΠΟΛ"       />
+                <Label x:Name="PYLON" Text="PYL"   FontSize="Small"  />
+               
                 <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Small"           />
                 <Label   x:Name="MON" Text="μον "  MinimumWidthRequest="30"  FontSize="Small"           />
                 
                 
-                <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Small"  BackgroundColor="Red"  HorizontalOptions="End"  Clicked="DIAGROLD" />
+                <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Small"    HorizontalOptions="End"  Clicked="DIAGROLD" />
             </StackLayout>
 
             <StackLayout    Orientation="Horizontal">
                 <Label x:Name="REAL" Text="ΠΡΑΓΜ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
-                <Entry x:Name="LTI5"  Keyboard="Numeric"  FontSize="Large" BackgroundColor="Yellow"   Placeholder="      "       />
+                <Entry x:Name="LTI5"  Keyboard="Numeric"    Placeholder="      "       />
                 <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
             </StackLayout>
 
@@ -92,7 +94,7 @@
 
 
                                     <Label                                    
-                                   Text="{Binding ImageUrl}" IsVisible="false"
+                                   Text="{Binding ImageUrl}" IsVisible="true"
                                    
                                     />
                                     <Label                                    
