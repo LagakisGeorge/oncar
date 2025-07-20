@@ -269,7 +269,6 @@ namespace test4sql
                 barc = 0;
                 SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
             }
-            //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";   //5301000233111
             else
             {
                 barc = 1;
@@ -277,12 +276,10 @@ namespace test4sql
             }
             try
             {
-                //1H APOPEIRA 
                 CC = Globals.ReadSQLServerWithError(SQL);
                 ONO.Text = CC;
                 if (ONO.Text.Substring(0, 5) == "ERROR")
                 {
-                    // 2h apopeira
                     if (barc == 1)
                     {
                         SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
@@ -299,65 +296,260 @@ namespace test4sql
                         BARCODE.Focus();
                         ok = 0;
                     }
-                }                         
-                
-                
-                if(ok==1)
-                {
-                //ΒΡΕΘΗΚΕ ΝΑ ΑΦΑΙΡΕΘΕΙ'
-                // ΕΙΝΑΙ ΜΕΣΑ ΣΤΑ ΕΙΔΗ ΤΟΥ ΤΙΜΟΛΟΓΙΟΥ?
-                // ΝΑΙ ΝΑ ΑΦΑΙΡΕΘΕΙ
-                // ΟΧΙ
-                //ΒΓΑΖΕΙ ΜΗΝΥΜΑ
-
-                     string posothtascan = "1";
-                    string rr = RPOSO.Text;
-                         //if (rr.Length > 0)
-                   // {
-                        posothtascan = rr;
-                  //  }
-
-                    string[] lines = CC.Split(';');
-                   BARCODE.Text = lines[0];
-                   ONO.Text = lines[1];
-
-                if (f_ID_NUM == "0") { }
-                else
-                {
-                     int n3 = MainPage.ExecuteSqlite("update EGGTIM set NUM1=NUM1+"+ posothtascan + " WHERE IDPARAGG="+f_ID_NUM +" AND KODE='" + lines[0]+"'");
-                    if (n3 == 0)
-                        // δεν βρεθηκε ο κωδικος μεσα στο τιμολόγιο
-                        // ή δεν βγαζω τιποτα ή
-                        // ή υπάρχει ο κωδικός αλλα ειναι άλλο είδος οπότε το προσθέτω
-                        // ή δεν βρίσκω το είδος με αυτό το barcode και βγαζω msgbox
-                    {
-                        int n4  = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + ","+posothtascan+",'" +"**"+ lines[1] + "','" + lines[0] + "'," + posothtascan + ");");
-                            ONO.BackgroundColor = Xamarin.Forms.Color.Red;
-                    }
-                        else
-                    {
-                            ONO.BackgroundColor = Xamarin.Forms.Color.Green;
-                    }               
                 }
 
-                Show_listNew(f_ID_NUM);
+                if (ok == 1)
+                {
+                    string posothtascan = "1";
+                    string rr = RPOSO.Text;
+                    posothtascan = rr;
+
+                    string[] lines = CC.Split(';');
+                    BARCODE.Text = lines[0];
+                    ONO.Text = lines[1];
+
+                    if (f_ID_NUM == "0") { }
+                    else
+                    {
+                        float qtyToAdd = float.Parse(posothtascan);
+                        string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "adodemo.db3");
+                        using (var connection = new SqliteConnection("Data Source=" + dbPath))
+                        {
+                            connection.Open();
+                            var selectCmd = connection.CreateCommand();
+                            selectCmd.CommandText = "SELECT ID AS rowid, NUM1, POSO FROM EGGTIM WHERE IDPARAGG=" + f_ID_NUM + " AND KODE='" + lines[0] + "' ORDER BY rowid";
+                            using (var reader = selectCmd.ExecuteReader())
+                            {
+                                bool updated = false;
+                               long LastId = 0;
+                                int nn = 0;
+                                while (reader.Read() && qtyToAdd > 0)
+                                {
+                                    long targetRowId = (long)reader["rowid"];
+                                    LastId= targetRowId;
+                                    float num1 = float.Parse(reader["NUM1"].ToString());
+                                    float poso = float.Parse(reader["POSO"].ToString());
+                                    nn++;
+                                    float available = poso - num1;
+                                    if (available > 0)
+                                    {
+                                        float toAdd = System.Math.Min(qtyToAdd, available);
+                                        // στον δεύτερο ιδιο κωδικό βαλε ολο το υπόλοιπο
+                                        if (nn == 2) { toAdd = qtyToAdd; };
+                                        var updateCmd = connection.CreateCommand();
+                                        updateCmd.CommandText = "UPDATE EGGTIM SET NUM1=NUM1+" + toAdd + " WHERE rowid=" + targetRowId;
+                                        updateCmd.ExecuteNonQuery();
+                                        qtyToAdd -= toAdd;
+                                        updated = true;
+                                        ONO.BackgroundColor = Xamarin.Forms.Color.Green;
+                                    }
+                                }
+                                reader.Close();
+
+                                if (qtyToAdd > 0)
+                                {
+                                    if (nn>= 1) // αν ειχα μια/2  φορά τον κωδικό πρεπει να του προσθεσω την ποσότητα
+                                    {
+                                        var updateCmd = connection.CreateCommand();
+                                        updateCmd.CommandText = "UPDATE EGGTIM SET NUM1=NUM1+" + qtyToAdd + " WHERE rowid=" + LastId;
+                                        updateCmd.ExecuteNonQuery();
+                                    }
+                                    else { 
+
+
+
+
+                                    // Αν περισσεύει ποσότητα, πρόσθεσε νέα εγγραφή
+                                    var insertCmd = connection.CreateCommand();
+                                    insertCmd.CommandText = "INSERT INTO EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + "," + qtyToAdd + ",'" + "**" + lines[1] + "','" + lines[0] + "'," + qtyToAdd + ");";
+                                    insertCmd.ExecuteNonQuery();
+                                    ONO.BackgroundColor = Xamarin.Forms.Color.Red;
+                                }
+                                }
+                                else if (!updated)
+                                {
+                                    // Δεν βρέθηκε εγγραφή με υπόλοιπο
+                                    ONO.BackgroundColor = Xamarin.Forms.Color.Red;
+                                }
+                            }
+                            connection.Close();
+                        }
+                    }
+
+                    Show_listNew(f_ID_NUM);
                     RPOSO.Text = "1";
                     BARCODE.Text = "";
                     BARCODE.Focus();
-                } // if(ok==1)
-
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
-
-
-
-
-
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                bool answer = await DisplayAlert("Επιβεβαίωση", "Θέλετε να χαθουν τα σκαναρίσματα;", "Ναι", "Όχι");
+                if (answer)
+                {
+                    // Κλείσιμο σελίδας
+                    await Navigation.PopAsync();
+                }
+                // Αν επιλέξει Όχι, δεν κάνουμε τίποτα
+            });
+            // Επιστρέφουμε true για να ακυρώσουμε το default back behavior
+            return true;
+        }
+
+
+
+        //public async void find2_eid()  // αναζητηση με barcode
+        //{
+        //    string SQL = "";
+        //    string CC = "";
+        //    string C = BARCODE.Text.Trim();
+        //    int barc = 0;
+        //    int ok = 1;
+        //    if (C.Length < 13)
+        //    {
+        //        barc = 0;
+        //        SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
+        //    }
+        //    //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";   //5301000233111
+        //    else
+        //    {
+        //        barc = 1;
+        //        SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
+        //    }
+        //    try
+        //    {
+        //        //1H APOPEIRA 
+        //        CC = Globals.ReadSQLServerWithError(SQL);
+        //        ONO.Text = CC;
+        //        if (ONO.Text.Substring(0, 5) == "ERROR")
+        //        {
+        //            // 2h apopeira
+        //            if (barc == 1)
+        //            {
+        //                SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
+        //            }
+        //            else
+        //            {
+        //                SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
+        //            }
+        //            CC = Globals.ReadSQLServerWithError(SQL);
+        //            if (CC.Substring(0, 5) == "ERROR")
+        //            {
+        //                await DisplayAlert("δεν υπαρχει το BARCODE", "ΑΓΝΩΣΤΟ BARCODE", "OK");
+        //                BARCODE.Text = "";
+        //                BARCODE.Focus();
+        //                ok = 0;
+        //            }
+        //        }                         
+
+
+        //        if(ok==1)
+        //        {
+        //        //ΒΡΕΘΗΚΕ ΝΑ ΑΦΑΙΡΕΘΕΙ'
+        //        // ΕΙΝΑΙ ΜΕΣΑ ΣΤΑ ΕΙΔΗ ΤΟΥ ΤΙΜΟΛΟΓΙΟΥ?
+        //        // ΝΑΙ ΝΑ ΑΦΑΙΡΕΘΕΙ
+        //        // ΟΧΙ
+        //        //ΒΓΑΖΕΙ ΜΗΝΥΜΑ
+
+        //             string posothtascan = "1";
+        //            string rr = RPOSO.Text;
+        //                 //if (rr.Length > 0)
+        //           // {
+        //                posothtascan = rr;
+        //          //  }
+
+        //            string[] lines = CC.Split(';');
+        //           BARCODE.Text = lines[0];
+        //           ONO.Text = lines[1];
+
+        //        if (f_ID_NUM == "0") { }
+        //        else
+        //        {
+        //                // Ενημέρωση μόνο της πρώτης εγγραφής που έχει υπόλοιπο
+        //                string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "adodemo.db3");
+        //                using (var connection = new SqliteConnection("Data Source=" + dbPath))
+        //                {
+        //                    connection.Open();
+        //                    var selectCmd = connection.CreateCommand();
+        //                    selectCmd.CommandText = "SELECT ID AS rowid, NUM1, POSO FROM EGGTIM WHERE IDPARAGG=" + f_ID_NUM + " AND KODE='" + lines[0] + "' ORDER BY rowid";
+        //                    using (var reader = selectCmd.ExecuteReader())
+        //                    {
+        //                        long targetRowId = -1;
+        //                        float poso = 0, num1 = 0;
+        //                        while (reader.Read())
+        //                        {
+        //                            num1 = float.Parse(reader["NUM1"].ToString());
+        //                            poso = float.Parse(reader["POSO"].ToString());
+        //                            if (num1 < poso)
+        //                            {
+        //                                targetRowId = (long)reader["rowid"];
+        //                                break;
+        //                            }
+        //                        }
+        //                        reader.Close();
+
+        //                        if (targetRowId != -1)
+        //                        {
+        //                            var updateCmd = connection.CreateCommand();
+        //                            updateCmd.CommandText = "UPDATE EGGTIM SET NUM1=NUM1+" + posothtascan + " WHERE rowid=" + targetRowId;
+        //                            int n3 = updateCmd.ExecuteNonQuery();
+        //                            ONO.BackgroundColor = Xamarin.Forms.Color.Green;
+        //                        }
+        //                        else
+        //                        {
+        //                            // Αν δεν βρέθηκε εγγραφή με υπόλοιπο, πρόσθεσε νέα εγγραφή
+        //                            var insertCmd = connection.CreateCommand();
+        //                            insertCmd.CommandText = "INSERT INTO EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + "," + posothtascan + ",'" + "**" + lines[1] + "','" + lines[0] + "'," + posothtascan + ");";
+        //                            int n4 = insertCmd.ExecuteNonQuery();
+        //                            ONO.BackgroundColor = Xamarin.Forms.Color.Red;
+        //                        }
+        //                    }
+        //                    connection.Close();
+        //                }
+
+
+        //                // int n3 = MainPage.ExecuteSqlite("update EGGTIM set NUM1=NUM1+"+ posothtascan + " WHERE IDPARAGG="+f_ID_NUM +" AND KODE='" + lines[0]+"'");
+        //                //if (n3 == 0)
+        //                //    // δεν βρεθηκε ο κωδικος μεσα στο τιμολόγιο
+        //                //    // ή δεν βγαζω τιποτα ή
+        //                //    // ή υπάρχει ο κωδικός αλλα ειναι άλλο είδος οπότε το προσθέτω
+        //                //    // ή δεν βρίσκω το είδος με αυτό το barcode και βγαζω msgbox
+        //                //{
+        //                //    int n4  = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + ","+posothtascan+",'" +"**"+ lines[1] + "','" + lines[0] + "'," + posothtascan + ");");
+        //                //        ONO.BackgroundColor = Xamarin.Forms.Color.Red;
+        //                //}
+        //                //    else
+        //                //{
+        //                //        ONO.BackgroundColor = Xamarin.Forms.Color.Green;
+        //                //}               
+        //            }
+
+        //        Show_listNew(f_ID_NUM);
+        //            RPOSO.Text = "1";
+        //            BARCODE.Text = "";
+        //            BARCODE.Focus();
+        //        } // if(ok==1)
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
+
+
+
+
+        //}
 
         public void find3_eid(string CID) // ekana klik sto listview
         {
