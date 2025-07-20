@@ -811,8 +811,8 @@ namespace test4sql
                     Name = (MONO + "                                ").Substring(0, 25),
 
                     Location = (MPOSO + "                  ").Substring(0, 12),
-                    ImageUrl = (dt.Rows[k]["TIMH"].ToString() + "                                         ").Substring(0, 40),
-                    idPEL = (MKOD + "                  ").Substring(0, 12),  // dt.Rows[k]["HEID"].ToString()
+                    ImageUrl = (MKOD + "                  ").Substring(0, 12),
+                    idPEL = (dt.Rows[k]["TIMH"].ToString() + "                                         ").Substring(0, 40),  // dt.Rows[k]["HEID"].ToString()
                 });
             }
             listview.ItemsSource = Monkeys;
@@ -1131,8 +1131,11 @@ namespace test4sql
             Show_list_Eidon("");
         }
 
-        private void UPDATEKOD(object sender, EventArgs e)
+        private async void UPDATEKOD(object sender, EventArgs e)
         {
+
+            string q21 = "update EGGTIM SET KOLA=POSO WHERE ID_NUM=" + f_ID_NUM ;
+            int n21 = LExecuteSQLServer(q21);
 
             string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "adodemo.db3");
             SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
@@ -1143,7 +1146,7 @@ namespace test4sql
             Console.WriteLine("Reading data");
             while (r.Read())
             {
-                string q2 = "update EGGTIM SET KOLA=" + r["CNUM1"].ToString() + " WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
+                string q2 = "update EGGTIM SET POSO=" + r["CNUM1"].ToString() + " WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
                 int n = LExecuteSQLServer(q2);
                 if (r["ONO"].ToString().Substring(0, 2) == "**")
                 {
@@ -1178,6 +1181,8 @@ namespace test4sql
             int n2 = LExecuteSQLServer(q);
 
             KATAX.IsEnabled = false;
+            // Κλείσιμο σελίδας
+            await Navigation.PopAsync();
 
         }
     }
