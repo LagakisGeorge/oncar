@@ -27,7 +27,7 @@
 
                 <Entry x:Name="BARCODE"   Keyboard="Numeric"   FontSize="Large" 
                    Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
-                  <Entry x:Name="RPOSO"    FontSize="Small"    Placeholder="ΠΟΣΟΤΗΤΑ"       />
+                <Entry x:Name="RPOSO"    FontSize="Small"    Placeholder="ΠΟΣΟΤΗΤΑ"    Completed  ="barcfoc2"       />
 
             </StackLayout>
 
@@ -47,8 +47,8 @@
             </StackLayout>
 
             <StackLayout    Orientation="Horizontal">
-                <Label x:Name="REAL" Text="ΣΧΟΛΙΑ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />
-                <Entry x:Name="PARAT"    Placeholder="                    "       />
+                <!-- <Label x:Name="REAL" Text="ΣΧΟΛΙΑ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />  -->
+                <Entry x:Name="PARAT"    Placeholder=" ΣΧΟΛΙΑ                   "       />
                 <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
             </StackLayout>
 

@@ -236,12 +236,13 @@ namespace test4sql
             string CC = "";
             string C = BARCODE.Text.Trim();
             int barc = 0;
+            int ok = 1;
             if (C.Length < 13)
             {
                 barc = 0;
                 SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
             }
-            //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";
+            //'bohu kodikos  ' SQL = "SELECT TOP 1 HENAME+';'+HECODE AS CC FROM [HEITEMS] WHERE HEAUXILIARYCODE = '" + C + "'";   //5301000233111
             else
             {
                 barc = 1;
@@ -249,6 +250,7 @@ namespace test4sql
             }
             try
             {
+                //1H APOPEIRA 
                 CC = Globals.ReadSQLServerWithError(SQL);
                 ONO.Text = CC;
                 if (ONO.Text.Substring(0, 5) == "ERROR")
@@ -256,56 +258,42 @@ namespace test4sql
                     // 2h apopeira
                     if (barc == 1)
                     {
-
                         SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
                     }
                     else
                     {
                         SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
                     }
-
-
-
-
-
-
                     CC = Globals.ReadSQLServerWithError(SQL);
-                    if (ONO.Text.Substring(0, 5) == "ERROR")
+                    if (CC.Substring(0, 5) == "ERROR")
                     {
                         await DisplayAlert("δεν υπαρχει το BARCODE", "ΑΓΝΩΣΤΟ BARCODE", "OK");
                         BARCODE.Text = "";
                         BARCODE.Focus();
+                        ok = 0;
                     }
-
-
-                }
-
-            
-
-
-
-
-
-
+                }                         
                 
-            else
-            {
+                
+                if(ok==1)
+                {
                 //ΒΡΕΘΗΚΕ ΝΑ ΑΦΑΙΡΕΘΕΙ'
                 // ΕΙΝΑΙ ΜΕΣΑ ΣΤΑ ΕΙΔΗ ΤΟΥ ΤΙΜΟΛΟΓΙΟΥ?
                 // ΝΑΙ ΝΑ ΑΦΑΙΡΕΘΕΙ
                 // ΟΧΙ
                 //ΒΓΑΖΕΙ ΜΗΝΥΜΑ
 
-                string posothtascan = "1";
+                     string posothtascan = "1";
                     string rr = RPOSO.Text;
-//if (rr.Length > 0)
+                         //if (rr.Length > 0)
                    // {
                         posothtascan = rr;
                   //  }
 
-                string[] lines = CC.Split(';');
-                BARCODE.Text = lines[0];
-                ONO.Text = lines[1];
+                    string[] lines = CC.Split(';');
+                   BARCODE.Text = lines[0];
+                   ONO.Text = lines[1];
+
                 if (f_ID_NUM == "0") { }
                 else
                 {
@@ -329,7 +317,7 @@ namespace test4sql
                     RPOSO.Text = "1";
                     BARCODE.Text = "";
                     BARCODE.Focus();
-            }
+                } // if(ok==1)
 
             }
             catch (Exception)
@@ -556,7 +544,7 @@ namespace test4sql
                 }
                 else
                 {
-                    BARCODE.Text = tappedItem.idPEL;
+                    BARCODE.Text = tappedItem.ImageUrl;
 
 
 
