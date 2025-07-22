@@ -262,6 +262,13 @@ namespace test4sql
             string SQL = "";
             string CC = "";
             string C = BARCODE.Text.Trim();
+            if (C.Length < 2)
+            {
+                BARCODE.Focus();
+                //await DisplayAlert("Λάθος", "Το barcode πρέπει να έχει τουλάχιστον 2 χαρακτήρες", "OK");
+                return;
+            }
+
             int barc = 0;
             int ok = 1;
             if (C.Length < 13)
@@ -295,6 +302,7 @@ namespace test4sql
                         BARCODE.Text = "";
                         BARCODE.Focus();
                         ok = 0;
+                        return;
                     }
                 }
 
@@ -303,7 +311,13 @@ namespace test4sql
                     string posothtascan = "1";
                     string rr = RPOSO.Text;
                     posothtascan = rr;
+                    if (float.Parse(rr) > 9999)
+                    {
+                        await DisplayAlert("Λάθος ποσότητα", "Λάθος", "OK");
+                        RPOSO.Text = "1";
+                        return;
 
+                    }
                     string[] lines = CC.Split(';');
                     BARCODE.Text = lines[0];
                     ONO.Text = lines[1];
@@ -405,7 +419,7 @@ namespace test4sql
         }
 
 
-
+/*
         //public async void find2_eid()  // αναζητηση με barcode
         //{
         //    string SQL = "";
@@ -551,7 +565,7 @@ namespace test4sql
 
         //}
 
-        public void find3_eid(string CID) // ekana klik sto listview
+    //    public void find3_eid(string CID) // ekana klik sto listview
         {
             //string SQL = "";
 
@@ -597,7 +611,7 @@ namespace test4sql
 
 
 
-        }
+   //     }
 
 
         //void find_eid()
@@ -671,7 +685,7 @@ namespace test4sql
 
 
         //}
-
+        */
 
         void Show_list_Eidon(string ono)  // αναζητηση με ονομα 
         {
@@ -731,18 +745,16 @@ namespace test4sql
 
         private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
-
-            Monkey tappedItem = e.Item as Monkey;
+           Monkey tappedItem = e.Item as Monkey;
             // tappedItem.Location=>'00182'
             //tappedItem.Name=>"ΜΙΖΑΜΤΣΙΔΟΥ ΔΕΣΠΟΙΝΑ"
             //if (fisEIDH == 0)
             {
                 //  BRESafm.IsEnabled = false;
-
-
                 if (firstTime == 0) // kanv klik sto tim
                 {
                     ONO.Text = tappedItem.Name + ";" + tappedItem.Location;
+                    lab1.Text = tappedItem.Name + ";" + tappedItem.Location;
                     BARCODE.Text = "";// tappedItem.Location;
                     string CID = (tappedItem.ImageUrl.ToString() + "                                             ").Substring(0, 40);
                     //  find3_eid(CID);
@@ -757,36 +769,17 @@ namespace test4sql
                     catch
                     {
 
-                    }
-
-                   
+                    }                   
                 }
                 else
                 {
                     BARCODE.Text = tappedItem.ImageUrl;
-
-
-
-
                 }
-
-
-
-
-
             }
-
-
-
-
-
         }
 
         void Show_list_DET(string id)  // αναζητηση με id_num
         {
-
-
-
             int n2 = MainPage.ExecuteSqlite("delete from EGGTIM where IDPARAGG=" + id );
 
             Monkeys = new List<Monkey>();
@@ -825,17 +818,9 @@ namespace test4sql
 
         void Show_listNew(string id)  // αναζητηση με id_num
         {
-
-
-
            // int n2 = MainPage.ExecuteSqlite("delete from EGGTIM where IDPARAGG=" + id);
-
             Monkeys = new List<Monkey>();
             BindingContext = null;
-
-
-
-
             string dbPath = Path.Combine(  Environment.GetFolderPath(Environment.SpecialFolder.Personal),  "adodemo.db3");          
             SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
             connection.Open();
@@ -845,17 +830,13 @@ namespace test4sql
             Console.WriteLine("Reading data");
             while (r.Read())
             {        
-                
-
-                //    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****
-                                                                                // 
+                                //    lab1.Text = "ειδη : " + r["d"].ToString() + " αναζ. ειδη";  // ****                                                                                // 
                 string MONO, MKOD, MPOSO,MNUM1;
                 MONO = r["ONO"].ToString();
                 MPOSO = r["POSO"].ToString();
                 MKOD = r["KODE"].ToString();
                 MNUM1 = r["NUM1"].ToString();
                 //int n3 = MainPage.ExecuteSqlite("insert into EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + id + ",0,'" + MONO + "','" + MKOD + "'," + MPOSO + ");");
-
                 // double retNum;
                if (val(MPOSO) > val(MNUM1))
                 {
@@ -868,8 +849,6 @@ namespace test4sql
                 }
                     try
                     {
-
-
                         Monkeys.Add(new Monkey
                         {
                             Name = (MONO + "                                ").Substring(0, 25),
@@ -878,21 +857,11 @@ namespace test4sql
                             ImageUrl = (MKOD + "                                         ").Substring(0, 40),
                             idPEL = MNUM1 //(MKOD + "                  ").Substring(0, 12)"",  // dt.Rows[k]["HEID"].ToString()
                         });
-
                     }
                     catch (System.Exception)
                     {
-
                         throw;
                     }
-
-
-
-
-
-
-
-
             }
             connection.Close();
 
@@ -920,9 +889,6 @@ namespace test4sql
             return ret;
         }
 
-
-
-
       //  private async void UPDATEKOD(object sender, EventArgs e)
      //   {
 
@@ -935,28 +901,16 @@ namespace test4sql
             //    LTI5.Focus();
             //    return;
             //}
-
-
-
             //if (ONO.Text.Length > 0)
             //{
-
-
-
-
             //    try
             //    {
-
-
             //        string tt = TIMH.Text;
             //        tt = tt.Replace(",", ".");
             //        string PRAGM = LTI5.Text;
             //        PRAGM = PRAGM.Replace(",", ".");
-
-
             //        string[] lines = ONO.Text.Split(';');
             //        //  string sql = "insert into EGGTIMINP (KODE,POSO,TIMH) VALUES('" + lines[1] + "'," + LTI5.Text + "-" + FPA.Text + "," + tt + ")";
-
             //        string sql = "insert into EGGTIMINP (ONO,KODE,POSO,TIMH) VALUES('" + lines[0] + "','" + lines[1] + "'," + PRAGM + "," + tt + ")";
             //        if (LExecuteSQLServer(sql) == 1)
             //        {  //'LExecuteSQLServer(sql);
@@ -966,7 +920,6 @@ namespace test4sql
             //        else
             //        {
             //            await DisplayAlert("δεν αποθηκευτηκε", "δεν αποθηκευτηκε", "OK");
-
             //            string LAT = "ΚΩΔΙΚΟΣ:" + lines[1] + " ONOMA:" + lines[0] + " ΠΟΣΟΤΗΤΑ:" + PRAGM + " TIMH:" + tt;
             //            await DisplayAlert(LAT, " λαθος", "OK");
             //        }
@@ -987,12 +940,9 @@ namespace test4sql
             //    }
             //    catch
             //    {
-
             //    }
             //    BARCODE.Focus();
-
             //}
-
      //   }
 
         private int LExecuteSQLServer(string sql)
@@ -1064,24 +1014,15 @@ namespace test4sql
                 // await DisplayAlert("ΑΔΥΝΑΜΙΑ ΣΥΝΔΕΣΗΣ", ex.ToString(), "OK");
                 latos = 1;
             }
-
-
-
-
             string SYNT = "";
-
             try
             {
-
-
                 DataTable dt = new DataTable();
                 SqlCommand cmd3 = new SqlCommand(sql, con);
                 var adapter2 = new SqlDataAdapter(cmd3);
                 adapter2.Fill(dt);
                 con.Close();
                 return dt;
-
-
             }
             catch (Exception ex)
             {
@@ -1091,11 +1032,6 @@ namespace test4sql
 
 
         }
-
-
-
-
-
         private async void DIAGROLD(object sender, EventArgs e)
         {
 
@@ -1133,6 +1069,29 @@ namespace test4sql
 
         private async void UPDATEKOD(object sender, EventArgs e)
         {
+            bool answer = await DisplayAlert("τελος διόρθωση", "Να κλείσει η παραγγελια και να σταλεί στην βάση;", "Ναι", "Όχι");
+            if (answer)
+            {
+                // Ο χρήστης πάτησε Ναι
+            }
+            else
+            {
+                return;
+                // Ο χρήστης πάτησε Όχι
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             string q21 = "update EGGTIM SET KOLA=POSO WHERE ID_NUM=" + f_ID_NUM ;
             int n21 = LExecuteSQLServer(q21);
@@ -1159,30 +1118,28 @@ namespace test4sql
 
                     q3 = "update EGGTIM SET HME=(SELECT HME FROM TIM WHERE ID_NUM=" + f_ID_NUM + ") WHERE ID_NUM=" + f_ID_NUM + " AND KODE='" + r["KODE"].ToString() + "'";
                     n = LExecuteSQLServer(q3);
-
-
-
-
-
-
-
-
-
-
-
                 }
-
             }
-
-
             connection.Close();
-
            string q = "update TIM SET PARAT='"+PARAT.Text+"' WHERE ID_NUM=" + f_ID_NUM ;
             int n2 = LExecuteSQLServer(q);
 
             KATAX.IsEnabled = false;
             // Κλείσιμο σελίδας
             await Navigation.PopAsync();
+        }
+
+        private void kitrino(object sender, FocusEventArgs e)
+        {
+             Xamarin.Forms.Entry entry = (Xamarin.Forms.Entry)sender; 
+            entry.BackgroundColor = Xamarin.Forms.Color.Yellow; 
+
+        }
+
+        private void aspro(object sender, FocusEventArgs e)
+        {
+            Xamarin.Forms.Entry entry = (Xamarin.Forms.Entry)sender;
+            entry.BackgroundColor = Xamarin.Forms.Color.White;
 
         }
     }

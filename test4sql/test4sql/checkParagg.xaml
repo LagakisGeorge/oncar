@@ -9,7 +9,7 @@
         <StackLayout>
 
             <StackLayout    Orientation="Horizontal">
-            <Label x:Name="lab1" Text="ΤΣΙΣΜ" />
+            <Label x:Name="lab1" Text="ΤΣΙΣΜ                       " />
                 <!-- δειχνει τα τιμολογια -->
                 <Button x:Name="SHOWTIM" Text="ΛΙΣΤΑ ΠΑΡ/ΚΩΝ"   FontSize="Small"  BackgroundColor="Red"  HorizontalOptions="End"  Clicked="SHOWTIMP" />
          
@@ -26,8 +26,8 @@
 
 
                 <Entry x:Name="BARCODE"   Keyboard="Numeric"   FontSize="Large" 
-                   Placeholder="BARCODE     "  Completed  ="barcfoc2"      />
-                <Entry x:Name="RPOSO"    FontSize="Small"    Placeholder="ΠΟΣΟΤΗΤΑ"    Completed  ="barcfoc2"       />
+                   Placeholder="BARCODE     "  Completed  ="barcfoc2"     Focused="kitrino" Unfocused="aspro"    />
+                <Entry x:Name="RPOSO"    FontSize="Small"    Placeholder="ΠΟΣΟΤΗΤΑ"    Completed  ="barcfoc2"   Focused="kitrino" Unfocused="aspro"   />
 
             </StackLayout>
 
@@ -36,7 +36,7 @@
             <Entry x:Name="ONO"    FontSize="Large" 
                    Placeholder="        "       />
 
-            <StackLayout    Orientation="Horizontal">
+     <!--      <StackLayout    Orientation="Horizontal">
                 <Label x:Name="PYLON" Text="PYL"   FontSize="Small"  />
                
                 <Label   x:Name="TIMH" Text="TIMH "  MinimumWidthRequest="10"  FontSize="Small"           />
@@ -45,10 +45,10 @@
                 
                 <Button x:Name="DELETEOLD" Text="ΔΙΑΓ"   FontSize="Small"    HorizontalOptions="End"  Clicked="DIAGROLD" />
             </StackLayout>
-
+   -->
             <StackLayout    Orientation="Horizontal">
                 <!-- <Label x:Name="REAL" Text="ΣΧΟΛΙΑ"    FontSize="Medium"  MinimumWidthRequest="10"    BackgroundColor="Cyan"       />  -->
-                <Entry x:Name="PARAT"    Placeholder=" ΣΧΟΛΙΑ                   "       />
+                <Entry x:Name="PARAT"    Placeholder=" ΣΧΟΛΙΑ                             "        Focused="kitrino" Unfocused="aspro"  />
                 <Button x:Name="KATAX"  Text="ΚΑΤΑΧΩΡΗΣΗ"    Clicked="UPDATEKOD" />
             </StackLayout>
 
@@ -71,43 +71,22 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-
-
-
-
                             <StackLayout    >
-
-
-
                                 <Label 
                                    Text="{Binding Name}"
                                    FontAttributes="Bold" FontSize="Small" />
-
-
                                 <StackLayout    Orientation="Horizontal">
-
-                                    <Label 
-                                    
-                                    
+                                    <Label                                                                      
                                    Text="{Binding Location}"
                                     />
-
-
                                     <Label                                    
-                                   Text="{Binding ImageUrl}" IsVisible="true"
-                                   
+                                   Text="{Binding ImageUrl}" IsVisible="true"                                   
                                     />
                                     <Label                                    
-                                   Text="{Binding idPEL}"
-                                   
+                                   Text="{Binding idPEL}"                                   
                                     />
                                 </StackLayout>
                             </StackLayout>
-
-
-
-
-
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
