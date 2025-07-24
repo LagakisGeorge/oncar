@@ -274,12 +274,12 @@ namespace test4sql
             if (C.Length < 13)
             {
                 barc = 0;
-                SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
+                SQL = "SELECT TOP 1 KOD+';'+ONO+';'+str(FPA)+';'+MON  AS KODONO FROM EID  WHERE KOD='" + C + "'";
             }
             else
             {
                 barc = 1;
-                SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
+                SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO+';'+str(FPA)+';'+MON  AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
             }
             try
             {
@@ -289,11 +289,11 @@ namespace test4sql
                 {
                     if (barc == 1)
                     {
-                        SQL = "SELECT TOP 1 KOD+';'+ONO AS KODONO FROM EID  WHERE KOD='" + C + "'";
+                        SQL = "SELECT TOP 1 KOD+';'+ONO+';'+str(FPA)+';'+MON AS KODONO FROM EID  WHERE KOD='" + C + "'";
                     }
                     else
                     {
-                        SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
+                        SQL = "SELECT TOP 1 BARCODES.KOD+';'+ONO+';'+STR(FPA)+';'+MON  AS KODONO FROM BARCODES INNER JOIN EID ON BARCODES.KOD=EID.KOD WHERE BARCODES.ERG='" + C + "'";
                     }
                     CC = Globals.ReadSQLServerWithError(SQL);
                     if (CC.Substring(0, 5) == "ERROR")
@@ -330,6 +330,16 @@ namespace test4sql
                         using (var connection = new SqliteConnection("Data Source=" + dbPath))
                         {
                             connection.Open();
+                            if (qtyToAdd<0)
+                            {
+                                var update2Cmd = connection.CreateCommand();
+                                update2Cmd.CommandText = "UPDATE EGGTIM SET NUM1=NUM1+" + qtyToAdd + " WHERE  IDPARAGG=" + f_ID_NUM + " AND KODE='" + lines[0] + "'";
+                                update2Cmd.ExecuteNonQuery();
+
+                            }
+
+
+
                             var selectCmd = connection.CreateCommand();
                             selectCmd.CommandText = "SELECT ID AS rowid, NUM1, POSO FROM EGGTIM WHERE IDPARAGG=" + f_ID_NUM + " AND KODE='" + lines[0] + "' ORDER BY rowid";
                             using (var reader = selectCmd.ExecuteReader())
@@ -375,7 +385,7 @@ namespace test4sql
 
                                     // Αν περισσεύει ποσότητα, πρόσθεσε νέα εγγραφή
                                     var insertCmd = connection.CreateCommand();
-                                    insertCmd.CommandText = "INSERT INTO EGGTIM (IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + f_ID_NUM + "," + qtyToAdd + ",'" + "**" + lines[1] + "','" + lines[0] + "'," + qtyToAdd + ");";
+                                    insertCmd.CommandText = "INSERT INTO EGGTIM (FPA,CH1,IDPARAGG,NUM1,ONO,KODE,POSO) VALUES (" + lines[2] + ",'" + lines[3]+"'," + f_ID_NUM + "," + qtyToAdd + ",'" + "**" + lines[1] + "','" + lines[0] + "'," + qtyToAdd + ");";
                                     insertCmd.ExecuteNonQuery();
                                     ONO.BackgroundColor = Xamarin.Forms.Color.Red;
                                 }
@@ -691,7 +701,7 @@ namespace test4sql
         {
             Monkeys = new List<Monkey>();
             BindingContext = null;
-            string sql = "select top 50 ATIM,ATIM+PEL.EPO AS EPO,CONVERT(CHAR(10),HME,103) AS HMER,STR(ID_NUM) AS ID_NUM  from TIM INNER JOIN PEL ON TIM.KPE=PEL.KOD AND TIM.EIDOS=PEL.EIDOS WHERE TIM.EIDOS='e' AND   CHARINDEX( LEFT(ATIM,1) , '" + Globals.gTITLOS+"')>0  ORDER BY ID_NUM DESC ";
+            string sql = "select top 80 ATIM,ATIM+PEL.EPO AS EPO,CONVERT(CHAR(10),HME,103) AS HMER,STR(ID_NUM) AS ID_NUM  from TIM INNER JOIN PEL ON TIM.KPE=PEL.KOD AND TIM.EIDOS=PEL.EIDOS WHERE TIM.EIDOS='e' AND   CHARINDEX( LEFT(ATIM,1) , '" + Globals.gTITLOS+"')>0  ORDER BY ID_NUM DESC ";
             // contents.CommandText = "SELECT  * from PARALABES ; "; // +BARCODE.Text +"'";
 
             int lathos = 0;
@@ -1100,7 +1110,7 @@ namespace test4sql
             SqliteConnection connection = new SqliteConnection("Data Source=" + dbPath);
             connection.Open();
             var contents = connection.CreateCommand();
-            contents.CommandText = "SELECT  ifnull(NUM1,0) as CNUM1,ONO,KODE,POSO from EGGTIM WHERE IDPARAGG=" + f_ID_NUM  + "  ; "; // +BARCODE.Text +"'";
+            contents.CommandText = "SELECT  ifnull(NUM1,0) as CNUM1,ONO,KODE,POSO,IFNULL(CH1,'ΤΕΜ') AS CH1,IFNULL(FPA,1) AS FPA from EGGTIM WHERE IDPARAGG=" + f_ID_NUM  + "  ; "; // +BARCODE.Text +"'";
             var r = contents.ExecuteReader();
             Console.WriteLine("Reading data");
             while (r.Read())
@@ -1109,7 +1119,7 @@ namespace test4sql
                 int n = LExecuteSQLServer(q2);
                 if (r["ONO"].ToString().Substring(0, 2) == "**")
                 {
-                   string q4 = "insert into  EGGTIM (APOT,EIDOS,ID_NUM,KODE,ONOMA,POSO,KOLA) VALUES(1,'e',"+f_ID_NUM+",'"+r["KODE"].ToString()+"','" + r["ONO"].ToString()+"',"+ r["CNUM1"].ToString()+","+ r["CNUM1"].ToString()+")";
+                   string q4 = "insert into  EGGTIM (FPA,MONA,APOT,EIDOS,ID_NUM,KODE,ONOMA,POSO,KOLA) VALUES("+r["FPA"].ToString()+",'"+r["CH1"].ToString()+"',1,'e',"+f_ID_NUM+",'"+r["KODE"].ToString()+"','" + r["ONO"].ToString()+"',"+ r["CNUM1"].ToString()+","+ r["CNUM1"].ToString()+")";
                     n = LExecuteSQLServer(q4);
                     // CC = Globals.ReadSQLServerWithError(SQL);
                     // q= " string q = \"update EGGTIM SET KOLA=\" + r[\"CNUM1\"].ToString() + \" WHERE ID_NUM=\" + f_ID_NUM + \" AND KODE='\" + r[\"KODE\"].ToString() + \"'\";"
