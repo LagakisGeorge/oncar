@@ -539,7 +539,7 @@ namespace oncar
 
             String c1 = "", c2 = "", c3 = "", c4 = "", c5 = "", c6 = "", QU = "",nums="0123456789" ;
 
-            CCC = Globals.Idia(CCC);
+           // CCC = Globals.Idia(CCC);
             CCC = CCC.Replace("%", "*");
             QU = " ONO GLOB '*"+CCC+"*' ";
 

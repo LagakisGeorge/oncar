@@ -149,24 +149,17 @@ namespace test4sql
             {
                 return;
             }
-            System.Threading.Thread.Sleep(3000);
             var scanPage = new ZXingScannerPage();
-            // Navigate to our scanner page
             await Navigation.PushAsync(scanPage);
 
             scanPage.OnScanResult += (result) =>
             {
-                // Stop scanning
                 scanPage.IsScanning = false;
-
-                // Pop the page and show the result
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Navigation.PopAsync();
-                    // await DisplayAlert("Scanned Barcode", result.Text, "OK");
-                    BARCODE.Text = result.Text;
-                   // Completed = "posothtaCompleted"
-                    find_eid("0");
+                    BARCODE.Text = result.Text; // Εδώ επιστρέφει το barcode π.χ. "5400254584455"
+                    find_eid("0"); // Αν θέλεις να κάνεις αναζήτηση με το barcode
                 });
             };
 
@@ -440,6 +433,11 @@ namespace test4sql
             BARCODE.Text = "";
             posotita.Text = "";
             BARCODE.Focus ();
+        }
+
+        private void barcfoc(object sender, FocusEventArgs e)
+        {
+
         }
     }
 }

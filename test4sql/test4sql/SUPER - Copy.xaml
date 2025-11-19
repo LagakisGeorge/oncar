@@ -10,7 +10,7 @@
 
             <Label     Grid.Row="4" Grid.Column="0" 
                 Text="ΠΑΡΑΜΕΤΡΟΙ ΠΑΡΑΣΤΑΤΙΚΩΝ" 
-                 TextColor="BlueViolet"    />
+                 TextColor="Gray"    />
 
             <Entry x:Name="TITLOS"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
                    Placeholder="ΤΙΤΛΟΣ ΠΑΡΑΣΤΑΤΙΚΟΥ "      />
