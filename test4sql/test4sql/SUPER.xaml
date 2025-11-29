@@ -70,6 +70,20 @@
 
 
 
+            <Entry x:Name="POSO"  Grid.Row="1" Grid.Column="1" FontSize="Small" 
+            Placeholder="ΠΟΣΟΤΗΤΑ ΑΠΟΓΡΑΦΗΣ"       />
+
+
+
+            <Button x:Name="KATAX2" 
+             Text="ΚΑΤΑΧ.ΠΟΣΟΤΗΤΑΣ"  Grid.Row="1" Grid.Column="0" Clicked="UPDATEPOSO" />
+
+
+
+
+
+
+
             <Label x:Name="yparxei" Text="0"             
                 HorizontalOptions="CenterAndExpand" />
 

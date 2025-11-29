@@ -426,5 +426,40 @@ namespace test4sql
                 }
             }
         }
+
+        private void UPDATEPOSO(object sender, EventArgs e)
+        {
+            if (yparxei.Text == "1")
+            {
+                string C;
+                C = "NUM3=" + POSO.Text.Replace(",", ".") + "  ";
+                int ok = 1;
+                Globals.ExecuteSQLServer("update EID set " + C + " where KOD='" + BARCODE.Text + "'", ok);
+                if (ok == 1)
+                {
+                    DisplayAlert("ok", " ok ", " ok ");
+                }
+                else
+                {
+                    DisplayAlert("Δεν αποθηκευτηκε", " ok ", " ok ");
+                }
+
+            }
+            else
+            {
+                string C;
+                C = "('" + BARCODE.Text + "','" + ONO.Text + "'," + FPA.Text + "," + LTI5.Text.Replace(",", ".") + ")";
+                int ok = 0;
+                Globals.ExecuteSQLServer("insert into EID(KOD,ONO,FPA,LTI5) VALUES " + C, ok);
+                if (ok == 1)
+                {
+                    DisplayAlert("NEOΣ TIMH ok-ΔΩΣΕ ΞΑΝΑ ΠΟΣΟΤΗΤΑ", " ok ", " ok ");
+                }
+                else
+                {
+                    DisplayAlert("Δεν αποθηκευτηκε", " ok ", " ok ");
+                }
+            }
+        }
     }
 }
