@@ -57,7 +57,7 @@
 
                <StackLayout Orientation="Horizontal" >
                   <DatePicker MinimumDate="01/01/2018"  FontSize="Small"
-                         MaximumDate="12/31/2025"
+                         MaximumDate="12/31/2035"
                             x:Name="hmer"
                          Date="{Binding SelectedDate}" />
 
